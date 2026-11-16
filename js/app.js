@@ -447,7 +447,7 @@ function vIsle(){
   const weekHTML = DAYS.map((dk, i) => {
     const dt = new Date(mon); dt.setDate(mon.getDate() + i);
     const future = dt > now && dk !== d, p = dayProgress(dt);
-    return `<a class="${dk === d ? 'today' : ''}${weekend(dk) ? ' rest' : ''}">${mini(future ? 0 : p.done / Math.max(1, p.total), weekend(dk))}${DAYN[dk][0]}</a>`;
+    return `<button type="button" data-off="${i - DAYS.indexOf(d)}" aria-label="See ${DAYN[dk]}" class="tap${dk === d ? ' today' : ''}${weekend(dk) ? ' rest' : ''}">${mini(future ? 0 : p.done / Math.max(1, p.total), weekend(dk))}${DAYN[dk][0]}</button>`;
   }).join('');
   const groups = parts.map((p, i) => [p[0], tasks.filter(x => partOf(x.at) === i), p[1], i === nowPart]);
   const recent = Store.state.log.slice(-5).reverse();
@@ -488,6 +488,7 @@ function vIsle(){
   wireTicks();
   const c = $('[data-cta]'); if (c) c.onclick = () => toggleTask(c.dataset.cta, $(`.tick[data-task="${c.dataset.cta}"]`));
   $('#extra').onclick = openExtra;
+  $$('.week button', view).forEach(b => b.onclick = () => { haptic(); daySheet(+b.dataset.off); });
   countUp($('#tot'), lastAll, t.all); lastAll = t.all;
   const rb = $('.ring b[data-count]', view); countUp(rb, lastDone, dp.done); lastDone = dp.done;
   playTw();
@@ -497,6 +498,45 @@ function vIsle(){
   }
 }
 let lastDone = null;
+
+/* ---------------- day preview (tap a day in the week strip) ---------------- */
+function mealWeekOf(date){ const w = Store.weekNo(date); return MEAL_WEEKS.filter(n => n <= w).pop() || MEAL_WEEKS[0]; }
+function dayPlan(date){
+  const d = dayKey(date), ds = Store.ymd(date), wn = mealWeekOf(date), D = MW[wn] || (wn === mealWeek() ? M : null);
+  const times = (W.routine && W.routine.times[d]) || {}, isPast = ds < Store.ymd(today()), isToday = ds === Store.ymd(today());
+  const rows = planItems(d).map(t => Object.assign(t, Store.PTS[t.type], {at:times[t.key] || '23:59'}));
+  const menu = D && D.menu[d];
+  if (menu) Object.keys(SLOT).forEach(slot => { const r = D.recipes[menu[slot]]; if (r) rows.push(Object.assign({key:slot, type:slot, icon:slot, label:r.name, meta:`${SLOT[slot]}${menu.shared === slot ? ' · for two' : ''} · ${r.minutes} min`, go:`#recipe/${menu[slot]}/${wn}`, at:times[slot] || '23:59'}, Store.PTS[slot])); });
+  // Sunday prep belongs to the week that starts the next day.
+  const nd = new Date(date); nd.setDate(nd.getDate() + 1);
+  const pwn = d === 'sun' ? mealWeekOf(nd) : wn, PD = MW[pwn] || (pwn === mealWeek() ? M : null);
+  const preps = PD ? PD.prep.filter(x => x.day === d).map(x => ({x, wn:pwn})) : [];
+  rows.forEach(t => { t.done = (isPast || isToday) && Store.isDone(ds, t.key); });
+  rows.sort((a, b) => a.at.localeCompare(b.at));
+  return {d, ds, wn, D, menu, rows, preps, isPast, isToday, missingMenu:!D && !weekend(d)};
+}
+function daySheet(off){
+  const base = Store.parse(Store.ymd(today())), date = new Date(base); date.setDate(base.getDate() + off);
+  const P = dayPlan(date), when = off === 0 ? 'Today' : off === 1 ? 'Tomorrow' : off === -1 ? 'Yesterday' : off > 0 ? `In ${off} days` : `${-off} days ago`;
+  const row = t => { const main = `<span class="tile r-${t.res}">${ic(t.icon)}</span><span class="tx"><b>${esc(t.label)}</b><small>${t.at < '23:59' ? `<span class="at">${clock(t.at)}</span> · ` : ''}${esc(t.meta)}</small></span>`;
+    const end = t.done ? `<span class="tick on" aria-label="Done">${ic('check', '')}</span>` : t.go ? ic('chev', 'i chev') : '';
+    return t.go ? `<a class="row tap${t.done ? ' done' : ''}" href="${t.go}">${main}${end}</a>` : `<div class="row${t.done ? ' done' : ''}">${main}${end}</div>`; };
+  const body = `${P.menu && P.menu.heads ? `<div class="callout">${ic('info')}<span>${esc(P.menu.heads)}</span></div>` : ''}
+    ${P.rows.length ? `<div class="group">${P.rows.map(row).join('')}</div>` : `<div class="callout">${ic('extra')}<span>${weekend(P.d) ? 'Festival day. Nothing planned, and anything you do still builds the island.' : 'Nothing planned.'}</span></div>`}
+    ${P.missingMenu ? `<p class="fine">That week's menu isn't written yet.</p>` : ''}
+    ${P.preps.length ? `<div class="group">${P.preps.map(({x, wn}) => `<a class="row tap full" href="#prep/${x.id}/${wn}"><span class="tile r-harvest">${ic('calendar')}</span><span class="tx"><b>${esc(x.title)}</b><small>${x.minutes} min · ${esc(x.makes)}</small></span>${ic('chev', 'i chev')}</a>`).join('')}</div>` : ''}`;
+  const sh = sheet(`<div class="grab"></div>
+    <div class="dayhead"><button class="backbtn" type="button" data-step="-1" aria-label="Previous day" ${off <= -6 ? 'disabled' : ''}>${ic('back')}</button>
+      <div><div class="over gold">${when}</div><h2 class="t2">${DAYN[P.d]} · ${date.toLocaleDateString(undefined, {month:'short', day:'numeric'})}</h2></div>
+      <button class="backbtn" type="button" data-step="1" aria-label="Next day" ${off >= 13 ? 'disabled' : ''}>${ic('chev')}</button></div>
+    <div class="daybody">${body}</div>`);
+  sh.classList.add('daysheet');
+  const go = n => { haptic(); const k = off + n; if (k < -6 || k > 13) return; layer.innerHTML = ''; daySheet(k); const s2 = $('.sheet', layer); s2.style.animation = 'none'; const b = $('.daybody', s2); b.classList.add(n > 0 ? 'from-r' : 'from-l'); };
+  $$('[data-step]', sh).forEach(b => b.onclick = () => go(+b.dataset.step));
+  let sx = null, sy = 0;
+  sh.addEventListener('pointerdown', e => { if (e.target.closest('button, .grab')) return; sx = e.clientX; sy = e.clientY; });
+  sh.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5){ swallowClick(); go(dx < 0 ? 1 : -1); } });
+}
 
 function openExtra(){
   let type = 'cardio', mins = 30;
@@ -817,12 +857,12 @@ function vKitchen(){
     ${blocksHTML(D, wk)}
     <section class="sect"><div class="sect-h"><span class="over">Prep sessions</span></div><div class="group">${D.prep.map(p => {
       const n = p.steps.filter((_, i) => Store.flag('prep', `w${wk}:${p.id}:${i}`)).length;
-      return `<a class="row tap" href="#prep/${p.id}/${wk}"><span class="tile r-harvest">${ic('calendar')}</span><span class="tx"><b>${esc(p.title)}</b><small>${p.minutes} min · ${n ? `${n} of ${p.steps.length} steps done` : esc(p.makes)}</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}</div></section>
+      return `<a class="row tap full" href="#prep/${p.id}/${wk}"><span class="tile r-harvest">${ic('calendar')}</span><span class="tx"><b>${esc(p.title)}</b><small>${p.minutes} min · ${n ? `${n} of ${p.steps.length} steps done` : esc(p.makes)}</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}</div></section>
     <section class="sect"><div class="sect-h"><span class="over">The week</span></div>
       <div class="days">${DAYS.map(d => `<button type="button" data-d="${d}" class="${d === kitchenDay ? 'on' : ''}${d === td && !ahead ? ' today' : ''}">${DAYN[d].slice(0, 3).toUpperCase()}<b>${DAYN[d][0]}</b><i>${D.menu[d] ? '<u class="land"></u>' : ''}</i></button>`).join('')}</div>
       ${menu ? `<div class="group">${Object.keys(SLOT).map(s => { const r = D.recipes[menu[s]];
           return `<a class="row tap" href="#recipe/${menu[s]}/${wk}"><span class="tile ctile c-${r.cuisine}">${ic(r.cuisine)}</span><span class="tx"><b>${esc(r.name)}</b><small>${SLOT[s]}${menu.shared === s ? ' · for two' : ''} · ${r.minutes} min · ${r.protein}g protein</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}
-        <div class="row"><span class="tile ctile c-Snack">${ic('Snack')}</span><span class="tx"><b>Snacks</b><small style="white-space:normal">${D.snacks.map(esc).join(' · ')}</small></span></div></div>`
+        <div class="row full"><span class="tile ctile c-Snack">${ic('Snack')}</span><span class="tx"><b>Snacks</b><small style="white-space:normal">${D.snacks.map(esc).join(' · ')}</small></span></div></div>`
         : `<p class="fine">${esc(D.weekendNote)}</p>`}</section>
     <section class="sect"><div class="sect-h"><span class="over">Recipe library</span></div>
       ${Object.entries(byCuisine).map(([c, list]) => `<div class="group">${list.map(([id, r]) => `<a class="row tap" href="#recipe/${id}/${wk}"><span class="tile ctile c-${c}">${ic(c)}</span><span class="tx"><b>${esc(r.name)}</b><small>${c} · ${r.minutes} min${r.isNew ? ' · new this week' : ''}</small></span>${ic('chev', 'i chev')}</a>`).join('')}</div>`).join('')}</section>
@@ -860,7 +900,7 @@ function vRecipe(id, wn){
       const on = Store.flag('ing', `${n}:${id}:${k}`);
       return `<div class="row ing${on ? ' done' : ''}" data-k="${k}" role="button" aria-pressed="${on}"><span class="tx"><b>${ingName(D, i, n)}</b></span><span class="q">${esc(i.qty)}</span></div>`; }).join('')}</div>
       <p class="fine">Tap an ingredient once it is out on the counter.</p></section>
-    <section class="sect"><div class="sect-h"><span class="over">Method</span><span class="cap">${plural(r.steps.length, 'step')}</span></div><ol class="steps">${r.steps.map((s, k) => `<li><span>${k + 1}</span><div>${esc(s)}${tchips(s, `${r.name} · step ${k + 1}`)}</div></li>`).join('')}</ol></section>
+    <section class="sect"><div class="sect-h"><span class="over">Method</span><span class="cap">${plural(r.steps.length, 'step')}</span></div><ol class="steps">${r.steps.map((s, k) => `<li><span>${k + 1}</span><div>${stepText(s, `${r.name} · step ${k + 1}`)}</div></li>`).join('')}</ol></section>
   </div>`;
   scrollAt = 180; setBar(r.name, true); wireBack();
   $$('[data-stop]', view).forEach(a => a.addEventListener('click', e => e.stopPropagation()));
@@ -875,7 +915,7 @@ function vCook(id, wn){
   const i = cook.i, last = i === r.steps.length - 1, dir = cook.dir || 0; cook.dir = 0;
   view.innerHTML = `<div class="cook"><div class="ptop"><button class="backbtn" type="button" id="cclose" aria-label="Close cook mode">${ic('close')}</button>
       <div class="segs">${r.steps.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div><button class="backbtn" type="button" id="cing" aria-label="Ingredients">${ic('list')}</button></div>
-    <div class="stepbig${dir > 0 ? ' from-r' : dir < 0 ? ' from-l' : ''}"><span class="over gold">${esc(r.name)} · step ${i + 1} of ${r.steps.length}</span><p>${esc(r.steps[i])}</p>${tchips(r.steps[i], `${r.name} · step ${i + 1}`, true)}</div>
+    <div class="stepbig${dir > 0 ? ' from-r' : dir < 0 ? ' from-l' : ''}"><span class="over gold">${esc(r.name)} · step ${i + 1} of ${r.steps.length}</span><p>${stepText(r.steps[i], `${r.name} · step ${i + 1}`)}</p></div>
     <div class="btns">${i ? `<button class="btn quiet" type="button" id="cprev" style="flex:.6">Back</button>` : ''}<button class="btn" type="button" id="cnext">${last ? 'Done cooking' : 'Next step'}</button></div></div>`;
   $('#cclose').onclick = () => { endCook(); goBack(); };
   $('#cing').onclick = () => sheet(`<div class="grab"></div><h2 class="t2">Ingredients</h2><div class="group">${r.ingredients.map(x => `<div class="row" style="min-height:48px"><span class="tx"><b>${ingName(D, x)}</b></span><span class="q cap">${esc(x.qty)}</span></div>`).join('')}</div>`);
@@ -908,7 +948,7 @@ function vPrep(id, wn){
   <div class="page stagger" style="margin-top:22px">
     <div class="meter2"><p>${done} of ${p.steps.length} steps<b></b></p><div class="bar2" style="--c:var(--harvest)"><i style="width:${(done / p.steps.length * 100).toFixed(1)}%"></i></div></div>
     <div class="group">${p.steps.map((s, i) => { const on = Store.flag('prep', pre + i);
-      return `<div class="row item${on ? ' done' : ''}" data-i="${i}" role="button" aria-pressed="${on}" style="align-items:flex-start;padding-top:16px;padding-bottom:16px"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b style="-webkit-line-clamp:unset;font-weight:400;font-size:15px;line-height:1.5">${esc(s)}</b>${tchips(s, `${p.title} · step ${i + 1}`)}</span></div>`; }).join('')}</div>
+      return `<div class="row item${on ? ' done' : ''}" data-i="${i}" role="button" aria-pressed="${on}" style="align-items:flex-start;padding-top:16px;padding-bottom:16px"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b style="-webkit-line-clamp:unset;font-weight:400;font-size:15px;line-height:1.5">${stepText(s, `${p.title} · step ${i + 1}`)}</b></span></div>`; }).join('')}</div>
     ${done ? `<button class="btn quiet wide" type="button" id="clr">Reset steps</button>` : ''}
   </div>`;
   scrollAt = 90; setBar(p.title, true); wireBack();
@@ -936,15 +976,22 @@ function durations(text){
   return out;
 }
 const dlabel = sec => sec >= 3600 ? `${+(sec / 3600).toFixed(1)} hr` : sec >= 60 ? `${Math.round(sec / 60)} min` : `${sec} sec`;
-function tchips(text, label, big){
-  const d = durations(text); if (!d.length) return '';
-  return `<span class="tchips${big ? ' big' : ''}">${d.map(x => `<button type="button" class="tchip" data-sec="${x.sec}" data-l="${esc(label)}">${ic('timer')}${dlabel(x.sec)}</button>`).join('')}</span>`;
+/* A step's text with every time of a minute or more turned into a tap-to-start timer link. */
+function stepText(text, label){
+  return esc(text).replace(DUR, (m, a, ah, b, bh, u) => {
+    const n = +(b || a) + ((b ? bh : ah) ? .5 : 0), un = u.toLowerCase();
+    const sec = Math.round(n * (un.startsWith('h') ? 3600 : un.startsWith('m') ? 60 : 1));
+    if (sec < 60) return m;
+    const on = timers.some(t => !t.done && t.label === label);
+    return `<button type="button" class="tlink${on ? ' on' : ''}" data-sec="${sec}" data-l="${esc(label)}" aria-label="Start a ${dlabel(sec)} timer">${ic('timer')}${m}</button>`;
+  });
 }
 function wireTchips(){
-  $$('.tchip', view).forEach(b => b.addEventListener('click', e => {
+  $$('.tlink', view).forEach(b => b.addEventListener('click', e => {
     e.stopPropagation(); e.preventDefault(); unlockAudio(); haptic();
     addTimer(+b.dataset.sec, b.dataset.l);
-    b.animate([{transform:'scale(1)'}, {transform:'scale(1.12)'}, {transform:'scale(1)'}], {duration:300, easing:'cubic-bezier(.3,1.4,.5,1)'});
+    $$(`.tlink[data-l="${CSS.escape(b.dataset.l)}"]`, view).forEach(x => x.classList.add('on'));
+    b.animate([{transform:'scale(1)'}, {transform:'scale(1.08)'}, {transform:'scale(1)'}], {duration:300, easing:'cubic-bezier(.3,1.4,.5,1)'});
   }));
 }
 function addTimer(sec, label){
