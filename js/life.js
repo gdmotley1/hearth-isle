@@ -109,15 +109,15 @@ function hit(cx, cy, objs){
   let best = null;
   state.people.forEach(p => {
     const r = p.g.getBoundingClientRect(), px = r.left + r.width / 2, py = r.top + r.height * .45, d = Math.hypot(px - cx, py - cy);
-    if (d < 30 && (!best || d < best.d)) best = {kind:'settler', i:p.i, st:p.doing, role:p.role, d, x:px, y:r.top - 4};
+    if (d < 40 && (!best || d < best.d)) best = {kind:'settler', i:p.i, st:p.doing, role:p.role, d, x:px, y:r.top - 4, bottom:r.bottom, feet:[px, r.bottom - 2]};
   });
   if (best) return best;
   const toScreen = (x, y) => { const pt = svg.createSVGPoint(); pt.x = x; pt.y = y; const r = pt.matrixTransform(ctm); return [r.x, r.y]; };
   (objs || []).forEach(o => {
     const w = o.w || 1, h = o.h || 1, tall = {house:12, tree:12, pine:12, windmill:20, tower:24, gardens:20, well:6, stall:8, tent:6, fire:4}[o.t] || 3;
     const [x, y] = P(o.x + w / 2, o.y + h / 2, tall), [px, py] = toScreen(x, y), d = Math.hypot(px - cx, py - cy);
-    const r = o.t === 'gardens' ? 46 : 26;
-    if (d < r && (!best || d < best.d)) best = {kind:'obj', k:o.k, t:o.t, d, x:px, y:toScreen(...P(o.x + w / 2, o.y + h / 2, tall + 14))[1]};
+    const r = o.t === 'gardens' ? 50 : 32;
+    if (d < r && (!best || d < best.d)) best = {kind:'obj', k:o.k, t:o.t, d, x:px, y:toScreen(...P(o.x + w / 2, o.y + h / 2, tall + 14))[1], bottom:toScreen(...P(o.x + w / 2, o.y + h / 2))[1], feet:toScreen(...P(o.x + w / 2, o.y + h / 2))};
   });
   return best;
 }

@@ -371,20 +371,32 @@ function buildingStory(k, t){
   if (i < 0){ const b = base[t] || ['Island', 'Part of the island.']; return {title:b[0], sub:'Since day one', line:b[1]}; }
   return {title:BUILD_T[t] || t, sub:`Built by ${SETTLERS[i % SETTLERS.length]}`, line:`Went up at ${Math.round(Store.thToPts(list[i].th))} points. ${i + 1} of ${list.length} things to build this season.`};
 }
+/* Tap on the island: meet a settler or a building in a pop-up that sits above everything,
+   above the one you tapped if there is room under the title, otherwise below them. */
+function closeBubble(){ $$('.bubble, .tapring').forEach(b => b.remove()); clearTimeout(worldTap.t); }
 function worldTap(e){
-  const world = e.currentTarget, h = Life.hit(e.clientX, e.clientY, scene ? scene.vis : []);
-  $$('.bubble', world).forEach(b => b.remove());
+  const h = Life.hit(e.clientX, e.clientY, scene ? scene.vis : []);
+  closeBubble();
   if (!h){ islandSheet(); return; }
   haptic();
   const s = h.kind === 'settler' ? settlerStory(h.i, h.st, h.role) : buildingStory(h.k, h.t);
-  const wr = world.getBoundingClientRect(), b = document.createElement('div');
-  b.className = 'bubble';
+  const ar = app.getBoundingClientRect();
+  // a gold ring at their feet so it is clear who you tapped
+  const ring = document.createElement('i'); ring.className = 'tapring';
+  ring.style.left = (h.feet[0] - ar.left) + 'px'; ring.style.top = (h.feet[1] - ar.top) + 'px';
+  app.appendChild(ring);
+  const b = document.createElement('div');
+  b.className = 'bubble'; b.setAttribute('role', 'status');
   b.innerHTML = `<b>${esc(s.title)}</b><span class="over gold">${esc(s.sub)}</span><p>${esc(s.line)}</p>`;
-  world.appendChild(b);
-  const bw = b.offsetWidth, x = Math.max(12, Math.min(wr.width - bw - 12, h.x - wr.left - bw / 2));
-  b.style.left = x + 'px'; b.style.top = Math.max(70, h.y - wr.top - b.offsetHeight - 8) + 'px';
-  b.style.setProperty('--ax', Math.max(14, Math.min(bw - 14, h.x - wr.left - x)) + 'px');
-  clearTimeout(worldTap.t); worldTap.t = setTimeout(() => { b.classList.add('out'); setTimeout(() => b.remove(), 300); }, 4200);
+  app.appendChild(b);
+  const bw = b.offsetWidth, bh = b.offsetHeight, ttl = $('.ttl', view), safeTop = ttl ? ttl.getBoundingClientRect().bottom + 8 : 80;
+  const x = Math.max(12, Math.min(ar.width - bw - 12, h.x - ar.left - bw / 2));
+  const above = h.y - bh - 10 >= safeTop;
+  b.classList.toggle('below', !above);
+  b.style.left = x + 'px';
+  b.style.top = ((above ? h.y - bh - 10 : h.bottom + 12) - ar.top) + 'px';
+  b.style.setProperty('--ax', Math.max(16, Math.min(bw - 16, h.x - ar.left - x)) + 'px');
+  worldTap.t = setTimeout(() => { b.classList.add('out'); ring.remove(); setTimeout(() => b.remove(), 300); }, 5000);
 }
 function islandSheet(){
   const t = Store.totals(), u = unlockState(t.all), g = Store.gardens();
@@ -1119,7 +1131,7 @@ function route(keep){
   if (name !== 'cook' && cook) endCook();
   if (name !== 'play' && name !== 'cook') app.classList.remove('immersive');
   app.classList.toggle('detail', DETAIL.has(name));
-  Life.stop();
+  Life.stop(); closeBubble();
   dock.innerHTML = ''; layer.innerHTML = '';
   view.style.transform = '';
   ({isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg, arg2), cook:() => vCook(arg, arg2), prep:() => vPrep(arg, arg2), settings:vSettings}[name] || vIsle)();
@@ -1168,7 +1180,7 @@ function route(keep){
   view.addEventListener('pointerup', end);
   view.addEventListener('pointercancel', e => { if (g && e.pointerId === g.id){ view.classList.remove('dragging'); view.style.transform = ''; g = null; } });
 })();
-view.addEventListener('scroll', () => app.classList.toggle('scrolled', view.scrollTop > scrollAt), {passive:true});
+view.addEventListener('scroll', () => { app.classList.toggle('scrolled', view.scrollTop > scrollAt); if (worldTap.t) closeBubble(); }, {passive:true});
 
 async function boot(){
   try {
