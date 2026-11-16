@@ -102,7 +102,17 @@ function tasksFor(date){
     out.push({key:slot, type:slot, icon:slot, label:r.name, meta:`${SLOT[slot]}${menu.shared === slot ? ' · for two' : ''} · ${r.minutes} min`, go:'#recipe/' + menu[slot], recipe:menu[slot]});
   });
   out.push({key:'sleep', type:'sleep', icon:'sleep', label:'Slept 7+ hours', meta:'Last night'});
-  return out.map(t => Object.assign(t, Store.PTS[t.type], {done:Store.isDone(ds, t.key), optional:t.optional || weekend(d)}));
+  const times = (W.routine && W.routine.times[d]) || {};
+  return out.map(t => Object.assign(t, Store.PTS[t.type], {at:times[t.key] || '23:59', done:Store.isDone(ds, t.key), optional:t.optional || weekend(d)}))
+    .sort((a, b) => a.at.localeCompare(b.at));
+}
+/* '17:30' -> '5:30 PM' */
+const clock = hm => { const [h, m] = hm.split(':').map(Number); return `${(h + 11) % 12 + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`; };
+/* Parts of the day built around work 8 to 5 with lunch at home 12 to 1. */
+function dayParts(d){
+  return weekend(d)
+    ? [['Morning', '', '00:00'], ['Afternoon', '', '12:00'], ['Evening', '', '17:00']]
+    : [['Morning', 'before work', '00:00'], ['Lunch break', '12 to 1 at home', '11:00'], ['After work', 'from 5', '15:00']];
 }
 function dayProgress(date){
   const t = tasksFor(date), req = t.filter(x => !x.optional);
@@ -245,7 +255,7 @@ function mini(f, rest){
   return `<svg class="mini" viewBox="0 0 30 30"><circle class="bgc" cx="15" cy="15" r="${r}"/>${f > 0 ? `<circle class="fgc" cx="15" cy="15" r="${r}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * (1 - Math.min(1, f))).toFixed(1)}"/>` : ''}</svg>`;
 }
 function taskRow(t, opts = {}){
-  const main = `<span class="tile r-${t.res}">${ic(t.icon)}</span><span class="tx"><b>${esc(t.label)}</b><small><em>+${t.pts} ${RESN[t.res].toLowerCase()}</em> · ${esc(t.meta)}</small></span>`;
+  const main = `<span class="tile r-${t.res}">${ic(t.icon)}</span><span class="tx"><b>${esc(t.label)}</b><small>${opts.time && t.at < '23:59' ? `<span class="at">${clock(t.at)}</span> · ` : ''}<em>+${t.pts} ${RESN[t.res].toLowerCase()}</em> · ${esc(t.meta)}</small></span>`;
   return `<div class="row${t.done ? ' done' : ''}${opts.disabled ? '' : ' sw'}" data-key="${t.key}">
     ${t.go ? `<a class="main tap" href="${t.go}">${main}</a>` : `<div class="main" data-tick-row>${main}</div>`}
     <button class="tick" type="button" data-task="${t.key}" aria-label="${t.done ? 'Undo' : 'Complete'} ${esc(t.label)}" ${opts.disabled ? 'disabled' : ''}>${ic('check', '')}</button></div>`;
@@ -418,7 +428,11 @@ function vIsle(){
   const now = today(), d = dayKey(now), t = Store.totals(), g = Store.gardens(), sw = Store.seasonWeek(), u = unlockState(t.all);
   const tasks = tasksFor(now), dp = dayProgress(now), menu = M.menu[d], fest = weekend(d);
   const hour = now.getHours(), greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  const next = tasks.find(x => !x.done && !x.optional);
+  const parts = dayParts(d), hm = `${String(hour).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  const partOf = at => parts.reduce((k, p, i) => at >= p[2] ? i : k, 0);
+  const nowPart = partOf(hm);
+  const open = tasks.filter(x => !x.done && !x.optional);
+  const next = open.find(x => partOf(x.at) >= nowPart) || open[0];
   let cta = '';
   if (next){
     if (next.session) cta = `<a class="btn wide" href="#play/${next.session}">${ic('play', 'i solid')}Start ${esc(next.label)}</a>`;
@@ -428,18 +442,14 @@ function vIsle(){
   const left = dp.total - dp.done;
   const line = fest ? 'Festival day. Nothing is required, and anything you do still builds.' :
     left === 0 ? 'Everything is done. The settlers are celebrating.' :
-    `${greet}. ${left === 1 ? 'One thing left' : `${left} things left`} to finish the day.`;
+    `${greet}. ${left === 1 ? 'One thing left' : `${left} things left`}.${next && next.at < '23:59' ? (next.type === 'sleep' ? ' Start by logging last night\'s sleep.' : ` Next up: ${SLOT[next.type] ? SLOT[next.type].toLowerCase() : next.label} at ${clock(next.at)}.`) : ''}`;
   const mon = Store.parse(Store.mondayOf(now));
   const weekHTML = DAYS.map((dk, i) => {
     const dt = new Date(mon); dt.setDate(mon.getDate() + i);
     const future = dt > now && dk !== d, p = dayProgress(dt);
     return `<a class="${dk === d ? 'today' : ''}${weekend(dk) ? ' rest' : ''}">${mini(future ? 0 : p.done / Math.max(1, p.total), weekend(dk))}${DAYN[dk][0]}</a>`;
   }).join('');
-  const groups = [
-    ['Move', tasks.filter(x => ['lift','mobility','walk','intervals','pickleball'].includes(x.type))],
-    ['Eat', tasks.filter(x => SLOT[x.type])],
-    ['Recover', tasks.filter(x => x.type === 'sleep')]
-  ];
+  const groups = parts.map((p, i) => [p[0], tasks.filter(x => partOf(x.at) === i), p[1], i === nowPart]);
   const recent = Store.state.log.slice(-5).reverse();
   const when = e => { const diff = Math.round((Store.parse(Store.ymd(now)) - Store.parse(e.date)) / 864e5); return diff === 0 ? 'Today' : diff === 1 ? 'Yesterday' : DAYN[dayKey(Store.parse(e.date))]; };
   view.innerHTML = `<div class="isle">
@@ -460,8 +470,10 @@ function vIsle(){
       ${menu && menu.heads ? `<div class="callout">${ic('info')}<span>${esc(menu.heads)}</span></div>` : ''}
       ${d === 'sun' ? `<a class="callout tap" href="#prep/sun/${nextW() || mealWeek()}">${ic('calendar')}<span>Prep day. Shop the Market list, then open Sunday prep.</span></a>` : ''}
       <div class="week" aria-label="This week">${weekHTML}</div>
-      ${groups.map(([name, list]) => list.length ? `<section class="sect"><div class="sect-h"><span class="over">${name}</span><span class="cap">${list.filter(x => x.done).length} of ${list.length}</span></div>
-        <div class="group">${list.map(x => taskRow(x)).join('')}${name === 'Recover' ? `<div class="row"><button class="main tap" type="button" id="extra" style="all:unset;cursor:pointer;flex:1;display:flex;align-items:center;gap:14px"><span class="tile r-gold">${ic('extra')}</span><span class="tx"><b>Log something extra</b><small>A hike, a bike ride, extra sets</small></span></button>${ic('plus', 'i chev')}</div>` : ''}</div></section>` : '').join('')}
+      <section class="sect"><div class="sect-h"><span class="over">Today, in order</span><span class="cap">${dp.done} of ${dp.total} done</span></div>
+      <div class="timeline">${groups.map(([name, list, sub, isNow]) => list.length ? `<div class="part${isNow ? ' now' : ''}"><div class="part-h"><span class="over${isNow ? ' gold' : ''}">${name}${isNow ? ' · now' : ''}</span>${sub ? `<span class="cap">${sub}</span>` : ''}</div>
+        <div class="group">${list.map(x => taskRow(x, {time:true})).join('')}</div></div>` : '').join('')}</div></section>
+      <div class="group"><div class="row"><button class="main tap" type="button" id="extra" style="all:unset;cursor:pointer;flex:1;display:flex;align-items:center;gap:14px"><span class="tile r-gold">${ic('extra')}</span><span class="tx"><b>Log something extra</b><small>A hike, a bike ride, extra sets</small></span></button>${ic('plus', 'i chev')}</div></div>
       <section class="sect"><div class="sect-h"><span class="over">This season</span><span class="cap"><span id="tot" class="num">${t.all}</span> of ${Store.SEASON.total}</span></div>
         <div class="meters"><div class="gardens"><div class="meter2"><p>Hanging Gardens<b style="font-size:15px">${g.label}</b></p></div><div class="bar2">${twBar('gardens', g.pct)}</div></div>
         ${Store.RES.map(k => `<div class="meter2" style="--c:var(--${k})"><p>${RESN[k]}<b class="num">${t[k]}</b></p><div class="bar2">${twBar('res:' + k, Math.min(100, t[k] / Store.SEASON[k] * 100))}</div></div>`).join('')}</div></section>
