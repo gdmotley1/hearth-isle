@@ -1,0 +1,71 @@
+{
+  "equipment": ["two 20 lb dumbbells", "bodyweight", "a sturdy chair or couch"],
+  "phases": [
+    {"from": 1, "to": 4, "name": "Foundation", "note": "Do the reps as written. End every set with 1 to 2 reps left in the tank, and take 3 full seconds to lower each rep."},
+    {"from": 5, "to": 8, "name": "Build", "note": "Add 2 reps to every set. Slow the lowering to 4 seconds on squats, RDLs, presses and rows."},
+    {"from": 9, "to": 12, "name": "Peak", "note": "Add a 4th set to the first pair of each workout, and pause 2 seconds at the bottom of squats, split squats and lunges."}
+  ],
+  "exercises": {
+    "goblet_squat": {"name": "Goblet squat", "equip": "one dumbbell", "cue": "Elbows inside knees, chest tall, sit between your heels.", "how": ["Hold one dumbbell vertically at your chest by the top end.", "Feet shoulder width, toes turned out a little.", "Sit straight down for 3 seconds until your elbows brush your knees.", "Drive up through your whole foot."]},
+    "floor_press": {"name": "Dumbbell floor press", "equip": "two dumbbells", "cue": "Pause with your upper arms on the floor, then press.", "how": ["Lie on your back, knees bent, a dumbbell in each hand.", "Start with arms straight over your chest.", "Lower until your upper arms touch the floor at about 45 degrees from your body.", "Pause one beat, then press back up."]},
+    "split_squat": {"name": "Bulgarian split squat", "equip": "two dumbbells + chair or couch", "cue": "Front shin stays fairly vertical. Drop the back knee straight down.", "how": ["Stand about two feet in front of a chair or couch and rest the top of your back foot on it.", "Hold a dumbbell at each side.", "Lower until your back knee nearly touches the floor.", "Push through the front heel to stand. Finish all reps, then switch legs."]},
+    "shoulder_press": {"name": "Seated shoulder press", "equip": "two dumbbells", "cue": "Ribs down, press up and slightly back.", "how": ["Sit tall on the edge of a chair, dumbbells at shoulder height, palms forward.", "Brace your stomach so your lower back does not arch.", "Press overhead until your arms are straight.", "Lower back to your shoulders under control."]},
+    "pushup": {"name": "Push-up", "equip": "bodyweight", "cue": "Body in one straight line from head to heels.", "how": ["Hands a little wider than your shoulders.", "Lower your chest to just above the floor, elbows at about 45 degrees.", "Push the floor away.", "If form breaks, put your hands on the couch seat."]},
+    "db_rdl": {"name": "Dumbbell Romanian deadlift", "equip": "two dumbbells", "cue": "Push your hips back like closing a car door with your butt.", "how": ["Stand tall, dumbbells in front of your thighs, knees soft.", "Push your hips back and slide the weights down your legs for 3 seconds.", "Stop when you feel a strong hamstring stretch, about mid-shin.", "Squeeze your glutes to stand back up."]},
+    "row": {"name": "One-arm dumbbell row", "equip": "one dumbbell + chair or couch", "cue": "Pull your elbow toward your back pocket.", "how": ["Put one hand and the same-side knee on a chair or couch seat.", "Hold the dumbbell with the other arm hanging straight.", "Row it to your hip, keeping your shoulders level.", "Lower slowly. Finish all reps, then switch sides."]},
+    "reverse_lunge": {"name": "Reverse lunge", "equip": "two dumbbells", "cue": "Step back long, drop straight down.", "how": ["Stand with a dumbbell at each side.", "Take a long step back and lower until both knees are bent about 90 degrees.", "Push through the front foot to return.", "Alternate legs, or finish one side first."]},
+    "rear_fly": {"name": "Rear delt fly", "equip": "two dumbbells", "cue": "Lead with your pinkies, squeeze your shoulder blades.", "how": ["Hinge forward with a flat back until your chest is nearly parallel to the floor.", "Let the dumbbells hang with a slight bend in the elbows.", "Raise them out to the sides to shoulder height.", "Lower slowly."]},
+    "hammer_curl": {"name": "Hammer curl", "equip": "two dumbbells", "cue": "Elbows pinned to your sides.", "how": ["Stand tall, palms facing each other.", "Curl both dumbbells up without swinging.", "Lower over 2 seconds."]},
+    "plank": {"name": "Plank", "equip": "bodyweight", "cue": "Squeeze glutes and pull elbows toward toes.", "how": ["Forearms on the floor under your shoulders.", "Body in one straight line.", "Breathe slowly and hold for the time shown."]},
+    "thruster": {"name": "Dumbbell thruster", "equip": "two dumbbells", "cue": "One smooth motion: squat, then drive the weights overhead.", "how": ["Dumbbells at your shoulders, feet shoulder width.", "Squat down to parallel.", "Stand up fast and use that drive to press the dumbbells overhead.", "Bring them back to your shoulders as you start the next squat."]},
+    "renegade_row": {"name": "Renegade row", "equip": "two dumbbells", "cue": "Feet wide, hips square to the floor.", "how": ["Get in a push-up position with your hands on the dumbbell handles and feet wide.", "Row one dumbbell to your hip without twisting.", "Set it down and row the other side. That is 1 rep each side."]},
+    "sl_rdl": {"name": "Single-leg RDL", "equip": "one dumbbell", "cue": "Hips stay level, back leg reaches long behind you.", "how": ["Hold a dumbbell in the hand opposite your standing leg.", "Hinge forward and let your free leg float back.", "Lower until your torso is nearly parallel to the floor.", "Stand back up. Finish all reps, then switch."]},
+    "db_swing": {"name": "Single-dumbbell swing", "equip": "one dumbbell", "cue": "It is a hip snap, not an arm lift.", "how": ["Hold one dumbbell by the head with both hands.", "Hike it back between your legs by hinging your hips.", "Snap your hips forward so the dumbbell floats to chest height.", "Let it fall back and repeat smoothly."]},
+    "dead_bug": {"name": "Dead bug", "equip": "bodyweight", "cue": "Lower back stays pressed into the floor.", "how": ["Lie on your back, arms straight up, knees bent at 90 degrees over your hips.", "Slowly lower one arm and the opposite leg toward the floor.", "Return and switch sides. Each side counts as 1 rep."]},
+    "worlds_greatest": {"name": "World's greatest stretch", "equip": "bodyweight", "cue": "Slow and controlled, breathe into each position.", "how": ["Step into a deep lunge and put both hands on the floor inside your front foot.", "Drop your back knee if you need to.", "Rotate and reach the inside arm to the ceiling, then bring it back down.", "Step back and switch sides."]},
+    "hip_9090": {"name": "Hip 90/90 switches", "equip": "bodyweight", "cue": "Sit tall, rotate from the hips.", "how": ["Sit with both knees bent at 90 degrees, one leg in front of you and one to the side.", "Keeping your feet on the floor, rotate both knees to the other side.", "Go back and forth slowly."]},
+    "t_spine": {"name": "Open-book rotation", "equip": "bodyweight", "cue": "Follow your top hand with your eyes.", "how": ["Lie on your side with knees bent and stacked, arms straight out in front.", "Open your top arm across your body toward the floor behind you.", "Pause, then return. Finish all reps, then switch sides."]},
+    "ankle_rock": {"name": "Ankle rocks", "equip": "bodyweight", "cue": "Heel stays down.", "how": ["Kneel in a half-kneeling position.", "Rock your front knee forward past your toes, keeping the heel down.", "Rock back and repeat. Switch sides."]},
+    "glute_bridge": {"name": "Glute bridge", "equip": "bodyweight", "cue": "Squeeze at the top for a full second.", "how": ["Lie on your back, knees bent, feet flat.", "Drive through your heels to lift your hips.", "Squeeze, then lower slowly."]}
+  },
+  "sessions": {
+    "A": {"title": "Push + legs", "minutes": 20, "format": "Supersets. Do 1a then 1b, rest, repeat for all sets, then move to 2.", "blocks": [
+      {"group": "1a", "ex": "goblet_squat", "sets": 3, "reps": "12", "rest": 0},
+      {"group": "1b", "ex": "floor_press", "sets": 3, "reps": "12", "rest": 45},
+      {"group": "2a", "ex": "split_squat", "sets": 3, "reps": "10 each leg", "rest": 0},
+      {"group": "2b", "ex": "shoulder_press", "sets": 3, "reps": "10", "rest": 45},
+      {"group": "3", "ex": "pushup", "sets": 2, "reps": "as many as clean", "rest": 45}
+    ]},
+    "B": {"title": "Pull + hinge", "minutes": 20, "format": "Supersets. Do the a and b moves back to back, rest, repeat.", "blocks": [
+      {"group": "1a", "ex": "db_rdl", "sets": 3, "reps": "12", "rest": 0},
+      {"group": "1b", "ex": "row", "sets": 3, "reps": "12 each arm", "rest": 45},
+      {"group": "2a", "ex": "reverse_lunge", "sets": 3, "reps": "10 each leg", "rest": 0},
+      {"group": "2b", "ex": "rear_fly", "sets": 3, "reps": "15", "rest": 45},
+      {"group": "3a", "ex": "hammer_curl", "sets": 2, "reps": "12", "rest": 0},
+      {"group": "3b", "ex": "plank", "sets": 2, "reps": "40 sec", "rest": 30}
+    ]},
+    "C": {"title": "Full-body circuit", "minutes": 20, "format": "4 rounds. Move from one exercise to the next with little rest, then rest 60 seconds after each round.", "blocks": [
+      {"group": "1", "ex": "thruster", "sets": 4, "reps": "10", "rest": 0},
+      {"group": "2", "ex": "renegade_row", "sets": 4, "reps": "8 each side", "rest": 0},
+      {"group": "3", "ex": "sl_rdl", "sets": 4, "reps": "8 each leg", "rest": 0},
+      {"group": "4", "ex": "db_swing", "sets": 4, "reps": "15", "rest": 0},
+      {"group": "5", "ex": "dead_bug", "sets": 4, "reps": "8 each side", "rest": 60}
+    ]},
+    "M": {"title": "Court-ready mobility", "minutes": 8, "format": "One easy pass before you play. No rest needed.", "blocks": [
+      {"group": "1", "ex": "worlds_greatest", "sets": 1, "reps": "5 each side", "rest": 0},
+      {"group": "2", "ex": "hip_9090", "sets": 1, "reps": "6 each side", "rest": 0},
+      {"group": "3", "ex": "t_spine", "sets": 1, "reps": "8 each side", "rest": 0},
+      {"group": "4", "ex": "ankle_rock", "sets": 1, "reps": "10 each side", "rest": 0},
+      {"group": "5", "ex": "glute_bridge", "sets": 1, "reps": "15", "rest": 0}
+    ]}
+  },
+  "week": {
+    "mon": [{"type": "lift", "session": "A"}, {"type": "walk", "minutes": 25, "note": "after dinner or at lunch"}],
+    "tue": [{"type": "mobility", "session": "M"}, {"type": "pickleball", "minutes": 120}],
+    "wed": [{"type": "lift", "session": "B"}, {"type": "walk", "minutes": 20, "note": "easy pace"}],
+    "thu": [{"type": "mobility", "session": "M"}, {"type": "pickleball", "minutes": 120}],
+    "fri": [{"type": "lift", "session": "C"}, {"type": "intervals", "minutes": 25, "note": "5 min walk, 8 rounds of 1 min jog + 1 min walk, 4 min walk"}],
+    "sat": [{"type": "walk", "minutes": 40, "note": "optional long walk downtown", "optional": true}],
+    "sun": []
+  }
+}

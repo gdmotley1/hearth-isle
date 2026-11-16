@@ -1,0 +1,143 @@
+{
+  "week": 1,
+  "title": "Week 1",
+  "budget": 200,
+  "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax. Your receipt will differ a little.",
+  "allergyNote": "Nothing on this plan contains tree nuts or fish. Peanut butter is often made in plants that also handle tree nuts. If your allergy is strict, check for a 'may contain tree nuts' line on the jar.",
+  "weekendNote": "Festival days. Eat what you like. Leftovers waiting for you: Korean beef, a portion of curry and one frittata portion.",
+  "snacks": ["Cottage cheese with berries", "Apple with peanut butter", "2 hard-boiled eggs", "String cheese and a banana"],
+  "menu": {
+    "mon": {"breakfast": "frittata", "lunch": "burrito-bowl", "dinner": "korean-beef"},
+    "tue": {"breakfast": "yogurt-bowl", "lunch": "burrito-bowl", "dinner": "carnitas-tacos", "heads": "Start the carnitas in the crock pot this morning."},
+    "wed": {"breakfast": "frittata", "lunch": "burrito-bowl", "dinner": "meatball-marinara", "shared": "dinner", "heads": "Wednesday cook tonight: meatballs and Thursday-Friday lunches."},
+    "thu": {"breakfast": "yogurt-bowl", "lunch": "greek-bowl", "dinner": "carnitas-bowl"},
+    "fri": {"breakfast": "frittata", "lunch": "greek-bowl", "dinner": "thai-curry", "shared": "dinner"}
+  },
+  "prep": [
+    {"id": "sun", "day": "sun", "title": "Sunday prep", "minutes": 90, "makes": "3 burrito bowl lunches, 4 frittata breakfasts, oat clusters, 6 hard-boiled eggs", "steps": [
+      "Start the salsa chicken in the crock pot (high 3 hours or low 6 hours).",
+      "Heat the oven to 325°F and bake the oat clusters for 15 to 18 minutes.",
+      "Cook 2 cups of jasmine rice for the week's first three lunches.",
+      "Turn the oven up to 375°F. Brown the sausage, then build and bake the frittata.",
+      "Air-fry 6 eggs at 270°F for 15 minutes, then move them to ice water.",
+      "Shred the chicken and pack 3 burrito bowl containers. Keep cheese and yogurt separate until you eat.",
+      "Cool the frittata, cut it into 8 squares and pack 2 per container."
+    ]},
+    {"id": "tue", "day": "tue", "title": "Tuesday morning", "minutes": 10, "makes": "Carnitas for Tuesday tacos, Thursday bowls and 3 freezer portions", "steps": [
+      "Cut the pork shoulder into 3 big chunks and trim the thick fat cap.",
+      "Put it in the crock pot with the onion, garlic, lime juice and spices.",
+      "Set it on low for 8 to 9 hours and head out."
+    ]},
+    {"id": "wed", "day": "wed", "title": "Wednesday cook", "minutes": 60, "makes": "Meatball pasta for two tonight, 2 Greek bowl lunches", "steps": [
+      "Heat the oven to 400°F. Mix and roll the turkey meatballs (about 28).",
+      "Bake for 16 to 18 minutes. Start 2 cups of rice while they bake.",
+      "Make the tzatziki and chop the cucumber, tomatoes and red onion.",
+      "Pack 2 Greek bowl containers with 6 meatballs each.",
+      "Use 10 meatballs for tonight's pasta. The rest are snacks."
+    ]}
+  ],
+  "groceries": [
+    {"id": "chicken", "name": "Boneless skinless chicken breasts", "qty": "about 3.5 lb (family pack)", "section": "Meat", "store": "Aldi", "price": 11.49},
+    {"id": "beef", "name": "Lean ground beef 93/7", "qty": "1 lb", "section": "Meat", "store": "Aldi", "price": 6.49},
+    {"id": "pork", "name": "Boneless pork shoulder", "qty": "about 3 lb", "section": "Meat", "store": "Aldi", "price": 8.49},
+    {"id": "turkey", "name": "Lean ground turkey 93/7", "qty": "2 lb (two 1 lb packs)", "section": "Meat", "store": "Aldi", "price": 8.98},
+    {"id": "sausage", "name": "Turkey breakfast sausage roll", "qty": "12 oz", "section": "Meat", "store": "Aldi", "price": 3.29},
+    {"id": "eggs", "name": "Large eggs", "qty": "2 dozen", "section": "Dairy and eggs", "store": "Aldi", "price": 6.18},
+    {"id": "yogurt", "name": "Plain nonfat Greek yogurt", "qty": "two 32 oz tubs", "section": "Dairy and eggs", "store": "Aldi", "price": 8.58},
+    {"id": "cottage", "name": "Low-fat cottage cheese", "qty": "24 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 3.29},
+    {"id": "mexcheese", "name": "Shredded Mexican-blend cheese", "qty": "8 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 2.49},
+    {"id": "string", "name": "Mozzarella string cheese", "qty": "12 count", "section": "Dairy and eggs", "store": "Aldi", "price": 3.79},
+    {"id": "parm", "name": "Grated parmesan", "qty": "8 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 2.49},
+    {"id": "feta", "name": "Feta crumbles", "qty": "4 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 2.49},
+    {"id": "peppers", "name": "Bell peppers", "qty": "3-pack", "section": "Produce", "store": "Aldi", "price": 2.99},
+    {"id": "spinach", "name": "Baby spinach", "qty": "6 oz bag", "section": "Produce", "store": "Aldi", "price": 1.99},
+    {"id": "greenonion", "name": "Green onions", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.89},
+    {"id": "garlic", "name": "Garlic", "qty": "3 bulbs", "section": "Produce", "store": "Aldi", "price": 1.29},
+    {"id": "onion", "name": "Yellow onions", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 2.49},
+    {"id": "redonion", "name": "Red onion", "qty": "1", "section": "Produce", "store": "Aldi", "price": 0.89},
+    {"id": "limes", "name": "Limes", "qty": "1 bag (about 6)", "section": "Produce", "store": "Aldi", "price": 2.49},
+    {"id": "cucumber", "name": "Cucumbers", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.38},
+    {"id": "tomatoes", "name": "Grape tomatoes", "qty": "1 pint", "section": "Produce", "store": "Aldi", "price": 2.29},
+    {"id": "zucchini", "name": "Zucchini", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.99},
+    {"id": "slaw", "name": "Coleslaw mix", "qty": "14 oz bag", "section": "Produce", "store": "Aldi", "price": 1.69},
+    {"id": "cilantro", "name": "Cilantro", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.79},
+    {"id": "bananas", "name": "Bananas", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 1.49},
+    {"id": "apples", "name": "Apples", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 3.99},
+    {"id": "berries", "name": "Frozen mixed berries", "qty": "16 oz bag", "section": "Frozen", "store": "Aldi", "price": 3.29},
+    {"id": "broccoli", "name": "Frozen broccoli steam bags", "qty": "2 × 12 oz", "section": "Frozen", "store": "Aldi", "price": 2.50},
+    {"id": "corn", "name": "Frozen sweet corn", "qty": "16 oz bag", "section": "Frozen", "store": "Aldi", "price": 1.15},
+    {"id": "rice", "name": "Jasmine rice", "qty": "3 lb bag", "section": "Shelf", "store": "Aldi", "price": 3.29},
+    {"id": "beans", "name": "Black beans", "qty": "2 cans", "section": "Shelf", "store": "Aldi", "price": 1.70},
+    {"id": "salsa", "name": "Chunky salsa", "qty": "16 oz jar", "section": "Shelf", "store": "Aldi", "price": 1.99},
+    {"id": "marinara", "name": "Marinara sauce", "qty": "24 oz jar", "section": "Shelf", "store": "Aldi", "price": 1.99},
+    {"id": "pasta", "name": "Whole wheat penne", "qty": "16 oz box", "section": "Shelf", "store": "Aldi", "price": 1.29},
+    {"id": "tortillas", "name": "Corn tortillas", "qty": "30 count", "section": "Shelf", "store": "Aldi", "price": 1.99},
+    {"id": "oats", "name": "Old-fashioned rolled oats", "qty": "42 oz", "section": "Shelf", "store": "Aldi", "price": 3.49},
+    {"id": "pb", "name": "Creamy peanut butter", "qty": "16 oz jar", "section": "Shelf", "store": "Aldi", "price": 2.29},
+    {"id": "honey", "name": "Honey", "qty": "12 oz", "section": "Shelf", "store": "Aldi", "price": 3.49},
+    {"id": "coconut", "name": "Light coconut milk", "qty": "13.5 oz can", "section": "Shelf", "store": "Aldi", "price": 1.29},
+    {"id": "curry", "name": "Thai Kitchen red curry paste", "qty": "4 oz jar", "section": "Shelf", "store": "Publix", "price": 3.49}
+  ],
+  "pantry": [
+    {"id": "oil", "name": "Olive oil"},
+    {"id": "spray", "name": "Cooking spray"},
+    {"id": "salt", "name": "Salt"},
+    {"id": "pepper", "name": "Black pepper"},
+    {"id": "garlicpowder", "name": "Garlic powder"},
+    {"id": "cumin", "name": "Ground cumin"},
+    {"id": "chili", "name": "Chili powder"},
+    {"id": "oregano", "name": "Dried oregano"},
+    {"id": "italian", "name": "Italian seasoning"},
+    {"id": "dill", "name": "Dried dill"},
+    {"id": "cinnamon", "name": "Ground cinnamon"},
+    {"id": "ginger", "name": "Ground ginger"},
+    {"id": "flakes", "name": "Red pepper flakes"},
+    {"id": "soy", "name": "Soy sauce"},
+    {"id": "brownsugar", "name": "Brown sugar"},
+    {"id": "sesame", "name": "Toasted sesame oil"}
+  ],
+  "recipes": {
+    "oat-clusters": {"name": "Honey cinnamon oat clusters", "cuisine": "Breakfast", "minutes": 25, "serves": "about 8 quarter-cup servings", "protein": 4, "equip": "sheet pan", "ingredients": [
+      {"g": "oats", "qty": "2 cups"}, {"g": "honey", "qty": "3 tbsp"}, {"g": "pb", "qty": "1 tbsp"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "cinnamon", "qty": "1 tsp"}, {"p": "salt", "qty": "a pinch"}],
+      "steps": ["Heat the oven to 325°F.", "Microwave the honey, peanut butter and oil for 20 seconds and stir smooth.", "Toss with the oats, cinnamon and salt until everything is coated.", "Press it flat on a lined sheet pan and bake 15 to 18 minutes, turning once halfway.", "Let it cool completely on the pan. It crisps as it cools. Break into clusters and store in a jar."]},
+    "yogurt-bowl": {"name": "Berry yogurt power bowl", "cuisine": "Breakfast", "minutes": 5, "serves": "1", "protein": 30, "equip": "none", "ingredients": [
+      {"g": "yogurt", "qty": "1 cup"}, {"g": "berries", "qty": "½ cup, thawed overnight or microwaved 30 sec"}, {"r": "oat-clusters", "qty": "¼ cup"}, {"g": "pb", "qty": "1 tbsp"}, {"g": "honey", "qty": "a drizzle"}],
+      "steps": ["Spoon the yogurt into a bowl.", "Top with the berries and their juice, then the oat clusters.", "Add the peanut butter and a drizzle of honey."], "tip": "Good fuel about 90 minutes before pickleball."},
+    "frittata": {"name": "Sheet-pan sausage and pepper frittata", "cuisine": "Breakfast", "minutes": 35, "serves": "4 (2 squares each)", "protein": 38, "equip": "sheet pan, skillet", "ingredients": [
+      {"g": "sausage", "qty": "12 oz roll"}, {"g": "eggs", "qty": "12"}, {"g": "peppers", "qty": "1, diced"}, {"g": "spinach", "qty": "2 big handfuls"}, {"g": "greenonion", "qty": "3, sliced"}, {"g": "mexcheese", "qty": "½ cup"}, {"p": "garlicpowder", "qty": "½ tsp"}, {"p": "salt", "qty": "½ tsp"}, {"p": "pepper", "qty": "to taste"}, {"p": "spray", "qty": "for the pan"}],
+      "steps": ["Heat the oven to 375°F and spray a rimmed sheet pan well.", "Brown the sausage in a skillet for 6 to 8 minutes, breaking it up. Add the pepper for the last 2 minutes.", "Whisk the eggs with the garlic powder, salt and pepper.", "Spread the sausage, pepper and spinach on the pan, pour the eggs over, and top with green onion and cheese.", "Bake 15 to 18 minutes, until the center is just set.", "Cool 10 minutes, then cut into 8 squares."], "tip": "Reheat 2 squares for 45 seconds. Eat with a banana."},
+    "hb-eggs": {"name": "Air-fryer hard-boiled eggs", "cuisine": "Snack", "minutes": 20, "serves": "6 eggs", "protein": 6, "equip": "air fryer", "ingredients": [
+      {"g": "eggs", "qty": "6"}, {"p": "salt", "qty": "for serving"}],
+      "steps": ["Put the eggs straight into the air fryer basket.", "Cook at 270°F for 15 minutes.", "Move them to a bowl of ice water for 5 minutes, then refrigerate."]},
+    "salsa-chicken": {"name": "Crock-pot salsa chicken", "cuisine": "Mexican", "minutes": 10, "serves": "4 portions", "protein": 45, "equip": "crock pot", "ingredients": [
+      {"g": "chicken", "qty": "2 lb"}, {"g": "salsa", "qty": "16 oz jar"}, {"p": "cumin", "qty": "1 tsp"}, {"p": "chili", "qty": "1 tsp"}, {"p": "garlicpowder", "qty": "½ tsp"}, {"p": "salt", "qty": "½ tsp"}],
+      "steps": ["Put the chicken in the crock pot and season both sides.", "Pour the salsa over the top.", "Cook on high 3 hours or low 6 hours.", "Shred with two forks right in the pot and stir it into the juices."]},
+    "burrito-bowl": {"name": "Salsa chicken burrito bowl", "cuisine": "Mexican", "minutes": 15, "serves": "3 lunches", "protein": 48, "equip": "skillet", "ingredients": [
+      {"r": "salsa-chicken", "qty": "1 portion each"}, {"g": "rice", "qty": "¾ cup cooked each"}, {"g": "beans", "qty": "1 can, rinsed"}, {"g": "corn", "qty": "1 cup"}, {"g": "peppers", "qty": "1, diced"}, {"g": "cilantro", "qty": "a handful"}, {"g": "limes", "qty": "1"}, {"g": "mexcheese", "qty": "2 tbsp each"}, {"g": "yogurt", "qty": "2 tbsp each, as sour cream"}],
+      "steps": ["Char the corn and diced pepper in a hot dry skillet for 5 minutes.", "Split the rice, chicken, beans, corn and pepper across 3 containers.", "Squeeze lime over each and add cilantro.", "Pack cheese and yogurt separately and add them after reheating."]},
+    "korean-beef": {"name": "Korean beef bowls", "cuisine": "Asian", "minutes": 20, "serves": "2", "protein": 44, "equip": "skillet", "ingredients": [
+      {"g": "beef", "qty": "1 lb"}, {"g": "garlic", "qty": "3 cloves, minced"}, {"p": "ginger", "qty": "½ tsp"}, {"p": "soy", "qty": "¼ cup"}, {"p": "brownsugar", "qty": "2 tbsp"}, {"p": "sesame", "qty": "1 tsp"}, {"p": "flakes", "qty": "a pinch"}, {"g": "greenonion", "qty": "2, sliced"}, {"g": "broccoli", "qty": "1 steam bag"}, {"g": "rice", "qty": "1 cup cooked each"}],
+      "steps": ["Brown the beef in a hot skillet for 5 to 6 minutes and pour off any fat.", "Stir in the garlic for 30 seconds.", "Add the soy sauce, brown sugar, ginger and pepper flakes and simmer 2 minutes until glossy.", "Microwave the broccoli bag while the sauce cooks.", "Serve over rice with broccoli, sesame oil and green onions."], "tip": "The second serving is a weekend lunch."},
+    "carnitas": {"name": "Crock-pot carnitas", "cuisine": "Mexican", "minutes": 15, "serves": "6 portions", "protein": 40, "equip": "crock pot, cast iron", "ingredients": [
+      {"g": "pork", "qty": "about 3 lb"}, {"g": "onion", "qty": "1, quartered"}, {"g": "garlic", "qty": "4 cloves, smashed"}, {"g": "limes", "qty": "juice of 2"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "oregano", "qty": "2 tsp"}, {"p": "chili", "qty": "1 tsp"}, {"p": "salt", "qty": "2 tsp"}, {"p": "pepper", "qty": "1 tsp"}],
+      "steps": ["Trim the thick fat from the pork and cut it into 3 chunks.", "Rub it with the spices and put it in the crock pot with the onion, garlic and lime juice.", "Cook on low 8 to 9 hours, until it falls apart.", "Shred it. To crisp it, spread a portion in a hot cast iron with a splash of the juices and leave it alone for 4 to 5 minutes.", "Freeze 3 portions in their juices for next week."]},
+    "carnitas-tacos": {"name": "Carnitas tacos with lime slaw", "cuisine": "Mexican", "minutes": 15, "serves": "1", "protein": 40, "equip": "cast iron", "ingredients": [
+      {"r": "carnitas", "qty": "1 portion, crisped"}, {"g": "tortillas", "qty": "4"}, {"g": "slaw", "qty": "1 cup"}, {"g": "redonion", "qty": "½, thinly sliced"}, {"g": "limes", "qty": "1"}, {"g": "cilantro", "qty": "a handful"}, {"g": "yogurt", "qty": "3 tbsp"}, {"p": "salt", "qty": "to taste"}],
+      "steps": ["Quick-pickle the red onion: toss it with half the lime juice and a pinch of salt and let it sit 15 minutes.", "Stir the yogurt with a squeeze of lime and a pinch of salt for the crema.", "Toss the slaw with the rest of the lime and a pinch of salt.", "Warm the tortillas in the dry cast iron for 30 seconds a side.", "Fill with crisped carnitas, slaw, onions, cilantro and crema."]},
+    "carnitas-bowl": {"name": "Carnitas rice bowl", "cuisine": "Mexican", "minutes": 10, "serves": "1", "protein": 46, "equip": "cast iron", "ingredients": [
+      {"r": "carnitas", "qty": "1 portion, crisped"}, {"g": "rice", "qty": "1 cup cooked"}, {"g": "beans", "qty": "½ can"}, {"g": "corn", "qty": "⅓ cup"}, {"g": "slaw", "qty": "½ cup"}, {"g": "mexcheese", "qty": "2 tbsp"}, {"g": "yogurt", "qty": "2 tbsp"}, {"g": "limes", "qty": "½"}],
+      "steps": ["Crisp the carnitas in the cast iron.", "Warm the rice, beans and corn.", "Build the bowl and top with slaw, cheese, a spoon of yogurt and lime."], "tip": "Quick dinner after Thursday pickleball."},
+    "turkey-meatballs": {"name": "Garlic parmesan turkey meatballs", "cuisine": "Italian", "minutes": 30, "serves": "about 28 meatballs", "protein": 30, "equip": "sheet pan or air fryer", "ingredients": [
+      {"g": "turkey", "qty": "2 lb"}, {"g": "eggs", "qty": "1"}, {"g": "oats", "qty": "½ cup"}, {"g": "parm", "qty": "⅓ cup"}, {"g": "garlic", "qty": "4 cloves, minced"}, {"p": "italian", "qty": "1 tbsp"}, {"p": "salt", "qty": "1 tsp"}, {"p": "pepper", "qty": "½ tsp"}, {"p": "spray", "qty": "for the pan"}],
+      "steps": ["Heat the oven to 400°F and spray a sheet pan.", "Mix everything gently with your hands until just combined.", "Roll into golf-ball meatballs, about 28.", "Bake 16 to 18 minutes, or air-fry at 380°F for 9 to 10 minutes in batches."], "tip": "Protein is per 6 meatballs."},
+    "meatball-marinara": {"name": "Meatball marinara with roasted zucchini", "cuisine": "Italian", "minutes": 25, "serves": "2", "protein": 38, "equip": "skillet, air fryer", "ingredients": [
+      {"r": "turkey-meatballs", "qty": "10"}, {"g": "pasta", "qty": "8 oz"}, {"g": "marinara", "qty": "24 oz jar"}, {"g": "spinach", "qty": "a big handful"}, {"g": "zucchini", "qty": "2, cut in half-moons"}, {"g": "parm", "qty": "for the top"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "italian", "qty": "1 tsp"}, {"p": "salt", "qty": "to taste"}],
+      "steps": ["Boil the pasta in salted water.", "Toss the zucchini with oil, Italian seasoning and salt and air-fry at 400°F for 10 to 12 minutes.", "Simmer the marinara with 10 meatballs for 5 minutes, then stir in the spinach.", "Toss with the drained pasta and finish with parmesan."], "tip": "Dinner for two."},
+    "greek-bowl": {"name": "Greek meatball bowl with tzatziki", "cuisine": "Mediterranean", "minutes": 15, "serves": "2 lunches", "protein": 40, "equip": "none", "ingredients": [
+      {"r": "turkey-meatballs", "qty": "6 each"}, {"g": "rice", "qty": "¾ cup cooked each"}, {"g": "cucumber", "qty": "1½ (half grated for tzatziki)"}, {"g": "tomatoes", "qty": "1 pint, halved"}, {"g": "redonion", "qty": "½, diced"}, {"g": "feta", "qty": "4 oz"}, {"g": "yogurt", "qty": "¾ cup"}, {"g": "garlic", "qty": "1 clove, grated"}, {"g": "limes", "qty": "1"}, {"p": "dill", "qty": "1 tsp"}, {"p": "salt", "qty": "to taste"}],
+      "steps": ["For the tzatziki, squeeze the grated cucumber dry in a towel, then stir it into the yogurt with the garlic, dill, half the lime and salt.", "Chop the rest of the cucumber and toss it with the tomatoes, red onion, remaining lime and a pinch of salt.", "Split the rice, meatballs and salad across 2 containers and top with feta.", "Pack the tzatziki on the side."]},
+    "thai-curry": {"name": "Thai red curry chicken", "cuisine": "Asian", "minutes": 30, "serves": "3", "protein": 42, "equip": "deep skillet or cast iron", "isNew": true, "ingredients": [
+      {"g": "chicken", "qty": "1.5 lb, bite-size pieces"}, {"g": "curry", "qty": "3 tbsp"}, {"g": "coconut", "qty": "1 can"}, {"g": "peppers", "qty": "1, sliced"}, {"g": "onion", "qty": "½, sliced"}, {"g": "broccoli", "qty": "1 steam bag"}, {"g": "limes", "qty": "1"}, {"g": "cilantro", "qty": "a handful"}, {"g": "rice", "qty": "1 cup cooked each"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "soy", "qty": "1 tbsp"}, {"p": "brownsugar", "qty": "1 tsp"}, {"p": "salt", "qty": "to taste"}],
+      "steps": ["Start the rice.", "Heat the oil in a deep skillet. Cook the onion and pepper for 3 minutes.", "Stir in the curry paste for 1 minute until it smells toasty.", "Add the chicken and cook 4 minutes, turning to coat.", "Pour in the coconut milk and ½ cup water, add the soy sauce and brown sugar, and simmer 10 minutes.", "Stir in the microwaved broccoli, squeeze in the lime, and top with cilantro over rice."], "tip": "This week's new one. Most curry recipes use fish sauce; soy sauce and lime cover it here."}
+  }
+}
