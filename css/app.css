@@ -234,7 +234,7 @@ details.pantry summary::-webkit-details-marker{display:none}
 .fine{font:400 12.5px/1.55 var(--f-b);color:var(--faint);padding:0 4px;margin:0}
 
 /* ---------- Kitchen ---------- */
-.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px;padding:2px 20px 6px;scrollbar-width:none}
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:20px;margin:0 -20px;padding:2px 20px 6px;scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
 .meal{flex:none;width:72%;max-width:300px;scroll-snap-align:start;border-radius:var(--r-l);overflow:hidden;background:var(--fill);display:flex;flex-direction:column}
 .meal .art{height:118px;position:relative;display:grid;place-items:center;background:var(--art)}
