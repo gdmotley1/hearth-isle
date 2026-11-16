@@ -507,9 +507,9 @@
         "sleep": "06:45",
         "breakfast": "07:15",
         "lunch": "12:05",
-        "mobility": "17:35",
-        "pickleball": "17:45",
-        "dinner": "20:00"
+        "mobility": "17:45",
+        "pickleball": "18:00",
+        "dinner": "20:15"
       },
       "wed": {
         "sleep": "06:45",
@@ -523,9 +523,9 @@
         "sleep": "06:45",
         "breakfast": "07:15",
         "lunch": "12:05",
-        "mobility": "17:35",
-        "pickleball": "17:45",
-        "dinner": "20:00"
+        "mobility": "17:45",
+        "pickleball": "18:00",
+        "dinner": "20:15"
       },
       "fri": {
         "sleep": "06:45",
