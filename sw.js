@@ -1,6 +1,6 @@
 ﻿/* Hearth Isle service worker: the app works offline after the first visit.
    Bump VERSION whenever a file below changes so phones pick up the update. */
-const VERSION = 'hearth-v4';
+const VERSION = 'hearth-v5';
 const SHELL = [
   './index.html',
   './manifest.webmanifest',
@@ -10,6 +10,7 @@ const SHELL = [
   './js/app.js',
   './data/workouts.json',
   './data/meals-week1.json',
+  './data/meals-week2.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/apple-touch-icon.png'

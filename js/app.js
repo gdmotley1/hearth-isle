@@ -12,7 +12,7 @@ const DAYS = ['mon','tue','wed','thu','fri','sat','sun'];
 const DAYN = {mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Friday',sat:'Saturday',sun:'Sunday'};
 const SLOT = {breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner'};
 const RESN = {stone:'Stone',land:'Land',harvest:'Harvest',spirit:'Spirit'};
-const MEAL_WEEKS = [1];
+const MEAL_WEEKS = [1, 2];
 const PTS_PER_STAGE = Store.SEASON.total / 4;
 const SETTLERS = ['Juno','Mira','Tobi','Pell','Wren','Ansel','Ivy','Corin','Bea','Otto','Lark','Fen','Rhea','Sol','Nell','Arlo','Hale','Tess'];
 const BUILD = {house:'a cottage',farm:'a farm plot',tree:'an orchard tree',pine:'a pine grove',well:'the village well',stall:'a market stall',windmill:'the windmill',tower:'the watchtower',
@@ -54,10 +54,14 @@ const P = {
   Italian:'<path d="M7 3v6a2 2 0 0 0 4 0V3M9 11v10M16.5 3c-1.5 2-2 4-2 6s.9 3 2 3v9"/>',
   Mediterranean:'<path d="M5 19C5 10 10 5 19 5c0 9-5 14-14 14z"/><path d="M5 19l8-8"/>',
   Breakfast:'<path d="M3 17.5h18M6.5 17.5a5.5 5.5 0 0 1 11 0M12 4.5v3M5.4 8.4l2 2M18.6 8.4l-2 2"/>',
+  American:'<path d="M4 11h16v2.5a7.5 7.5 0 0 1-15 0z" transform="translate(.5 0)"/><path d="M3 11h18M9 7.5c0-1.3 1-1.3 1-2.6M13 7.5c0-1.3 1-1.3 1-2.6"/>',
+  Indian:'<path d="M3.5 12.5h17a8.5 8.5 0 0 1-17 0z"/><path d="M7 9.5c1.5-1.5 3.5-1.5 5 0s3.5 1.5 5 0M12 4.5v2"/>',
   Snack:'<path d="M12 7.5c-1-2-3-3-5-2.5-3 1-3.5 4.5-2.5 8 1 3.5 3.5 7 5.5 7 1 0 1.2-.6 2-.6s1 .6 2 .6c2 0 4.5-3.5 5.5-7s.5-7-2.5-8c-2-.5-4 .5-5 2.5z"/><path d="M12 7.5c0-2 1-3.5 2.5-4"/>'
 };
 const ic = (k, cls = 'i') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${P[k] || P.extra}</svg>`;
 
+const MW = {};
+let shopWeek = null;
 let W = null, M = null, seen = null, trainDay = null, kitchenDay = null, mkFilter = 'all', lastAll = null;
 let play = null, cook = null, wake = null, scrollAt = 60;
 
@@ -280,7 +284,7 @@ function vIsle(){
         <span class="tx" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px"><span class="over gold">Next on the island</span><span class="hl">${BUILD_T[u.next.t]}</span>
         <span class="cap">${plural(u.need, 'point')} away · ${Store.settlers()} settlers</span><span class="meter" style="height:4px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px;display:block"><i style="display:block;height:100%;width:${u.pct.toFixed(1)}%;border-radius:4px;background:linear-gradient(90deg,#de8c3a,#ffd994)"></i></span></span></button>` : ''}
       ${menu && menu.heads ? `<div class="callout">${ic('info')}<span>${esc(menu.heads)}</span></div>` : ''}
-      ${d === 'sun' ? `<a class="callout tap" href="#prep/sun">${ic('calendar')}<span>Prep day. Shop the Market list, then open Sunday prep.</span></a>` : ''}
+      ${d === 'sun' ? `<a class="callout tap" href="#prep/sun/${nextW() || mealWeek()}">${ic('calendar')}<span>Prep day. Shop the Market list, then open Sunday prep.</span></a>` : ''}
       <div class="week" aria-label="This week">${weekHTML}</div>
       ${groups.map(([name, list]) => list.length ? `<section class="sect"><div class="sect-h"><span class="over">${name}</span><span class="cap">${list.filter(x => x.done).length} of ${list.length}</span></div>
         <div class="group">${list.map(x => taskRow(x)).join('')}${name === 'Recover' ? `<div class="row"><button class="main tap" type="button" id="extra" style="all:unset;cursor:pointer;flex:1;display:flex;align-items:center;gap:14px"><span class="tile r-gold">${ic('extra')}</span><span class="tx"><b>Log something extra</b><small>A hike, a bike ride, extra sets</small></span></button>${ic('plus', 'i chev')}</div>` : ''}</div></section>` : '').join('')}
@@ -469,34 +473,58 @@ function paintRest(){
 }
 function endPlay(){ if (play) clearInterval(play.tick); play = null; keepAwake(false); }
 
+/* ---------------- meal weeks ---------------- */
+const nextW = () => MEAL_WEEKS.find(n => n > mealWeek());
+function planWeek(){
+  if (shopWeek && MW[shopWeek]) return shopWeek;
+  const n = nextW();
+  return weekend(dayKey(today())) && n && MW[n] ? n : mealWeek();
+}
+function weekSwitch(sel){
+  const n = nextW(); if (!n || !MW[n]) return '';
+  return `<div class="seg" role="tablist" data-weeksw>${[[mealWeek(), 'This week'], [n, 'Next week']].map(([w, l]) => `<button type="button" role="tab" data-w="${w}" class="${sel === w ? 'on' : ''}">${l} · ${MW[w].title}</button>`).join('')}</div>`;
+}
+function wireWeekSwitch(){ $$('[data-weeksw] button', view).forEach(b => b.onclick = () => { shopWeek = +b.dataset.w; rerender(); }); }
+const wkOf = n => MW[n] || M;
+function findRecipe(id, n){
+  if (n && MW[n] && MW[n].recipes[id]) return [MW[n], +n];
+  if (M.recipes[id]) return [M, mealWeek()];
+  const w = Object.keys(MW).find(k => MW[k].recipes[id]);
+  return w ? [MW[w], +w] : [null, null];
+}
+
 /* ---------------- Market ---------------- */
 function vMarket(){
-  const wk = mealWeek(), pre = `w${wk}:`;
-  const total = M.groceries.reduce((a, g) => a + g.price, 0);
-  const got = M.groceries.filter(g => Store.flag('grocery', pre + g.id));
+  const wk = planWeek(), D = wkOf(wk), pre = `w${wk}:`;
+  const total = D.groceries.reduce((a, g) => a + g.price, 0);
+  const got = D.groceries.filter(g => Store.flag('grocery', pre + g.id));
   const order = ['Produce','Meat','Dairy and eggs','Frozen','Shelf'];
-  const ICON_SEC = {Produce:'harvest', Meat:'flame', 'Dairy and eggs':'breakfast', Frozen:'spirit', Shelf:'layers'};
-  const publix = M.groceries.filter(g => g.store === 'Publix').length;
+  const publix = D.groceries.filter(g => g.store === 'Publix').length;
   const show = g => { const on = Store.flag('grocery', pre + g.id); return mkFilter === 'all' || (mkFilter === 'need' ? !on : on); };
-  view.innerHTML = `<header class="lhead"><span class="over gold">${esc(M.title)} · Aldi${publix ? ' + Publix' : ''}</span><h1 class="lt">Market</h1></header>
+  const ahead = wk !== mealWeek();
+  view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)} · Aldi${publix ? ' + Publix' : ''}</span><h1 class="lt">Market</h1></header>
   <div class="page stagger" style="margin-top:20px">
-    <section class="card budget"><div class="big"><b>${money(total)}</b><span class="cap">${money(M.budget - total)} under your ${money(M.budget)} budget</span></div>
-      <div class="bar2"><i style="width:${(got.length / M.groceries.length * 100).toFixed(1)}%"></i></div>
-      <span class="cap">${got.length} of ${M.groceries.length} in the cart · ${money(got.reduce((a, g) => a + g.price, 0))}</span></section>
-    <div class="seg" role="tablist">${[['all','All'],['need','To buy'],['got','In cart']].map(([k, l]) => `<button type="button" role="tab" data-f="${k}" class="${mkFilter === k ? 'on' : ''}">${l}</button>`).join('')}</div>
-    ${order.map(sec => { const items = M.groceries.filter(g => g.section === sec && show(g)); if (!items.length) return '';
+    ${weekSwitch(wk)}
+    ${ahead ? `<div class="callout">${ic('calendar')}<span>This is next week's list. Shop it this weekend so Sunday prep is ready.</span></div>` : ''}
+    <section class="card budget"><div class="big"><b>${money(total)}</b><span class="cap">${money(D.budget - total)} under your ${money(D.budget)} budget</span></div>
+      <div class="bar2"><i style="width:${(got.length / D.groceries.length * 100).toFixed(1)}%"></i></div>
+      <span class="cap">${got.length} of ${D.groceries.length} in the cart · ${money(got.reduce((a, g) => a + g.price, 0))}</span></section>
+    <div class="seg" role="tablist" data-filter>${[['all','All'],['need','To buy'],['got','In cart']].map(([k, l]) => `<button type="button" role="tab" data-f="${k}" class="${mkFilter === k ? 'on' : ''}">${l}</button>`).join('')}</div>
+    ${order.map(sec => { const items = D.groceries.filter(g => g.section === sec && show(g)); if (!items.length) return '';
       return `<section class="sect"><div class="sect-h"><span class="over">${sec}</span><span class="cap">${money(items.reduce((a, g) => a + g.price, 0))}</span></div><div class="group">${items.map(g => {
         const on = Store.flag('grocery', pre + g.id);
         return `<div class="row item${on ? ' done' : ''}" data-g="${g.id}" role="button" aria-pressed="${on}"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b>${esc(g.name)}${g.store === 'Publix' ? '<span class="badge">Publix</span>' : ''}</b><small>${esc(g.qty)}</small></span><span class="trail">${money(g.price)}</span></div>`; }).join('')}</div></section>`; }).join('')}
     ${mkFilter === 'got' && !got.length ? `<p class="fine" style="text-align:center;padding:24px 0">Nothing in the cart yet. Tap items as they go in.</p>` : ''}
-    ${mkFilter === 'need' && got.length === M.groceries.length ? `<div class="callout">${ic('check')}<span>Everything is in the cart. Nice work.</span></div>` : ''}
-    <details class="pantry sect"><summary class="sect-h"><span class="over">Already in your kitchen</span><span class="cap">${M.pantry.length} items · not counted ›</span></summary><div class="pchips">${M.pantry.map(p => `<span>${esc(p.name)}</span>`).join('')}</div></details>
-    <p class="fine">${esc(M.priceNote)}</p>
-    <p class="fine">${esc(M.allergyNote)}</p>
+    ${mkFilter === 'need' && got.length === D.groceries.length ? `<div class="callout">${ic('check')}<span>Everything is in the cart. Nice work.</span></div>` : ''}
+    ${D.have && D.have.length ? `<section class="sect"><div class="sect-h"><span class="over">Already home from last week</span><span class="cap">not bought again</span></div><div class="group">${D.have.map(h => `<div class="row" style="min-height:54px"><span class="tile r-land">${ic('check')}</span><span class="tx"><b>${esc(h.name)}</b>${h.note ? `<small>${esc(h.note)}</small>` : ''}</span></div>`).join('')}</div></section>` : ''}
+    <details class="pantry sect"><summary class="sect-h"><span class="over">Spices and oils</span><span class="cap">${D.pantry.length} items · not counted ›</span></summary><div class="pchips">${D.pantry.map(p => `<span>${esc(p.name)}</span>`).join('')}</div></details>
+    <p class="fine">${esc(D.priceNote)}</p>
+    <p class="fine">${esc(D.allergyNote)}</p>
     ${got.length ? `<button class="btn quiet wide" type="button" id="clr">Start a fresh list</button>` : ''}
   </div>`;
   scrollAt = 50; setBar('Market');
-  $$('.seg button', view).forEach(b => b.onclick = () => { mkFilter = b.dataset.f; rerender(); });
+  wireWeekSwitch();
+  $$('[data-filter] button', view).forEach(b => b.onclick = () => { mkFilter = b.dataset.f; rerender(); });
   $$('.item', view).forEach(r => r.onclick = () => {
     const k = pre + r.dataset.g, on = !Store.flag('grocery', k); Store.flag('grocery', k, on);
     r.classList.toggle('done', on); if (on){ haptic(); burst($('.tick', r)); }
@@ -506,60 +534,67 @@ function vMarket(){
 }
 
 /* ---------------- Kitchen ---------------- */
-function mealCard(slot, id, shared){
-  const r = M.recipes[id];
-  return `<a class="meal tap c-${r.cuisine}" href="#recipe/${id}"><div class="art"><span class="over">${SLOT[slot] || slot}</span>${shared ? '<span class="shared">For two</span>' : ''}${ic(r.cuisine)}</div>
+function mealCard(D, n, slot, id, shared){
+  const r = D.recipes[id];
+  return `<a class="meal tap c-${r.cuisine}" href="#recipe/${id}/${n}"><div class="art"><span class="over">${SLOT[slot] || slot}</span>${shared ? '<span class="shared">For two</span>' : ''}${ic(r.cuisine)}</div>
     <div class="tx"><b>${esc(r.name)}</b><span class="cap">${r.minutes} min · ${r.protein}g protein</span></div></a>`;
 }
 function vKitchen(){
-  const td = dayKey(today()); kitchenDay = kitchenDay || (M.menu[td] ? td : 'mon');
-  const menu = M.menu[kitchenDay], tmenu = M.menu[td];
+  const wk = planWeek(), D = wkOf(wk), ahead = wk !== mealWeek();
+  const td = dayKey(today());
+  if (!kitchenDay || !D.menu[kitchenDay] && D.menu[td]) kitchenDay = D.menu[td] && !ahead ? td : 'mon';
+  const menu = D.menu[kitchenDay], tmenu = ahead ? null : D.menu[td];
   const byCuisine = {};
-  Object.entries(M.recipes).forEach(([id, r]) => (byCuisine[r.cuisine] = byCuisine[r.cuisine] || []).push([id, r]));
-  view.innerHTML = `<header class="lhead"><span class="over gold">${esc(M.title)} menu · ${Object.keys(M.recipes).length} recipes</span><h1 class="lt">Kitchen</h1></header>
+  Object.entries(D.recipes).forEach(([id, r]) => (byCuisine[r.cuisine] = byCuisine[r.cuisine] || []).push([id, r]));
+  view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)} menu · ${Object.keys(D.recipes).length} recipes</span><h1 class="lt">Kitchen</h1></header>
   <div class="page stagger" style="margin-top:20px">
-    <section class="sect"><div class="sect-h"><span class="over">${tmenu ? 'Today' : 'This weekend'}</span></div>
-      ${tmenu ? `<div class="rail">${Object.keys(SLOT).map(s => mealCard(s, tmenu[s], tmenu.shared === s)).join('')}</div>`
-        : `<div class="card"><h2 class="t3">Festival days</h2><p class="cap" style="margin:8px 0 0">${esc(M.weekendNote)}</p></div>`}</section>
-    <section class="sect"><div class="sect-h"><span class="over">Prep sessions</span></div><div class="group">${M.prep.map(p => {
-      const n = p.steps.filter((_, i) => Store.flag('prep', `w${mealWeek()}:${p.id}:${i}`)).length;
-      return `<a class="row tap" href="#prep/${p.id}"><span class="tile r-harvest">${ic('calendar')}</span><span class="tx"><b>${esc(p.title)}</b><small>${p.minutes} min · ${n ? `${n} of ${p.steps.length} steps done` : esc(p.makes)}</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}</div></section>
+    ${weekSwitch(wk)}
+    ${ahead ? '' : `<section class="sect"><div class="sect-h"><span class="over">${tmenu ? 'Today' : 'This weekend'}</span></div>
+      ${tmenu ? `<div class="rail">${Object.keys(SLOT).map(s => mealCard(D, wk, s, tmenu[s], tmenu.shared === s)).join('')}</div>`
+        : `<div class="card"><h2 class="t3">Festival days</h2><p class="cap" style="margin:8px 0 0">${esc(D.weekendNote)}</p></div>`}</section>`}
+    <section class="sect"><div class="sect-h"><span class="over">Prep sessions</span></div><div class="group">${D.prep.map(p => {
+      const n = p.steps.filter((_, i) => Store.flag('prep', `w${wk}:${p.id}:${i}`)).length;
+      return `<a class="row tap" href="#prep/${p.id}/${wk}"><span class="tile r-harvest">${ic('calendar')}</span><span class="tx"><b>${esc(p.title)}</b><small>${p.minutes} min · ${n ? `${n} of ${p.steps.length} steps done` : esc(p.makes)}</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}</div></section>
     <section class="sect"><div class="sect-h"><span class="over">The week</span></div>
-      <div class="days">${DAYS.map(d => `<button type="button" data-d="${d}" class="${d === kitchenDay ? 'on' : ''}${d === td ? ' today' : ''}">${DAYN[d].slice(0, 3).toUpperCase()}<b>${DAYN[d][0]}</b><i>${M.menu[d] ? '<u class="land"></u>' : ''}</i></button>`).join('')}</div>
-      ${menu ? `<div class="group">${Object.keys(SLOT).map(s => { const r = M.recipes[menu[s]];
-          return `<a class="row tap" href="#recipe/${menu[s]}"><span class="tile ctile c-${r.cuisine}">${ic(r.cuisine)}</span><span class="tx"><b>${esc(r.name)}</b><small>${SLOT[s]}${menu.shared === s ? ' · for two' : ''} · ${r.minutes} min · ${r.protein}g protein</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}
-        <div class="row"><span class="tile ctile c-Snack">${ic('Snack')}</span><span class="tx"><b>Snacks</b><small style="white-space:normal">${M.snacks.map(esc).join(' · ')}</small></span></div></div>`
-        : `<p class="fine">${esc(M.weekendNote)}</p>`}</section>
+      <div class="days">${DAYS.map(d => `<button type="button" data-d="${d}" class="${d === kitchenDay ? 'on' : ''}${d === td && !ahead ? ' today' : ''}">${DAYN[d].slice(0, 3).toUpperCase()}<b>${DAYN[d][0]}</b><i>${D.menu[d] ? '<u class="land"></u>' : ''}</i></button>`).join('')}</div>
+      ${menu ? `<div class="group">${Object.keys(SLOT).map(s => { const r = D.recipes[menu[s]];
+          return `<a class="row tap" href="#recipe/${menu[s]}/${wk}"><span class="tile ctile c-${r.cuisine}">${ic(r.cuisine)}</span><span class="tx"><b>${esc(r.name)}</b><small>${SLOT[s]}${menu.shared === s ? ' · for two' : ''} · ${r.minutes} min · ${r.protein}g protein</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}
+        <div class="row"><span class="tile ctile c-Snack">${ic('Snack')}</span><span class="tx"><b>Snacks</b><small style="white-space:normal">${D.snacks.map(esc).join(' · ')}</small></span></div></div>`
+        : `<p class="fine">${esc(D.weekendNote)}</p>`}</section>
     <section class="sect"><div class="sect-h"><span class="over">Recipe library</span></div>
-      ${Object.entries(byCuisine).map(([c, list]) => `<div class="group">${list.map(([id, r]) => `<a class="row tap" href="#recipe/${id}"><span class="tile ctile c-${c}">${ic(c)}</span><span class="tx"><b>${esc(r.name)}</b><small>${c} · ${r.minutes} min${r.isNew ? ' · new this week' : ''}</small></span>${ic('chev', 'i chev')}</a>`).join('')}</div>`).join('')}</section>
+      ${Object.entries(byCuisine).map(([c, list]) => `<div class="group">${list.map(([id, r]) => `<a class="row tap" href="#recipe/${id}/${wk}"><span class="tile ctile c-${c}">${ic(c)}</span><span class="tx"><b>${esc(r.name)}</b><small>${c} · ${r.minutes} min${r.isNew ? ' · new this week' : ''}</small></span>${ic('chev', 'i chev')}</a>`).join('')}</div>`).join('')}</section>
   </div>`;
   scrollAt = 50; setBar('Kitchen');
+  wireWeekSwitch();
   $$('.days button', view).forEach(b => b.onclick = () => { kitchenDay = b.dataset.d; rerender(); });
 }
-function ingName(i){
-  if (i.g){ const g = gro(i.g); return esc(g ? g.name : i.g); }
-  if (i.p){ const p = pan(i.p); return esc(p ? p.name : i.p); }
-  const r = M.recipes[i.r]; return esc(r ? r.name : i.r);
+function ingName(D, i){
+  if (i.g){ const g = D.groceries.find(x => x.id === i.g); return esc(g ? g.name : i.g); }
+  if (i.p){ const p = D.pantry.find(x => x.id === i.p); return esc(p ? p.name : i.p); }
+  if (i.h){ const h = (D.have || []).find(x => x.id === i.h); return `${esc(h ? h.name : i.h)} <span class="cap">· from last week</span>`; }
+  const r = D.recipes[i.r]; return esc(r ? r.name : i.r);
 }
-function vRecipe(id){
-  const r = M.recipes[id]; if (!r) return vKitchen();
+function vRecipe(id, wn){
+  const [D, n] = findRecipe(id, wn); if (!D) return vKitchen();
+  const r = D.recipes[id];
   view.innerHTML = `${floatBack()}<div class="hero-r c-${r.cuisine}">${ic(r.cuisine)}</div>
   <div class="page stagger" style="margin-top:-34px;position:relative">
-    <div><span class="over gold">${esc(r.cuisine)}${r.isNew ? ' · new this week' : ''}</span><h1 class="lt" style="margin-top:10px">${esc(r.name)}</h1></div>
+    <div><span class="over gold">${esc(r.cuisine)}${r.isNew ? ' · new this week' : ''} · ${esc(D.title)}</span><h1 class="lt" style="margin-top:10px">${esc(r.name)}</h1></div>
     <div class="stats3"><div><span class="cap">Time</span><b>${r.minutes}<span class="cap"> min</span></b></div><div><span class="cap">Protein</span><b>${r.protein}<span class="cap"> g</span></b></div><div><span class="cap">Makes</span><b style="font-size:14px;font-family:var(--f-b);font-weight:600;line-height:1.3">${esc(r.serves)}</b></div></div>
     ${r.tip ? `<div class="callout">${ic('info')}<span>${esc(r.tip)}</span></div>` : ''}
-    <a class="btn wide" href="#cook/${id}">${ic('kitchen')}Start cook mode</a>
+    <a class="btn wide" href="#cook/${id}/${n}">${ic('kitchen')}Start cook mode</a>
     <section class="sect"><div class="sect-h"><span class="over">Ingredients</span><span class="cap">${esc(r.equip)}</span></div><div class="group">${r.ingredients.map((i, k) => {
-      const on = Store.flag('ing', `${id}:${k}`);
-      return `<div class="row ing${on ? ' done' : ''}" data-k="${k}" role="button" aria-pressed="${on}"><span class="tx"><b>${ingName(i)}</b></span><span class="q">${esc(i.qty)}</span></div>`; }).join('')}</div>
+      const on = Store.flag('ing', `${n}:${id}:${k}`);
+      return `<div class="row ing${on ? ' done' : ''}" data-k="${k}" role="button" aria-pressed="${on}"><span class="tx"><b>${ingName(D, i)}</b></span><span class="q">${esc(i.qty)}</span></div>`; }).join('')}</div>
       <p class="fine">Tap an ingredient once it is out on the counter.</p></section>
     <section class="sect"><div class="sect-h"><span class="over">Method</span><span class="cap">${plural(r.steps.length, 'step')}</span></div><ol class="steps">${r.steps.map((s, k) => `<li><span>${k + 1}</span><div>${esc(s)}</div></li>`).join('')}</ol></section>
   </div>`;
   scrollAt = 180; setBar(r.name, true); wireBack();
-  $$('.ing', view).forEach(el => el.onclick = () => { const k = `${id}:${el.dataset.k}`, on = !Store.flag('ing', k); Store.flag('ing', k, on); el.classList.toggle('done', on); if (on) haptic(); });
+  $$('.ing', view).forEach(el => el.onclick = () => { const k = `${n}:${id}:${el.dataset.k}`, on = !Store.flag('ing', k); Store.flag('ing', k, on); el.classList.toggle('done', on); if (on) haptic(); });
 }
-function vCook(id){
-  const r = M.recipes[id]; if (!r) return vKitchen();
+function vCook(id, wn){
+  const [D, n] = findRecipe(id, wn); if (!D) return vKitchen();
+  const r = D.recipes[id];
   if (!cook || cook.id !== id) cook = {id, i:0};
   app.classList.add('immersive'); keepAwake(true);
   const i = cook.i, last = i === r.steps.length - 1;
@@ -568,11 +603,11 @@ function vCook(id){
     <div class="stepbig"><span class="over gold">${esc(r.name)} · step ${i + 1} of ${r.steps.length}</span><p>${esc(r.steps[i])}</p></div>
     <div class="btns">${i ? `<button class="btn quiet" type="button" id="cprev" style="flex:.6">Back</button>` : ''}<button class="btn" type="button" id="cnext">${last ? 'Done cooking' : 'Next step'}</button></div></div>`;
   $('#cclose').onclick = () => { endCook(); goBack(); };
-  $('#cing').onclick = () => sheet(`<div class="grab"></div><h2 class="t2">Ingredients</h2><div class="group">${r.ingredients.map(x => `<div class="row" style="min-height:48px"><span class="tx"><b>${ingName(x)}</b></span><span class="q cap">${esc(x.qty)}</span></div>`).join('')}</div>`);
-  const prev = $('#cprev'); if (prev) prev.onclick = () => { cook.i--; vCook(id); };
+  $('#cing').onclick = () => sheet(`<div class="grab"></div><h2 class="t2">Ingredients</h2><div class="group">${r.ingredients.map(x => `<div class="row" style="min-height:48px"><span class="tx"><b>${ingName(D, x)}</b></span><span class="q cap">${esc(x.qty)}</span></div>`).join('')}</div>`);
+  const prev = $('#cprev'); if (prev) prev.onclick = () => { cook.i--; vCook(id, n); };
   $('#cnext').onclick = () => {
-    if (!last){ cook.i++; haptic(); vCook(id); return; }
-    const d = dayKey(today()), menu = M.menu[d], slot = menu && Object.keys(SLOT).find(s => menu[s] === id);
+    if (!last){ cook.i++; haptic(); vCook(id, n); return; }
+    const d = dayKey(today()), menu = n === mealWeek() && M.menu[d], slot = menu && Object.keys(SLOT).find(s => menu[s] === id);
     endCook();
     if (slot && !Store.isDone(Store.ymd(today()), slot)){
       const before = Store.totals().all; Store.complete(Store.ymd(today()), slot, r.name, slot);
@@ -581,15 +616,16 @@ function vCook(id){
   };
 }
 function endCook(){ cook = null; keepAwake(false); }
-function vPrep(id){
-  const p = M.prep.find(x => x.id === id); if (!p) return vKitchen();
-  const pre = `w${mealWeek()}:${id}:`, n = p.steps.filter((_, i) => Store.flag('prep', pre + i)).length;
-  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">${p.minutes} min · ${DAYN[p.day]}</span><h1 class="lt">${esc(p.title)}</h1><span class="cap" style="font-size:14px;margin-top:4px">Makes ${esc(p.makes)}.</span></header>
+function vPrep(id, wn){
+  const n = +wn || planWeek(), D = wkOf(n);
+  const p = D.prep.find(x => x.id === id); if (!p) return vKitchen();
+  const pre = `w${n}:${id}:`, done = p.steps.filter((_, i) => Store.flag('prep', pre + i)).length;
+  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">${esc(D.title)} · ${p.minutes} min · ${DAYN[p.day]}</span><h1 class="lt">${esc(p.title)}</h1><span class="cap" style="font-size:14px;margin-top:4px">Makes ${esc(p.makes)}.</span></header>
   <div class="page stagger" style="margin-top:22px">
-    <div class="meter2"><p>${n} of ${p.steps.length} steps<b></b></p><div class="bar2" style="--c:var(--harvest)"><i style="width:${(n / p.steps.length * 100).toFixed(1)}%"></i></div></div>
+    <div class="meter2"><p>${done} of ${p.steps.length} steps<b></b></p><div class="bar2" style="--c:var(--harvest)"><i style="width:${(done / p.steps.length * 100).toFixed(1)}%"></i></div></div>
     <div class="group">${p.steps.map((s, i) => { const on = Store.flag('prep', pre + i);
       return `<div class="row item${on ? ' done' : ''}" data-i="${i}" role="button" aria-pressed="${on}" style="align-items:flex-start;padding-top:16px;padding-bottom:16px"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b style="-webkit-line-clamp:unset;font-weight:400;font-size:15px;line-height:1.5">${esc(s)}</b></span></div>`; }).join('')}</div>
-    ${n ? `<button class="btn quiet wide" type="button" id="clr">Reset steps</button>` : ''}
+    ${done ? `<button class="btn quiet wide" type="button" id="clr">Reset steps</button>` : ''}
   </div>`;
   scrollAt = 90; setBar(p.title, true); wireBack();
   $$('.item', view).forEach(r => r.onclick = () => { const k = pre + r.dataset.i, on = !Store.flag('prep', k); Store.flag('prep', k, on); r.classList.toggle('done', on); if (on){ haptic(); burst($('.tick', r)); } setTimeout(rerender, 300); });
@@ -667,14 +703,14 @@ const TAB_OF = {session:'train', play:'train', recipe:'kitchen', cook:'kitchen',
 const DETAIL = new Set(['session','recipe','prep','settings']);
 let lastName = null;
 function route(keep){
-  const [name, arg] = (location.hash.slice(1) || 'isle').split('/');
+  const [name, arg, arg2] = (location.hash.slice(1) || 'isle').split('/');
   const tab = TAB_OF[name] || name;
   $$('a', nav).forEach(a => a.classList.toggle('on', a.dataset.tab === tab));
   if (name !== 'play' && play) endPlay();
   if (name !== 'cook' && cook) endCook();
   if (name !== 'play' && name !== 'cook') app.classList.remove('immersive');
   dock.innerHTML = ''; layer.innerHTML = '';
-  ({isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg), cook:() => vCook(arg), prep:() => vPrep(arg), settings:vSettings}[name] || vIsle)();
+  ({isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg, arg2), cook:() => vCook(arg, arg2), prep:() => vPrep(arg, arg2), settings:vSettings}[name] || vIsle)();
   if (!keep){
     view.scrollTop = 0; app.classList.remove('scrolled');
     const first = view.firstElementChild;
@@ -686,7 +722,10 @@ view.addEventListener('scroll', () => app.classList.toggle('scrolled', view.scro
 
 async function boot(){
   try {
-    [W, M] = await Promise.all([fetch('data/workouts.json').then(r => r.json()), fetch(`data/meals-week${mealWeek()}.json`).then(r => r.json())]);
+    const cw = mealWeek(), nw = MEAL_WEEKS.find(n => n > cw);
+    const get = n => fetch(`data/meals-week${n}.json`).then(r => r.json());
+    const [w, m, m2] = await Promise.all([fetch('data/workouts.json').then(r => r.json()), get(cw), nw ? get(nw).catch(() => null) : null]);
+    W = w; M = m; MW[cw] = m; if (m2) MW[nw] = m2;
   } catch(e) {
     view.innerHTML = `<header class="lhead"><h1 class="lt">Hearth Isle</h1><p class="cap">The plan did not load. Check your connection and open the app again.</p></header>`;
     return;
