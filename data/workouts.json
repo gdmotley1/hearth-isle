@@ -44,14 +44,14 @@
       {"group": "3a", "ex": "hammer_curl", "sets": 2, "reps": "12", "rest": 0},
       {"group": "3b", "ex": "plank", "sets": 2, "reps": "40 sec", "rest": 30}
     ]},
-    "C": {"title": "Full-body circuit", "minutes": 20, "format": "4 rounds. Move from one exercise to the next with little rest, then rest 60 seconds after each round.", "blocks": [
+    "C": {"title": "Full-body circuit", "minutes": 20, "circuit": true, "format": "4 rounds. Move from one exercise to the next with little rest, then rest 60 seconds after each round.", "blocks": [
       {"group": "1", "ex": "thruster", "sets": 4, "reps": "10", "rest": 0},
       {"group": "2", "ex": "renegade_row", "sets": 4, "reps": "8 each side", "rest": 0},
       {"group": "3", "ex": "sl_rdl", "sets": 4, "reps": "8 each leg", "rest": 0},
       {"group": "4", "ex": "db_swing", "sets": 4, "reps": "15", "rest": 0},
       {"group": "5", "ex": "dead_bug", "sets": 4, "reps": "8 each side", "rest": 60}
     ]},
-    "M": {"title": "Court-ready mobility", "minutes": 8, "format": "One easy pass before you play. No rest needed.", "blocks": [
+    "M": {"title": "Court-ready mobility", "minutes": 8, "circuit": true, "format": "One easy pass before you play. No rest needed.", "blocks": [
       {"group": "1", "ex": "worlds_greatest", "sets": 1, "reps": "5 each side", "rest": 0},
       {"group": "2", "ex": "hip_9090", "sets": 1, "reps": "6 each side", "rest": 0},
       {"group": "3", "ex": "t_spine", "sets": 1, "reps": "8 each side", "rest": 0},

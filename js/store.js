@@ -31,7 +31,7 @@ const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
 const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
 function mondayOf(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay()+6)%7); return ymd(x); }
 
-function fresh(){ return {v:1, start:mondayOf(new Date()), log:[], grocery:{}, sets:{}, prep:{}}; }
+function fresh(){ return {v:1, start:mondayOf(new Date()), log:[], grocery:{}, sets:{}, prep:{}, ing:{}, onboarded:false}; }
 function load(){
   try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 1) return Object.assign(fresh(), s); } catch(e) {}
   return fresh();
@@ -83,11 +83,12 @@ function flag(bucket, key, val){
 function clearPrefix(bucket, prefix){ Object.keys(state[bucket]||{}).forEach(k => { if (k.startsWith(prefix)) delete state[bucket][k]; }); save(); }
 
 function setStart(s){ state.start = s; save(); }
+function setOnboarded(){ state.onboarded = true; save(); }
 function exportJSON(){ return JSON.stringify(state, null, 1); }
 function importJSON(txt){ const s = JSON.parse(txt); if (!s || s.v !== 1 || !Array.isArray(s.log)) throw new Error('That file is not a Hearth Isle backup.'); state = Object.assign(fresh(), s); save(); }
 function reset(){ state = fresh(); save(); }
 
 window.Store = {PTS, EXTRA, SEASON, RES, ymd, parse, mondayOf, weekNo, seasonWeek, totals, progress, settlers, gardens,
-  isDone, complete, undo, addExtra, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
+  isDone, complete, undo, addExtra, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
   get state(){ return state; }};
 })();

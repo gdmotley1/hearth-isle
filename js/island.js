@@ -38,7 +38,7 @@ const WALK=[
  {f:[1.5,3.5],t:[.5,4.5],s:4,c:2,d:7},{f:[-1.6,2.5],t:[-.6,1.5],s:4,c:0,d:8},{f:[2.4,-1],t:[1.6,-.4],s:4,c:3,d:7},{f:[.5,5.5],t:[.5,4.4],s:4,c:1,d:9}
 ];
 /* unlock thresholds: each stage's objects appear one by one across the previous stage interval */
-(function(){for(let s=0;s<=4;s++){const g=OBJ.filter(o=>o.s===s&&o.t!=='gardens');g.forEach((o,i)=>o.th=s===0?0:s-1+(i+1)/g.length);const w=WALK.filter(o=>o.s===s);w.forEach((o,i)=>o.th=s===0?0:s-1+(i+.5)/w.length);}OBJ.find(o=>o.t==='gardens').th=.6;})();
+(function(){for(let s=0;s<=4;s++){const g=OBJ.filter(o=>o.s===s&&o.t!=='gardens');g.forEach((o,i)=>o.th=s===0?0:s-1+(i+.35)/g.length);const w=WALK.filter(o=>o.s===s);w.forEach((o,i)=>o.th=s===0?0:s-1+(i+.5)/w.length);}OBJ.find(o=>o.t==='gardens').th=.6;})();
 const PAL_B={night:true,shallow:'#1f3f5f',foam:'#2e5779',g1:'#2f5d55',g2:'#2c5951',sand:'#7a7564',path:'#5d5747',gSideL:'#24493f',gSideR:'#1c3b34',sSideL:'#625c4c',sSideR:'#524c3f',eL:'#433429',eR:'#33281f',
  wallL:'#76839a',wallR:'#56627a',door:'#3a2b24',win:'#ffcf73',roofs:['#8c4f45','#3f5e82','#8a7240'],roofsD:['#6c3a33','#2f4865','#6b5731'],trunk:'#4a3628',can:'#24493f',canL:'#2f5d50',canD:'#1b3a32',pineL:'#26503f',pineD:'#1a3a2e',
  soil:'#4d3c2e',crops:['#3a6b4a','#8a7a3e','#8f5a35'],stoneT:'#8c8270',stoneL:'#776e5e',stoneR:'#5f574a',vine:'#2f6247',water:'#3d6f9a',waterL:'#9cc6e6',canvas:'#a69a83',canvasD:'#7e7462',wood:'#5f4532',woodD:'#47331f',rock:'#566068',rockD:'#424a51',
@@ -141,7 +141,7 @@ function isoTower(o,p,id){
   const wf=p.night?` filter="url(#gw${id})"`:'';
   s+=poly([P(xm-.06,y1,18),P(xm+.06,y1,18),P(xm+.06,y1,24),P(xm-.06,y1,24)],p.win,wf);
   const [fx,fy]=P(xm,ym,h+16);s+=`<path d="M${fx} ${fy}v-8" stroke="${p.woodD}" stroke-width="1"/><path class="float" d="M${fx} ${fy-8}l7 2-7 2z" fill="${p.roofs[2]}"/>`;
-  if(p.night)s=glow(...P(x1,y1,20),id,.4)+s;
+  if(p.night)s=glow(...P(x1,y1,20),18,id,.4)+s;
   return s;
 }
 function isoLantern(o,p,id){
@@ -189,7 +189,7 @@ function isoGardens(o,p,stage,id){
       s+=poly([P(x,wy-.08,zt),P(x,wy+.08,zt),P(x,wy+.08,zb),P(x,wy-.08,zb)],p.water);
       const a=P(x,wy,zt),b=P(x,wy,zb);s+=`<line class="fall" x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${p.waterL}" stroke-width="1.2" stroke-dasharray="3 5"/>`;});
     s+=poly([P(gx+2.02,wy-.3,.2),P(gx+2.45,wy-.3,.2),P(gx+2.45,wy+.3,.2),P(gx+2.02,wy+.3,.2)],p.water);
-    if(p.night)s=glow(...P(gx+1,gy+1,30),id,.35)+s;
+    if(p.night)s=glow(...P(gx+1,gy+1,30),40,id,.35)+s;
   }
   return s;
 }
@@ -245,5 +245,11 @@ function isoScene(prog,p,id){
 }
 
 
-window.Isle={STAGES,isoScene,PAL_B};
+/* Everything that can appear on the island, in unlock order. th is in stage units (0-4). */
+function unlocks(){
+  const list=OBJ.filter(o=>o.t!=='gardens'&&o.th>0).map(o=>({k:o.k,t:o.t,th:o.th}));
+  [[.6,'gfound'],[1.5,'g1'],[2.5,'g2'],[3.6,'g3']].forEach(([th,t])=>list.push({k:t,t,th}));
+  return list.sort((x,y)=>x.th-y.th);
+}
+window.Isle={STAGES,isoScene,PAL_B,unlocks};
 })();
