@@ -2,9 +2,10 @@
   "week": 3,
   "title": "Week 3",
   "budget": 200,
+  "style": "batch",
   "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax. Two lunches and two dinners come from your freezer this week.",
   "allergyNote": "Nothing on this plan contains tree nuts or fish. Peanut butter is often made in plants that also handle tree nuts. If your allergy is strict, check the label for a 'may contain tree nuts' line.",
-  "weekendNote": "Festival days. Leftovers waiting for you: a smash burger bowl and a portion of Peruvian chicken. The freezer is clear, so week 4 starts fresh.",
+  "weekendNote": "Festival days. Leftovers waiting for you: a serving of fajitas and some green sauce. The freezer is clear, so week 4 starts fresh.",
   "snacks": ["Cottage cheese with berries", "Apple with peanut butter", "2 hard-boiled eggs", "String cheese and a banana"],
   "have": [
     {"id": "oats", "name": "Rolled oats", "note": "plenty left"},
@@ -16,30 +17,32 @@
     {"id": "chili", "name": "Frozen turkey chili", "note": "2 bowls from week 2"}
   ],
   "menu": {
-    "mon": {"breakfast": "sweet-potato-hash", "lunch": "teriyaki-bowl", "dinner": "smash-bowl", "heads": "Move one carnitas portion to the fridge tonight for tomorrow's tacos."},
-    "tue": {"breakfast": "yogurt-bowl", "lunch": "teriyaki-bowl", "dinner": "carnitas-street-tacos"},
-    "wed": {"breakfast": "sweet-potato-hash", "lunch": "teriyaki-bowl", "dinner": "peruvian-chicken", "shared": "dinner", "heads": "Marinate the Peruvian chicken this morning. Tonight, move the last carnitas and both chili bowls to the fridge."},
-    "thu": {"breakfast": "yogurt-bowl", "lunch": "freezer-chili", "dinner": "carnitas-fried-rice"},
+    "mon": {"breakfast": "sweet-potato-hash", "lunch": "peruvian-bowl", "dinner": "carnitas-street-tacos", "heads": "Lunch and the taco topping both come from Sunday's prep."},
+    "tue": {"breakfast": "yogurt-bowl", "lunch": "peruvian-bowl", "dinner": "peruvian-fried-rice", "heads": "Tonight, move one chili bowl from the freezer to the fridge for tomorrow."},
+    "wed": {"breakfast": "sweet-potato-hash", "lunch": "freezer-chili", "dinner": "smash-bowl", "shared": "dinner", "heads": "Tonight, move the last carnitas portion and the second chili bowl to the fridge."},
+    "thu": {"breakfast": "yogurt-bowl", "lunch": "peruvian-bowl", "dinner": "carnitas-bowl"},
     "fri": {"breakfast": "sweet-potato-hash", "lunch": "freezer-chili", "dinner": "chicken-fajitas", "shared": "dinner"}
   },
   "prep": [
-    {"id": "sun", "day": "sun", "title": "Sunday prep", "minutes": 80, "makes": "3 teriyaki lunches, 3 hash breakfasts, oat clusters, 6 hard-boiled eggs", "steps": [
-      "Heat the oven to 425°F. Toss the sweet potato, sausage, pepper and onion for the hash on a sheet pan and roast 25 minutes.",
-      "Cook 2 cups of rice. Save 1½ cups in the fridge for Thursday's fried rice.",
-      "Cook the teriyaki chicken in a skillet and microwave the broccoli.",
+    {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 90, "makes": "4 portions of Peruvian chicken, a double batch of green sauce, a tray of roasted sweet potatoes and peppers, rice, 3 hash breakfasts, oat clusters, 6 eggs", "steps": [
+      "Coat the chicken thighs in the Peruvian marinade. Heat the oven to 425°F.",
+      "Roast the hash on one sheet pan and the sweet potato and pepper tray on another for 25 minutes.",
+      "Air-fry the chicken at 380°F for 18 to 20 minutes (or roast it at 425°F for 25), then slice.",
+      "Cook 2½ cups of rice. Save 1½ cups in the fridge for Tuesday's fried rice.",
+      "Blend the double batch of green sauce.",
       "Drop the oven to 325°F and bake the oat clusters for 15 to 18 minutes.",
-      "Air-fry 6 eggs at 270°F for 15 minutes, then move them to ice water.",
-      "Pack 3 teriyaki bowls and 3 hash containers."
+      "Air-fry 6 eggs at 270°F for 15 minutes.",
+      "Pack 3 Peruvian bowls and 3 hash containers. Keep 1 chicken portion for Tuesday's fried rice.",
+      "Move one carnitas portion from the freezer to the fridge for Monday."
     ]},
-    {"id": "wed", "day": "wed", "title": "Wednesday morning", "minutes": 10, "makes": "Peruvian chicken for two tonight", "steps": [
-      "Stir the marinade together and coat the chicken thighs. Refrigerate.",
-      "Blend or finely chop the green sauce and refrigerate it.",
-      "Tonight, move the last carnitas portion and both chili bowls from the freezer to the fridge."
+    {"id": "tue", "day": "tue", "title": "Freezer moves", "minutes": 2, "makes": "Thawed chili and carnitas for Wednesday through Friday", "steps": [
+      "Tuesday night: move one chili bowl to the fridge for Wednesday's lunch.",
+      "Wednesday night: move the last carnitas portion and the second chili bowl to the fridge."
     ]}
   ],
   "groceries": [
-    {"id": "chicken", "name": "Boneless skinless chicken breasts", "qty": "about 3.5 lb (family pack)", "section": "Meat", "store": "Aldi", "price": 11.49},
-    {"id": "thighs", "name": "Boneless skinless chicken thighs", "qty": "about 2 lb", "section": "Meat", "store": "Aldi", "price": 6.49},
+    {"id": "thighs", "name": "Boneless skinless chicken thighs", "qty": "about 2.5 lb", "section": "Meat", "store": "Aldi", "price": 7.99},
+    {"id": "chicken", "name": "Boneless skinless chicken breasts", "qty": "about 1.5 lb", "section": "Meat", "store": "Aldi", "price": 4.49},
     {"id": "beef", "name": "Lean ground beef 93/7", "qty": "1 lb", "section": "Meat", "store": "Aldi", "price": 6.49},
     {"id": "sausage", "name": "Turkey breakfast sausage roll", "qty": "12 oz", "section": "Meat", "store": "Aldi", "price": 3.29},
     {"id": "eggs", "name": "Large eggs", "qty": "18 count", "section": "Dairy and eggs", "store": "Aldi", "price": 4.49},
@@ -48,19 +51,18 @@
     {"id": "string", "name": "Mozzarella string cheese", "qty": "12 count", "section": "Dairy and eggs", "store": "Aldi", "price": 3.79},
     {"id": "cheddar", "name": "Shredded sharp cheddar", "qty": "8 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 2.49},
     {"id": "feta", "name": "Feta crumbles", "qty": "4 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 2.49},
-    {"id": "peppers", "name": "Bell peppers", "qty": "3-pack", "section": "Produce", "store": "Aldi", "price": 2.99},
+    {"id": "peppers", "name": "Bell peppers", "qty": "two 3-packs", "section": "Produce", "store": "Aldi", "price": 5.98},
     {"id": "onion", "name": "Yellow onions", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 2.49},
     {"id": "garlic", "name": "Garlic", "qty": "3 bulbs", "section": "Produce", "store": "Aldi", "price": 1.29},
     {"id": "romaine", "name": "Romaine hearts", "qty": "3-pack", "section": "Produce", "store": "Aldi", "price": 2.99},
     {"id": "tomatoes", "name": "Grape tomatoes", "qty": "1 pint", "section": "Produce", "store": "Aldi", "price": 2.29},
-    {"id": "jalapeno", "name": "Jalapeños", "qty": "2", "section": "Produce", "store": "Aldi", "price": 0.40},
+    {"id": "jalapeno", "name": "Jalapeños", "qty": "3", "section": "Produce", "store": "Aldi", "price": 0.60},
     {"id": "cilantro", "name": "Cilantro", "qty": "2 bunches", "section": "Produce", "store": "Aldi", "price": 1.58},
     {"id": "limes", "name": "Limes", "qty": "1 bag (about 6)", "section": "Produce", "store": "Aldi", "price": 2.49},
     {"id": "greenonion", "name": "Green onions", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.89},
     {"id": "avocados", "name": "Avocados", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.78},
     {"id": "bananas", "name": "Bananas", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 1.49},
     {"id": "apples", "name": "Apples", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 3.99},
-    {"id": "broccoli", "name": "Frozen broccoli steam bags", "qty": "2 × 12 oz", "section": "Frozen", "store": "Aldi", "price": 2.50},
     {"id": "peas", "name": "Frozen peas and carrots", "qty": "16 oz bag", "section": "Frozen", "store": "Aldi", "price": 1.15},
     {"id": "berries", "name": "Frozen mixed berries", "qty": "16 oz bag", "section": "Frozen", "store": "Aldi", "price": 3.29},
     {"id": "rice", "name": "Jasmine rice", "qty": "3 lb bag", "section": "Shelf", "store": "Aldi", "price": 3.29},
@@ -77,45 +79,53 @@
     {"id": "paprika", "name": "Smoked paprika"},
     {"id": "oregano", "name": "Dried oregano"},
     {"id": "cinnamon", "name": "Ground cinnamon"},
-    {"id": "ginger", "name": "Ground ginger"},
     {"id": "soy", "name": "Soy sauce"},
     {"id": "sesame", "name": "Toasted sesame oil"},
     {"id": "ketchup", "name": "Ketchup"},
     {"id": "mustard", "name": "Yellow mustard"}
   ],
   "recipes": {
-    "oat-clusters": {"name": "Honey cinnamon oat clusters", "cuisine": "Breakfast", "minutes": 25, "serves": "about 8 quarter-cup servings", "protein": 4, "equip": "sheet pan", "ingredients": [
+    "peruvian-chicken": {"name": "Peruvian lime-garlic chicken", "cuisine": "Peruvian", "component": true, "isNew": true, "minutes": 30, "serves": "4 portions", "protein": 42, "equip": "air fryer or sheet pan", "ingredients": [
+      {"g": "thighs", "qty": "2.5 lb"}, {"g": "limes", "qty": "juice of 2"}, {"g": "garlic", "qty": "5 cloves, grated"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "2 tsp"}, {"p": "oregano", "qty": "1 tsp"}, {"p": "soy", "qty": "1 tbsp"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "salt", "qty": "1 tsp"}, {"p": "pepper", "qty": "½ tsp"}],
+      "steps": ["Mix the lime juice, garlic, spices, soy sauce, oil and salt, and coat the chicken. Marinate 30 minutes or overnight.", "Air-fry at 380°F for 18 to 20 minutes in batches, or roast at 425°F for 25, until charred at the edges.", "Rest 5 minutes, slice and split into 4 portions."], "tip": "This week's new flavor. It turns into bowls, fried rice and Thursday's lunch."},
+    "green-sauce": {"name": "Peruvian green sauce (double batch)", "cuisine": "Prep", "component": true, "minutes": 10, "serves": "about 2 cups", "protein": 6, "equip": "blender or knife", "ingredients": [
+      {"g": "cilantro", "qty": "1½ bunches"}, {"g": "jalapeno", "qty": "3, seeded"}, {"g": "feta", "qty": "½ cup"}, {"g": "yogurt", "qty": "1 cup"}, {"g": "garlic", "qty": "2 cloves"}, {"g": "limes", "qty": "juice of 2"}, {"p": "salt", "qty": "to taste"}],
+      "steps": ["Blend everything until smooth, or chop the cilantro, jalapeño and garlic very finely and stir them into the yogurt and feta.", "Salt to taste and keep in a jar. It is good for 5 days."], "tip": "Goes on the bowls, the tacos, the fried rice and the carnitas bowl."},
+    "roast-tray": {"name": "Roasted sweet potato and pepper tray", "cuisine": "Prep", "component": true, "minutes": 30, "serves": "about 5 cups", "protein": 3, "equip": "sheet pan", "ingredients": [
+      {"h": "sweetpot", "qty": "2, in ¾-inch cubes"}, {"g": "peppers", "qty": "2, in chunks"}, {"g": "onion", "qty": "1, in wedges"}, {"p": "oil", "qty": "2 tbsp"}, {"p": "chili", "qty": "1 tsp"}, {"p": "salt", "qty": "1 tsp"}],
+      "steps": ["Toss everything with the oil, chili powder and salt.", "Roast at 425°F for 25 minutes, stirring once.", "Cool and store in one container."]},
+    "oat-clusters": {"name": "Honey cinnamon oat clusters", "cuisine": "Prep", "component": true, "minutes": 25, "serves": "about 8 quarter-cup servings", "protein": 4, "equip": "sheet pan", "ingredients": [
       {"h": "oats", "qty": "2 cups"}, {"h": "honey", "qty": "3 tbsp"}, {"h": "pb", "qty": "1 tbsp"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "cinnamon", "qty": "1 tsp"}, {"p": "salt", "qty": "a pinch"}],
-      "steps": ["Heat the oven to 325°F.", "Microwave the honey, peanut butter and oil for 20 seconds and stir smooth.", "Toss with the oats, cinnamon and salt until everything is coated.", "Press it flat on a lined sheet pan and bake 15 to 18 minutes, turning once halfway.", "Cool completely, then break into clusters and store in a jar."]},
+      "steps": ["Heat the oven to 325°F.", "Microwave the honey, peanut butter and oil for 20 seconds and stir smooth.", "Toss with the oats, cinnamon and salt.", "Press flat on a lined sheet pan and bake 15 to 18 minutes, turning once.", "Cool completely, then break into clusters."]},
     "yogurt-bowl": {"name": "Berry yogurt power bowl", "cuisine": "Breakfast", "minutes": 5, "serves": "1", "protein": 30, "equip": "none", "ingredients": [
       {"g": "yogurt", "qty": "1 cup"}, {"g": "berries", "qty": "½ cup, thawed"}, {"r": "oat-clusters", "qty": "¼ cup"}, {"h": "pb", "qty": "1 tbsp"}, {"h": "honey", "qty": "a drizzle"}],
       "steps": ["Spoon the yogurt into a bowl.", "Top with the berries and their juice, then the oat clusters.", "Add the peanut butter and a drizzle of honey."], "tip": "Good fuel about 90 minutes before pickleball."},
     "sweet-potato-hash": {"name": "Sweet potato sausage hash with eggs", "cuisine": "Breakfast", "minutes": 35, "serves": "3 breakfasts", "protein": 32, "equip": "sheet pan, skillet", "ingredients": [
       {"h": "sweetpot", "qty": "2 medium, ½-inch cubes"}, {"g": "sausage", "qty": "12 oz roll"}, {"g": "peppers", "qty": "1, diced"}, {"g": "onion", "qty": "½, diced"}, {"g": "eggs", "qty": "2 per breakfast"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "garlicpowder", "qty": "½ tsp"}, {"p": "salt", "qty": "½ tsp"}, {"p": "pepper", "qty": "to taste"}],
-      "steps": ["Heat the oven to 425°F.", "Toss the sweet potato, pepper and onion with the oil and spices on a sheet pan and pinch the raw sausage over the top in small pieces.", "Roast 25 minutes, stirring once, until the potatoes are browned and the sausage is cooked.", "Split into 3 containers.", "Each morning, reheat a portion and top it with 2 eggs fried in 3 minutes."]},
+      "steps": ["Toss the sweet potato, pepper and onion with the oil and spices on a sheet pan and pinch the raw sausage over the top in small pieces.", "Roast at 425°F for 25 minutes, stirring once.", "Split into 3 containers.", "Each morning, reheat a portion and top it with 2 eggs fried in 3 minutes."]},
     "hb-eggs": {"name": "Air-fryer hard-boiled eggs", "cuisine": "Snack", "minutes": 20, "serves": "6 eggs", "protein": 6, "equip": "air fryer", "ingredients": [
       {"g": "eggs", "qty": "6"}, {"p": "salt", "qty": "for serving"}],
       "steps": ["Put the eggs straight into the air fryer basket.", "Cook at 270°F for 15 minutes.", "Move them to a bowl of ice water for 5 minutes, then refrigerate."]},
-    "teriyaki-bowl": {"name": "Honey teriyaki chicken bowl", "cuisine": "Asian", "minutes": 25, "serves": "3 lunches", "protein": 48, "equip": "skillet", "ingredients": [
-      {"g": "chicken", "qty": "2 lb, bite-size pieces"}, {"p": "soy", "qty": "⅓ cup"}, {"h": "honey", "qty": "3 tbsp"}, {"g": "garlic", "qty": "3 cloves, grated"}, {"p": "ginger", "qty": "1 tsp"}, {"p": "sesame", "qty": "1 tsp"}, {"p": "oil", "qty": "1 tbsp"}, {"g": "broccoli", "qty": "2 steam bags"}, {"g": "rice", "qty": "¾ cup cooked each"}, {"g": "greenonion", "qty": "2, sliced"}],
-      "steps": ["Stir the soy sauce, honey, garlic, ginger and 2 tbsp water together.", "Brown the chicken in the oil over high heat for 6 to 7 minutes.", "Pour in the sauce and let it bubble 3 to 4 minutes, until it turns glossy and coats the chicken.", "Microwave the broccoli bags.", "Pack rice, broccoli and chicken into 3 containers with sesame oil and green onion on top."]},
+    "peruvian-bowl": {"name": "Peruvian chicken bowl with green sauce", "cuisine": "Peruvian", "minutes": 5, "serves": "3 lunches", "protein": 46, "equip": "microwave", "ingredients": [
+      {"r": "peruvian-chicken", "qty": "1 portion each"}, {"r": "roast-tray", "qty": "1 cup each"}, {"r": "green-sauce", "qty": "3 tbsp each"}, {"g": "rice", "qty": "¾ cup cooked each"}, {"g": "romaine", "qty": "1 heart, shredded"}, {"g": "limes", "qty": "a squeeze"}],
+      "steps": ["Pack rice, roasted sweet potatoes and peppers, and chicken in each container.", "Pack shredded romaine and green sauce on the side.", "Reheat the bowl 2 minutes, then add the lettuce, sauce and a squeeze of lime."], "tip": "All from Sunday's prep. Eat the third one by Thursday."},
+    "peruvian-fried-rice": {"name": "Peruvian chicken fried rice", "cuisine": "Peruvian", "minutes": 15, "serves": "1", "protein": 45, "equip": "cast iron or large skillet", "ingredients": [
+      {"r": "peruvian-chicken", "qty": "1 portion, chopped"}, {"g": "rice", "qty": "1½ cups cooked, cold"}, {"g": "eggs", "qty": "2"}, {"g": "peas", "qty": "1 cup"}, {"g": "greenonion", "qty": "2, sliced"}, {"p": "soy", "qty": "2 tbsp"}, {"p": "sesame", "qty": "1 tsp"}, {"p": "oil", "qty": "1 tbsp"}, {"r": "green-sauce", "qty": "2 tbsp, to drizzle"}],
+      "steps": ["Heat the oil until shimmering. Scramble the eggs and push them to the side.", "Add the peas for 1 minute, then the cold rice. Press it flat and let it crisp 2 minutes.", "Add the chicken, soy sauce and sesame oil and toss until hot.", "Top with green onion and a drizzle of green sauce."], "tip": "Peruvian kitchens really do this. It is called chaufa. Fifteen minutes after Tuesday pickleball."},
+    "carnitas-street-tacos": {"name": "Carnitas street tacos with green sauce", "cuisine": "Mexican", "minutes": 15, "serves": "1", "protein": 40, "equip": "cast iron", "ingredients": [
+      {"h": "carnitas", "qty": "1 portion, thawed"}, {"h": "tortillas", "qty": "4"}, {"g": "onion", "qty": "¼, finely diced"}, {"g": "cilantro", "qty": "a handful"}, {"g": "limes", "qty": "1"}, {"r": "green-sauce", "qty": "3 tbsp"}],
+      "steps": ["Crisp the carnitas in the hot cast iron with a splash of its juices, 4 to 5 minutes without stirring.", "Warm the tortillas in the dry pan for 30 seconds a side.", "Fill with carnitas, onion and cilantro, then finish with lime and green sauce."]},
+    "carnitas-bowl": {"name": "Carnitas rice bowl", "cuisine": "Mexican", "minutes": 10, "serves": "1", "protein": 44, "equip": "cast iron", "ingredients": [
+      {"h": "carnitas", "qty": "1 portion, thawed"}, {"g": "rice", "qty": "1 cup cooked"}, {"r": "roast-tray", "qty": "1 cup"}, {"r": "green-sauce", "qty": "3 tbsp"}, {"g": "cheddar", "qty": "2 tbsp"}, {"g": "limes", "qty": "½"}],
+      "steps": ["Crisp the carnitas in the cast iron for 4 minutes.", "Warm the rice and the roasted vegetables.", "Build the bowl and top with cheese, green sauce and lime."], "tip": "Ten minutes after Thursday pickleball, mostly from Sunday's prep."},
+    "freezer-chili": {"name": "Turkey chili from the freezer", "cuisine": "American", "minutes": 5, "serves": "1", "protein": 38, "equip": "microwave", "ingredients": [
+      {"h": "chili", "qty": "1 bowl, thawed"}, {"g": "cheddar", "qty": "2 tbsp"}, {"g": "greenonion", "qty": "for topping"}, {"g": "yogurt", "qty": "a spoonful"}],
+      "steps": ["Thaw the bowl in the fridge the night before.", "Microwave 3 to 4 minutes, stirring halfway.", "Top with cheese, green onion and a spoon of yogurt."]},
     "smash-bowl": {"name": "Smash burger bowl with special sauce", "cuisine": "American", "minutes": 20, "serves": "2", "protein": 42, "equip": "cast iron", "ingredients": [
       {"g": "beef", "qty": "1 lb, in 4 balls"}, {"g": "romaine", "qty": "2 hearts, chopped"}, {"g": "tomatoes", "qty": "1 pint, halved"}, {"g": "pickles", "qty": "a handful, plus 1 tbsp brine"}, {"g": "onion", "qty": "½, thinly sliced"}, {"g": "cheddar", "qty": "½ cup"}, {"g": "yogurt", "qty": "¼ cup"}, {"p": "ketchup", "qty": "2 tbsp"}, {"p": "mustard", "qty": "1 tbsp"}, {"p": "salt", "qty": "to taste"}, {"p": "pepper", "qty": "to taste"}],
-      "steps": ["Stir the yogurt, ketchup, mustard and pickle brine together for the sauce.", "Heat the cast iron until very hot. Add the beef balls with a slice of onion on each and smash them flat with a spatula.", "Season and cook 2 minutes until crusty, flip, add cheese and cook 1 minute more.", "Pile romaine, tomatoes and pickles into bowls, top with the patties and drizzle with sauce."], "tip": "The second bowl is a weekend lunch."},
-    "carnitas-street-tacos": {"name": "Carnitas street tacos", "cuisine": "Mexican", "minutes": 15, "serves": "1", "protein": 40, "equip": "cast iron", "ingredients": [
-      {"h": "carnitas", "qty": "1 portion, thawed"}, {"h": "tortillas", "qty": "4"}, {"g": "onion", "qty": "¼, finely diced"}, {"g": "cilantro", "qty": "a handful"}, {"g": "limes", "qty": "1"}, {"g": "yogurt", "qty": "2 tbsp"}, {"p": "salt", "qty": "a pinch"}],
-      "steps": ["Crisp the carnitas in the hot cast iron with a splash of its juices, 4 to 5 minutes without stirring.", "Warm the tortillas in the dry pan for 30 seconds a side.", "Stir a squeeze of lime and a pinch of salt into the yogurt.", "Fill with carnitas, onion and cilantro, then finish with lime and the yogurt."]},
-    "freezer-chili": {"name": "Turkey chili from the freezer", "cuisine": "American", "minutes": 5, "serves": "2 lunches", "protein": 38, "equip": "microwave", "ingredients": [
-      {"h": "chili", "qty": "1 bowl each"}, {"g": "cheddar", "qty": "2 tbsp each"}, {"g": "greenonion", "qty": "for topping"}, {"g": "yogurt", "qty": "a spoonful each"}],
-      "steps": ["Move both bowls from the freezer to the fridge the night before.", "Microwave 3 to 4 minutes, stirring halfway.", "Top with cheese, green onion and a spoon of yogurt."]},
-    "carnitas-fried-rice": {"name": "Carnitas fried rice", "cuisine": "Asian", "minutes": 15, "serves": "1", "protein": 45, "equip": "cast iron or large skillet", "ingredients": [
-      {"h": "carnitas", "qty": "1 portion, thawed"}, {"g": "rice", "qty": "1½ cups cooked, cold"}, {"g": "eggs", "qty": "2"}, {"g": "peas", "qty": "1 cup"}, {"g": "garlic", "qty": "2 cloves, minced"}, {"g": "greenonion", "qty": "2, sliced"}, {"p": "soy", "qty": "2 tbsp"}, {"p": "sesame", "qty": "1 tsp"}, {"p": "oil", "qty": "1 tbsp"}],
-      "steps": ["Crisp the carnitas in the hot pan with the oil for 3 minutes, then push it to the side.", "Scramble the eggs in the empty space and break them up.", "Add the garlic and peas for 1 minute, then the cold rice. Press it flat and let it crisp 2 minutes.", "Toss with the soy sauce, sesame oil and green onions."], "tip": "Cold rice from Sunday fries best. Quick dinner after Thursday pickleball."},
-    "peruvian-chicken": {"name": "Peruvian chicken with green sauce", "cuisine": "Peruvian", "minutes": 35, "serves": "3", "protein": 42, "equip": "air fryer or sheet pan", "isNew": true, "ingredients": [
-      {"g": "thighs", "qty": "2 lb"}, {"g": "limes", "qty": "juice of 3"}, {"g": "garlic", "qty": "5 cloves, grated"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "2 tsp"}, {"p": "oregano", "qty": "1 tsp"}, {"p": "soy", "qty": "1 tbsp"}, {"p": "oil", "qty": "2 tbsp"}, {"p": "salt", "qty": "1 tsp"}, {"p": "pepper", "qty": "½ tsp"}, {"g": "cilantro", "qty": "1 bunch"}, {"g": "jalapeno", "qty": "2, seeded"}, {"g": "feta", "qty": "¼ cup"}, {"g": "yogurt", "qty": "½ cup"}, {"h": "sweetpot", "qty": "2 medium, in wedges"}],
-      "steps": ["Mix the juice of 2 limes, 4 garlic cloves, the spices, soy sauce, 1 tbsp oil and the salt. Coat the chicken and marinate 30 minutes or all day.", "For the green sauce, blend or finely chop the cilantro, jalapeños, feta, yogurt, the last garlic clove and the juice of 1 lime. Salt to taste.", "Toss the sweet potato wedges with the rest of the oil and a pinch of salt. Air-fry at 400°F for 15 minutes.", "Air-fry the chicken at 380°F for 18 to 20 minutes, or roast at 425°F for 25, until charred at the edges.", "Serve with the wedges and plenty of green sauce."], "tip": "This week's new one, and a dinner for two. The green sauce is the star, and it is great on everything."},
+      "steps": ["Stir the yogurt, ketchup, mustard and pickle brine together for the sauce.", "Heat the cast iron until very hot. Add the beef balls with a slice of onion on each and smash them flat.", "Season and cook 2 minutes until crusty, flip, add cheese and cook 1 minute more.", "Pile romaine, tomatoes and pickles into bowls, top with the patties and drizzle with sauce."], "tip": "Burger night for two."},
     "chicken-fajitas": {"name": "Sheet-pan chicken fajitas", "cuisine": "Mexican", "minutes": 30, "serves": "2 to 3", "protein": 45, "equip": "sheet pan", "ingredients": [
       {"g": "chicken", "qty": "1.5 lb, in strips"}, {"g": "peppers", "qty": "2, in strips"}, {"g": "onion", "qty": "1, in strips"}, {"p": "chili", "qty": "2 tsp"}, {"p": "cumin", "qty": "1 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "garlicpowder", "qty": "1 tsp"}, {"p": "salt", "qty": "1 tsp"}, {"p": "oil", "qty": "2 tbsp"}, {"g": "limes", "qty": "1"}, {"h": "tortillas", "qty": "8"}, {"g": "cheddar", "qty": "for topping"}, {"g": "yogurt", "qty": "for topping"}, {"g": "avocados", "qty": "2, sliced"}, {"g": "cilantro", "qty": "for topping"}],
-      "steps": ["Heat the oven to 425°F.", "Toss the chicken, peppers and onion with the oil and spices on a sheet pan in one layer.", "Roast 18 to 20 minutes, then switch to broil for 2 minutes to char the edges.", "Squeeze the lime over everything.", "Warm the tortillas and set out cheese, yogurt, avocado and cilantro so everyone builds their own."], "tip": "Dinner for two."}
+      "steps": ["Heat the oven to 425°F.", "Toss the chicken, peppers and onion with the oil and spices on a sheet pan in one layer.", "Roast 18 to 20 minutes, then broil 2 minutes to char the edges.", "Squeeze the lime over everything.", "Warm the tortillas and set out cheese, yogurt, avocado and cilantro so everyone builds their own."], "tip": "Dinner for two."}
   }
 }

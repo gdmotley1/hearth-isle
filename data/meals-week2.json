@@ -2,9 +2,10 @@
   "week": 2,
   "title": "Week 2",
   "budget": 200,
+  "style": "batch",
   "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax. This week is lighter because it uses up what is left from week 1.",
   "allergyNote": "Nothing on this plan contains tree nuts or fish. Peanut butter and hummus are often made in plants that also handle tree nuts. If your allergy is strict, check the labels for a 'may contain tree nuts' line.",
-  "weekendNote": "Festival days. Leftovers waiting for you: a portion of tikka masala and two bowls of chili in the freezer. Two carnitas portions are still frozen from week 1.",
+  "weekendNote": "Festival days. Leftovers waiting for you: a portion of tikka masala and one bowl of chili. Two chili bowls and two carnitas portions stay frozen for week 3.",
   "snacks": ["Hummus with cucumber and pepper strips", "Cottage cheese with berries", "Apple with peanut butter", "2 hard-boiled eggs", "String cheese and a banana"],
   "have": [
     {"id": "rice", "name": "Jasmine rice", "note": "about half the bag"},
@@ -18,34 +19,32 @@
     {"id": "garlic", "name": "Garlic", "note": "about a bulb left"}
   ],
   "menu": {
-    "mon": {"breakfast": "pb-oats", "lunch": "shawarma-bowl", "dinner": "carnitas-quesadillas", "heads": "Move one carnitas portion from the freezer to the fridge Sunday night."},
-    "tue": {"breakfast": "breakfast-tacos", "lunch": "shawarma-bowl", "dinner": "sheetpan-sausage"},
-    "wed": {"breakfast": "pb-oats", "lunch": "shawarma-bowl", "dinner": "turkey-chili", "shared": "dinner", "heads": "Start the chili in the crock pot this morning."},
-    "thu": {"breakfast": "breakfast-tacos", "lunch": "turkey-chili", "dinner": "sheetpan-sausage", "heads": "Leftover night: reheat the second sheet-pan portion after pickleball."},
-    "fri": {"breakfast": "pb-oats", "lunch": "turkey-chili", "dinner": "tikka-masala", "shared": "dinner"}
+    "mon": {"breakfast": "pb-oats", "lunch": "shawarma-bowl", "dinner": "carnitas-quesadillas", "heads": "Lunch comes straight from Sunday's prep. Dinner uses the carnitas you moved to the fridge Sunday night."},
+    "tue": {"breakfast": "breakfast-tacos", "lunch": "shawarma-bowl", "dinner": "shawarma-wraps"},
+    "wed": {"breakfast": "pb-oats", "lunch": "chili-lunch", "dinner": "chili-night", "shared": "dinner", "heads": "Tonight, move Friday's chili bowl from the freezer to the fridge."},
+    "thu": {"breakfast": "breakfast-tacos", "lunch": "shawarma-bowl", "dinner": "chili-mac", "heads": "Tonight, marinate the tikka chicken for tomorrow. Five minutes."},
+    "fri": {"breakfast": "pb-oats", "lunch": "chili-lunch", "dinner": "tikka-masala", "shared": "dinner"}
   },
   "prep": [
-    {"id": "sun", "day": "sun", "title": "Sunday prep", "minutes": 75, "makes": "3 shawarma bowl lunches, 3 jars of overnight oats, 6 hard-boiled eggs", "steps": [
-      "Heat the oven to 425°F. Marinate the chicken thighs in the yogurt and spices while it heats.",
-      "Cook 1½ cups of rice.",
-      "Roast the shawarma chicken for 22 to 25 minutes.",
-      "Air-fry 6 eggs at 270°F for 15 minutes, then move them to ice water.",
-      "Quick-pickle half the red onion in lemon juice and salt. Chop the cucumber and tomatoes.",
-      "Mix 3 jars of peanut butter banana overnight oats.",
-      "Slice the chicken and pack 3 bowls. Keep the salad and sauce in their own containers.",
+    {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 90, "makes": "8 bowls of turkey chili, 4 portions of shawarma chicken, a tray of roasted vegetables, garlic yogurt sauce, rice, 3 jars of oats, 6 eggs", "steps": [
+      "Brown the turkey for 6 minutes and start the chili in the crock pot (low 7 to 8 hours or high 4).",
+      "Heat the oven to 425°F. Coat the chicken thighs in the shawarma marinade.",
+      "Roast the chicken on one sheet pan and the vegetables on another for 22 to 25 minutes.",
+      "Cook 2 cups of rice.",
+      "Make the garlic yogurt sauce. Quick-pickle half a red onion in lemon and salt, and chop the cucumber and tomatoes.",
+      "Mix 3 jars of overnight oats. Air-fry 6 eggs at 270°F for 15 minutes.",
+      "Slice the chicken. Pack 3 shawarma bowls and keep 1 portion of chicken and a cup of vegetables for Tuesday's wraps.",
+      "When the chili is done, keep 4 bowls in the fridge and freeze 3: one for Friday and two for week 3.",
       "Move one carnitas portion from the freezer to the fridge for Monday."
     ]},
-    {"id": "wed", "day": "wed", "title": "Wednesday morning", "minutes": 15, "makes": "Chili for two tonight, Thursday and Friday lunches, 2 freezer bowls", "steps": [
-      "Brown the turkey in a skillet for 6 minutes.",
-      "Add it to the crock pot with the sweet potatoes, onion, garlic, beans, tomatoes, broth and spices.",
-      "Set it on low for 7 to 8 hours and head out.",
-      "Tonight, air-fry tortilla strips for the topping."
+    {"id": "thu", "day": "thu", "title": "Thursday night", "minutes": 5, "makes": "Marinated chicken for Friday's tikka masala", "steps": [
+      "Toss the chicken pieces with the yogurt, 2 tsp garam masala, the paprika and ½ tsp salt.",
+      "Cover and refrigerate until tomorrow's dinner."
     ]}
   ],
   "groceries": [
-    {"id": "thighs", "name": "Boneless skinless chicken thighs", "qty": "about 3.5 lb (family pack)", "section": "Meat", "store": "Aldi", "price": 10.99},
+    {"id": "thighs", "name": "Boneless skinless chicken thighs", "qty": "about 4 lb (family pack)", "section": "Meat", "store": "Aldi", "price": 11.99},
     {"id": "turkey", "name": "Lean ground turkey 93/7", "qty": "2 lb (two 1 lb packs)", "section": "Meat", "store": "Aldi", "price": 8.98},
-    {"id": "sausage", "name": "Chicken sausage links", "qty": "12 oz pack (4 links)", "section": "Meat", "store": "Aldi", "price": 3.99},
     {"id": "eggs", "name": "Large eggs", "qty": "1 dozen", "section": "Dairy and eggs", "store": "Aldi", "price": 3.09},
     {"id": "yogurt", "name": "Plain nonfat Greek yogurt", "qty": "two 32 oz tubs", "section": "Dairy and eggs", "store": "Aldi", "price": 8.58},
     {"id": "milk", "name": "2% milk", "qty": "half gallon", "section": "Dairy and eggs", "store": "Aldi", "price": 1.89},
@@ -56,7 +55,7 @@
     {"id": "apples", "name": "Apples", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 3.99},
     {"id": "peppers", "name": "Bell peppers", "qty": "3-pack", "section": "Produce", "store": "Aldi", "price": 2.99},
     {"id": "redonion", "name": "Red onions", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.78},
-    {"id": "potatoes", "name": "Baby potatoes", "qty": "1.5 lb bag", "section": "Produce", "store": "Aldi", "price": 2.99},
+    {"id": "zucchini", "name": "Zucchini", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.99},
     {"id": "sweetpot", "name": "Sweet potatoes", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 2.99},
     {"id": "cucumber", "name": "Cucumbers", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.38},
     {"id": "tomatoes", "name": "Grape tomatoes", "qty": "1 pint", "section": "Produce", "store": "Aldi", "price": 2.29},
@@ -72,7 +71,8 @@
     {"id": "tomsauce", "name": "Tomato sauce", "qty": "15 oz can", "section": "Shelf", "store": "Aldi", "price": 0.69},
     {"id": "coconut", "name": "Light coconut milk", "qty": "13.5 oz can", "section": "Shelf", "store": "Aldi", "price": 1.29},
     {"id": "broth", "name": "Low-sodium chicken broth", "qty": "32 oz carton", "section": "Shelf", "store": "Aldi", "price": 1.79},
-    {"id": "naan", "name": "Garlic naan", "qty": "2-pack", "section": "Shelf", "store": "Aldi", "price": 2.99},
+    {"id": "naan", "name": "Garlic naan", "qty": "two 2-packs", "section": "Shelf", "store": "Aldi", "price": 5.98},
+    {"id": "macaroni", "name": "Elbow macaroni", "qty": "16 oz box", "section": "Shelf", "store": "Aldi", "price": 0.99},
     {"id": "garam", "name": "Garam masala", "qty": "1 jar", "section": "Shelf", "store": "Publix", "price": 3.99}
   ],
   "pantry": [
@@ -91,32 +91,47 @@
     {"id": "ginger", "name": "Ground ginger"}
   ],
   "recipes": {
+    "turkey-chili": {"name": "Big-batch turkey and sweet potato chili", "cuisine": "Prep", "component": true, "minutes": 15, "serves": "8 bowls", "protein": 38, "equip": "crock pot, skillet", "ingredients": [
+      {"g": "turkey", "qty": "2 lb"}, {"g": "sweetpot", "qty": "2 medium, ½-inch cubes"}, {"h": "onion", "qty": "1, diced"}, {"h": "garlic", "qty": "3 cloves, minced"}, {"g": "beans", "qty": "1 can, rinsed"}, {"g": "kidney", "qty": "1 can, rinsed"}, {"g": "diced", "qty": "28 oz can"}, {"g": "broth", "qty": "1½ cups"}, {"p": "chili", "qty": "2 tbsp"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "oregano", "qty": "1 tsp"}, {"p": "salt", "qty": "1½ tsp"}],
+      "steps": ["Brown the turkey in a skillet for 6 minutes, breaking it up.", "Put everything in the crock pot and stir.", "Cook on low 7 to 8 hours or high 4 hours.", "Keep 4 bowls in the fridge. Freeze 3: one for Friday and two for week 3."], "tip": "One pot that becomes Wednesday's lunch, chili night for two, Thursday's chili mac, Friday's lunch and two lunches in week 3."},
+    "shawarma-chicken": {"name": "Sheet-pan chicken shawarma", "cuisine": "Prep", "component": true, "minutes": 35, "serves": "4 portions", "protein": 45, "equip": "sheet pan", "ingredients": [
+      {"g": "thighs", "qty": "2.5 lb"}, {"g": "yogurt", "qty": "½ cup"}, {"g": "lemons", "qty": "juice of 1"}, {"h": "garlic", "qty": "4 cloves, grated"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "2 tsp"}, {"p": "cinnamon", "qty": "¼ tsp"}, {"p": "salt", "qty": "1½ tsp"}, {"p": "pepper", "qty": "½ tsp"}, {"p": "oil", "qty": "1 tbsp"}],
+      "steps": ["Heat the oven to 425°F and line a sheet pan.", "Stir the yogurt, lemon juice, garlic, spices, salt and oil together and coat the chicken.", "Spread the thighs flat on the pan.", "Roast 22 to 25 minutes, until the edges char.", "Rest 5 minutes, then slice into 4 portions."]},
+    "roast-veg": {"name": "Roasted peppers, zucchini and red onion", "cuisine": "Prep", "component": true, "minutes": 30, "serves": "about 5 cups", "protein": 3, "equip": "sheet pan", "ingredients": [
+      {"g": "peppers", "qty": "2, in strips"}, {"g": "zucchini", "qty": "2, in half-moons"}, {"g": "redonion", "qty": "1, in wedges"}, {"p": "oil", "qty": "2 tbsp"}, {"p": "cumin", "qty": "½ tsp"}, {"p": "salt", "qty": "1 tsp"}],
+      "steps": ["Toss everything with the oil, cumin and salt.", "Roast on a sheet pan at 425°F for 22 to 25 minutes, alongside the chicken.", "Cool and store in one container."]},
+    "garlic-yogurt": {"name": "Garlic yogurt sauce", "cuisine": "Prep", "component": true, "minutes": 10, "serves": "about 1½ cups", "protein": 8, "equip": "bowl, grater", "ingredients": [
+      {"g": "yogurt", "qty": "1 cup"}, {"g": "cucumber", "qty": "½, grated and squeezed dry"}, {"h": "garlic", "qty": "1 clove, grated"}, {"g": "lemons", "qty": "juice of ½"}, {"p": "dill", "qty": "1 tsp"}, {"p": "salt", "qty": "½ tsp"}],
+      "steps": ["Squeeze the grated cucumber in a towel until dry.", "Stir it into the yogurt with the garlic, lemon, dill and salt.", "Keep in a jar. It is good for 5 days."]},
     "pb-oats": {"name": "Peanut butter banana overnight oats", "cuisine": "Breakfast", "minutes": 10, "serves": "3 jars", "protein": 25, "equip": "3 jars or containers", "ingredients": [
       {"h": "oats", "qty": "1½ cups (½ per jar)"}, {"g": "milk", "qty": "1½ cups"}, {"g": "yogurt", "qty": "1½ cups"}, {"h": "pb", "qty": "3 tbsp"}, {"g": "bananas", "qty": "2 (1 mashed, 1 sliced)"}, {"h": "honey", "qty": "1 tbsp"}, {"p": "cinnamon", "qty": "1 tsp"}, {"p": "salt", "qty": "a pinch"}],
-      "steps": ["Mash one banana in a bowl and stir in the milk, yogurt, peanut butter, honey, cinnamon and salt.", "Stir in the oats.", "Split across 3 jars and top with the sliced banana.", "Refrigerate overnight. They keep 4 days. Eat cold or microwave 60 seconds."]},
+      "steps": ["Mash one banana in a bowl and stir in the milk, yogurt, peanut butter, honey, cinnamon and salt.", "Stir in the oats.", "Split across 3 jars and top with the sliced banana.", "Refrigerate overnight. They keep 4 days."]},
     "breakfast-tacos": {"name": "Black bean breakfast tacos", "cuisine": "Breakfast", "minutes": 10, "serves": "1", "protein": 28, "equip": "skillet", "ingredients": [
       {"g": "eggs", "qty": "3"}, {"h": "tortillas", "qty": "3"}, {"g": "beans", "qty": "½ can, rinsed"}, {"g": "spinach", "qty": "a handful"}, {"g": "mexcheese", "qty": "2 tbsp"}, {"g": "salsa", "qty": "2 tbsp"}, {"p": "spray", "qty": "for the pan"}, {"p": "salt", "qty": "a pinch"}],
       "steps": ["Warm the tortillas in a dry skillet, then wrap them in a towel.", "Spray the skillet and wilt the spinach with the beans for 1 minute.", "Add the whisked eggs and salt and scramble gently until just set.", "Fill the tortillas and top with cheese and salsa."], "tip": "Good fuel before Tuesday and Thursday pickleball."},
     "hb-eggs": {"name": "Air-fryer hard-boiled eggs", "cuisine": "Snack", "minutes": 20, "serves": "6 eggs", "protein": 6, "equip": "air fryer", "ingredients": [
       {"g": "eggs", "qty": "6"}, {"p": "salt", "qty": "for serving"}],
       "steps": ["Put the eggs straight into the air fryer basket.", "Cook at 270°F for 15 minutes.", "Move them to a bowl of ice water for 5 minutes, then refrigerate."]},
-    "shawarma-chicken": {"name": "Sheet-pan chicken shawarma", "cuisine": "Mediterranean", "minutes": 35, "serves": "3 portions", "protein": 45, "equip": "sheet pan", "ingredients": [
-      {"g": "thighs", "qty": "2 lb"}, {"g": "yogurt", "qty": "½ cup"}, {"g": "lemons", "qty": "juice of 1"}, {"h": "garlic", "qty": "4 cloves, grated"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "2 tsp"}, {"p": "cinnamon", "qty": "¼ tsp"}, {"p": "salt", "qty": "1½ tsp"}, {"p": "pepper", "qty": "½ tsp"}, {"p": "oil", "qty": "1 tbsp"}],
-      "steps": ["Heat the oven to 425°F and line a sheet pan.", "Stir the yogurt, lemon juice, garlic, spices, salt and oil together and coat the chicken.", "Spread the thighs flat on the pan.", "Roast 22 to 25 minutes, until the edges char.", "Rest 5 minutes, then slice."]},
-    "shawarma-bowl": {"name": "Chicken shawarma bowl", "cuisine": "Mediterranean", "minutes": 15, "serves": "3 lunches", "protein": 48, "equip": "none", "ingredients": [
-      {"r": "shawarma-chicken", "qty": "1 portion each"}, {"h": "rice", "qty": "¾ cup cooked each"}, {"g": "spinach", "qty": "a handful each"}, {"g": "cucumber", "qty": "1, diced"}, {"g": "tomatoes", "qty": "1 pint, halved"}, {"g": "redonion", "qty": "½, quick-pickled"}, {"g": "hummus", "qty": "2 tbsp each"}, {"g": "yogurt", "qty": "½ cup"}, {"g": "lemons", "qty": "1"}, {"p": "dill", "qty": "½ tsp"}, {"p": "salt", "qty": "to taste"}],
-      "steps": ["Quick-pickle the red onion in half the lemon juice and a pinch of salt for 15 minutes.", "Toss the cucumber and tomatoes with a squeeze of lemon and salt.", "Stir the yogurt with the remaining lemon, dill and salt for the sauce.", "Build each bowl on spinach and rice with chicken, salad, onions and a scoop of hummus. Pack the sauce on the side."]},
+    "shawarma-bowl": {"name": "Chicken shawarma bowl", "cuisine": "Mediterranean", "minutes": 5, "serves": "3 lunches", "protein": 48, "equip": "none", "ingredients": [
+      {"r": "shawarma-chicken", "qty": "1 portion each"}, {"r": "roast-veg", "qty": "1 cup each"}, {"r": "garlic-yogurt", "qty": "3 tbsp each"}, {"h": "rice", "qty": "¾ cup cooked each"}, {"g": "spinach", "qty": "a handful each"}, {"g": "cucumber", "qty": "1, diced"}, {"g": "tomatoes", "qty": "1 pint, halved"}, {"g": "redonion", "qty": "½, quick-pickled"}, {"g": "hummus", "qty": "2 tbsp each"}, {"g": "lemons", "qty": "a squeeze"}, {"p": "salt", "qty": "a pinch"}],
+      "steps": ["Toss the cucumber and tomatoes with a squeeze of lemon and a pinch of salt.", "Build each bowl on spinach and rice with chicken, roasted vegetables, salad, pickled onion and hummus.", "Pack the garlic yogurt on the side."], "tip": "Built from Sunday's chicken, vegetables and sauce. Eat the third one by Thursday."},
+    "shawarma-wraps": {"name": "Shawarma naan wraps", "cuisine": "Mediterranean", "minutes": 10, "serves": "1 (2 wraps)", "protein": 45, "equip": "skillet", "ingredients": [
+      {"r": "shawarma-chicken", "qty": "1 portion"}, {"r": "roast-veg", "qty": "1 cup"}, {"r": "garlic-yogurt", "qty": "3 tbsp"}, {"g": "naan", "qty": "2"}, {"g": "hummus", "qty": "2 tbsp"}, {"g": "spinach", "qty": "a handful"}],
+      "steps": ["Warm the chicken and vegetables in a skillet for 3 minutes.", "Warm the naan in the same pan for 30 seconds a side.", "Spread with hummus, add spinach, chicken and vegetables, then spoon on the garlic yogurt and fold."], "tip": "Ten minutes after Tuesday pickleball, all from Sunday's prep."},
     "carnitas-quesadillas": {"name": "Carnitas and pepper quesadillas", "cuisine": "Mexican", "minutes": 20, "serves": "1 (2 quesadillas)", "protein": 45, "equip": "cast iron", "ingredients": [
       {"h": "carnitas", "qty": "1 portion, thawed"}, {"h": "tortillas", "qty": "4"}, {"g": "mexcheese", "qty": "½ cup"}, {"g": "peppers", "qty": "1, sliced"}, {"h": "onion", "qty": "½, sliced"}, {"g": "salsa", "qty": "for dipping"}, {"g": "yogurt", "qty": "2 tbsp"}, {"g": "cilantro", "qty": "a little"}],
-      "steps": ["Sear the pepper and onion in the dry cast iron for 5 minutes, then crisp the carnitas alongside for 3 minutes.", "Lay 2 tortillas in the pan, add cheese, the filling, more cheese and the top tortillas.", "Press with a spatula and cook 2 to 3 minutes a side until crisp and melted.", "Cut into quarters and serve with salsa, yogurt and cilantro."], "tip": "Free dinner from last week's freezer. Two carnitas portions are still frozen."},
-    "sheetpan-sausage": {"name": "Sheet-pan chicken sausage and potatoes", "cuisine": "American", "minutes": 35, "serves": "2", "protein": 28, "equip": "sheet pan", "ingredients": [
-      {"g": "sausage", "qty": "4 links, sliced"}, {"g": "potatoes", "qty": "1.5 lb, halved"}, {"g": "peppers", "qty": "2, in chunks"}, {"g": "redonion", "qty": "1, in wedges"}, {"p": "oil", "qty": "1½ tbsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "italian", "qty": "1 tsp"}, {"p": "garlicpowder", "qty": "½ tsp"}, {"p": "salt", "qty": "½ tsp"}, {"p": "pepper", "qty": "to taste"}],
-      "steps": ["Heat the oven to 425°F.", "Toss the potatoes with half the oil and seasoning and roast 12 minutes.", "Add the sausage, peppers and onion with the rest of the oil and seasoning.", "Roast 15 to 18 minutes more, until the potatoes are crisp.", "Pack half for Thursday."], "tip": "Add a cottage cheese cup on the side to push past 40g of protein."},
-    "turkey-chili": {"name": "Crock-pot turkey and sweet potato chili", "cuisine": "American", "minutes": 15, "serves": "6", "protein": 38, "equip": "crock pot, skillet, air fryer", "ingredients": [
-      {"g": "turkey", "qty": "2 lb"}, {"g": "sweetpot", "qty": "2 medium, ½-inch cubes"}, {"h": "onion", "qty": "1, diced"}, {"h": "garlic", "qty": "3 cloves, minced"}, {"g": "beans", "qty": "1 can, rinsed"}, {"g": "kidney", "qty": "1 can, rinsed"}, {"g": "diced", "qty": "28 oz can"}, {"g": "broth", "qty": "1 cup"}, {"p": "chili", "qty": "2 tbsp"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "oregano", "qty": "1 tsp"}, {"p": "salt", "qty": "1½ tsp"}, {"g": "mexcheese", "qty": "for topping"}, {"g": "yogurt", "qty": "for topping"}, {"g": "greenonion", "qty": "sliced, for topping"}, {"g": "cilantro", "qty": "for topping"}, {"h": "tortillas", "qty": "3, cut in strips"}],
-      "steps": ["Brown the turkey in a skillet for 6 minutes, breaking it up.", "Put everything except the toppings and tortillas in the crock pot and stir.", "Cook on low 7 to 8 hours or high 4 hours.", "For crunchy strips, spray the tortilla strips and air-fry at 380°F for 5 to 6 minutes.", "Top bowls with cheese, yogurt, green onion, cilantro and strips. Freeze 2 bowls."], "tip": "Dinner for two tonight, lunch Thursday and Friday."},
+      "steps": ["Sear the pepper and onion in the dry cast iron for 5 minutes, then crisp the carnitas alongside for 3 minutes.", "Lay 2 tortillas in the pan, add cheese, the filling, more cheese and the top tortillas.", "Press with a spatula and cook 2 to 3 minutes a side until crisp and melted.", "Cut into quarters and serve with salsa, yogurt and cilantro."], "tip": "Free dinner from last week's freezer. Two carnitas portions stay frozen for week 3."},
+    "chili-lunch": {"name": "Turkey chili lunch bowl", "cuisine": "American", "minutes": 5, "serves": "1", "protein": 38, "equip": "microwave", "ingredients": [
+      {"r": "turkey-chili", "qty": "1 bowl"}, {"g": "mexcheese", "qty": "2 tbsp"}, {"g": "greenonion", "qty": "for topping"}, {"g": "yogurt", "qty": "a spoonful"}],
+      "steps": ["Microwave the chili 3 minutes, stirring halfway.", "Top with cheese, green onion and a spoon of yogurt."]},
+    "chili-night": {"name": "Chili night with a toppings bar", "cuisine": "American", "minutes": 15, "serves": "2", "protein": 40, "equip": "pot, air fryer", "ingredients": [
+      {"r": "turkey-chili", "qty": "2 bowls"}, {"h": "tortillas", "qty": "3, cut in strips"}, {"g": "mexcheese", "qty": "for topping"}, {"g": "yogurt", "qty": "for topping"}, {"g": "greenonion", "qty": "sliced"}, {"g": "cilantro", "qty": "chopped"}, {"p": "spray", "qty": "for the strips"}],
+      "steps": ["Warm the chili in a pot.", "Spray the tortilla strips and air-fry at 380°F for 5 to 6 minutes until crunchy.", "Set out the cheese, yogurt, green onion, cilantro and strips so everyone tops their own."], "tip": "Dinner for two from Sunday's pot."},
+    "chili-mac": {"name": "Turkey chili mac", "cuisine": "American", "minutes": 15, "serves": "1", "protein": 44, "equip": "pot", "ingredients": [
+      {"r": "turkey-chili", "qty": "1 bowl"}, {"g": "macaroni", "qty": "3 oz"}, {"g": "mexcheese", "qty": "¼ cup"}, {"g": "greenonion", "qty": "for topping"}],
+      "steps": ["Boil the macaroni in salted water and drain.", "Stir in the chili and warm through.", "Fold in the cheese until melty and top with green onion."], "tip": "Comfort food after Thursday pickleball, from Sunday's pot."},
     "tikka-masala": {"name": "Chicken tikka masala", "cuisine": "Indian", "minutes": 35, "serves": "3", "protein": 40, "equip": "cast iron or deep skillet", "isNew": true, "ingredients": [
       {"g": "thighs", "qty": "1.5 lb, bite-size pieces"}, {"g": "yogurt", "qty": "½ cup"}, {"g": "garam", "qty": "4 tsp, divided"}, {"p": "cumin", "qty": "1 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "salt", "qty": "1¼ tsp"}, {"h": "onion", "qty": "1, diced"}, {"h": "garlic", "qty": "4 cloves, minced"}, {"p": "ginger", "qty": "1 tsp"}, {"g": "tomsauce", "qty": "15 oz can"}, {"g": "coconut", "qty": "1 can"}, {"h": "rice", "qty": "1 cup cooked each"}, {"g": "naan", "qty": "2"}, {"g": "cilantro", "qty": "to finish"}, {"p": "oil", "qty": "1 tbsp"}],
-      "steps": ["Toss the chicken with the yogurt, 2 tsp garam masala, the paprika and ½ tsp salt. Let it sit 15 minutes, or all day in the fridge.", "Start the rice. Sear the chicken in the oil over high heat for 5 minutes and set it aside. It does not need to cook through.", "Cook the onion in the same pan for 5 minutes, then add the garlic, ginger, cumin and the rest of the garam masala for 1 minute.", "Add the tomato sauce and simmer 5 minutes, then stir in the coconut milk.", "Return the chicken and simmer 10 minutes until thick. Salt to taste.", "Warm the naan and serve over rice with cilantro."], "tip": "This week's new one. Coconut milk stands in for cream, so it stays lighter."}
+      "steps": ["The chicken marinated last night in the yogurt, 2 tsp garam masala, the paprika and ½ tsp salt.", "Start the rice. Sear the chicken in the oil over high heat for 5 minutes and set it aside.", "Cook the onion in the same pan for 5 minutes, then add the garlic, ginger, cumin and the rest of the garam masala for 1 minute.", "Add the tomato sauce and simmer 5 minutes, then stir in the coconut milk.", "Return the chicken and simmer 10 minutes until thick. Salt to taste.", "Warm the naan and serve over rice with cilantro."], "tip": "This week's new one, and a dinner for two. Coconut milk stands in for cream, so it stays lighter."}
   }
 }
