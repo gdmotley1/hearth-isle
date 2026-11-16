@@ -121,11 +121,11 @@ function dayProgress(date){
 }
 function unlockState(all = Store.totals().all){
   const list = Isle.unlocks();
-  const nextI = list.findIndex(u => u.th * PTS_PER_STAGE > all + 1e-9);
+  const nextI = list.findIndex(u => Store.thToPts(u.th) > all + 1e-9);
   const next = nextI < 0 ? null : list[nextI];
-  const prevPts = nextI > 0 ? list[nextI - 1].th * PTS_PER_STAGE : 0;
-  return {list, next, nextI, built:(nextI < 0 ? list.length : nextI), prevPts, need:next ? Math.ceil(next.th * PTS_PER_STAGE - all) : 0,
-    pct:next ? Math.max(0, Math.min(100, (all - prevPts) / (next.th * PTS_PER_STAGE - prevPts) * 100)) : 100};
+  const prevPts = nextI > 0 ? Store.thToPts(list[nextI - 1].th) : 0;
+  return {list, next, nextI, built:(nextI < 0 ? list.length : nextI), prevPts, need:next ? Math.ceil(Store.thToPts(next.th) - all) : 0,
+    pct:next ? Math.max(0, Math.min(100, (all - prevPts) / (Store.thToPts(next.th) - prevPts) * 100)) : 100};
 }
 
 /* ---------------- feedback ---------------- */
@@ -322,6 +322,7 @@ function rerender(){ const y = view.scrollTop; route(true); view.scrollTop = y; 
 /* ---------------- island ---------------- */
 function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id = 'h'){
   const live = id === 'h';
+  if (live) zoom = ISLE_ZOOM;
   const r = Isle.isoScene(prog, Isle.PAL_B, id, {live});
   const box = svg.getBoundingClientRect();
   const w = 2 * r.W * zoom, h = w * (box.height / Math.max(1, box.width));
@@ -343,39 +344,40 @@ function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id 
   newcomer = false;
 }
 let scene = null;
-const ROLES = ['builder','farmer','stonemason','scout','lamplighter','cook','gardener','boatwright','weaver','baker'];
-const DOING = {walk:'out for a walk', sit:'warming up by the fire', tend:'tending the crops', idle:'taking a breather', home:'at home'};
-function settlerStory(i, st){
-  const role = ROLES[i % ROLES.length], ds = Store.ymd(today()), hour = today().getHours();
+// The home island is drawn larger than it fits: the village fills the screen and the shore runs off the sides.
+const ISLE_ZOOM = .74;
+function settlerStory(i, st, role){
+  const ds = Store.ymd(today()), hour = today().getHours();
   const done = new Set(Store.state.log.filter(e => e.date === ds).map(e => e.res));
   const u = unlockState(), g = Store.gardens();
   const line = {
-    builder: u.next ? `Next up is ${BUILD[u.next.t]}. ${plural(u.need, 'more point')} and I start.` : 'Everything is built. I am drawing plans for season two.',
-    farmer: done.has('harvest') ? 'The fields loved that home-cooked meal. Sprouts by morning.' : 'The fields are waiting on a home-cooked meal.',
-    stonemason: done.has('stone') ? 'Good stone today. Your dumbbell work fills the quarry.' : 'The quarry is quiet. A lifting session refills it.',
+    storyteller: done.size ? 'You gave us a good day to talk about tonight.' : 'Every point you earn becomes a story we tell by this fire.',
+    woodcutter: done.has('stone') ? 'Strong day. Your lifting keeps the woodpile high.' : 'A lifting session keeps the woodpile high.',
     scout: done.has('land') ? 'I walked the trail you opened today. It goes further now.' : 'New paths open when you walk. I will be by the shore.',
-    lamplighter: hour >= 18 || hour < 5 ? 'Seven hours of sleep tonight and the lanterns burn brighter tomorrow.' : 'I light the lanterns at dusk. Sleep well and there is more oil.',
-    cook: 'Whatever you cook tonight, I am cooking it here too.',
-    gardener: `The Hanging Gardens are at ${g.pct} percent. ${g.label}.`,
-    boatwright: `The boat brings someone new every 45 points. ${Store.settlers()} of us so far.`,
-    weaver: 'Weekends are festival days here. Nothing is required, and anything you do still builds.',
-    baker: done.size >= 3 ? 'Busy day for you. Bread for everyone tonight.' : 'Slow morning on the island. The ovens are warm.'
-  }[role];
-  return {title:SETTLERS[i % SETTLERS.length], sub:`${role} · ${DOING[st] || 'about'}`, line};
+    farmer: done.has('harvest') ? 'The fields loved that home-cooked meal. Sprouts by morning.' : 'The fields are waiting on a home-cooked meal.',
+    builder: u.next ? `Next up is ${BUILD[u.next.t]}. ${plural(u.need, 'more point')} and I start.` : 'Everything is built. I am drawing plans for season two.',
+    gardener: `The Hanging Gardens are finished. ${Store.settlers()} of us live here now.`,
+    merchant: done.has('harvest') ? 'Shelves are full today. Home cooking keeps the stall busy.' : 'The stall trades in what you cook. Cook at home and it fills up.',
+    'water carrier': done.has('spirit') ? 'Fresh water and a rested village. Good sleep makes the hill easy.' : 'A good night of sleep makes the walk to the well easy.',
+    lookout: `From up here I can count ${u.built} buildings. ${u.next ? `${BUILD_T[u.next.t]} is next.` : 'Nothing left to build.'}`,
+    miller: done.has('harvest') ? 'The mill is turning. Your meals keep the grain coming.' : 'The mill grinds what the fields grow. Keep cooking at home.',
+    lamplighter: hour >= 18 || hour < 5 ? 'Seven hours of sleep tonight and the lanterns burn brighter tomorrow.' : 'I light the lanterns at dusk. Sleep well and there is more oil.'
+  }[role] || `The Hanging Gardens are at ${g.pct} percent.`;
+  return {title:SETTLERS[i % SETTLERS.length], sub:`${role || 'settler'} · ${st || 'about'}`, line};
 }
 function buildingStory(k, t){
   if (t === 'gardens'){ const g = Store.gardens(); return {title:'Hanging Gardens', sub:`${g.label} · ${g.pct}%`, line:'The first Wonder. Every point you earn adds stone, soil and vines.'}; }
   const base = {fire:['The first campfire', 'Lit the night the settlers landed.'], tent:['The first tent', 'Where the first three settlers slept.'], tree:['Old tree', 'It was here before anyone arrived.']};
   const list = Isle.unlocks(), i = list.findIndex(u => u.k === k);
   if (i < 0){ const b = base[t] || ['Island', 'Part of the island.']; return {title:b[0], sub:'Since day one', line:b[1]}; }
-  return {title:BUILD_T[t] || t, sub:`Built by ${SETTLERS[i % SETTLERS.length]}`, line:`Went up at ${Math.round(list[i].th * PTS_PER_STAGE)} points. ${i + 1} of ${list.length} things to build this season.`};
+  return {title:BUILD_T[t] || t, sub:`Built by ${SETTLERS[i % SETTLERS.length]}`, line:`Went up at ${Math.round(Store.thToPts(list[i].th))} points. ${i + 1} of ${list.length} things to build this season.`};
 }
 function worldTap(e){
   const world = e.currentTarget, h = Life.hit(e.clientX, e.clientY, scene ? scene.vis : []);
   $$('.bubble', world).forEach(b => b.remove());
   if (!h){ islandSheet(); return; }
   haptic();
-  const s = h.kind === 'settler' ? settlerStory(h.i, h.st) : buildingStory(h.k, h.t);
+  const s = h.kind === 'settler' ? settlerStory(h.i, h.st, h.role) : buildingStory(h.k, h.t);
   const wr = world.getBoundingClientRect(), b = document.createElement('div');
   b.className = 'bubble';
   b.innerHTML = `<b>${esc(s.title)}</b><span class="over gold">${esc(s.sub)}</span><p>${esc(s.line)}</p>`;
@@ -391,7 +393,7 @@ function islandSheet(){
   sheet(`<div class="grab"></div>
     <div><div class="over gold">Your island</div><h2 class="t2" style="margin-top:8px">Hearth Isle</h2></div>
     <div class="stats3"><div><span class="cap">Settlers</span><b>${Store.settlers()}</b></div><div><span class="cap">Built</span><b>${u.built}<span class="cap"> / ${u.list.length}</span></b></div><div><span class="cap">Gardens</span><b>${g.pct}%</b></div></div>
-    ${upcoming.length ? `<div class="sect"><div class="sect-h"><span class="over">Coming next</span></div><div class="group">${upcoming.map(x => `<div class="row"><span class="tile r-gold">${ic(x.t.startsWith('g') ? 'harvest' : 'house')}</span><span class="tx"><b>${BUILD_T[x.t]}</b><small>${Math.max(0, Math.ceil(x.th * PTS_PER_STAGE - t.all))} points away</small></span></div>`).join('')}</div></div>`
+    ${upcoming.length ? `<div class="sect"><div class="sect-h"><span class="over">Coming next</span></div><div class="group">${upcoming.map(x => `<div class="row"><span class="tile r-gold">${ic(x.t.startsWith('g') ? 'harvest' : 'house')}</span><span class="tx"><b>${BUILD_T[x.t]}</b><small>${Math.max(0, Math.ceil(Store.thToPts(x.th) - t.all))} points away</small></span></div>`).join('')}</div></div>`
       : `<div class="callout">${ic('extra')}<span>Everything this season is built. Season two starts a new Wonder.</span></div>`}
     <p class="fine">Every 45 points brings a new settler. Points come from the four resources: Stone from strength work, Land from walks, runs and pickleball, Harvest from home-cooked meals, and Spirit from sleep and mobility.</p>`);
 }

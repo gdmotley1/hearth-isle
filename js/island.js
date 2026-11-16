@@ -22,7 +22,7 @@ const OBJ=[
  {k:'t1',t:'tree',x:-1,y:-1,s:0},{k:'t2',t:'tree',x:-1,y:1,s:0},
  {k:'g',t:'gardens',x:-3,y:-3,w:2,h:2,s:1},
  {k:'h1',t:'house',x:-2,y:0,s:1,roof:0},{k:'f1',t:'farm',x:2,y:0,s:1},{k:'f2',t:'farm',x:2,y:1,s:1,crop:1},{k:'t4',t:'tree',x:0,y:-2,s:1},
- {k:'h2',t:'house',x:-1,y:2,s:2,roof:1},{k:'h3',t:'house',x:2,y:-2,s:2,roof:2},{k:'well',t:'well',x:1,y:1,s:2},{k:'stall',t:'stall',x:-1,y:0,s:2},
+ {k:'h2',t:'house',x:-1,y:2,s:2,roof:1},{k:'h3',t:'house',x:2,y:-2,s:2,roof:2},{k:'well',t:'well',x:2,y:2,s:2},{k:'stall',t:'stall',x:-1,y:0,s:2},
  {k:'f3',t:'farm',x:3,y:0,s:2,crop:2},{k:'f4',t:'farm',x:3,y:1,s:2},{k:'p1',t:'pine',x:3,y:-2,s:2},{k:'t5',t:'tree',x:-3,y:1,s:2},
  {k:'wm',t:'windmill',x:4,y:2,s:3},{k:'h4',t:'house',x:-3,y:2,s:3,roof:0},{k:'h5',t:'house',x:2,y:3,s:3,roof:1},{k:'tw',t:'tower',x:-4,y:-1,s:3},
  {k:'o1',t:'tree',x:-2,y:4,s:3,fruit:1},{k:'o2',t:'tree',x:-1,y:4,s:3,fruit:1},{k:'o3',t:'tree',x:-3,y:4,s:3,fruit:1},{k:'p5',t:'pine',x:0,y:-4,s:3},
@@ -251,5 +251,5 @@ function unlocks(){
   [[.6,'gfound'],[1.5,'g1'],[2.5,'g2'],[3.6,'g3']].forEach(([th,t])=>list.push({k:t,t,th}));
   return list.sort((x,y)=>x.th-y.th);
 }
-window.Isle={STAGES,isoScene,PAL_B,unlocks,P};
+window.Isle={STAGES,isoScene,PAL_B,unlocks,P,WALK};
 })();

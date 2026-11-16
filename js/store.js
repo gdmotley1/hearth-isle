@@ -48,7 +48,11 @@ function totals(){
   t.all = RES.reduce((a,k) => a + t[k], 0);
   return t;
 }
-const progress = () => Math.min(1, totals().all / SEASON.total);
+// The island grows on a front-loaded curve: early points build more, so weeks 1 and 2 feel rewarding.
+// Raw share of the season 0..1 -> drawn progress 0..1. thToPts turns an unlock threshold (0-4 stages) into points.
+const SHAPE = .72;
+const progress = () => Math.pow(Math.min(1, totals().all / SEASON.total), SHAPE);
+const thToPts = th => SEASON.total * Math.pow(Math.min(1, th / 4), 1 / SHAPE);
 const settlers = () => 3 + Math.floor(totals().all / 45);
 function gardens(){
   const p = progress(), f = p*4;
@@ -96,6 +100,6 @@ function importJSON(txt){ const s = JSON.parse(txt); if (!s || s.v !== 1 || !Arr
 function reset(){ state = fresh(); save(); }
 
 window.Store = {PTS, EXTRA, SEASON, RES, ymd, parse, mondayOf, weekNo, seasonWeek, totals, progress, settlers, gardens,
-  isDone, complete, undo, addExtra, saveSets, lastSets, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
+  isDone, complete, undo, addExtra, saveSets, lastSets, thToPts, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
   get state(){ return state; }};
 })();
