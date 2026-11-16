@@ -12,7 +12,7 @@ const DAYS = ['mon','tue','wed','thu','fri','sat','sun'];
 const DAYN = {mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Friday',sat:'Saturday',sun:'Sunday'};
 const SLOT = {breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner'};
 const RESN = {stone:'Stone',land:'Land',harvest:'Harvest',spirit:'Spirit'};
-const MEAL_WEEKS = [1, 2, 3];
+const MEAL_WEEKS = [1, 2, 3, 4];
 const PTS_PER_STAGE = Store.SEASON.total / 4;
 const SETTLERS = ['Juno','Mira','Tobi','Pell','Wren','Ansel','Ivy','Corin','Bea','Otto','Lark','Fen','Rhea','Sol','Nell','Arlo','Hale','Tess'];
 const BUILD = {house:'a cottage',farm:'a farm plot',tree:'an orchard tree',pine:'a pine grove',well:'the village well',stall:'a market stall',windmill:'the windmill',tower:'the watchtower',
@@ -57,6 +57,7 @@ const P = {
   American:'<path d="M4 11h16v2.5a7.5 7.5 0 0 1-15 0z" transform="translate(.5 0)"/><path d="M3 11h18M9 7.5c0-1.3 1-1.3 1-2.6M13 7.5c0-1.3 1-1.3 1-2.6"/>',
   Indian:'<path d="M3.5 12.5h17a8.5 8.5 0 0 1-17 0z"/><path d="M7 9.5c1.5-1.5 3.5-1.5 5 0s3.5 1.5 5 0M12 4.5v2"/>',
   Peruvian:'<path d="M14.5 5.5c2.5 0 4 1.8 4 4.2 0 4.8-5.6 9.8-11.3 9.8-1.6 0-2.7-.6-2.7-1.6 0-1.3 1.7-1.6 3.4-2.6 3-1.8 3.3-5.3 3.8-7.1.5-1.7 1.2-2.7 2.8-2.7z"/><path d="M14.5 5.5c0-1.2.7-2.2 2-2.7"/>',
+  Prep:'<path d="M12 3.5 21 8l-9 4.5L3 8z"/><path d="M3 12.5l9 4.5 9-4.5M3 16.5l9 4.5 9-4.5"/>',
   Snack:'<path d="M12 7.5c-1-2-3-3-5-2.5-3 1-3.5 4.5-2.5 8 1 3.5 3.5 7 5.5 7 1 0 1.2-.6 2-.6s1 .6 2 .6c2 0 4.5-3.5 5.5-7s.5-7-2.5-8c-2-.5-4 .5-5 2.5z"/><path d="M12 7.5c0-2 1-3.5 2.5-4"/>'
 };
 const ic = (k, cls = 'i') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${P[k] || P.extra}</svg>`;
@@ -546,13 +547,14 @@ function vKitchen(){
   if (!kitchenDay || !D.menu[kitchenDay] && D.menu[td]) kitchenDay = D.menu[td] && !ahead ? td : 'mon';
   const menu = D.menu[kitchenDay], tmenu = ahead ? null : D.menu[td];
   const byCuisine = {};
-  Object.entries(D.recipes).forEach(([id, r]) => (byCuisine[r.cuisine] = byCuisine[r.cuisine] || []).push([id, r]));
+  Object.entries(D.recipes).filter(([, r]) => !r.component).forEach(([id, r]) => (byCuisine[r.cuisine] = byCuisine[r.cuisine] || []).push([id, r]));
   view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)} menu · ${Object.keys(D.recipes).length} recipes</span><h1 class="lt">Kitchen</h1></header>
   <div class="page stagger" style="margin-top:20px">
     ${weekSwitch(wk)}
     ${ahead ? '' : `<section class="sect"><div class="sect-h"><span class="over">${tmenu ? 'Today' : 'This weekend'}</span></div>
       ${tmenu ? `<div class="rail">${Object.keys(SLOT).map(s => mealCard(D, wk, s, tmenu[s], tmenu.shared === s)).join('')}</div>`
         : `<div class="card"><h2 class="t3">Festival days</h2><p class="cap" style="margin:8px 0 0">${esc(D.weekendNote)}</p></div>`}</section>`}
+    ${blocksHTML(D, wk)}
     <section class="sect"><div class="sect-h"><span class="over">Prep sessions</span></div><div class="group">${D.prep.map(p => {
       const n = p.steps.filter((_, i) => Store.flag('prep', `w${wk}:${p.id}:${i}`)).length;
       return `<a class="row tap" href="#prep/${p.id}/${wk}"><span class="tile r-harvest">${ic('calendar')}</span><span class="tx"><b>${esc(p.title)}</b><small>${p.minutes} min · ${n ? `${n} of ${p.steps.length} steps done` : esc(p.makes)}</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}</div></section>
@@ -569,11 +571,21 @@ function vKitchen(){
   wireWeekSwitch();
   $$('.days button', view).forEach(b => b.onclick = () => { kitchenDay = b.dataset.d; rerender(); });
 }
-function ingName(D, i){
+function blocksHTML(D, wk){
+  const blocks = Object.entries(D.recipes).filter(([, r]) => r.component);
+  if (!blocks.length) return '';
+  const meals = Object.values(D.menu).flatMap(m => Object.keys(SLOT).map(s => m[s]));
+  const uses = id => meals.filter(mid => (D.recipes[mid].ingredients || []).some(i => i.r === id)).length;
+  return `<section class="sect"><div class="sect-h"><span class="over">Sunday building blocks</span><span class="cap">cook once, eat all week</span></div><div class="group">${blocks.map(([id, r]) => {
+    const n = uses(id);
+    return `<a class="row tap" href="#recipe/${id}/${wk}"><span class="tile ctile c-Prep">${ic('Prep')}</span><span class="tx"><b>${esc(r.name)}</b><small>${esc(r.serves)}${n ? ` · feeds ${plural(n, 'meal')}` : ''}</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}</div></section>`;
+}
+function ingName(D, i, n){
   if (i.g){ const g = D.groceries.find(x => x.id === i.g); return esc(g ? g.name : i.g); }
   if (i.p){ const p = D.pantry.find(x => x.id === i.p); return esc(p ? p.name : i.p); }
   if (i.h){ const h = (D.have || []).find(x => x.id === i.h); return `${esc(h ? h.name : i.h)} <span class="cap">· from last week</span>`; }
-  const r = D.recipes[i.r]; return esc(r ? r.name : i.r);
+  const r = D.recipes[i.r];
+  return n ? `<a href="#recipe/${i.r}/${n}" data-stop style="color:var(--gold2);text-decoration:underline;text-decoration-color:rgba(244,189,99,.35);text-underline-offset:3px">${esc(r ? r.name : i.r)}</a>${r && r.component ? ' <span class="cap">· from Sunday prep</span>' : ''}` : esc(r ? r.name : i.r);
 }
 function vRecipe(id, wn){
   const [D, n] = findRecipe(id, wn); if (!D) return vKitchen();
@@ -586,11 +598,12 @@ function vRecipe(id, wn){
     <a class="btn wide" href="#cook/${id}/${n}">${ic('kitchen')}Start cook mode</a>
     <section class="sect"><div class="sect-h"><span class="over">Ingredients</span><span class="cap">${esc(r.equip)}</span></div><div class="group">${r.ingredients.map((i, k) => {
       const on = Store.flag('ing', `${n}:${id}:${k}`);
-      return `<div class="row ing${on ? ' done' : ''}" data-k="${k}" role="button" aria-pressed="${on}"><span class="tx"><b>${ingName(D, i)}</b></span><span class="q">${esc(i.qty)}</span></div>`; }).join('')}</div>
+      return `<div class="row ing${on ? ' done' : ''}" data-k="${k}" role="button" aria-pressed="${on}"><span class="tx"><b>${ingName(D, i, n)}</b></span><span class="q">${esc(i.qty)}</span></div>`; }).join('')}</div>
       <p class="fine">Tap an ingredient once it is out on the counter.</p></section>
     <section class="sect"><div class="sect-h"><span class="over">Method</span><span class="cap">${plural(r.steps.length, 'step')}</span></div><ol class="steps">${r.steps.map((s, k) => `<li><span>${k + 1}</span><div>${esc(s)}</div></li>`).join('')}</ol></section>
   </div>`;
   scrollAt = 180; setBar(r.name, true); wireBack();
+  $$('[data-stop]', view).forEach(a => a.addEventListener('click', e => e.stopPropagation()));
   $$('.ing', view).forEach(el => el.onclick = () => { const k = `${n}:${id}:${el.dataset.k}`, on = !Store.flag('ing', k); Store.flag('ing', k, on); el.classList.toggle('done', on); if (on) haptic(); });
 }
 function vCook(id, wn){

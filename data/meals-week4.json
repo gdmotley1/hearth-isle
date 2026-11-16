@@ -1,0 +1,139 @@
+{
+  "week": 4,
+  "title": "Week 4",
+  "budget": 200,
+  "style": "batch",
+  "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax. Sunday's batch chicken and roasted vegetables carry eight of this week's meals.",
+  "allergyNote": "Nothing on this plan contains tree nuts or fish. Store-bought BBQ sauce often hides Worcestershire (anchovies), so this week's BBQ sauce is homemade. Peanut butter is often made in plants that also handle tree nuts. If your allergy is strict, check the label for a 'may contain tree nuts' line.",
+  "weekendNote": "Festival days. Leftovers waiting for you: a bowl of tortilla soup and a portion of peanut noodles.",
+  "snacks": ["Cottage cheese with berries", "Apple with peanut butter", "2 hard-boiled eggs", "String cheese and a banana"],
+  "have": [
+    {"id": "oats", "name": "Rolled oats", "note": "still plenty"},
+    {"id": "honey", "name": "Honey"},
+    {"id": "pb", "name": "Peanut butter", "note": "about half the jar"},
+    {"id": "rice", "name": "Jasmine rice", "note": "about half the bag"},
+    {"id": "onion", "name": "Yellow onions", "note": "about 3 left"},
+    {"id": "garlic", "name": "Garlic", "note": "about 2 bulbs"}
+  ],
+  "menu": {
+    "mon": {"breakfast": "overnight-oats", "lunch": "buffalo-bowl", "dinner": "bbq-sweet-potato", "heads": "Everything today comes straight from Sunday's prep. Dinner makes Wednesday's lunch."},
+    "tue": {"breakfast": "egg-scramble", "lunch": "buffalo-bowl", "dinner": "lemon-chicken-pasta"},
+    "wed": {"breakfast": "overnight-oats", "lunch": "bbq-sweet-potato", "dinner": "steak-bites", "shared": "dinner", "heads": "Tonight, move the 4 frozen chicken portions to the fridge for Thursday and Friday. Dinner makes Thursday's lunch."},
+    "thu": {"breakfast": "egg-scramble", "lunch": "steak-bites", "dinner": "tortilla-soup", "heads": "Tonight's soup makes Friday's lunch."},
+    "fri": {"breakfast": "overnight-oats", "lunch": "tortilla-soup", "dinner": "thai-peanut-noodles", "shared": "dinner"}
+  },
+  "prep": [
+    {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 90, "makes": "9 portions of shredded chicken, 2 trays of roasted vegetables, rice, ranch, BBQ sauce, 3 jars of oats, 6 eggs", "steps": [
+      "Start the batch chicken in the crock pot first thing (low 6 hours or high 3½).",
+      "Heat the oven to 425°F. Prick 2 sweet potatoes and put them straight on the rack for 45 to 50 minutes.",
+      "Chop the broccoli, zucchini, peppers, red onion and 1 more sweet potato. Roast on 2 sheet pans for 25 minutes, swapping the pans halfway.",
+      "Cook 2 cups of rice.",
+      "Make the yogurt ranch and simmer the honey BBQ sauce for 5 minutes.",
+      "Mix 3 jars of berry overnight oats. Air-fry 6 eggs at 270°F for 15 minutes.",
+      "Shred the chicken in its juices and portion it: 2 for buffalo bowls, 2 for BBQ sweet potatoes, 1 for lemon pasta in the fridge.",
+      "Freeze the other 4 portions (2 for soup, 2 for peanut noodles). Cooked chicken keeps 3 to 4 days, so the end of the week waits in the freezer.",
+      "Pack 2 buffalo bowls. Keep the sauces in jars."
+    ]},
+    {"id": "wed", "day": "wed", "title": "Wednesday night", "minutes": 20, "makes": "Steak dinner for two plus Thursday's lunch", "steps": [
+      "Move the 4 frozen chicken portions to the fridge.",
+      "Cook 1 cup of rice if you are low.",
+      "Sear the steak bites, then pack one portion with rice and roasted vegetables for Thursday."
+    ]}
+  ],
+  "groceries": [
+    {"id": "chicken", "name": "Boneless skinless chicken breasts", "qty": "about 4.5 lb (family pack)", "section": "Meat", "store": "Aldi", "price": 13.49},
+    {"id": "sirloin", "name": "Top sirloin steak", "qty": "about 1.5 lb", "section": "Meat", "store": "Aldi", "price": 10.49},
+    {"id": "eggs", "name": "Large eggs", "qty": "1 dozen", "section": "Dairy and eggs", "store": "Aldi", "price": 3.09},
+    {"id": "yogurt", "name": "Plain nonfat Greek yogurt", "qty": "two 32 oz tubs", "section": "Dairy and eggs", "store": "Aldi", "price": 8.58},
+    {"id": "milk", "name": "2% milk", "qty": "half gallon", "section": "Dairy and eggs", "store": "Aldi", "price": 1.89},
+    {"id": "cheddar", "name": "Shredded sharp cheddar", "qty": "8 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 2.49},
+    {"id": "feta", "name": "Feta crumbles", "qty": "4 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 2.49},
+    {"id": "cottage", "name": "Low-fat cottage cheese", "qty": "24 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 3.29},
+    {"id": "string", "name": "Mozzarella string cheese", "qty": "12 count", "section": "Dairy and eggs", "store": "Aldi", "price": 3.79},
+    {"id": "broccoli", "name": "Broccoli crowns", "qty": "about 2 lb", "section": "Produce", "store": "Aldi", "price": 3.98},
+    {"id": "zucchini", "name": "Zucchini", "qty": "3", "section": "Produce", "store": "Aldi", "price": 2.49},
+    {"id": "peppers", "name": "Bell peppers", "qty": "3-pack", "section": "Produce", "store": "Aldi", "price": 2.99},
+    {"id": "redonion", "name": "Red onion", "qty": "1", "section": "Produce", "store": "Aldi", "price": 0.89},
+    {"id": "sweetpot", "name": "Sweet potatoes", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 2.99},
+    {"id": "spinach", "name": "Baby spinach", "qty": "6 oz bag", "section": "Produce", "store": "Aldi", "price": 1.99},
+    {"id": "lemons", "name": "Lemons", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.38},
+    {"id": "limes", "name": "Limes", "qty": "1 bag (about 6)", "section": "Produce", "store": "Aldi", "price": 2.49},
+    {"id": "cilantro", "name": "Cilantro", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.79},
+    {"id": "greenonion", "name": "Green onions", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.89},
+    {"id": "slaw", "name": "Coleslaw mix", "qty": "14 oz bag", "section": "Produce", "store": "Aldi", "price": 1.69},
+    {"id": "bananas", "name": "Bananas", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 1.49},
+    {"id": "apples", "name": "Apples", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 3.99},
+    {"id": "berries", "name": "Frozen mixed berries", "qty": "16 oz bag", "section": "Frozen", "store": "Aldi", "price": 3.29},
+    {"id": "corn", "name": "Frozen sweet corn", "qty": "16 oz bag", "section": "Frozen", "store": "Aldi", "price": 1.15},
+    {"id": "hotsauce", "name": "Cayenne pepper hot sauce", "qty": "12 oz bottle", "section": "Shelf", "store": "Aldi", "price": 1.29},
+    {"id": "bread", "name": "Whole wheat bread", "qty": "1 loaf", "section": "Shelf", "store": "Aldi", "price": 1.69},
+    {"id": "pasta", "name": "Whole wheat spaghetti", "qty": "16 oz box", "section": "Shelf", "store": "Aldi", "price": 1.29},
+    {"id": "beans", "name": "Black beans", "qty": "1 can", "section": "Shelf", "store": "Aldi", "price": 0.85},
+    {"id": "firetom", "name": "Fire-roasted diced tomatoes", "qty": "14.5 oz can", "section": "Shelf", "store": "Aldi", "price": 1.09},
+    {"id": "broth", "name": "Low-sodium chicken broth", "qty": "32 oz carton", "section": "Shelf", "store": "Aldi", "price": 1.79},
+    {"id": "chips", "name": "Tortilla chips", "qty": "small bag", "section": "Shelf", "store": "Aldi", "price": 1.99}
+  ],
+  "pantry": [
+    {"id": "oil", "name": "Olive oil"},
+    {"id": "spray", "name": "Cooking spray"},
+    {"id": "salt", "name": "Salt"},
+    {"id": "pepper", "name": "Black pepper"},
+    {"id": "garlicpowder", "name": "Garlic powder"},
+    {"id": "onionpowder", "name": "Onion powder"},
+    {"id": "cumin", "name": "Ground cumin"},
+    {"id": "chili", "name": "Chili powder"},
+    {"id": "paprika", "name": "Smoked paprika"},
+    {"id": "oregano", "name": "Dried oregano"},
+    {"id": "italian", "name": "Italian seasoning"},
+    {"id": "dill", "name": "Dried dill"},
+    {"id": "cinnamon", "name": "Ground cinnamon"},
+    {"id": "ginger", "name": "Ground ginger"},
+    {"id": "flakes", "name": "Red pepper flakes"},
+    {"id": "soy", "name": "Soy sauce"},
+    {"id": "sesame", "name": "Toasted sesame oil"},
+    {"id": "ketchup", "name": "Ketchup"},
+    {"id": "mustard", "name": "Yellow mustard"},
+    {"id": "vinegar", "name": "Apple cider vinegar"}
+  ],
+  "recipes": {
+    "batch-chicken": {"name": "Crock-pot batch shredded chicken", "cuisine": "Prep", "component": true, "minutes": 15, "serves": "about 9 portions", "protein": 40, "equip": "crock pot", "ingredients": [
+      {"g": "chicken", "qty": "4.5 lb"}, {"g": "broth", "qty": "1 cup"}, {"h": "onion", "qty": "1, quartered"}, {"h": "garlic", "qty": "4 cloves, smashed"}, {"p": "garlicpowder", "qty": "1 tsp"}, {"p": "cumin", "qty": "1 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "salt", "qty": "2 tsp"}, {"p": "pepper", "qty": "1 tsp"}],
+      "steps": ["Season the chicken all over and lay it in the crock pot with the onion and garlic.", "Pour in the broth.", "Cook on low 6 hours or high 3½ hours.", "Shred with two forks and stir it back into the juices so it stays moist.", "Portion into 9 containers of about 1 cup. Fridge 5, freeze 4."], "tip": "Seasoned plainly on purpose, so it can turn buffalo, BBQ, lemony, Mexican or Thai later in the week."},
+    "roast-veg": {"name": "Two-tray roasted vegetables", "cuisine": "Prep", "component": true, "minutes": 35, "serves": "about 8 cups", "protein": 4, "equip": "2 sheet pans", "ingredients": [
+      {"g": "broccoli", "qty": "2 lb, in florets"}, {"g": "zucchini", "qty": "3, in half-moons"}, {"g": "peppers", "qty": "3, in chunks"}, {"g": "redonion", "qty": "1, in wedges"}, {"g": "sweetpot", "qty": "1, in ¾-inch cubes"}, {"p": "oil", "qty": "3 tbsp"}, {"p": "garlicpowder", "qty": "1 tsp"}, {"p": "italian", "qty": "2 tsp"}, {"p": "salt", "qty": "1½ tsp"}],
+      "steps": ["Heat the oven to 425°F.", "Toss everything with the oil and seasoning and spread it over 2 sheet pans so nothing is crowded.", "Roast 25 minutes, swapping the pans and stirring halfway, until browned at the edges.", "Cool, then store in one big container."]},
+    "yogurt-ranch": {"name": "Greek yogurt ranch", "cuisine": "Prep", "component": true, "minutes": 5, "serves": "about 1¼ cups", "protein": 6, "equip": "jar", "ingredients": [
+      {"g": "yogurt", "qty": "1 cup"}, {"g": "lemons", "qty": "juice of ½"}, {"p": "dill", "qty": "1 tsp"}, {"p": "garlicpowder", "qty": "½ tsp"}, {"p": "onionpowder", "qty": "½ tsp"}, {"p": "salt", "qty": "½ tsp"}, {"p": "pepper", "qty": "¼ tsp"}],
+      "steps": ["Stir everything together with 2 tbsp water.", "Taste for salt. It keeps a week in a jar."]},
+    "honey-bbq": {"name": "Honey BBQ sauce", "cuisine": "Prep", "component": true, "minutes": 8, "serves": "about 1 cup", "protein": 0, "equip": "small pot", "ingredients": [
+      {"p": "ketchup", "qty": "¾ cup"}, {"h": "honey", "qty": "3 tbsp"}, {"p": "vinegar", "qty": "2 tbsp"}, {"p": "mustard", "qty": "1 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "garlicpowder", "qty": "½ tsp"}, {"p": "salt", "qty": "a pinch"}],
+      "steps": ["Whisk everything in a small pot.", "Simmer 5 minutes, stirring, until it thickens a little.", "Cool and keep in a jar."], "tip": "Homemade so there is no hidden Worcestershire."},
+    "overnight-oats": {"name": "Berry peanut butter overnight oats", "cuisine": "Breakfast", "minutes": 10, "serves": "3 jars", "protein": 25, "equip": "3 jars", "ingredients": [
+      {"h": "oats", "qty": "1½ cups"}, {"g": "milk", "qty": "1½ cups"}, {"g": "yogurt", "qty": "1½ cups"}, {"h": "pb", "qty": "3 tbsp"}, {"g": "berries", "qty": "1½ cups"}, {"h": "honey", "qty": "1 tbsp"}, {"p": "cinnamon", "qty": "1 tsp"}, {"p": "salt", "qty": "a pinch"}],
+      "steps": ["Stir the milk, yogurt, peanut butter, honey, cinnamon and salt together.", "Stir in the oats and split across 3 jars.", "Top each with ½ cup frozen berries. They thaw overnight into a jammy layer.", "Keeps 4 days. Eat cold or warm."]},
+    "egg-scramble": {"name": "Spinach feta scramble with toast", "cuisine": "Breakfast", "minutes": 8, "serves": "1", "protein": 30, "equip": "skillet", "ingredients": [
+      {"g": "eggs", "qty": "3"}, {"g": "spinach", "qty": "a big handful"}, {"g": "feta", "qty": "2 tbsp"}, {"g": "bread", "qty": "2 slices"}, {"p": "spray", "qty": "for the pan"}, {"p": "salt", "qty": "a pinch"}, {"p": "pepper", "qty": "to taste"}],
+      "steps": ["Start the toast.", "Wilt the spinach in a sprayed skillet for 1 minute.", "Add the whisked eggs and stir gently over medium-low until just set.", "Fold in the feta and season."], "tip": "Quick fuel before pickleball."},
+    "hb-eggs": {"name": "Air-fryer hard-boiled eggs", "cuisine": "Snack", "minutes": 20, "serves": "6 eggs", "protein": 6, "equip": "air fryer", "ingredients": [
+      {"g": "eggs", "qty": "6"}, {"p": "salt", "qty": "for serving"}],
+      "steps": ["Put the eggs straight into the air fryer basket.", "Cook at 270°F for 15 minutes.", "Move them to a bowl of ice water for 5 minutes, then refrigerate."]},
+    "buffalo-bowl": {"name": "Buffalo chicken ranch bowl", "cuisine": "American", "minutes": 5, "serves": "2 lunches", "protein": 45, "equip": "microwave", "ingredients": [
+      {"r": "batch-chicken", "qty": "1 portion each"}, {"g": "hotsauce", "qty": "1½ tbsp each"}, {"h": "rice", "qty": "¾ cup cooked each"}, {"r": "roast-veg", "qty": "1 cup each"}, {"r": "yogurt-ranch", "qty": "3 tbsp each"}, {"g": "greenonion", "qty": "for topping"}],
+      "steps": ["Toss the chicken with the hot sauce.", "Pack rice, roasted vegetables and buffalo chicken in each container.", "Reheat 2 minutes, then drizzle with ranch and green onion."], "tip": "Built from Sunday's batch chicken, vegetables and ranch."},
+    "bbq-sweet-potato": {"name": "BBQ chicken stuffed sweet potatoes", "cuisine": "American", "minutes": 10, "serves": "2 (dinner + Wednesday lunch)", "protein": 42, "equip": "microwave or air fryer", "ingredients": [
+      {"g": "sweetpot", "qty": "2, baked on Sunday"}, {"r": "batch-chicken", "qty": "2 portions"}, {"r": "honey-bbq", "qty": "⅓ cup"}, {"g": "cheddar", "qty": "¼ cup"}, {"g": "slaw", "qty": "1 cup"}, {"r": "yogurt-ranch", "qty": "2 tbsp"}, {"g": "greenonion", "qty": "for topping"}],
+      "steps": ["Warm the chicken with the BBQ sauce.", "Split the baked sweet potatoes, fluff the insides and reheat 2 minutes.", "Pile in the BBQ chicken and cheese, and air-fry at 380°F for 3 minutes to melt it if you like.", "Toss the slaw with the ranch and pile it on top with green onion.", "Pack the second one for Wednesday's lunch."]},
+    "lemon-chicken-pasta": {"name": "Lemon garlic chicken pasta", "cuisine": "Italian", "minutes": 15, "serves": "1", "protein": 42, "equip": "pot, skillet", "ingredients": [
+      {"g": "pasta", "qty": "4 oz"}, {"r": "batch-chicken", "qty": "1 portion"}, {"r": "roast-veg", "qty": "1 cup"}, {"g": "spinach", "qty": "a handful"}, {"g": "lemons", "qty": "zest and juice of 1"}, {"g": "feta", "qty": "2 tbsp"}, {"h": "garlic", "qty": "2 cloves, sliced"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "flakes", "qty": "a pinch"}, {"p": "salt", "qty": "to taste"}],
+      "steps": ["Boil the pasta in salted water and save a splash of the water.", "Warm the garlic and pepper flakes in the oil for 1 minute.", "Add the chicken and roasted vegetables for 2 minutes, then the spinach.", "Toss in the pasta, lemon zest and juice and a splash of pasta water.", "Finish with feta."], "tip": "Quick dinner after Tuesday pickleball."},
+    "steak-bites": {"name": "Garlic steak bites with roasted vegetables", "cuisine": "American", "minutes": 20, "serves": "3 (dinner for two + Thursday lunch)", "protein": 46, "equip": "cast iron", "ingredients": [
+      {"g": "sirloin", "qty": "1.5 lb, 1-inch cubes"}, {"h": "garlic", "qty": "4 cloves, minced"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "salt", "qty": "1 tsp"}, {"p": "pepper", "qty": "1 tsp"}, {"p": "flakes", "qty": "a pinch"}, {"r": "roast-veg", "qty": "3 cups"}, {"h": "rice", "qty": "¾ cup cooked each"}, {"g": "greenonion", "qty": "to finish"}],
+      "steps": ["Pat the steak dry and season with salt and pepper.", "Heat the cast iron until smoking. Sear the steak in one layer for 2 minutes without moving it, then toss for 1 to 2 minutes more.", "Turn off the heat and stir in the garlic and pepper flakes for 30 seconds.", "Reheat the roasted vegetables in the same pan.", "Serve over rice with green onion. Pack one portion for Thursday."], "tip": "Steak night for two. It makes Thursday's lunch too."},
+    "tortilla-soup": {"name": "15-minute chicken tortilla soup", "cuisine": "Mexican", "minutes": 20, "serves": "3", "protein": 35, "equip": "pot", "ingredients": [
+      {"r": "batch-chicken", "qty": "2 portions"}, {"g": "broth", "qty": "3 cups"}, {"g": "firetom", "qty": "1 can"}, {"g": "beans", "qty": "1 can, rinsed"}, {"g": "corn", "qty": "1 cup"}, {"h": "onion", "qty": "½, diced"}, {"h": "garlic", "qty": "2 cloves"}, {"p": "cumin", "qty": "1 tsp"}, {"p": "chili", "qty": "2 tsp"}, {"p": "oregano", "qty": "½ tsp"}, {"p": "oil", "qty": "1 tsp"}, {"g": "limes", "qty": "1"}, {"g": "cilantro", "qty": "a handful"}, {"g": "cheddar", "qty": "for topping"}, {"g": "yogurt", "qty": "for topping"}, {"g": "chips", "qty": "a handful, crushed"}],
+      "steps": ["Soften the onion in the oil for 4 minutes, then add the garlic and spices for 30 seconds.", "Add the broth, tomatoes, beans and corn and simmer 8 minutes.", "Stir in the chicken to heat through and finish with lime juice.", "Top with cheese, yogurt, cilantro and crushed chips.", "Pack one bowl for Friday's lunch."], "tip": "Built from Sunday's chicken. Dinner after Thursday pickleball, lunch on Friday."},
+    "thai-peanut-noodles": {"name": "Thai peanut chicken noodles", "cuisine": "Asian", "minutes": 20, "serves": "3", "protein": 40, "equip": "pot, large skillet", "isNew": true, "ingredients": [
+      {"g": "pasta", "qty": "8 oz"}, {"r": "batch-chicken", "qty": "2 portions"}, {"r": "roast-veg", "qty": "2 cups (peppers and broccoli)"}, {"g": "slaw", "qty": "1½ cups"}, {"h": "pb", "qty": "⅓ cup"}, {"p": "soy", "qty": "3 tbsp"}, {"h": "honey", "qty": "1 tbsp"}, {"g": "limes", "qty": "juice of 2"}, {"h": "garlic", "qty": "1 clove, grated"}, {"p": "ginger", "qty": "½ tsp"}, {"p": "sesame", "qty": "1 tsp"}, {"p": "flakes", "qty": "a pinch"}, {"g": "cilantro", "qty": "to finish"}, {"g": "greenonion", "qty": "to finish"}],
+      "steps": ["Boil the spaghetti and save ½ cup of the water.", "Whisk the peanut butter, soy sauce, honey, lime juice, garlic, ginger, sesame oil and pepper flakes with ¼ cup hot water until smooth.", "Warm the chicken and roasted vegetables in a large skillet.", "Add the noodles, sauce and slaw and toss over low heat, loosening with pasta water.", "Finish with cilantro, green onion and an extra squeeze of lime."], "tip": "This week's new one, and a dinner for two. Peanut sauce is safe for you; tree nuts are not."}
+  }
+}
