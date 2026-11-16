@@ -697,7 +697,15 @@ async function boot(){
   route();
   onboarding();
   const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-  if ('serviceWorker' in navigator && location.protocol === 'https:' && !local) navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && location.protocol === 'https:' && !local){
+    // When an update installs, swap to it right away, unless a workout or cook mode is open.
+    const hadController = !!navigator.serviceWorker.controller;
+    let pending = false;
+    const apply = () => { if (!play && !cook){ location.reload(); } else pending = true; };
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) apply(); });
+    window.addEventListener('hashchange', () => { if (pending && !play && !cook) location.reload(); });
+    navigator.serviceWorker.register('sw.js').then(r => r.update()).catch(() => {});
+  }
 }
 boot();
 })();
