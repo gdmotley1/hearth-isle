@@ -22,8 +22,9 @@ const EXTRA = {
   meal:     {res:'harvest', flat:4, label:'Healthy meal'},
   recovery: {res:'spirit',  per:5, label:'Recovery'}
 };
-// A 12-week season. Totals are set near 85% of a full plan week, so a good season finishes the island.
-const SEASON = {weeks:12, total:1400, stone:360, land:600, harvest:650, spirit:220};
+// A 12-week season. A full plan week earns about 207 points; the total is set at three-quarters of
+// that for 12 weeks (155 x 12), so a solid season finishes the island in week 12, a perfect one around week 9.
+const SEASON = {weeks:12, total:1860, stone:480, land:800, harvest:865, spirit:290};
 const RES = ['stone','land','harvest','spirit'];
 
 const pad = n => String(n).padStart(2,'0');
@@ -50,7 +51,7 @@ function totals(){
 }
 // The island grows on a front-loaded curve: early points build more, so weeks 1 and 2 feel rewarding.
 // Raw share of the season 0..1 -> drawn progress 0..1. thToPts turns an unlock threshold (0-4 stages) into points.
-const SHAPE = .72;
+const SHAPE = .665;
 const progress = () => Math.pow(Math.min(1, totals().all / SEASON.total), SHAPE);
 const thToPts = th => SEASON.total * Math.pow(Math.min(1, th / 4), 1 / SHAPE);
 const settlers = () => 3 + Math.floor(totals().all / 45);

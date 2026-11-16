@@ -13,7 +13,6 @@ const DAYN = {mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Fri
 const SLOT = {breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner'};
 const RESN = {stone:'Stone',land:'Land',harvest:'Harvest',spirit:'Spirit'};
 const MEAL_WEEKS = [1, 2, 3, 4, 5];
-const PTS_PER_STAGE = Store.SEASON.total / 4;
 const SETTLERS = ['Juno','Mira','Tobi','Pell','Wren','Ansel','Ivy','Corin','Bea','Otto','Lark','Fen','Rhea','Sol','Nell','Arlo','Hale','Tess'];
 const BUILD = {house:'a cottage',farm:'a farm plot',tree:'an orchard tree',pine:'a pine grove',well:'the village well',stall:'a market stall',windmill:'the windmill',tower:'the watchtower',
   lantern:'a lantern',flowers:'a flower bed',rock:'a standing stone',gfound:'the Gardens foundation',g1:'the first Gardens tier',g2:'the second Gardens tier',g3:'the Hanging Gardens'};
