@@ -1,11 +1,12 @@
 ﻿/* Hearth Isle service worker: the app works offline after the first visit.
    Bump VERSION whenever a file below changes so phones pick up the update. */
-const VERSION = 'hearth-v9';
+const VERSION = 'hearth-v10';
 const SHELL = [
   './index.html',
   './manifest.webmanifest',
   './css/app.css',
   './js/island.js',
+  './js/life.js',
   './js/store.js',
   './js/app.js',
   './data/workouts.json',

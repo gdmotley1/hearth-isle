@@ -82,6 +82,13 @@ function flag(bucket, key, val){
 }
 function clearPrefix(bucket, prefix){ Object.keys(state[bucket]||{}).forEach(k => { if (k.startsWith(prefix)) delete state[bucket][k]; }); save(); }
 
+// Reps logged in the workout player, one list per session per day: sets['2026-11-16|A'] = [[block, set, reps], ...].
+function saveSets(date, sid, list){ state.sets = state.sets || {}; state.sets[date + '|' + sid] = list; save(); }
+function lastSets(sid, before){
+  const ks = Object.keys(state.sets || {}).filter(k => k.endsWith('|' + sid) && Array.isArray(state.sets[k]) && k.split('|')[0] < before).sort();
+  return ks.length ? state.sets[ks[ks.length - 1]] : null;
+}
+
 function setStart(s){ state.start = s; save(); }
 function setOnboarded(){ state.onboarded = true; save(); }
 function exportJSON(){ return JSON.stringify(state, null, 1); }
@@ -89,6 +96,6 @@ function importJSON(txt){ const s = JSON.parse(txt); if (!s || s.v !== 1 || !Arr
 function reset(){ state = fresh(); save(); }
 
 window.Store = {PTS, EXTRA, SEASON, RES, ymd, parse, mondayOf, weekNo, seasonWeek, totals, progress, settlers, gardens,
-  isDone, complete, undo, addExtra, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
+  isDone, complete, undo, addExtra, saveSets, lastSets, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
   get state(){ return state; }};
 })();

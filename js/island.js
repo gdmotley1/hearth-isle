@@ -199,12 +199,12 @@ function person(sx,sy,c,p,scale=1){
   return `<g transform="translate(${sx.toFixed(1)} ${sy.toFixed(1)}) scale(${scale})"><g class="bob"><ellipse cx="0" cy="0" rx="2.6" ry="1.2" fill="${p.shadow}"/><rect x="-1.6" y="-6.2" width="3.2" height="5.6" rx="1.3" fill="${p.shirts[c]}"/><circle cx="0" cy="-7.8" r="1.8" fill="${p.skin}"/></g></g>`;
 }
 
-function isoScene(prog,p,id){
+function isoScene(prog,p,id,opt={}){
   const f=Math.max(0,Math.min(4,prog*4)),stage=Math.floor(f+1e-9),gst=f<.6?0:f<1.5?1:f<2.5?2:f<3.6?3:4;
   const vis=OBJ.filter(o=>o.th<=f);
   const forced=new Set();
   vis.forEach(o=>{const w=o.w||1,h=o.h||1;for(let i=-1;i<=w;i++)for(let j=-1;j<=h;j++)forced.add((o.x+i)+','+(o.y+j));});
-  WALK.filter(w=>w.th<=f).forEach(w=>{[w.f,w.t].forEach(([a,b])=>forced.add(Math.floor(a)+','+Math.floor(b)));});
+  if(!opt.live)WALK.filter(w=>w.th<=f).forEach(w=>{[w.f,w.t].forEach(([a,b])=>forced.add(Math.floor(a)+','+Math.floor(b)));});
   const L=(x,y)=>forced.has(x+','+y)||baseLand(x,y,f);
   const tiles=[];for(let x=-10;x<=10;x++)for(let y=-10;y<=10;y++)if(L(x,y))tiles.push([x,y]);
   tiles.sort((a,b)=>(a[0]+a[1])-(b[0]+b[1]));
@@ -229,7 +229,7 @@ function isoScene(prog,p,id){
   // objects + walkers in depth order
   const items=[];
   vis.forEach(o=>{const w=o.w||1,h=o.h||1;items.push({z:o.x+o.y+w+h-(o.t==='farm'||o.t==='flowers'?1.5:0),k:o.k,svg:()=>o.t==='gardens'?isoGardens(o,p,gst,id):DRAW[o.t](o,p,id)});});
-  WALK.filter(w=>w.th<=f).forEach((w,i)=>{const a=P(w.f[0],w.f[1]),b=P(w.t[0],w.t[1]);
+  if(!opt.live)WALK.filter(w=>w.th<=f).forEach((w,i)=>{const a=P(w.f[0],w.f[1]),b=P(w.t[0],w.t[1]);
     items.push({z:w.f[0]+w.f[1]+.3,k:'w'+i,svg:()=>{const moving=w.d?` class="walk" style="--dx:${(b[0]-a[0]).toFixed(1)}px;--dy:${(b[1]-a[1]).toFixed(1)}px;animation-duration:${w.d}s;animation-delay:-${i*1.3}s"`:'';
       return `<g${moving}>${person(a[0],a[1],w.c,p)}</g>`;}});});
   // boat moored off the east shore
@@ -237,11 +237,11 @@ function isoScene(prog,p,id){
   const [bsx,bsy]=P(bx+2.2,.6,-D+2);
   items.push({z:99,k:'boat',svg:()=>`<g class="float"><path d="M${bsx-11} ${bsy-3}h22l-4 5h-14z" fill="${p.wood}"/><path d="M${bsx-11} ${bsy-3}h22" stroke="${p.woodD}" stroke-width="1.2"/><path d="M${bsx} ${bsy-3}v-15" stroke="${p.woodD}" stroke-width="1.1"/><path d="M${bsx+.8} ${bsy-17}l8 11h-8z" fill="${p.canvas}"/></g>`});
   items.sort((a,b)=>a.z-b.z);
-  items.forEach(it=>{s+=`<g class="o" data-k="${it.k}">${it.svg()}</g>`;});
+  items.forEach(it=>{s+=`<g class="o" data-k="${it.k}" data-z="${it.z}">${it.svg()}</g>`;});
   // fireflies at night
   if(p.night&&stage>=2){[[-60,-10],[-20,-40],[30,20],[70,-20],[-80,30],[10,-60],[90,30],[-40,40]].slice(0,stage*2).forEach(([x,y],i)=>{s+=`<circle class="fly" style="animation-delay:-${i*.9}s" cx="${x}" cy="${y}" r="1.3" fill="#ffe28a"/>`;});}
   const W=72+(148-72)*f/4;
-  return {svg:s,W};
+  return {svg:s,W,f,gst,tiles,vis,boat:[bx,0]};
 }
 
 
@@ -251,5 +251,5 @@ function unlocks(){
   [[.6,'gfound'],[1.5,'g1'],[2.5,'g2'],[3.6,'g3']].forEach(([th,t])=>list.push({k:t,t,th}));
   return list.sort((x,y)=>x.th-y.th);
 }
-window.Isle={STAGES,isoScene,PAL_B,unlocks};
+window.Isle={STAGES,isoScene,PAL_B,unlocks,P};
 })();
