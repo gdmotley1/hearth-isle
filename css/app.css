@@ -251,6 +251,7 @@ details.pantry summary::-webkit-details-marker{display:none}
 .c-Snack{--art:linear-gradient(135deg,#4a5f86,#8ea6cf)}
 .c-American{--art:linear-gradient(135deg,#7a4a2a,#c98a4e)}
 .c-Indian{--art:linear-gradient(135deg,#b8562a,#e8b04a)}
+.c-Peruvian{--art:linear-gradient(135deg,#3f7d3a,#9cc85a)}
 .ctile{--ta:var(--art);--tc:#fff}
 .hero-r{position:relative;height:calc(220px + var(--top));display:grid;place-items:center;background:var(--art);overflow:hidden}
 .hero-r::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,13,24,0) 40%,var(--bg) 100%)}

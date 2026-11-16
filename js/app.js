@@ -12,7 +12,7 @@ const DAYS = ['mon','tue','wed','thu','fri','sat','sun'];
 const DAYN = {mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Friday',sat:'Saturday',sun:'Sunday'};
 const SLOT = {breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner'};
 const RESN = {stone:'Stone',land:'Land',harvest:'Harvest',spirit:'Spirit'};
-const MEAL_WEEKS = [1, 2];
+const MEAL_WEEKS = [1, 2, 3];
 const PTS_PER_STAGE = Store.SEASON.total / 4;
 const SETTLERS = ['Juno','Mira','Tobi','Pell','Wren','Ansel','Ivy','Corin','Bea','Otto','Lark','Fen','Rhea','Sol','Nell','Arlo','Hale','Tess'];
 const BUILD = {house:'a cottage',farm:'a farm plot',tree:'an orchard tree',pine:'a pine grove',well:'the village well',stall:'a market stall',windmill:'the windmill',tower:'the watchtower',
@@ -56,6 +56,7 @@ const P = {
   Breakfast:'<path d="M3 17.5h18M6.5 17.5a5.5 5.5 0 0 1 11 0M12 4.5v3M5.4 8.4l2 2M18.6 8.4l-2 2"/>',
   American:'<path d="M4 11h16v2.5a7.5 7.5 0 0 1-15 0z" transform="translate(.5 0)"/><path d="M3 11h18M9 7.5c0-1.3 1-1.3 1-2.6M13 7.5c0-1.3 1-1.3 1-2.6"/>',
   Indian:'<path d="M3.5 12.5h17a8.5 8.5 0 0 1-17 0z"/><path d="M7 9.5c1.5-1.5 3.5-1.5 5 0s3.5 1.5 5 0M12 4.5v2"/>',
+  Peruvian:'<path d="M14.5 5.5c2.5 0 4 1.8 4 4.2 0 4.8-5.6 9.8-11.3 9.8-1.6 0-2.7-.6-2.7-1.6 0-1.3 1.7-1.6 3.4-2.6 3-1.8 3.3-5.3 3.8-7.1.5-1.7 1.2-2.7 2.8-2.7z"/><path d="M14.5 5.5c0-1.2.7-2.2 2-2.7"/>',
   Snack:'<path d="M12 7.5c-1-2-3-3-5-2.5-3 1-3.5 4.5-2.5 8 1 3.5 3.5 7 5.5 7 1 0 1.2-.6 2-.6s1 .6 2 .6c2 0 4.5-3.5 5.5-7s.5-7-2.5-8c-2-.5-4 .5-5 2.5z"/><path d="M12 7.5c0-2 1-3.5 2.5-4"/>'
 };
 const ic = (k, cls = 'i') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${P[k] || P.extra}</svg>`;
