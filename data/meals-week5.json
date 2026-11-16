@@ -1,0 +1,134 @@
+{
+  "week": 5,
+  "title": "Week 5",
+  "budget": 200,
+  "style": "batch",
+  "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax. Sunday's turkey meatballs go Italian, teriyaki and Moroccan across ten portions, and one pot of marinara carries four meals.",
+  "allergyNote": "Nothing on this plan contains tree nuts or fish. Moroccan tagines are often topped with toasted nuts; this one uses golden raisins and cilantro instead. Peanut butter is often made in plants that also handle tree nuts. If your allergy is strict, check the label for a 'may contain tree nuts' line.",
+  "weekendNote": "Festival days. Leftovers waiting for you: a bowl of meatball tagine with couscous.",
+  "snacks": ["Cottage cheese with a drizzle of honey", "Apple with peanut butter", "2 hard-boiled eggs", "String cheese and a banana"],
+  "have": [
+    {"id": "oats", "name": "Rolled oats", "note": "still plenty"},
+    {"id": "honey", "name": "Honey"},
+    {"id": "pb", "name": "Peanut butter", "note": "about a quarter of the jar"},
+    {"id": "sweetpot", "name": "Sweet potatoes", "note": "about 3 left"}
+  ],
+  "menu": {
+    "mon": {"breakfast": "apple-oats", "lunch": "teriyaki-bowl", "dinner": "baked-ziti", "heads": "Everything today comes from Sunday's prep. Dinner makes Wednesday's lunch."},
+    "tue": {"breakfast": "marinara-eggs", "lunch": "teriyaki-bowl", "dinner": "meatball-subs", "heads": "Dinner is 10 minutes in the air fryer after pickleball."},
+    "wed": {"breakfast": "apple-oats", "lunch": "baked-ziti", "dinner": "chicken-parm", "shared": "dinner", "heads": "Tonight, move the 5 frozen meatball portions to the fridge and cook 1 cup of rice for tomorrow. Dinner makes Thursday's lunch."},
+    "thu": {"breakfast": "marinara-eggs", "lunch": "chicken-parm", "dinner": "teriyaki-fried-rice", "heads": "Fried rice wants yesterday's rice. It makes Friday's lunch."},
+    "fri": {"breakfast": "apple-oats", "lunch": "teriyaki-fried-rice", "dinner": "meatball-tagine", "shared": "dinner"}
+  },
+  "prep": [
+    {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 95, "makes": "About 60 turkey meatballs (10 portions), 7 cups of marinara, teriyaki sauce, 2 trays of roasted vegetables, rice, 3 jars of oats, 6 eggs", "steps": [
+      "Start the marinara first. It simmers for 20 minutes while you do everything else.",
+      "Heat the oven to 400°F. Chop the broccoli, zucchini, peppers, red onion and 1 sweet potato and toss them for the roasting trays.",
+      "Mix the meatballs and roll about 60 of them onto 2 sprayed sheet pans. Bake 16 to 18 minutes.",
+      "Turn the oven up to 425°F and roast the vegetables on the same 2 pans for 25 minutes, swapping them halfway.",
+      "Cook 1½ cups of rice and simmer the teriyaki sauce for 3 minutes.",
+      "Mix 3 jars of apple cinnamon oats. Air-fry 6 eggs at 270°F for 15 minutes.",
+      "Portion the meatballs 6 to a container. Fridge 5 (2 teriyaki bowls, 2 for the ziti, 1 for subs).",
+      "Freeze the other 5 (2 for fried rice, 3 for the tagine). Cooked meatballs keep 3 to 4 days, so the end of the week waits in the freezer.",
+      "Pack 2 teriyaki bowls. Keep the sauces in jars."
+    ]},
+    {"id": "wed", "day": "wed", "title": "Wednesday night", "minutes": 30, "makes": "Chicken parm for two, Thursday's lunch and rice for fried rice", "steps": [
+      "Move the 5 frozen meatball portions to the fridge.",
+      "Cook 1 cup of rice, spread it on a plate to cool and refrigerate it uncovered. Cold, dry rice fries best.",
+      "Make the chicken parm and keep the third cutlet for Thursday's sub."
+    ]}
+  ],
+  "groceries": [
+    {"id": "turkey", "name": "93% lean ground turkey", "qty": "4 lb (four 1 lb packs)", "section": "Meat", "store": "Aldi", "price": 15.96},
+    {"id": "chicken", "name": "Boneless skinless chicken breasts", "qty": "about 1.5 lb (2 large)", "section": "Meat", "store": "Aldi", "price": 4.79},
+    {"id": "eggs", "name": "Large eggs", "qty": "18 count", "section": "Dairy and eggs", "store": "Aldi", "price": 4.29},
+    {"id": "yogurt", "name": "Plain nonfat Greek yogurt", "qty": "32 oz tub", "section": "Dairy and eggs", "store": "Aldi", "price": 4.29},
+    {"id": "milk", "name": "2% milk", "qty": "half gallon", "section": "Dairy and eggs", "store": "Aldi", "price": 1.89},
+    {"id": "mozz", "name": "Shredded part-skim mozzarella", "qty": "16 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 3.99},
+    {"id": "parm", "name": "Grated parmesan", "qty": "8 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 3.49},
+    {"id": "cottage", "name": "Low-fat cottage cheese", "qty": "24 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 3.29},
+    {"id": "string", "name": "Mozzarella string cheese", "qty": "12 count", "section": "Dairy and eggs", "store": "Aldi", "price": 3.79},
+    {"id": "broccoli", "name": "Broccoli crowns", "qty": "about 2 lb", "section": "Produce", "store": "Aldi", "price": 3.98},
+    {"id": "zucchini", "name": "Zucchini", "qty": "3", "section": "Produce", "store": "Aldi", "price": 2.49},
+    {"id": "peppers", "name": "Bell peppers", "qty": "3-pack", "section": "Produce", "store": "Aldi", "price": 2.99},
+    {"id": "redonion", "name": "Red onion", "qty": "1", "section": "Produce", "store": "Aldi", "price": 0.89},
+    {"id": "onion", "name": "Yellow onions", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 2.79},
+    {"id": "garlic", "name": "Garlic", "qty": "3 bulbs", "section": "Produce", "store": "Aldi", "price": 1.79},
+    {"id": "spinach", "name": "Baby spinach", "qty": "6 oz bag", "section": "Produce", "store": "Aldi", "price": 1.99},
+    {"id": "cilantro", "name": "Cilantro", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.79},
+    {"id": "greenonion", "name": "Green onions", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.89},
+    {"id": "lemons", "name": "Lemons", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.38},
+    {"id": "bananas", "name": "Bananas", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 1.49},
+    {"id": "apples", "name": "Apples", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 3.99},
+    {"id": "peas", "name": "Frozen peas and carrots", "qty": "16 oz bag", "section": "Frozen", "store": "Aldi", "price": 1.15},
+    {"id": "crushed", "name": "Crushed tomatoes", "qty": "two 28 oz cans", "section": "Shelf", "store": "Aldi", "price": 2.58},
+    {"id": "diced", "name": "Diced tomatoes", "qty": "14.5 oz can", "section": "Shelf", "store": "Aldi", "price": 0.89},
+    {"id": "chickpeas", "name": "Chickpeas", "qty": "1 can", "section": "Shelf", "store": "Aldi", "price": 0.85},
+    {"id": "broth", "name": "Low-sodium chicken broth", "qty": "32 oz carton", "section": "Shelf", "store": "Aldi", "price": 1.79},
+    {"id": "penne", "name": "Whole wheat penne", "qty": "16 oz box", "section": "Shelf", "store": "Aldi", "price": 1.29},
+    {"id": "rice", "name": "Jasmine rice", "qty": "3 lb bag", "section": "Shelf", "store": "Aldi", "price": 2.89},
+    {"id": "rolls", "name": "Crusty hoagie rolls", "qty": "6 count", "section": "Shelf", "store": "Aldi", "price": 2.49},
+    {"id": "panko", "name": "Panko breadcrumbs", "qty": "8 oz canister", "section": "Shelf", "store": "Aldi", "price": 1.79},
+    {"id": "raisins", "name": "Golden raisins", "qty": "small box", "section": "Shelf", "store": "Aldi", "price": 1.99},
+    {"id": "couscous", "name": "Plain couscous", "qty": "10 oz box", "section": "Shelf", "store": "Publix", "price": 2.79}
+  ],
+  "pantry": [
+    {"id": "oil", "name": "Olive oil"},
+    {"id": "spray", "name": "Cooking spray"},
+    {"id": "salt", "name": "Salt"},
+    {"id": "pepper", "name": "Black pepper"},
+    {"id": "garlicpowder", "name": "Garlic powder"},
+    {"id": "cumin", "name": "Ground cumin"},
+    {"id": "paprika", "name": "Smoked paprika"},
+    {"id": "italian", "name": "Italian seasoning"},
+    {"id": "cinnamon", "name": "Ground cinnamon"},
+    {"id": "ginger", "name": "Ground ginger"},
+    {"id": "turmeric", "name": "Ground turmeric"},
+    {"id": "flakes", "name": "Red pepper flakes"},
+    {"id": "soy", "name": "Soy sauce"},
+    {"id": "sesame", "name": "Toasted sesame oil"},
+    {"id": "vinegar", "name": "Apple cider vinegar"},
+    {"id": "cornstarch", "name": "Cornstarch"}
+  ],
+  "recipes": {
+    "turkey-meatballs": {"name": "Sheet-pan turkey meatballs", "cuisine": "Prep", "component": true, "minutes": 35, "serves": "about 60 meatballs (10 portions of 6)", "protein": 34, "equip": "2 sheet pans", "ingredients": [
+      {"g": "turkey", "qty": "4 lb"}, {"g": "eggs", "qty": "2"}, {"h": "oats", "qty": "1 cup"}, {"g": "parm", "qty": "½ cup"}, {"g": "onion", "qty": "1 small, grated"}, {"g": "garlic", "qty": "4 cloves, grated"}, {"p": "garlicpowder", "qty": "1 tsp"}, {"p": "salt", "qty": "2½ tsp"}, {"p": "pepper", "qty": "1 tsp"}, {"p": "spray", "qty": "for the pans"}],
+      "steps": ["Heat the oven to 400°F and spray 2 sheet pans.", "Mix the eggs, oats, parmesan, grated onion, garlic and seasoning in a big bowl and let it sit 5 minutes so the oats soften.", "Add the turkey and mix with your hands until just combined. Overmixing makes them tough.", "Roll into about 60 balls the size of a golf ball, 30 to a pan.", "Bake 16 to 18 minutes, until they reach 165°F inside.", "Cool, then pack 6 to a container. Fridge 5, freeze 5."], "tip": "Seasoned plainly on purpose, so they can go marinara, teriyaki or Moroccan later in the week. The oats replace breadcrumbs and keep them juicy."},
+    "marinara": {"name": "Big-pot marinara", "cuisine": "Prep", "component": true, "minutes": 30, "serves": "about 7 cups", "protein": 2, "equip": "large pot", "ingredients": [
+      {"g": "crushed", "qty": "two 28 oz cans"}, {"g": "onion", "qty": "1, finely diced"}, {"g": "garlic", "qty": "6 cloves, sliced"}, {"p": "oil", "qty": "2 tbsp"}, {"p": "italian", "qty": "1 tbsp"}, {"p": "flakes", "qty": "a pinch"}, {"h": "honey", "qty": "1 tsp"}, {"p": "salt", "qty": "1½ tsp"}],
+      "steps": ["Soften the onion in the oil over medium heat for 6 minutes.", "Add the garlic, Italian seasoning and pepper flakes for 1 minute.", "Pour in the tomatoes with the honey and salt.", "Simmer 20 minutes, stirring now and then, until it thickens a little.", "Cool and keep in jars. It keeps a week in the fridge."], "tip": "The honey takes the tinny edge off canned tomatoes."},
+    "teriyaki": {"name": "Honey garlic teriyaki sauce", "cuisine": "Prep", "component": true, "minutes": 8, "serves": "about 1 cup", "protein": 1, "equip": "small pot", "ingredients": [
+      {"p": "soy", "qty": "½ cup"}, {"h": "honey", "qty": "⅓ cup"}, {"p": "vinegar", "qty": "2 tbsp"}, {"g": "garlic", "qty": "3 cloves, grated"}, {"p": "ginger", "qty": "1 tsp"}, {"p": "cornstarch", "qty": "1 tbsp"}, {"p": "sesame", "qty": "1 tsp"}, {"p": "flakes", "qty": "a pinch"}],
+      "steps": ["Whisk the cornstarch into ¼ cup cold water.", "Add everything else to a small pot and bring it to a simmer.", "Whisk in the cornstarch and simmer 1 to 2 minutes until glossy and thick.", "Cool and keep in a jar."]},
+    "roast-veg": {"name": "Two-tray roasted vegetables", "cuisine": "Prep", "component": true, "minutes": 35, "serves": "about 8 cups", "protein": 4, "equip": "2 sheet pans", "ingredients": [
+      {"g": "broccoli", "qty": "2 lb, in florets"}, {"g": "zucchini", "qty": "3, in half-moons"}, {"g": "peppers", "qty": "3, in chunks"}, {"g": "redonion", "qty": "1, in wedges"}, {"h": "sweetpot", "qty": "1, in ¾-inch cubes"}, {"p": "oil", "qty": "3 tbsp"}, {"p": "garlicpowder", "qty": "1 tsp"}, {"p": "salt", "qty": "1½ tsp"}, {"p": "pepper", "qty": "½ tsp"}],
+      "steps": ["Heat the oven to 425°F.", "Toss everything with the oil and seasoning and spread it over 2 sheet pans so nothing is crowded.", "Roast 25 minutes, swapping the pans and stirring halfway, until browned at the edges.", "Cool, then store in one big container."], "tip": "Seasoned without herbs this week so it works with marinara and teriyaki alike."},
+    "apple-oats": {"name": "Apple pie overnight oats", "cuisine": "Breakfast", "minutes": 10, "serves": "3 jars", "protein": 24, "equip": "3 jars", "ingredients": [
+      {"h": "oats", "qty": "1½ cups"}, {"g": "milk", "qty": "1½ cups"}, {"g": "yogurt", "qty": "1½ cups"}, {"h": "pb", "qty": "3 tbsp"}, {"g": "apples", "qty": "2, diced"}, {"g": "raisins", "qty": "3 tbsp"}, {"h": "honey", "qty": "1 tbsp"}, {"p": "cinnamon", "qty": "1½ tsp"}, {"p": "salt", "qty": "a pinch"}],
+      "steps": ["Stir the milk, yogurt, peanut butter, honey, cinnamon and salt together.", "Stir in the oats and raisins and split across 3 jars.", "Top each with diced apple.", "Keeps 4 days. Eat cold, or warm it 90 seconds for a December morning."]},
+    "marinara-eggs": {"name": "Eggs in marinara with a crusty roll", "cuisine": "Breakfast", "minutes": 10, "serves": "1", "protein": 26, "equip": "small skillet", "ingredients": [
+      {"r": "marinara", "qty": "¾ cup"}, {"g": "eggs", "qty": "3"}, {"g": "spinach", "qty": "a handful"}, {"g": "parm", "qty": "1 tbsp"}, {"g": "rolls", "qty": "1, toasted"}, {"p": "flakes", "qty": "a pinch"}, {"p": "pepper", "qty": "to taste"}],
+      "steps": ["Warm the marinara in a small skillet and stir in the spinach until it wilts.", "Make 3 wells and crack an egg into each.", "Cover and cook on medium-low for 5 to 6 minutes, until the whites set and the yolks stay soft.", "Finish with parmesan and pepper flakes and scoop it up with the toasted roll."], "tip": "Sunday's marinara turns into a 10-minute breakfast."},
+    "hb-eggs": {"name": "Air-fryer hard-boiled eggs", "cuisine": "Snack", "minutes": 20, "serves": "6 eggs", "protein": 6, "equip": "air fryer", "ingredients": [
+      {"g": "eggs", "qty": "6"}, {"p": "salt", "qty": "for serving"}],
+      "steps": ["Put the eggs straight into the air fryer basket.", "Cook at 270°F for 15 minutes.", "Move them to a bowl of ice water for 5 minutes, then refrigerate."]},
+    "teriyaki-bowl": {"name": "Teriyaki meatball rice bowl", "cuisine": "Asian", "minutes": 5, "serves": "2 lunches", "protein": 40, "equip": "microwave", "ingredients": [
+      {"r": "turkey-meatballs", "qty": "1 portion each"}, {"r": "teriyaki", "qty": "3 tbsp each"}, {"g": "rice", "qty": "¾ cup cooked each"}, {"r": "roast-veg", "qty": "1 cup each"}, {"g": "greenonion", "qty": "for topping"}, {"p": "sesame", "qty": "a few drops"}],
+      "steps": ["Toss the meatballs in the teriyaki sauce.", "Pack rice, roasted vegetables and meatballs in each container.", "Reheat 2 minutes, then top with green onion and a few drops of sesame oil."], "tip": "Built from Sunday's meatballs, vegetables and teriyaki."},
+    "baked-ziti": {"name": "Meatball baked ziti", "cuisine": "Italian", "minutes": 30, "serves": "2 (dinner + Wednesday lunch)", "protein": 52, "equip": "pot, cast iron", "ingredients": [
+      {"g": "penne", "qty": "8 oz"}, {"r": "turkey-meatballs", "qty": "2 portions, halved"}, {"r": "marinara", "qty": "2 cups"}, {"r": "roast-veg", "qty": "1 cup"}, {"g": "spinach", "qty": "2 handfuls"}, {"g": "cottage", "qty": "1 cup"}, {"g": "mozz", "qty": "¾ cup"}, {"g": "parm", "qty": "2 tbsp"}, {"p": "salt", "qty": "for the water"}],
+      "steps": ["Heat the oven to 400°F. Boil the penne 2 minutes short of the box time and drain.", "Stir the pasta with the marinara, meatballs, roasted vegetables, spinach and cottage cheese right in the cast iron.", "Top with mozzarella and parmesan.", "Bake 15 minutes, then broil 2 minutes until the cheese browns.", "Pack half for Wednesday's lunch."], "tip": "Cottage cheese melts into the sauce like ricotta and adds about 14g of protein a serving."},
+    "meatball-subs": {"name": "Air-fryer meatball subs", "cuisine": "Italian", "minutes": 10, "serves": "1", "protein": 45, "equip": "air fryer", "ingredients": [
+      {"r": "turkey-meatballs", "qty": "1 portion"}, {"r": "marinara", "qty": "½ cup"}, {"g": "rolls", "qty": "2"}, {"g": "mozz", "qty": "⅓ cup"}, {"g": "parm", "qty": "1 tbsp"}, {"p": "italian", "qty": "a pinch"}],
+      "steps": ["Warm the meatballs in the marinara for 2 minutes in the microwave.", "Split the rolls and fill each with 3 meatballs and sauce.", "Top with mozzarella, parmesan and Italian seasoning.", "Air-fry at 380°F for 4 minutes until the cheese bubbles and the rolls crisp."], "tip": "The fastest dinner of the week, for after Tuesday pickleball."},
+    "chicken-parm": {"name": "Air-fryer chicken parmesan", "cuisine": "Italian", "minutes": 30, "serves": "3 (dinner for two + Thursday lunch)", "protein": 50, "equip": "air fryer, pot", "ingredients": [
+      {"g": "chicken", "qty": "2 large breasts, butterflied into 3 cutlets"}, {"g": "eggs", "qty": "1"}, {"g": "panko", "qty": "1 cup"}, {"g": "parm", "qty": "⅓ cup"}, {"p": "italian", "qty": "1 tsp"}, {"p": "garlicpowder", "qty": "½ tsp"}, {"p": "salt", "qty": "½ tsp"}, {"p": "spray", "qty": "for the basket"}, {"r": "marinara", "qty": "1½ cups"}, {"g": "mozz", "qty": "¾ cup"}, {"g": "penne", "qty": "6 oz"}, {"r": "roast-veg", "qty": "2 cups"}, {"g": "rolls", "qty": "1, for Thursday"}],
+      "steps": ["Pound the cutlets to an even ½ inch and season with salt.", "Dip each in beaten egg, then press into the panko mixed with half the parmesan, the Italian seasoning and garlic powder.", "Spray well and air-fry at 400°F for 10 minutes, flipping halfway.", "Spoon marinara over each, top with mozzarella and the rest of the parmesan, and air-fry 2 minutes more.", "Meanwhile, boil the penne, toss it with warm marinara and reheat the roasted vegetables.", "Wrap the third cutlet for Thursday. Tuck it into a toasted roll with a spoon of marinara for a chicken parm sub."], "tip": "Date-night comfort food for two, and it makes Thursday's lunch."},
+    "teriyaki-fried-rice": {"name": "Teriyaki meatball fried rice", "cuisine": "Asian", "minutes": 15, "serves": "2 (dinner + Friday lunch)", "protein": 44, "equip": "cast iron", "ingredients": [
+      {"g": "rice", "qty": "3 cups cooked, cold"}, {"r": "turkey-meatballs", "qty": "2 portions, quartered"}, {"r": "roast-veg", "qty": "1 cup, chopped"}, {"g": "peas", "qty": "1 cup"}, {"g": "eggs", "qty": "3"}, {"r": "teriyaki", "qty": "¼ cup"}, {"p": "soy", "qty": "1 tbsp"}, {"g": "garlic", "qty": "2 cloves, minced"}, {"p": "sesame", "qty": "1 tsp"}, {"p": "oil", "qty": "1 tbsp"}, {"g": "greenonion", "qty": "a big handful"}],
+      "steps": ["Heat the oil in the cast iron until shimmering. Sear the meatball pieces 2 minutes and push them aside.", "Scramble the eggs in the empty space, then add the garlic, peas and roasted vegetables for 1 minute.", "Add the cold rice, press it flat and leave it 2 minutes to crisp.", "Toss with the teriyaki, soy sauce and sesame oil.", "Finish with green onion. Pack half for Friday's lunch."], "tip": "Dinner after Thursday pickleball. Wednesday's rice makes it crisp, not mushy."},
+    "meatball-tagine": {"name": "Moroccan meatball tagine with couscous", "cuisine": "Mediterranean", "minutes": 30, "serves": "3 (dinner for two + Saturday lunch)", "protein": 42, "equip": "cast iron with a lid, pot", "isNew": true, "ingredients": [
+      {"r": "turkey-meatballs", "qty": "3 portions"}, {"g": "onion", "qty": "1, sliced"}, {"g": "garlic", "qty": "3 cloves"}, {"h": "sweetpot", "qty": "2, in ¾-inch cubes"}, {"g": "chickpeas", "qty": "1 can, rinsed"}, {"g": "diced", "qty": "1 can"}, {"g": "broth", "qty": "1½ cups plus 1¼ cups for the couscous"}, {"g": "raisins", "qty": "¼ cup"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "cinnamon", "qty": "½ tsp"}, {"p": "ginger", "qty": "½ tsp"}, {"p": "turmeric", "qty": "½ tsp"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "salt", "qty": "to taste"}, {"g": "lemons", "qty": "zest and juice of 1"}, {"g": "couscous", "qty": "1 cup"}, {"g": "cilantro", "qty": "a big handful"}, {"g": "yogurt", "qty": "for topping"}],
+      "steps": ["Soften the onion in the oil for 5 minutes, then stir in the garlic and all the spices for 30 seconds until fragrant.", "Add the sweet potatoes, chickpeas, tomatoes, raisins and 1½ cups broth. Cover and simmer 12 minutes.", "Nestle in the meatballs, cover and simmer 6 minutes more until the sweet potatoes are tender and the meatballs are hot.", "Meanwhile, bring 1¼ cups broth to a boil, stir in the couscous with a pinch of salt, cover off the heat for 5 minutes and fluff with lemon zest.", "Finish the tagine with lemon juice and cilantro, and serve over couscous with a spoon of yogurt.", "Pack one bowl for Saturday."], "tip": "This week's new one, and a dinner for two. Warm spices, sweet raisins and lemon make it taste nothing like the rest of the week's meatballs."}
+  }
+}
