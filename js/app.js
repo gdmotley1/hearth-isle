@@ -321,7 +321,7 @@ function rerender(){ const y = view.scrollTop; route(true); view.scrollTop = y; 
 /* ---------------- island ---------------- */
 function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id = 'h'){
   const live = id === 'h';
-  if (live) zoom = ISLE_ZOOM;
+  if (live){ zoom = ISLE_ZOOM; anchor = ISLE_ANCHOR; }
   const r = Isle.isoScene(prog, Isle.PAL_B, id, {live});
   const box = svg.getBoundingClientRect();
   const w = 2 * r.W * zoom, h = w * (box.height / Math.max(1, box.width));
@@ -343,8 +343,8 @@ function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id 
   newcomer = false;
 }
 let scene = null;
-// The home island is drawn larger than it fits: the village fills the screen and the shore runs off the sides.
-const ISLE_ZOOM = .74;
+// The home island fits the screen with a little room around it, centered between the title and the Today card.
+const ISLE_ZOOM = 1, ISLE_ANCHOR = .6;
 function settlerStory(i, st, role){
   const ds = Store.ymd(today()), hour = today().getHours();
   const done = new Set(Store.state.log.filter(e => e.date === ds).map(e => e.res));

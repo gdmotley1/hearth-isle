@@ -12,7 +12,7 @@ const f1 = n => (+n).toFixed(1);
 /* Where settlers spend their day, in the order new settlers take them. A spot is used only once
    its building exists. front: drawn in front of that building, otherwise behind it. */
 const SPOTS = [
-  {k:'fire', x:.55, y:1.35, a:'sit', face:-1, front:true, role:'storyteller', doing:'warming up by the fire'},
+  {k:'fire', x:.05, y:1.2, a:'sit', face:1, front:true, role:'storyteller', doing:'warming up by the fire'},
   {k:'tent', x:2.3, y:-.3, a:'chop', face:-1, front:true, role:'woodcutter', doing:'chopping firewood'},
   {walk:0, role:'scout', doing:'out for a walk'},
   {k:'f1', x:2.5, y:.55, a:'tend', front:true, role:'farmer', doing:'tending the crops'},
