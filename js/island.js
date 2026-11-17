@@ -397,6 +397,8 @@ function isoScene(prog,p,id,opt={}){
   vis.push(dock,{k:'boat',t:'longboat',x:ta-.2,y:-.1,w:1,h:1});
   // left and right edges of everything drawn, so the camera can frame the island with its port
   let e0=0,e1=0;tiles.forEach(([x,y])=>{e0=Math.min(e0,(x-y-1)*TW);e1=Math.max(e1,(x+1-y)*TW);});e1=Math.max(e1,bsx+22);
+  // Blur filters are the most expensive thing to draw on a phone; the gradient halos carry the glow on their own.
+  s=s.replace(/ filter="url\(#gw[^"]*\)"/g,'');
   return {svg:s,W,f,gst,tiles,vis,ext:[e0,e1],boat:[bx,0],tug:[bsx,bsy],dock:{x0:dx0,x1:dx1,tier,at:P((dx0+dx1)/2,.5,-8)}};
 }
 

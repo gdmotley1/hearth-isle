@@ -777,3 +777,7 @@ button.resbar{border:0;background:none;padding:0;margin:0 auto;font:inherit;colo
 .swt i{width:25px;height:25px}
 .swt.on i{transform:translateX(20px)}
 .row.ing a[data-stop]{display:inline-block;padding:6px 0;margin:-6px 0}
+
+/* ---------- island: daylight and smooth camera ---------- */
+.world #isl{transform-origin:0 0;backface-visibility:hidden}
+.world.daylight #isl circle[fill^="url(#gl"]{opacity:.28}     /* lanterns barely glow in daylight */

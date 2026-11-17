@@ -559,10 +559,27 @@ function closeBubble(){ $$('.bubble, .tapring').forEach(b => b.remove()); clearT
 /* ---------------- island camera: pinch, pan, double-tap, glide ---------------- */
 const cam = {s:1, cx:0, cy:0};
 let baseVB = null, glideRAF = 0;
-function applyCam(svg = $('#isl')){
+/* While the camera moves (a pinch, a pan, a glide), the island already on screen is slid and scaled on the
+   graphics chip with a CSS transform, which costs almost nothing. Redrawing all ~1,250 shapes happens once,
+   140 ms after it stops, so the picture comes back sharp. */
+let camCommitT = 0, camBox = null;
+function camRect(svg){ if (!svg.style.transform) camBox = svg.getBoundingClientRect(); return camBox || svg.getBoundingClientRect(); }
+function commitCam(svg = $('#isl')){ applyCam(svg, false); }
+function applyCam(svg = $('#isl'), live = false){
   if (!svg || !baseVB) return;
   const [x, y, w, h] = baseVB, W = w / cam.s, Hh = h / cam.s, cx = x + w / 2 + cam.cx, cy = y + h / 2 + cam.cy;
-  svg.setAttribute('viewBox', `${(cx - W / 2).toFixed(2)} ${(cy - Hh / 2).toFixed(2)} ${W.toFixed(2)} ${Hh.toFixed(2)}`);
+  const vb = [cx - W / 2, cy - Hh / 2, W, Hh];
+  if (live){
+    const cur = svg.viewBox.baseVal, r = camRect(svg), k = Math.min(r.width / cur.width, r.height / cur.height), sc = cur.width / vb[2];
+    const ox = (r.width - cur.width * k) / 2, oy = (r.height - cur.height * k) / 2;
+    svg.style.transformOrigin = `${ox.toFixed(1)}px ${oy.toFixed(1)}px`; svg.style.willChange = 'transform';
+    svg.style.transform = `translate(${((cur.x - vb[0]) * k * sc).toFixed(2)}px, ${((cur.y - vb[1]) * k * sc).toFixed(2)}px) scale(${sc.toFixed(4)})`;
+    clearTimeout(camCommitT); camCommitT = setTimeout(() => commitCam(svg), 140);
+  } else {
+    clearTimeout(camCommitT);
+    svg.style.transform = ''; svg.style.willChange = '';
+    svg.setAttribute('viewBox', vb.map(n => n.toFixed(2)).join(' '));
+  }
   const world = svg.closest('.world');
   if (world){ world.classList.toggle('zoomed', cam.s > 1.02); world.style.touchAction = cam.s > 1.02 ? 'none' : 'pan-y'; }
 }
@@ -583,8 +600,7 @@ function glideTo(target, ms = 480){
     const step = t => {
       const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3);
       cam.s = from.s + (to.s - from.s) * e; cam.cx = from.cx + (to.cx - from.cx) * e; cam.cy = from.cy + (to.cy - from.cy) * e;
-      applyCam();
-      if (k < 1) glideRAF = requestAnimationFrame(step); else done();
+      if (k < 1){ applyCam(undefined, true); glideRAF = requestAnimationFrame(step); } else { commitCam(); done(); }
     };
     if (matchMedia('(prefers-reduced-motion: reduce)').matches){ Object.assign(cam, to); applyCam(); done(); } else glideRAF = requestAnimationFrame(step);
   });
@@ -594,13 +610,26 @@ function focusOn([x, y], s){ const [bx, by, w, h] = baseVB; return glideTo({s, c
 function resetCam(){ return glideTo({s:1, cx:0, cy:0}); }
 function wireCamera(world, svg){
   const pts = new Map(); let g = null, moved = false, lastTap = 0, tapTimer = 0;
-  const upp = () => baseVB[2] / (cam.s * svg.getBoundingClientRect().width);
+  const upp = () => baseVB[2] / (cam.s * camRect(svg).width);
+  let coast = 0;
+  const glideOn = (vx, vy) => {   // momentum: keep sliding after a flick, slowing like Maps
+    let last = performance.now();
+    const step = t => {
+      const dt = Math.min(32, t - last); last = t;
+      const u = upp(); cam.cx -= vx * dt * u; cam.cy -= vy * dt * u;
+      const fx = cam.cx, fy = cam.cy; clampCam(); if (cam.cx !== fx) vx = 0; if (cam.cy !== fy) vy = 0;
+      const decay = Math.pow(.94, dt / 16); vx *= decay; vy *= decay;
+      applyCam(svg, true);
+      if (Math.hypot(vx, vy) > .02) coast = requestAnimationFrame(step); else commitCam(svg);
+    };
+    coast = requestAnimationFrame(step);
+  };
   const start = () => {
     const a = [...pts.values()];
     if (a.length === 2){ const mid = [(a[0].x + a[1].x) / 2, (a[0].y + a[1].y) / 2]; g = {pinch:true, d0:Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y), s0:cam.s, p:svgAt(svg, ...mid)}; }
     else if (a.length === 1){ g = {pinch:false, x0:a[0].x, y0:a[0].y, cx0:cam.cx, cy0:cam.cy}; }
   };
-  world.addEventListener('pointerdown', e => { pts.set(e.pointerId, {x:e.clientX, y:e.clientY}); moved = false; cancelAnimationFrame(glideRAF); start(); });
+  world.addEventListener('pointerdown', e => { pts.set(e.pointerId, {x:e.clientX, y:e.clientY}); moved = false; cancelAnimationFrame(glideRAF); cancelAnimationFrame(coast); if (svg.style.transform) commitCam(svg); start(); });
   world.addEventListener('pointermove', e => {
     if (!pts.has(e.pointerId) || !g) return;
     pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
@@ -609,18 +638,27 @@ function wireCamera(world, svg){
       const d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y), mid = [(a[0].x + a[1].x) / 2, (a[0].y + a[1].y) / 2];
       cam.s = Math.max(1, Math.min(3.4, g.s0 * d / Math.max(1, g.d0)));
       // keep the point under the fingers where it was
-      const r = svg.getBoundingClientRect(), u = baseVB[2] / (cam.s * r.width), [bx, by, w, h] = baseVB;
+      const r = camRect(svg), u = baseVB[2] / (cam.s * r.width), [bx, by, w, h] = baseVB;
       cam.cx = g.p[0] - (mid[0] - (r.left + r.width / 2)) * u - (bx + w / 2);
       cam.cy = g.p[1] - (mid[1] - (r.top + r.height / 2)) * u - (by + h / 2);
-      clampCam(); applyCam(svg); moved = true; closeBubble();
+      clampCam(); applyCam(svg, true); moved = true; closeBubble();
     } else if (!g.pinch && cam.s > 1.02){
       const dx = e.clientX - g.x0, dy = e.clientY - g.y0;
       if (!moved && Math.hypot(dx, dy) < 6) return;
       moved = true; closeBubble();
-      const u = upp(); cam.cx = g.cx0 - dx * u; cam.cy = g.cy0 - dy * u; clampCam(); applyCam(svg);
+      const u = upp(); cam.cx = g.cx0 - dx * u; cam.cy = g.cy0 - dy * u; clampCam(); applyCam(svg, true);
+      const now = performance.now();
+      if (g.lt){ const dt = Math.max(1, now - g.lt); g.vx = .7 * ((e.clientX - g.lx) / dt) + .3 * (g.vx || 0); g.vy = .7 * ((e.clientY - g.ly) / dt) + .3 * (g.vy || 0); }
+      g.lx = e.clientX; g.ly = e.clientY; g.lt = now;
     }
   });
-  const end = e => { pts.delete(e.pointerId); if (moved) swallowClick(); if (pts.size) start(); else g = null; };
+  const end = e => {
+    const was = g; pts.delete(e.pointerId); if (moved) swallowClick();
+    if (pts.size){ start(); return; }
+    g = null;
+    if (was && !was.pinch && moved && was.lt && performance.now() - was.lt < 80 && Math.hypot(was.vx || 0, was.vy || 0) > .25) glideOn(was.vx, was.vy);
+    else if (was && was.pinch && cam.s < 1.06) resetCam();
+  };
   world.addEventListener('pointerup', end); world.addEventListener('pointercancel', end);
   // single tap: meet whoever is there; double tap: zoom in there, or back out if already zoomed
   world.addEventListener('click', e => {
@@ -785,7 +823,24 @@ function vToday(){
   playTw();
 }
 /* The island, full screen: balances and the next building on top of it. */
+/* Switching back to Isle reuses the island already drawn (and its camera, sky and listeners) unless something
+   on it changed: points, buildings, settlers, crops, the goal, the date, late night, or the screen size. */
+let isleCache = null;
+function isleKey(){ const h = new Date().getHours(); return [Store.totals().all, (Store.state.built || []).length, Store.settlers(), JSON.stringify(Store.state.crops || {}), Store.state.target || '', Store.ymd(today()), h >= 23 || h < 5, innerWidth, innerHeight].join('|'); }
+const daylight = () => { const h = new Date().getHours(); return h >= 8 && h < 17; };
 function vIsle(){
+  if (isleCache && isleCache.key === isleKey() && !buildFocus && !festival && !gardensFest && !newcomer && !islandFx.length){
+    const el = isleCache.el; el.className = 'isleful';
+    view.innerHTML = ''; view.appendChild(el);
+    scrollAt = 99999; setBar('Motley Island');
+    const world = $('#world'), svg = $('#isl');
+    world.classList.toggle('daylight', daylight());
+    Life.sky(world, {winter:season().winter});
+    svg.querySelectorAll('.st').forEach(n => n.remove());
+    commitCam(svg);
+    Life.start(svg, scene, {count:Math.min(16, Store.settlers()), winter:season().winter});
+    return;
+  }
   const sw = Store.seasonWeek(), u = unlockState(), bal = u.bal;
   view.innerHTML = `<div class="isleful">
     <div class="world full" id="world" role="button" aria-label="Your island. Tap a settler or a building to meet them, or anywhere else for details."><svg id="isl" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg></div>
@@ -818,6 +873,8 @@ function vIsle(){
   }
   playIslandFx(world);
   seasonalMoment(world);
+  world.classList.toggle('daylight', daylight());
+  isleCache = {el:view.firstElementChild, key:isleKey()};
 }
 const CROPN = {greens:'Greens', wheat:'Wheat', pumpkins:'Pumpkins', berries:'Berries'};
 /* Choose what the settlers build next, and what each farm plot grows. */
