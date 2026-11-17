@@ -253,28 +253,24 @@ function person(sx,sy,c,p,scale=1){
   return `<g transform="translate(${sx.toFixed(1)} ${sy.toFixed(1)}) scale(${scale})"><g class="bob"><ellipse cx="0" cy="0" rx="2.6" ry="1.2" fill="${p.shadow}"/><rect x="-1.6" y="-6.2" width="3.2" height="5.6" rx="1.3" fill="${p.shirts[c]}"/><circle cx="0" cy="-7.8" r="1.8" fill="${p.skin}"/></g></g>`;
 }
 
-/* The lantern tugboat moored off the east shore: red hull, cream wheelhouse with lit windows,
-   a smokestack puffing, tire bumpers and a lantern on the bow that throws light on the water. */
-function isoTug(x,y,p,id){
-  const f=n=>n.toFixed(1),hull='#8e3a30',hullD='#6a2a24',cab='#e3d6b8',cabD='#b9ab8c',roof='#3b4252',stack='#2f3542';
-  let s=`<ellipse cx="${f(x)}" cy="${f(y+2.6)}" rx="16" ry="2.4" fill="rgba(0,0,0,.25)"/>`;
-  // hull with a raised bow on the right, a dark waterline and a pale deck edge
-  s+=`<path d="M${f(x-14)} ${f(y-3.5)}L${f(x+11)} ${f(y-3.5)}Q${f(x+15.5)} ${f(y-4.2)} ${f(x+16)} ${f(y-7.5)}L${f(x+12.5)} ${f(y+1.8)}Q${f(x)} ${f(y+3.4)} ${f(x-12)} ${f(y+1.8)}Z" fill="${hull}"/>`;
-  s+=`<path d="M${f(x-12.4)} ${f(y+.6)}Q${f(x)} ${f(y+2.3)} ${f(x+12.9)} ${f(y+.6)}" stroke="#1e1a1a" stroke-width="1.6" fill="none"/>`;
-  s+=`<path d="M${f(x-14)} ${f(y-3.5)}L${f(x+11)} ${f(y-3.5)}Q${f(x+15.5)} ${f(y-4.2)} ${f(x+16)} ${f(y-7.5)}" stroke="#d8cfbf" stroke-width=".8" fill="none"/>`;
-  // tire bumpers along the side
-  [-9,-3.5,2,7.5].forEach(dx=>{s+=`<circle cx="${f(x+dx)}" cy="${f(y-1.2)}" r="1.25" fill="#1d1d1f" stroke="#3a3a3d" stroke-width=".5"/>`;});
-  // wheelhouse with a dark roof and two warm windows
-  s+=`<rect x="${f(x-5.5)}" y="${f(y-12.5)}" width="10" height="9" rx=".8" fill="${cab}"/><rect x="${f(x+2.5)}" y="${f(y-12.5)}" width="2" height="9" fill="${cabD}"/>`;
-  s+=`<rect x="${f(x-6.6)}" y="${f(y-14)}" width="12.4" height="2" rx=".8" fill="${roof}"/>`;
-  const wf=p.night?` filter="url(#gw${id})"`:'';
-  s+=`<rect x="${f(x-4)}" y="${f(y-10.6)}" width="2.6" height="2.6" rx=".4" fill="${p.win}"${wf}/><rect x="${f(x-.4)}" y="${f(y-10.6)}" width="2.6" height="2.6" rx=".4" fill="${p.win}"${wf}/>`;
-  // smokestack with a red band, puffing
-  s+=`<rect x="${f(x-11)}" y="${f(y-15.5)}" width="3.4" height="12" rx=".6" fill="${stack}"/><rect x="${f(x-11)}" y="${f(y-14)}" width="3.4" height="1.6" fill="#c0392b"/>`;
-  s+=`<circle class="smoke" cx="${f(x-9.3)}" cy="${f(y-18)}" r="2.2" fill="${p.smoke}"/><circle class="smoke" style="animation-delay:-2s" cx="${f(x-9.3)}" cy="${f(y-18)}" r="1.8" fill="${p.smoke}"/>`;
-  // bow lantern on a short post
-  s+=`<path d="M${f(x+12.5)} ${f(y-6)}v-5" stroke="#4a3a2c" stroke-width=".8"/><rect x="${f(x+11.3)}" y="${f(y-13.4)}" width="2.4" height="2.8" rx=".7" fill="#ffd77e"${wf}/>`;
-  if(p.night){s=glow(x+12.5,y-12,16,id,.9)+s;light(x+12.5,y+2,26,.85);}
+/* The lantern longboat moored off the end of the dock: a long wooden rowboat with a curled prow,
+   painted shields along the side, four settlers at the oars and a lantern hung at each end. */
+function isoLongboat(x,y,p,id){
+  const f=n=>n.toFixed(1),wood='#6b4a30',dark='#4d3420',wf=p.night?` filter="url(#gw${id})"`:'';
+  const head=(hx,hy,c)=>`<rect x="${f(hx-1.6)}" y="${f(hy+1.2)}" width="3.2" height="2.6" rx="1" fill="${c}"/><circle cx="${f(hx)}" cy="${f(hy)}" r="1.5" fill="${p.skin}"/><path d="M${f(hx-1.5)} ${f(hy-.2)}a1.5 1.5 0 0 1 3 0z" fill="#3a2b24"/>`;
+  const lamp=(lx,ly)=>(p.night?glow(lx,ly,12,id,1):'')+`<rect x="${f(lx-1.2)}" y="${f(ly-1.4)}" width="2.4" height="2.8" rx=".7" fill="#ffd77e"${wf}/>`;
+  let s=`<ellipse cx="${f(x)}" cy="${f(y+2.8)}" rx="21" ry="2.6" fill="rgba(0,0,0,.25)"/>`;
+  const rowers=[-8,-3,2,7];
+  rowers.forEach((dx,i)=>{s+=`<path class="oar" style="transform-origin:${f(x+dx)}px ${f(y-4.5)}px;animation-delay:-${(i*.08).toFixed(2)}s" d="M${f(x+dx)} ${f(y-4.5)}L${f(x+dx-6)} ${f(y+3.5)}" stroke="#a9845a" stroke-width=".9" stroke-linecap="round"/>`;});
+  rowers.forEach((dx,i)=>{s+=head(x+dx+1,y-9,p.shirts[(i+1)%p.shirts.length]);});
+  s+=`<path d="M${f(x-16)} ${f(y-4)}H${f(x+15)}Q${f(x+17)} ${f(y-4.4)} ${f(x+18)} ${f(y-6)}L${f(x+15)} ${f(y+1.4)}Q${f(x)} ${f(y+3)} ${f(x-14)} ${f(y+1.4)}L${f(x-17.2)} ${f(y-6)}Q${f(x-16.6)} ${f(y-4.4)} ${f(x-16)} ${f(y-4)}Z" fill="${wood}"/>`;
+  s+=`<path d="M${f(x-15.4)} ${f(y-1.4)}Q${f(x)} ${f(y+.2)} ${f(x+16)} ${f(y-1.4)}M${f(x-14.6)} ${f(y+.6)}Q${f(x)} ${f(y+2)} ${f(x+15.2)} ${f(y+.6)}" stroke="${dark}" stroke-width=".5" fill="none"/>`;
+  s+=`<path d="M${f(x-16)} ${f(y-3.6)}H${f(x+15.6)}" stroke="#c9a35a" stroke-width=".8"/>`;
+  [-10,-5,0,5,10].forEach((dx,i)=>{s+=`<circle cx="${f(x+dx)}" cy="${f(y-2.6)}" r="1.7" fill="${['#b8453a','#3f5e82','#c9a35a'][i%3]}" stroke="#2a1d14" stroke-width=".35"/><circle cx="${f(x+dx)}" cy="${f(y-2.6)}" r=".45" fill="#d9dde3"/>`;});
+  s+=`<path d="M${f(x+17.4)} ${f(y-5.4)}Q${f(x+21.6)} ${f(y-11)} ${f(x+19.6)} ${f(y-16.4)}Q${f(x+18.2)} ${f(y-19)} ${f(x+16.6)} ${f(y-16.8)}" stroke="${wood}" stroke-width="2.2" fill="none" stroke-linecap="round"/><circle cx="${f(x+17.3)}" cy="${f(y-17.4)}" r=".5" fill="#ffd77e"/>`;
+  s+=`<path d="M${f(x-16.8)} ${f(y-5.6)}Q${f(x-19.6)} ${f(y-9.4)} ${f(x-18)} ${f(y-12)}Q${f(x-16.8)} ${f(y-13.2)} ${f(x-16)} ${f(y-11.6)}" stroke="${wood}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
+  [[x+12.5,1],[x-13,-1]].forEach(([px,d])=>{s+=`<path d="M${f(px)} ${f(y-4)}V${f(y-15)}h${2.6*d}" stroke="#4a3a2c" stroke-width=".7" fill="none"/>`+lamp(px+2.6*d,y-13);});
+  if(p.night){light(x+15.1,y+2,24,.8);light(x-15.6,y+2,20,.6);}
   return `<g class="float">${s}</g>`;
 }
 /* The dock: plank deck on posts just above the water, from the east cliff out to sea. Each port tier the
@@ -383,14 +379,14 @@ function isoScene(prog,p,id,opt={}){
   if(!opt.live)WALK.filter(w=>w.th<=f).forEach((w,i)=>{const a=P(w.f[0],w.f[1]),b=P(w.t[0],w.t[1]);
     items.push({z:w.f[0]+w.f[1]+.3,k:'w'+i,svg:()=>{const moving=w.d?` class="walk" style="--dx:${(b[0]-a[0]).toFixed(1)}px;--dy:${(b[1]-a[1]).toFixed(1)}px;animation-duration:${w.d}s;animation-delay:-${i*1.3}s"`:'';
       return `<g${moving}>${person(a[0],a[1],w.c,p)}</g>`;}});});
-  // the dock on the east shore, grown into a port tier by tier, with the tug moored beside it
+  // the dock on the east shore, grown into a port tier by tier, with the longboat moored off its end
   let bx=0,bx0=0;for(let x=0;x<=10;x++){if(L(x,0)||L(x,1))bx=x;if(L(x,0))bx0=x;}
   const tier=B?(B.has('port3')?3:B.has('port2')?2:B.has('port1')?1:0):0,dk=tier?'port'+tier:'dock';
   const dx0=bx0+1,dx1=bx+1+[.8,1.3,1.6,1.9][tier];
   items.push({z:dx0+.4,k:dk,svg:()=>isoDock(dx0,dx1,tier,p,id)});
   const dock={k:dk,t:dk,x:dx0,y:.18,w:dx1-dx0,h:.64},ta=dx1+.95;
-  const [bsx,bsy]=P(ta,.4,-D+2);
-  items.push({z:99,k:'boat',svg:()=>isoTug(bsx,bsy,p,id)});
+  const [bsx0,bsy]=P(ta,.4,-D+2),bsx=bsx0+5;
+  items.push({z:99,k:'boat',svg:()=>isoLongboat(bsx,bsy,p,id)});
   items.sort((a,b)=>a.z-b.z);
   items.forEach(it=>{s+=`<g class="o" data-k="${it.k}" data-z="${it.z}">${it.svg()}</g>`;});
   // warm light pooling from fires, windows and lanterns, painted over everything
@@ -398,9 +394,9 @@ function isoScene(prog,p,id,opt={}){
   // fireflies at night
   if(p.night&&stage>=2){[[-60,-10],[-20,-40],[30,20],[70,-20],[-80,30],[10,-60],[90,30],[-40,40]].slice(0,stage*2).forEach(([x,y],i)=>{s+=`<circle class="fly" style="animation-delay:-${i*.9}s" cx="${x}" cy="${y}" r="1.3" fill="#ffe28a"/>`;});}
   const W=72+(148-72)*f/4;
-  vis.push(dock,{k:'boat',t:'tug',x:ta-.5,y:-.1,w:1,h:1});
+  vis.push(dock,{k:'boat',t:'longboat',x:ta-.2,y:-.1,w:1,h:1});
   // left and right edges of everything drawn, so the camera can frame the island with its port
-  let e0=0,e1=0;tiles.forEach(([x,y])=>{e0=Math.min(e0,(x-y-1)*TW);e1=Math.max(e1,(x+1-y)*TW);});e1=Math.max(e1,bsx+18);
+  let e0=0,e1=0;tiles.forEach(([x,y])=>{e0=Math.min(e0,(x-y-1)*TW);e1=Math.max(e1,(x+1-y)*TW);});e1=Math.max(e1,bsx+22);
   return {svg:s,W,f,gst,tiles,vis,ext:[e0,e1],boat:[bx,0],tug:[bsx,bsy],dock:{x0:dx0,x1:dx1,tier,at:P((dx0+dx1)/2,.5,-8)}};
 }
 

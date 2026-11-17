@@ -428,8 +428,8 @@ function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id 
   if (live){ zoom = ISLE_ZOOM; anchor = ISLE_ANCHOR; }
   const ss = season(), r = Isle.isoScene(prog, Isle.PAL_B, id, {live, winter:ss.winter, holiday:ss.holiday, built:live ? builtSet() : null, crops:Store.state.crops});
   const box = svg.getBoundingClientRect();
-  // the home island is framed from edge to edge with the dock and tug, centered on all of it
-  // (the island stays big: the far west tip crops a little before the tug on the east side ever does)
+  // the home island is framed from edge to edge with the dock and boat, centered on all of it
+  // (the island stays big: the far west tip crops a little before the boat on the east side ever does)
   const w = live ? Math.max(2 * r.W * zoom, Math.min(r.ext[1] - r.ext[0] - 20, 2.12 * r.W * zoom)) : 2 * r.W * zoom, cx = live ? Math.max((r.ext[0] + r.ext[1]) / 2, r.ext[1] + 4 - w / 2) : 0, h = w * (box.height / Math.max(1, box.width));
   svg.setAttribute('viewBox', `${(cx - w / 2).toFixed(1)} ${(8 - anchor * h).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
   svg.innerHTML = r.svg;
@@ -486,8 +486,8 @@ function settlerStory(i, st, role){
 }
 function buildingStory(k, t){
   if (t === 'gardens'){ const g = Store.gardens(); return {title:'Hanging Gardens', sub:`${g.label} · ${g.pct}%`, line:'The first Wonder. Every point you earn adds stone, soil and vines.'}; }
-  if (t === 'tug') return {title:'The lantern tug', sub:'Moored at the dock', line:'Every time you finish something it sails out and comes back with cargo for the settlers.'};
-  if (t === 'dock'){ const pn = portNext(); return {title:'The dock', sub:'Since day one', line:`Where the tug ties up. ${pn ? `Pick ${BUILD_T[pn.t]} as a goal and it grows into a port.` : ''}`}; }
+  if (t === 'longboat') return {title:'The lantern longboat', sub:'Moored at the dock', line:'Every time you finish something four settlers row it out and bring back cargo for the island.'};
+  if (t === 'dock'){ const pn = portNext(); return {title:'The dock', sub:'Since day one', line:`Where the longboat ties up. ${pn ? `Pick ${BUILD_T[pn.t]} as a goal and it grows into a port.` : ''}`}; }
   if (PORTK.has(k)){ const e = (Store.state.built || []).find(x => x.k === k), pn = portNext(), paid = e ? Store.RES.filter(r => e.s[r]).map(r => `${Math.round(e.s[r])} ${RESN[r]}`).join(', ') : '';
     return {title:BUILD_T[t], sub:`Port · tier ${Isle.PORT.findIndex(u => u.k === k) + 1} of 3`, line:`${paid ? `Cost ${paid}. ` : ''}${pn ? `${BUILD_T[pn.t]} is the next tier, whenever you choose it.` : 'The port is finished.'}`}; }
   const base = {xmas:['The holiday tree', 'The settlers dragged it in from the pine grove and every one of them hung an ornament.'], fire:['The first campfire', 'Lit the night the settlers landed.'], tent:['The first tent', 'Where the first three settlers slept.'], tree:['Old tree', 'It was here before anyone arrived.']};
