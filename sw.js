@@ -1,6 +1,6 @@
 ﻿/* Motley Island service worker: the app works offline after the first visit.
    Bump VERSION whenever a file below changes so phones pick up the update. */
-const VERSION = 'hearth-v37';
+const VERSION = 'hearth-v38';
 const SHELL = [
   './index.html',
   './manifest.webmanifest',
