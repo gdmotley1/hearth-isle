@@ -599,7 +599,7 @@ details.pantry summary::-webkit-details-marker{display:none}
 .hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .hstats div{display:flex;flex-direction:column;gap:2px;padding:10px 4px;border-radius:12px;background:var(--fill2);text-align:center}
 .hstats b{font:400 20px var(--f-d)}
-.hstats .cap{font-size:10.5px}
+.hstats .cap{font-size:11px;line-height:1.25}
 .hbars{display:flex;gap:3px;height:6px}
 .hbar{border-radius:3px;background:var(--c);box-shadow:0 0 8px var(--c);min-width:0}
 .hbuilt{display:flex;flex-wrap:wrap;gap:6px}
@@ -754,3 +754,26 @@ details.pantry summary::-webkit-details-marker{display:none}
 .sheetx svg{width:16px;height:16px}
 .sheetx:active{background:rgba(255,255,255,.2)}
 button.resbar{border:0;background:none;padding:0;margin:0 auto;font:inherit;color:inherit;width:100%;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent}
+
+/* ---------- layout polish (2026-11-17 audit) ---------- */
+.sheet > *{flex-shrink:0}                       /* nothing in a tall sheet gets squashed */
+.nw{white-space:nowrap}
+.row .tx b{-webkit-line-clamp:3}                /* long dish names wrap instead of ending in … */
+.fieldrow .tx{flex:1 0 100%}                    /* field name on its own line, crop chips below */
+.fieldrow{padding-top:12px;padding-bottom:12px}
+.ingnote{display:block;font-size:12px;margin-top:2px;font-weight:500;text-decoration:none}
+.row.ing .tx b{display:block;-webkit-line-clamp:unset;overflow:visible}
+.stats3 .makes{font-size:12px;line-height:1.35;color:var(--sub)}
+.stats3 .makes2{font:600 14px/1.3 var(--f-b)}
+.bar b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#app.immersive .bar{display:none}               /* the player and cook mode have their own top row */
+.week button{font-size:11px}
+.ring small{font-size:10.5px}
+.tlink{padding:6px 1px;margin:-6px -1px}          /* bigger tap area for timer links, same look */
+.lt{line-height:1.1}                            /* three-line dish names breathe a little */
+.over{line-height:1.45}                         /* overlines that wrap don't touch */
+.cropbtn{height:34px;padding:0 12px}
+.swt{width:51px;height:31px;border-radius:16px}
+.swt i{width:25px;height:25px}
+.swt.on i{transform:translateX(20px)}
+.row.ing a[data-stop]{display:inline-block;padding:6px 0;margin:-6px 0}

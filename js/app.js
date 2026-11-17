@@ -459,6 +459,24 @@ function wireSwipe(sel, act, root = view){
     row.addEventListener('pointercancel', reset);
   });
 }
+/* Meta lines are pieces joined by " · ". Keep each short piece on one line so a line breaks between
+   pieces ("8 min · / 5 moves"), never inside one ("2 hours on / court"). Long pieces may still wrap. */
+function tidyMeta(root){
+  $$('.tx small, .tx .cap, .cap.meta', root).forEach(el => {
+    if (el.dataset.tidy) return; el.dataset.tidy = 1;
+    [...el.childNodes].forEach(n => {
+      if (n.nodeType !== 3 || !n.textContent.includes(' · ')) return;
+      const frag = document.createDocumentFragment();
+      n.textContent.split(' · ').forEach((part, i) => {
+        if (i) frag.appendChild(document.createTextNode(' · '));
+        if (!part) return;
+        if (part.trim().length <= 26){ const sp = document.createElement('span'); sp.className = 'nw'; sp.textContent = part; frag.appendChild(sp); }
+        else frag.appendChild(document.createTextNode(part));
+      });
+      n.replaceWith(frag);
+    });
+  });
+}
 function rerender(){ const y = view.scrollTop; route(true); view.scrollTop = y; }
 
 /* ---------------- island ---------------- */
@@ -660,6 +678,7 @@ function islandSheet(){
 /* ---------------- sheet ---------------- */
 function sheet(html){
   layer.innerHTML = `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true">${html}</div>`;
+  tidyMeta(layer);
   $('.scrim', layer).onclick = () => closeLayer();
   const sh = $('.sheet', layer), grab = $('.grab', sh);
   if (grab){
@@ -1488,9 +1507,9 @@ function blocksHTML(D, wk){
 function ingName(D, i, n){
   if (i.g){ const g = D.groceries.find(x => x.id === i.g); return esc(g ? g.name : i.g); }
   if (i.p){ const p = D.pantry.find(x => x.id === i.p); return esc(p ? p.name : i.p); }
-  if (i.h){ const h = (D.have || []).find(x => x.id === i.h); return `${esc(h ? h.name : i.h)} <span class="cap">· from last week</span>`; }
+  if (i.h){ const h = (D.have || []).find(x => x.id === i.h); return `${esc(h ? h.name : i.h)}<span class="cap ingnote">From last week</span>`; }
   const r = D.recipes[i.r];
-  return n ? `<a href="#recipe/${i.r}/${n}" data-stop style="color:var(--gold2);text-decoration:underline;text-decoration-color:rgba(244,189,99,.35);text-underline-offset:3px">${esc(r ? r.name : i.r)}</a>${r && r.component ? ' <span class="cap">· from Sunday prep</span>' : ''}` : esc(r ? r.name : i.r);
+  return n ? `<a href="#recipe/${i.r}/${n}" data-stop style="color:var(--gold2);text-decoration:underline;text-decoration-color:rgba(244,189,99,.35);text-underline-offset:3px">${esc(r ? r.name : i.r)}</a>${r && r.component ? '<span class="cap ingnote">From Sunday prep</span>' : ''}` : esc(r ? r.name : i.r);
 }
 /* Meal ratings: make it again, it was fine, skip it. Loved recipes rise to the top of swaps, skipped ones sink. */
 const RATE = [[1, 'Make again'], [0, 'It was fine'], [-1, 'Skip it']];
@@ -1520,7 +1539,8 @@ function vRecipe(id, wn){
   view.innerHTML = `${floatBack()}<button class="backbtn favbtn${Store.isFav(fk) ? ' on' : ''}" type="button" id="fav" aria-label="Favorite">${ic('heart')}</button><div class="hero-r c-${r.cuisine}">${ic(r.cuisine)}</div>
   <div class="page stagger" style="margin-top:-34px;position:relative">
     <div><span class="over gold">${esc(r.cuisine)}${r.isNew ? ' · new this week' : ''} · ${esc(D.title)}</span><h1 class="lt" style="margin-top:10px">${esc(r.name)}</h1></div>
-    <div class="stats3"><div><span class="cap">Time</span><b>${r.minutes}<span class="cap"> min</span></b></div><div><span class="cap">Protein</span><b>${r.protein}<span class="cap"> g</span></b></div><div><span class="cap">Makes</span><b style="font-size:14px;font-family:var(--f-b);font-weight:600;line-height:1.3">${esc(r.serves)}</b></div></div>
+    <div class="stats3"><div><span class="cap">Time</span><b>${r.minutes}<span class="cap"> min</span></b></div><div><span class="cap">Protein</span><b>${r.protein}<span class="cap"> g</span></b></div><div>${(() => { const m = String(r.serves).match(/^(\d+(?:[½¼¾])?)\s*(.*)$/), rest = m ? m[2].replace(/^\((.*)\)$/, '$1') : '';
+      return m ? `<span class="cap">Makes</span><b>${m[1]}</b>${rest ? `<span class="cap makes">${esc(rest)}</span>` : ''}` : `<span class="cap">Makes</span><span class="makes2">${esc(r.serves)}</span>`; })()}</div></div>
     ${r.tip ? `<div class="callout">${ic('info')}<span>${esc(r.tip)}</span></div>` : ''}
     <a class="btn wide" href="#cook/${id}/${n}">${ic('kitchen')}Start cook mode</a>
     ${r.component ? '' : `<section class="sect"><div class="sect-h"><span class="over">Your verdict</span><span class="cap">after you have eaten it</span></div>${rateSeg(fk)}</section>`}
@@ -1530,7 +1550,7 @@ function vRecipe(id, wn){
 </section>
     <section class="sect"><div class="sect-h"><span class="over">Method</span><span class="cap">${plural(r.steps.length, 'step')}</span></div><ol class="steps">${r.steps.map((s, k) => `<li><span>${k + 1}</span><div>${stepText(s, `${r.name} · step ${k + 1}`)}</div></li>`).join('')}</ol></section>
   </div>`;
-  scrollAt = 180; setBar(r.name, true); wireBack();
+  scrollAt = 110; setBar(r.name, true); wireBack();
   $('#fav').onclick = e => { const on = !Store.isFav(fk); Store.setFav(fk, on ? {id, wk:n, name:r.name} : null); e.currentTarget.classList.toggle('on', on); haptic(); toast(on ? 'Saved to favorites. Swaps show it first.' : 'Removed from favorites.'); };
   $$('[data-stop]', view).forEach(a => a.addEventListener('click', e => e.stopPropagation()));
   wireTchips(); wireRate(view, r.name);
@@ -1544,7 +1564,7 @@ function vCook(id, wn){
   const i = cook.i, last = i === r.steps.length - 1, dir = cook.dir || 0; cook.dir = 0;
   view.innerHTML = `<div class="cook"><div class="ptop"><button class="backbtn" type="button" id="cclose" aria-label="Close cook mode">${ic('close')}</button>
       <div class="segs">${r.steps.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div><button class="backbtn" type="button" id="cing" aria-label="Ingredients">${ic('list')}</button></div>
-    <div class="stepbig${dir > 0 ? ' from-r' : dir < 0 ? ' from-l' : ''}"><span class="over gold">${esc(r.name)} · step ${i + 1} of ${r.steps.length}</span><p>${stepText(r.steps[i], `${r.name} · step ${i + 1}`)}</p></div>
+    <div class="stepbig${dir > 0 ? ' from-r' : dir < 0 ? ' from-l' : ''}"><span class="over gold">Step ${i + 1} of ${r.steps.length} · ${esc(r.name.split(':')[0])}</span><p>${stepText(r.steps[i], `${r.name} · step ${i + 1}`)}</p></div>
     <div class="btns">${i ? `<button class="btn quiet" type="button" id="cprev" style="flex:.6">Back</button>` : ''}<button class="btn" type="button" id="cnext">${last ? 'Done cooking' : 'Next step'}</button></div></div>`;
   $('#cclose').onclick = () => { endCook(); goBack(); };
   $('#cing').onclick = () => sheet(`<div class="grab"></div><h2 class="t2">Ingredients</h2><div class="group">${r.ingredients.map(x => `<div class="row" style="min-height:48px"><span class="tx"><b>${ingName(D, x)}</b></span><span class="q cap">${esc(x.qty)}</span></div>`).join('')}</div>`);
@@ -1574,7 +1594,7 @@ function vPrep(id, wn){
   const n = +wn || planWeek(), D = wkOf(n);
   const p = D.prep.find(x => x.id === id); if (!p) return vKitchen();
   const pre = `w${n}:${id}:`, done = p.steps.filter((_, i) => Store.flag('prep', pre + i)).length;
-  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">${esc(D.title)} · ${p.minutes} min · ${DAYN[p.day]}</span><h1 class="lt">${esc(p.title)}</h1><span class="cap" style="font-size:14px;margin-top:4px">Makes ${esc(p.makes)}.</span></header>
+  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">${esc(D.title)} · ${p.minutes} min · ${DAYN[p.day]}</span><h1 class="lt">${esc(p.title)}</h1><span class="cap" style="font-size:14px;margin-top:4px">Makes ${esc(p.makes.charAt(0).toLowerCase() + p.makes.slice(1))}.</span></header>
   <div class="page stagger" style="margin-top:22px">
     <div class="meter2"><p>${done} of ${p.steps.length} steps<b></b></p><div class="bar2" style="--c:var(--harvest)"><i style="width:${(done / p.steps.length * 100).toFixed(1)}%"></i></div></div>
     <div class="group">${p.steps.map((s, i) => { const on = Store.flag('prep', pre + i);
@@ -1806,7 +1826,7 @@ function vSettings(){
   view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">Saved on this phone and backed up online</span><h1 class="lt">Settings</h1></header>
   <div class="page stagger" style="margin-top:22px">
     <section class="sect"><div class="sect-h"><span class="over">Program</span></div><div class="group">
-      <label class="row" for="start"><span class="tile r-gold">${ic('calendar')}</span><span class="tx"><b>Week 1 started</b><small>You are in week ${Store.weekNo()} · season week ${Store.seasonWeek()}</small></span>
+      <label class="row" for="start"><span class="tile r-gold">${ic('calendar')}</span><span class="tx"><b>Week 1 started</b><small>Now in week ${Store.weekNo()}</small></span>
         <input id="start" type="date" value="${Store.state.start}" style="all:unset;font:500 14px var(--f-b);color:var(--gold2);max-width:130px;text-align:right"></label></div></section>
     <section class="sect" id="remsec"></section>
     <section class="sect"><div class="sect-h"><span class="over">Cloud backup</span><span class="cap" id="cstat"></span></div><div class="group">
@@ -1971,7 +1991,7 @@ function route(keep){
     if (first && lastName !== null) first.classList.add(dir);
   } else $$('.stagger', view).forEach(s => s.classList.remove('stagger'));
   lastName = name; lastTab = tab;
-  paintTimers();
+  paintTimers(); tidyMeta(view);
 }
 
 /* Swipe in from the left edge to go back on detail screens, like any iPhone app. */
