@@ -379,7 +379,7 @@ function setBar(title, back){
   bar.innerHTML = `${back ? `<button class="backbtn" type="button" data-back aria-label="Back">${ic('back')}</button>` : '<span></span>'}<b>${esc(title)}</b><span></span>`;
   const b = $('[data-back]', bar); if (b) b.onclick = goBack;
 }
-function goBack(){ if (history.length > 1) history.back(); else location.hash = '#today'; }
+function goBack(){ if (history.length > 1) history.back(); else location.hash = '#isle'; }
 function floatBack(){ return `<button class="backbtn floatback" type="button" data-back aria-label="Back">${ic('back')}</button>`; }
 function wireBack(){ $$('[data-back]', view).forEach(b => b.onclick = goBack); }
 function ring(done, total, size = 84, id = 'today'){
@@ -1964,8 +1964,8 @@ const DETAIL = new Set(['session','recipe','prep','settings','chronicle','plan']
 let lastName = null, lastTab = null, quiet = false;
 const stack = [];
 function route(keep){
-  const hash = location.hash || '#today';
-  const [name, arg, arg2] = (hash.slice(1) || 'today').split('/');
+  const hash = location.hash || '#isle';
+  const [name, arg, arg2] = (hash.slice(1) || 'isle').split('/');
   if ((name === 'recipe' || name === 'cook') && arg2 && !MW[+arg2] && MEAL_WEEKS.includes(+arg2)){ loadWeek(+arg2).then(() => route(keep)); return; }
   const tab = TAB_OF[name] || name;
   let dir = 'enter';
@@ -2051,7 +2051,7 @@ async function boot(){
   Cloud.start().then(() => Remind.start(buildReminders));
   setTimeout(loadAllWeeks, 4000);
   if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.go) location.hash = e.data.go; });
-  Cloud.onChange(i => { if (i.status === 'ok' && showCodeCard() && /^(today)?$/.test(location.hash.replace('#', '')) && !$('#savecode')) rerender(); });
+  Cloud.onChange(i => { if (i.status === 'ok' && showCodeCard() && location.hash === '#today' && !$('#savecode')) rerender(); });
   const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !local){
     // When an update installs, swap to it right away, unless a workout or cook mode is open.
