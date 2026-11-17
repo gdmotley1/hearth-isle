@@ -659,4 +659,10 @@ details.pantry summary::-webkit-details-marker{display:none}
 .cartbox .group{margin-top:10px;opacity:.75}
 .cartbox .linkbtn{display:block;margin:10px auto 0}
 .budget .big .cap{text-align:right}
+/* ---------- building prices ---------- */
+.price{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.pchip{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px 0 6px;border-radius:999px;background:var(--ta);color:var(--tc);font:600 11.5px var(--f-b);font-variant-numeric:tabular-nums}
+.pchip svg{width:12px;height:12px}
+.pchip.ok{box-shadow:inset 0 0 0 1px currentColor}
+.price.small .pchip{height:20px;font-size:11px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

@@ -129,14 +129,74 @@ function dayProgress(date){
   const base = req.length ? req : t;
   return {done:base.filter(x => x.done).length, total:base.length};
 }
-function unlockState(all = Store.totals().all){
-  const list = Isle.unlocks();
-  const nextI = list.findIndex(u => Store.thToPts(u.th) > all + 1e-9);
-  const next = nextI < 0 ? null : list[nextI];
-  const prevPts = nextI > 0 ? Store.thToPts(list[nextI - 1].th) : 0;
-  return {list, next, nextI, built:(nextI < 0 ? list.length : nextI), prevPts, need:next ? Math.ceil(Store.thToPts(next.th) - all) : 0,
-    pct:next ? Math.max(0, Math.min(100, (all - prevPts) / (Store.thToPts(next.th) - prevPts) * 100)) : 100};
+/* ---------------- the island economy ----------------
+   Each building costs specific resources. Its total price follows the season's front-loaded curve, split
+   by what that kind of building is made of, and scaled so each resource's season total matches how much of
+   it the plan earns. Resources are spent when something goes up; if one is short, settlers trade 2 of the
+   others for 1 of it, so a lopsided week slows building down but never stops it. */
+const MIX = {house:{stone:.6, harvest:.4}, farm:{harvest:.6, land:.4}, tree:{land:.5, spirit:.5}, pine:{land:.7, spirit:.3},
+  well:{stone:.5, land:.5}, stall:{harvest:.6, stone:.4}, windmill:{land:.4, harvest:.4, stone:.2}, tower:{stone:.6, spirit:.4},
+  lantern:{spirit:1}, flowers:{harvest:.5, spirit:.5}, rock:{stone:1}, gfound:{stone:.5, land:.5},
+  g1:{stone:.25, land:.25, harvest:.25, spirit:.25}, g2:{stone:.25, land:.25, harvest:.25, spirit:.25}, g3:{stone:.25, land:.25, harvest:.25, spirit:.25}};
+// Share of each resource in a full plan week: 3 lifts, walks and pickleball, home meals and the plan, sleep and mobility.
+const EARN_SHARE = {stone:.17, land:.31, harvest:.35, spirit:.17};
+const COST_SCALE = .78;
+const COSTS = (() => {
+  const list = Isle.unlocks(); let prev = 0;
+  const raw = list.map(u => { const q = Store.thToPts(u.th), inc = q - prev; prev = q; return {k:u.k, inc, m:MIX[u.t] || {stone:1}}; });
+  const sums = {stone:0, land:0, harvest:0, spirit:0}; raw.forEach(x => Store.RES.forEach(r => { sums[r] += x.inc * (x.m[r] || 0); }));
+  // COST_SCALE leaves room for the small bottlenecks specific prices create, so a balanced 75% season still finishes in week 12.
+  const scale = {}; Store.RES.forEach(r => { scale[r] = sums[r] ? Store.SEASON.total * EARN_SHARE[r] * COST_SCALE / sums[r] : 0; });
+  const out = {}; raw.forEach(x => { const c = {}; Store.RES.forEach(r => { if (x.m[r]) c[r] = Math.max(1, Math.round(x.inc * x.m[r] * scale[r])); }); out[x.k] = c; });
+  return out;
+})();
+const costSum = c => Object.values(c).reduce((a, b) => a + b, 0);
+function balances(){
+  const t = Store.totals(), b = {stone:t.stone, land:t.land, harvest:t.harvest, spirit:t.spirit};
+  (Store.state.built || []).forEach(e => Store.RES.forEach(r => { b[r] -= (e.s[r] || 0); }));
+  return b;
 }
+/* What paying for a building would take from each balance, trading 2 for 1 to cover a shortfall; null if it cannot be paid yet. */
+function payFor(k, bal){
+  const c = COSTS[k] || {}, spend = {}, rem = Object.assign({}, bal); let short = 0;
+  Store.RES.forEach(r => { const need = c[r] || 0, use = Math.min(need, Math.max(0, rem[r])); spend[r] = use; rem[r] -= use; short += need - use; });
+  if (!short) return spend;
+  let owe = short * 2;
+  for (const r of Store.RES.filter(x => rem[x] > 0).sort((a, b) => rem[b] - rem[a])){ const take = Math.min(rem[r], owe); spend[r] += take; rem[r] -= take; owe -= take; if (!owe) break; }
+  return owe > 0 ? null : spend;
+}
+/* Build everything that can now be paid for, in order. Returns the new entries. */
+function settle(){
+  const list = Isle.unlocks(), built = (Store.state.built || []).slice(), added = [];
+  for (;;){
+    const next = list[built.length]; if (!next) break;
+    const sp = payFor(next.k, (() => { const b = balances(); added.forEach(e => Store.RES.forEach(r => { b[r] -= e.s[r] || 0; })); return b; })());
+    if (!sp) break;
+    const e = {k:next.k, s:sp, d:Store.ymd(today())}; built.push(e); added.push(e);
+  }
+  if (added.length) Store.saveBuilt(built);
+  return added;
+}
+/* Older saves had no built list: everything earned under the old rules counts as built and paid for. */
+function migrateBuilt(){
+  if (Array.isArray(Store.state.built)) return;
+  const all = Store.totals().all, d = Store.ymd(today());
+  // carried-over buildings use up what was earned, at most their price, and never leave a balance below zero
+  const t = Store.totals(), rem = {stone:t.stone, land:t.land, harvest:t.harvest, spirit:t.spirit};
+  Store.saveBuilt(Isle.unlocks().filter(u => Store.thToPts(u.th) <= all + 1e-9).map(u => {
+    const c = COSTS[u.k], sp = {}; Store.RES.forEach(r => { const use = Math.min(c[r] || 0, Math.max(0, rem[r])); sp[r] = use; rem[r] -= use; });
+    return {k:u.k, s:sp, d, carried:true}; }));
+}
+const builtSet = () => new Set((Store.state.built || []).map(e => e.k));
+function unlockState(){
+  const list = Isle.unlocks(), built = (Store.state.built || []).length, next = list[built] || null, bal = balances();
+  if (!next) return {list, next:null, nextI:-1, built, need:0, pct:100, parts:[], bal};
+  const c = COSTS[next.k]; let have = 0;
+  const parts = Store.RES.filter(r => c[r]).map(r => { const h = Math.max(0, Math.min(c[r], bal[r])); have += h; return {r, have:Math.max(0, Math.floor(bal[r])), cost:c[r]}; });
+  return {list, next, nextI:built, built, need:costSum(c) - have, pct:have / costSum(c) * 100, parts, bal};
+}
+const priceChips = (parts, small) => `<span class="price${small ? ' small' : ''}">${parts.map(p => `<span class="pchip r-${p.r}${p.have >= p.cost ? ' ok' : ''}">${ic(p.r)}${RESN[p.r]} ${Math.min(p.have, p.cost)}/${p.cost}</span>`).join('')}</span>`;
+const costParts = k => Store.RES.filter(r => (COSTS[k] || {})[r]).map(r => ({r, have:Math.max(0, Math.floor(balances()[r])), cost:COSTS[k][r]}));
 
 /* ---------------- feedback ---------------- */
 /* Haptics: Android has vibrate(). iPhone Safari (iOS 18+) gives a real tap when a switch-style
@@ -223,10 +283,9 @@ function reward(res, pts, sub, undo){
 }
 function toast(txt){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = txt; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
 function celebrate(before){
-  const after = Store.totals().all, u0 = unlockState(before), u1 = unlockState(after);
-  const s0 = 3 + Math.floor(before / 45), s1 = Store.settlers();
-  if (u1.built > u0.built){
-    const u = u1.list[u1.built - 1], who = SETTLERS[(u1.built - 1) % SETTLERS.length];
+  const added = settle(), s0 = 3 + Math.floor(before / 45), s1 = Store.settlers();
+  if (added.length){
+    const list = Isle.unlocks(), n = (Store.state.built || []).length, u = list[n - 1], who = SETTLERS[(n - 1) % SETTLERS.length];
     buildFocus = true;
     if (/^g[123]$/.test(u.t)) gardensFest = true;
     announce(BUILD_T[u.t], u.t.startsWith('g') ? 'The settlers finished' : `${who} built`, u.t.startsWith('g') ? 'harvest' : 'house');
@@ -341,7 +400,7 @@ function rerender(){ const y = view.scrollTop; route(true); view.scrollTop = y; 
 function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id = 'h'){
   const live = id === 'h';
   if (live){ zoom = ISLE_ZOOM; anchor = ISLE_ANCHOR; }
-  const ss = season(), r = Isle.isoScene(prog, Isle.PAL_B, id, {live, winter:ss.winter, holiday:ss.holiday});
+  const ss = season(), r = Isle.isoScene(prog, Isle.PAL_B, id, {live, winter:ss.winter, holiday:ss.holiday, built:live ? builtSet() : null});
   const box = svg.getBoundingClientRect();
   const w = 2 * r.W * zoom, h = w * (box.height / Math.max(1, box.width));
   svg.setAttribute('viewBox', `${(-w / 2).toFixed(1)} ${(8 - anchor * h).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
@@ -387,7 +446,7 @@ function settlerStory(i, st, role){
     woodcutter: done.has('stone') ? 'Strong day. Your lifting keeps the woodpile high.' : 'A lifting session keeps the woodpile high.',
     scout: done.has('land') ? 'I walked the trail you opened today. It goes further now.' : 'New paths open when you walk. I will be by the shore.',
     farmer: done.has('harvest') ? 'The fields loved that home-cooked meal. Sprouts by morning.' : 'The fields are waiting on a home-cooked meal.',
-    builder: u.next ? `Next up is ${BUILD[u.next.t]}. ${plural(u.need, 'more point')} and I start.` : 'Everything is built. I am drawing plans for season two.',
+    builder: u.next ? `Next up is ${BUILD[u.next.t]}. It takes ${u.parts.map(p => `${p.cost} ${RESN[p.r]}`).join(' and ')}, and we have ${u.parts.map(p => `${Math.min(p.have, p.cost)}`).join(' and ')} so far.` : 'Everything is built. I am drawing plans for season two.',
     gardener: `The Hanging Gardens are finished. ${Store.settlers()} of us live here now.`,
     merchant: done.has('harvest') ? 'Shelves are full today. Home cooking keeps the stall busy.' : 'The stall trades in what you cook. Cook at home and it fills up.',
     'water carrier': done.has('spirit') ? 'Fresh water and a rested village. Good sleep makes the hill easy.' : 'A good night of sleep makes the walk to the well easy.',
@@ -402,7 +461,8 @@ function buildingStory(k, t){
   const base = {xmas:['The holiday tree', 'The settlers dragged it in from the pine grove and every one of them hung an ornament.'], fire:['The first campfire', 'Lit the night the settlers landed.'], tent:['The first tent', 'Where the first three settlers slept.'], tree:['Old tree', 'It was here before anyone arrived.']};
   const list = Isle.unlocks(), i = list.findIndex(u => u.k === k);
   if (i < 0){ const b = base[t] || ['Island', 'Part of the island.']; return {title:b[0], sub:'Since day one', line:b[1]}; }
-  return {title:BUILD_T[t] || t, sub:`Built by ${SETTLERS[i % SETTLERS.length]}`, line:`Went up at ${Math.round(Store.thToPts(list[i].th))} points. ${i + 1} of ${list.length} things to build this season.`};
+  const e = (Store.state.built || []).find(x => x.k === k), paid = e ? Store.RES.filter(r => e.s[r]).map(r => `${Math.round(e.s[r])} ${RESN[r]}`).join(', ') : '';
+  return {title:BUILD_T[t] || t, sub:`Built by ${SETTLERS[i % SETTLERS.length]}`, line:`${paid ? `Cost ${paid}. ` : ''}${i + 1} of ${list.length} things to build this season.`};
 }
 /* Tap on the island: meet a settler or a building in a pop-up that sits above everything,
    above the one you tapped if there is room under the title, otherwise below them. */
@@ -513,16 +573,16 @@ function worldTap(h){
   });
 }
 function islandSheet(){
-  const t = Store.totals(), u = unlockState(t.all), g = Store.gardens();
+  const t = Store.totals(), u = unlockState(), g = Store.gardens(), bal = u.bal;
   const upcoming = u.list.slice(u.built, u.built + 4);
   sheet(`<div class="grab"></div>
     <div><div class="over gold">Your island</div><h2 class="t2" style="margin-top:8px">Hearth Isle</h2></div>
     <div class="stats3"><div><span class="cap">Settlers</span><b>${Store.settlers()}</b></div><div><span class="cap">Built</span><b>${u.built}<span class="cap"> / ${u.list.length}</span></b></div><div><span class="cap">Points</span><b>${t.all}<span class="cap"> / ${Store.SEASON.total}</span></b></div></div>
     <div class="meters"><div class="gardens"><div class="meter2"><p>Hanging Gardens<b style="font-size:15px">${g.label}</b></p></div><div class="bar2"><i style="width:${g.pct}%"></i></div></div>
-      ${Store.RES.map(k => `<div class="meter2" style="--c:var(--${k})"><p>${RESN[k]}<b class="num">${t[k]}</b></p><div class="bar2"><i style="width:${Math.min(100, t[k] / Store.SEASON[k] * 100).toFixed(1)}%"></i></div></div>`).join('')}</div>
-    ${upcoming.length ? `<div class="sect"><div class="sect-h"><span class="over">Coming next</span></div><div class="group">${upcoming.map(x => `<div class="row"><span class="tile r-gold">${ic(x.t.startsWith('g') ? 'harvest' : 'house')}</span><span class="tx"><b>${BUILD_T[x.t]}</b><small>${Math.max(0, Math.ceil(Store.thToPts(x.th) - t.all))} points away</small></span></div>`).join('')}</div></div>`
+      ${Store.RES.map(k => `<div class="meter2" style="--c:var(--${k})"><p>${RESN[k]}<b class="num">${Math.max(0, Math.floor(bal[k]))}</b></p><span class="cap">${t[k]} earned this season</span></div>`).join('')}</div>
+    ${upcoming.length ? `<div class="sect"><div class="sect-h"><span class="over">Coming next</span></div><div class="group">${upcoming.map(x => `<div class="row"><span class="tile r-gold">${ic(x.t.startsWith('g') ? 'harvest' : 'house')}</span><span class="tx"><b>${BUILD_T[x.t]}</b><small>${priceChips(costParts(x.k), true)}</small></span></div>`).join('')}</div></div>`
       : `<div class="callout">${ic('extra')}<span>Everything this season is built. Season two starts a new Wonder.</span></div>`}
-    <p class="fine">Stone from strength work, Land from walks and pickleball, Harvest from meals, Spirit from sleep and mobility. Every 45 points brings a settler.</p>
+    <p class="fine">Stone from strength work, Land from walks and pickleball, Harvest from meals, Spirit from sleep and mobility. Each building costs its own mix. Short on one? Settlers trade 2 of the others for it. Every 45 points earned brings a settler.</p>
     <a class="btn quiet wide" href="#chronicle">${ic('book')}The Island Chronicle</a>`);
 }
 
@@ -555,7 +615,7 @@ function closeLayer(fromY){
 
 /* ---------------- Isle ---------------- */
 function vIsle(){
-  const now = today(), d = dayKey(now), t = Store.totals(), g = Store.gardens(), sw = Store.seasonWeek(), u = unlockState(t.all);
+  const now = today(), d = dayKey(now), t = Store.totals(), g = Store.gardens(), sw = Store.seasonWeek(), u = unlockState();
   const tasks = tasksFor(now), dp = dayProgress(now), menu = M.menu[d], fest = weekend(d);
   const hour = now.getHours(), greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
   const parts = dayParts(d), hm = `${String(hour).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -596,7 +656,7 @@ function vIsle(){
       ${u.next ? `<button class="nextup tap" type="button" id="nextup">
         <span class="tile r-gold">${ic(u.next.t.startsWith('g') ? 'harvest' : 'house')}</span>
         <span class="tx"><span class="over gold">Next on the island</span><span class="hl">${BUILD_T[u.next.t]}</span>
-        <span class="cap">${plural(u.need, 'point')} away · ${Store.settlers()} settlers</span><span class="meter">${twBar('next', u.pct)}</span></span></button>` : ''}
+        ${priceChips(u.parts)}<span class="meter">${twBar('next', u.pct)}</span>${u.parts.some(p => p.have < p.cost) && Store.RES.some(r => Math.floor(u.bal[r]) > ((COSTS[u.next.k] || {})[r] || 0)) ? `<span class="cap" style="margin-top:6px">Short on ${listify(u.parts.filter(p => p.have < p.cost).map(p => RESN[p.r]))}? Settlers trade 2 of your extra for 1.</span>` : ''}</span></button>` : ''}
       ${recapDue() ? `<button class="harvest tap" type="button" id="harvest"><span class="over gold">${dayKey(today()) === 'sun' ? 'Sunday harvest' : 'Last week on the island'}</span><span class="hl">${esc(chapterTitle(weekSummary(recapDue())))}</span><span class="cap">See what your week built and read this week's chapter</span>${ic('chev', 'i chev')}</button>` : ''}
       ${showCodeCard() ? `<div class="callout savecode" id="savecode">${ic('upload')}<span><b>Your island backs up online.</b> Save your backup code to Notes once, so a new phone can bring everything back.<span class="sc-btns"><button class="btn small" type="button" id="scsave">Save to Notes</button><button class="linkbtn" type="button" id="sclater">Later</button></span></span></div>` : ''}
       ${menu && menu.heads ? `<div class="callout">${ic('info')}<span>${esc(menu.heads)}</span></div>` : ''}
@@ -1420,7 +1480,7 @@ function weekSummary(mon){
   const res = {stone:0, land:0, harvest:0, spirit:0}; inWk.forEach(e => { res[e.res] = (res[e.res] || 0) + e.pts; });
   const count = k => inWk.filter(e => e.key === k).length;
   const isMeal = e => ['breakfast', 'lunch', 'dinner'].includes(e.key), meals = inWk.filter(e => isMeal(e) && e.pts > 0 && !/^Ate out/.test(e.label)).length;
-  const list = Isle.unlocks(), built = list.filter(u => { const q = Store.thToPts(u.th); return q > before + 1e-9 && q <= after + 1e-9; });
+  const list = Isle.unlocks(), built = (Store.state.built || []).filter(e => !e.carried && e.d >= start && e.d <= end).map(e => list.find(u => u.k === e.k)).filter(Boolean);
   const s0 = 3 + Math.floor(before / 45), s1 = 3 + Math.floor(after / 45), arrived = [];
   for (let i = s0; i < s1; i++) arrived.push(SETTLERS[i % SETTLERS.length]);
   const sets = Store.state.sets || {};
@@ -1469,8 +1529,8 @@ function chapterText(s){
     out.push(phr.length === 1 && s.built.length === 1 ? `${who} finished ${BUILD[s.built[0].t]}${pick([', and the whole village came out to see it.', ' by lantern light on the last night.', ', and the island feels bigger for it.'], 1)}`
       : `The settlers raised ${listify(phr)}${pick([', working late by lantern light.', '. The village had never been busier.', ', and still asked what was next.'], 1)}`);
   } else {
-    const u = unlockState(s.after);
-    out.push(u.next ? `Nothing new went up, but the builders are close: ${BUILD[u.next.t]} is ${plural(u.need, 'point')} away.` : 'Everything on the island is built. The settlers spent the week admiring it.');
+    const u = unlockState();
+    out.push(u.next ? `Nothing new went up, but the builders are gathering for ${BUILD[u.next.t]}: ${u.parts.map(p => `${Math.min(p.have, p.cost)} of ${p.cost} ${RESN[p.r]}`).join(', ')}.` : 'Everything on the island is built. The settlers spent the week admiring it.');
   }
   if (s.best){
     if (s.best.was != null && s.best.now > s.best.was) out.push(`${s.best.title} climbed from ${s.best.was} reps to ${s.best.now}. ${pick(['Tobi says the quarry has never been so full.', 'The stonemasons noticed.', 'Stone stacked high by the gardens.'], 2)}`);
@@ -1749,6 +1809,7 @@ async function boot(){
   window.addEventListener('hashchange', () => route());
   window.addEventListener('resize', () => { const s = $('#isl'); if (s){ const keep = seen; drawIsland(s); seen = keep; } });
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && (play || cook)) keepAwake(true); });
+  migrateBuilt(); settle();
   route();
   onboarding();
   Cloud.start();

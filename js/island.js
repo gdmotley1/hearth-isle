@@ -253,9 +253,12 @@ function person(sx,sy,c,p,scale=1){
 }
 
 function isoScene(prog,p,id,opt={}){
-  const f=Math.max(0,Math.min(4,prog*4)),stage=Math.floor(f+1e-9),gst=f<.6?0:f<1.5?1:f<2.5?2:f<3.6?3:4;
+  const f=Math.max(0,Math.min(4,prog*4)),stage=Math.floor(f+1e-9);let gst=f<.6?0:f<1.5?1:f<2.5?2:f<3.6?3:4;
   WINTER=!!opt.winter;
-  const vis=OBJ.filter(o=>o.th<=f);
+  // With a built list, buildings appear when they were paid for; without one (onboarding art), by progress.
+  const B=opt.built;
+  const vis=B?OBJ.filter(o=>o.th===0||(o.t==='gardens'?B.has('gfound'):B.has(o.k))):OBJ.filter(o=>o.th<=f);
+  if(B)gst=B.has('g3')?4:B.has('g2')?3:B.has('g1')?2:B.has('gfound')?1:0;
   if(opt.holiday)vis.push({k:'xmas',t:'xmas',x:-2,y:-1,s:0,th:0});
   const forced=new Set();
   vis.forEach(o=>{const w=o.w||1,h=o.h||1;for(let i=-1;i<=w;i++)for(let j=-1;j<=h;j++)forced.add((o.x+i)+','+(o.y+j));});
