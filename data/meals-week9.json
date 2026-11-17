@@ -1,0 +1,122 @@
+{
+  "week": 9,
+  "title": "Week 9",
+  "budget": 200,
+  "style": "batch",
+  "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax. A Korean-inspired week: sweet-spicy gochujang chicken and garlicky turkey bulgogi, remixed into bowls, wraps, tacos, bibimbap, fried rice and peanut noodles.",
+  "allergyNote": "Nothing on this plan contains tree nuts or fish. Gochujang, soy sauce and sesame oil are normally free of both, but check the gochujang label for any seafood or a 'may contain tree nuts' line if your allergy is strict.",
+  "weekendNote": "Nothing is required this weekend. A bowl of peanut noodles is waiting for Saturday's lunch, and there is a spare breakfast sandwich in the freezer.",
+  "snacks": ["Cottage cheese with a drizzle of honey", "Apple slices with peanut butter", "String cheese and a couple of clementines"],
+  "have": [
+    {"id": "oats", "name": "Rolled oats", "note": "still plenty"},
+    {"id": "honey", "name": "Honey"},
+    {"id": "rice", "name": "Long-grain white rice", "note": "most of the 3 lb bag"},
+    {"id": "pb", "name": "Creamy peanut butter", "note": "most of the jar"},
+    {"id": "tortillas", "name": "Corn tortillas", "note": "about 7"},
+    {"id": "corn", "name": "Frozen sweet corn", "note": "about 1½ cups"},
+    {"id": "berries", "name": "Frozen mixed berries", "note": "about 1 cup"}
+  ],
+  "menu": {
+    "mon": {"breakfast": "breakfast-sandwiches", "lunch": "chicken-bowl", "dinner": "bulgogi-wraps", "heads": "Everything today comes from Sunday's prep. Dinner is 10 minutes and makes Wednesday's lunch."},
+    "tue": {"breakfast": "pbj-oats", "lunch": "chicken-bowl", "dinner": "gochujang-tacos", "heads": "Tacos take 10 minutes after pickleball."},
+    "wed": {"breakfast": "breakfast-sandwiches", "lunch": "bulgogi-wraps", "dinner": "bibimbap", "shared": "dinner", "heads": "Tonight's new one is dinner for two and covers Thursday's lunch. Move the 3 frozen chicken portions to the fridge for Friday."},
+    "thu": {"breakfast": "pbj-oats", "lunch": "bibimbap", "dinner": "bulgogi-fried-rice", "heads": "Fried rice takes 15 minutes after pickleball, and day-old rice fries best."},
+    "fri": {"breakfast": "breakfast-sandwiches", "lunch": "chicken-bowl", "dinner": "peanut-noodles", "shared": "dinner", "heads": "Peanut noodles for two tonight. They make Saturday's lunch."}
+  },
+  "prep": [
+    {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 100, "makes": "About 7 portions of gochujang chicken, 6 of turkey bulgogi, sesame rice, a tray of roasted broccoli and carrots, gochujang sauce, 4 breakfast sandwiches and 2 jars of oats", "steps": [
+      "Heat the oven to 425°F and toss the chicken in the gochujang glaze.",
+      "Roast the chicken on one sheet pan and the broccoli and carrots on another, 25 minutes, swapping the pans halfway.",
+      "Cook the sesame rice. Spread half of it on a plate to cool for Thursday's fried rice.",
+      "Brown the turkey bulgogi in a big skillet while everything roasts.",
+      "Stir the gochujang sauce together.",
+      "Turn the oven down to 350°F and bake the eggs for the breakfast sandwiches, then build and wrap them.",
+      "Stir the oats together in 2 jars.",
+      "Slice the chicken and portion it: 4 in the fridge (Monday and Tuesday bowls, Tuesday's tacos and a spare).",
+      "Freeze the other 3 chicken portions (Friday's bowl and the noodles) and 2 of the sandwiches. Cooked chicken keeps 3 to 4 days, so the end of the week waits in the freezer.",
+      "Pack 2 chicken bowls."
+    ]},
+    {"id": "wed", "day": "wed", "title": "Wednesday night", "minutes": 25, "makes": "Bibimbap for two plus Thursday's lunch, with the end of the week ready", "steps": [
+      "Move the 3 frozen chicken portions to the fridge.",
+      "Make the bibimbap and pack one bowl for Thursday."
+    ]}
+  ],
+  "groceries": [
+    {"id": "thighs", "name": "Boneless skinless chicken thighs", "qty": "about 3 lb", "section": "Meat", "store": "Aldi", "price": 8.97},
+    {"id": "turkey", "name": "93% lean ground turkey", "qty": "two 1 lb packs", "section": "Meat", "store": "Aldi", "price": 8.58},
+    {"id": "sausage", "name": "Turkey breakfast sausage patties", "qty": "8 count, frozen", "section": "Meat", "store": "Aldi", "price": 3.49},
+    {"id": "eggs", "name": "Large eggs", "qty": "18 count", "section": "Dairy and eggs", "store": "Aldi", "price": 4.29},
+    {"id": "milk", "name": "2% milk", "qty": "half gallon", "section": "Dairy and eggs", "store": "Aldi", "price": 1.89},
+    {"id": "yogurt", "name": "Plain nonfat Greek yogurt", "qty": "32 oz tub", "section": "Dairy and eggs", "store": "Aldi", "price": 4.29},
+    {"id": "cheddar", "name": "Sliced sharp cheddar", "qty": "8 oz pack", "section": "Dairy and eggs", "store": "Aldi", "price": 2.49},
+    {"id": "cottage", "name": "Low-fat cottage cheese", "qty": "24 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 3.29},
+    {"id": "string", "name": "Mozzarella string cheese", "qty": "12 count", "section": "Dairy and eggs", "store": "Aldi", "price": 3.79},
+    {"id": "broccoli", "name": "Broccoli crowns", "qty": "about 2 lb", "section": "Produce", "store": "Aldi", "price": 3.98},
+    {"id": "carrots", "name": "Carrots", "qty": "2 lb bag", "section": "Produce", "store": "Aldi", "price": 1.29},
+    {"id": "cucumbers", "name": "Cucumbers", "qty": "3", "section": "Produce", "store": "Aldi", "price": 2.07},
+    {"id": "scallions", "name": "Green onions", "qty": "2 bunches", "section": "Produce", "store": "Aldi", "price": 1.78},
+    {"id": "ginger", "name": "Fresh ginger", "qty": "one 3-inch knob", "section": "Produce", "store": "Publix", "price": 0.89},
+    {"id": "garlic", "name": "Garlic", "qty": "3 bulbs", "section": "Produce", "store": "Aldi", "price": 1.79},
+    {"id": "lettuce", "name": "Living butter lettuce", "qty": "1 head", "section": "Produce", "store": "Aldi", "price": 1.99},
+    {"id": "spinach", "name": "Baby spinach", "qty": "6 oz bag", "section": "Produce", "store": "Aldi", "price": 1.99},
+    {"id": "bananas", "name": "Bananas", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 1.49},
+    {"id": "apples", "name": "Apples", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 3.49},
+    {"id": "clementines", "name": "Clementines", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 3.49},
+    {"id": "gochujang", "name": "Gochujang (Korean chili paste)", "qty": "17.6 oz tub", "section": "Shelf", "store": "Publix", "price": 5.49},
+    {"id": "soy", "name": "Low-sodium soy sauce", "qty": "15 oz bottle", "section": "Shelf", "store": "Aldi", "price": 1.49},
+    {"id": "vinegar", "name": "Rice vinegar", "qty": "12 oz bottle", "section": "Shelf", "store": "Publix", "price": 2.29},
+    {"id": "sesameoil", "name": "Toasted sesame oil", "qty": "5 oz bottle", "section": "Shelf", "store": "Publix", "price": 3.49},
+    {"id": "muffins", "name": "Whole wheat English muffins", "qty": "6 count", "section": "Shelf", "store": "Aldi", "price": 1.29},
+    {"id": "spaghetti", "name": "Whole wheat spaghetti", "qty": "16 oz box", "section": "Shelf", "store": "Aldi", "price": 0.95}
+  ],
+  "pantry": [
+    {"id": "oil", "name": "Olive oil"},
+    {"id": "spray", "name": "Cooking spray"},
+    {"id": "salt", "name": "Salt"},
+    {"id": "pepper", "name": "Black pepper"},
+    {"id": "garlicpowder", "name": "Garlic powder"},
+    {"id": "flakes", "name": "Red pepper flakes"},
+    {"id": "cinnamon", "name": "Ground cinnamon"}
+  ],
+  "recipes": {
+    "gochujang-chicken": {"name": "Sheet-pan gochujang honey chicken", "cuisine": "Prep", "component": true, "minutes": 35, "serves": "about 7 portions", "protein": 36, "equip": "sheet pan", "ingredients": [
+      {"g": "thighs", "qty": "3 lb"}, {"g": "gochujang", "qty": "3 tbsp"}, {"h": "honey", "qty": "2 tbsp"}, {"g": "soy", "qty": "2 tbsp"}, {"g": "garlic", "qty": "4 cloves, grated"}, {"g": "ginger", "qty": "1 tbsp, grated"}, {"g": "sesameoil", "qty": "1 tbsp"}, {"p": "oil", "qty": "1 tbsp"}],
+      "steps": ["Stir the gochujang, honey, soy sauce, garlic, ginger and both oils into a glaze and toss the thighs in it. Let them sit while the oven heats to 425°F.", "Spread the thighs on a lined sheet pan and roast 22 to 25 minutes, until they reach 175°F and the edges char a little.", "Rest 5 minutes, then slice.", "Portion into 7 containers. Fridge 4, freeze 3."], "tip": "Sweet, spicy and sticky. It goes in a bowl, a taco or a pan of noodles without tasting the same twice."},
+    "turkey-bulgogi": {"name": "Garlicky turkey bulgogi", "cuisine": "Prep", "component": true, "minutes": 20, "serves": "about 6 portions", "protein": 32, "equip": "large skillet", "ingredients": [
+      {"g": "turkey", "qty": "2 lb"}, {"g": "soy", "qty": "¼ cup"}, {"h": "honey", "qty": "2 tbsp"}, {"g": "garlic", "qty": "5 cloves, minced"}, {"g": "ginger", "qty": "1 tbsp, grated"}, {"g": "sesameoil", "qty": "1 tbsp"}, {"g": "scallions", "qty": "half a bunch, sliced"}, {"p": "flakes", "qty": "a big pinch"}, {"p": "oil", "qty": "1 tbsp"}],
+      "steps": ["Brown the turkey in the oil in a large skillet over medium-high, breaking it into small crumbles, about 8 minutes.", "Stir the soy sauce, honey, garlic, ginger, sesame oil and pepper flakes together and pour it over.", "Cook 3 to 4 minutes until the sauce is absorbed and glossy. Stir in the green onions.", "Cool and refrigerate. It keeps through Thursday."], "tip": "Bulgogi is usually thin-sliced beef; lean turkey gets the same sweet-garlic flavor for less money and less fat."},
+    "sesame-rice": {"name": "Sesame green onion rice", "cuisine": "Prep", "component": true, "minutes": 20, "serves": "about 7 cups", "protein": 4, "equip": "pot", "ingredients": [
+      {"h": "rice", "qty": "2½ cups dry"}, {"g": "sesameoil", "qty": "1 tsp"}, {"g": "scallions", "qty": "a handful, sliced"}, {"p": "salt", "qty": "1 tsp"}],
+      "steps": ["Cook the rice with the salt.", "Stir in the sesame oil and green onions.", "Spread about 2 cups on a plate to cool and dry out for Thursday's fried rice, then store everything. It keeps 5 days."]},
+    "roast-veg": {"name": "Roasted broccoli and carrots", "cuisine": "Prep", "component": true, "minutes": 30, "serves": "about 6 cups", "protein": 4, "equip": "sheet pan", "ingredients": [
+      {"g": "broccoli", "qty": "2 lb, in florets"}, {"g": "carrots", "qty": "1 lb, in coins"}, {"p": "oil", "qty": "2 tbsp"}, {"p": "garlicpowder", "qty": "1 tsp"}, {"p": "salt", "qty": "1 tsp"}],
+      "steps": ["Toss everything with the oil, garlic powder and salt.", "Roast at 425°F for 25 minutes alongside the chicken, stirring halfway, until the broccoli tips crisp.", "Cool and store in one container."]},
+    "gochujang-sauce": {"name": "Creamy gochujang sauce", "cuisine": "Prep", "component": true, "minutes": 5, "serves": "about 1¼ cups", "protein": 7, "equip": "bowl", "ingredients": [
+      {"g": "yogurt", "qty": "1 cup"}, {"g": "gochujang", "qty": "2 tbsp"}, {"h": "honey", "qty": "1 tbsp"}, {"g": "vinegar", "qty": "1 tbsp"}, {"g": "sesameoil", "qty": "1 tsp"}, {"g": "garlic", "qty": "1 small clove, grated"}],
+      "steps": ["Stir everything together until smooth.", "Keeps 5 days in a jar."], "tip": "Spicy, tangy and creamy. A spoonful makes plain rice taste like a restaurant bowl."},
+    "breakfast-sandwiches": {"name": "Sausage, egg and cheddar breakfast sandwiches", "cuisine": "Breakfast", "minutes": 25, "serves": "4 sandwiches (1 per breakfast, plus a spare)", "protein": 25, "equip": "muffin tin, foil", "ingredients": [
+      {"g": "muffins", "qty": "4, split"}, {"g": "eggs", "qty": "4"}, {"g": "sausage", "qty": "4 patties"}, {"g": "cheddar", "qty": "4 slices"}, {"p": "salt", "qty": "a pinch"}, {"p": "pepper", "qty": "a pinch"}, {"p": "spray", "qty": "for the tin"}],
+      "steps": ["Heat the oven to 350°F. Crack an egg into each of 4 sprayed muffin cups, poke the yolks and season.", "Bake 15 to 17 minutes until set. Bake the sausage patties on a sheet pan next to them.", "Build each sandwich: muffin, sausage, egg, cheddar, muffin. Wrap each in foil.", "Fridge 2, freeze 2. Reheat unwrapped in a paper towel: 45 seconds from the fridge, 90 from frozen.", "Have a clementine with it."]},
+    "pbj-oats": {"name": "PB and jelly overnight oats", "cuisine": "Breakfast", "minutes": 5, "serves": "2 jars (1 per breakfast)", "protein": 24, "equip": "2 jars", "ingredients": [
+      {"h": "oats", "qty": "1 cup"}, {"g": "milk", "qty": "1 cup"}, {"g": "yogurt", "qty": "½ cup"}, {"h": "pb", "qty": "2 tbsp"}, {"h": "berries", "qty": "1 cup, thawed and mashed"}, {"g": "bananas", "qty": "1, sliced"}, {"h": "honey", "qty": "1 tsp"}, {"p": "cinnamon", "qty": "a pinch"}],
+      "steps": ["Split the oats, milk, yogurt, honey and cinnamon between 2 jars and stir.", "Swirl in the peanut butter, then spoon the mashed berries on top like jam.", "Refrigerate overnight. Add the banana in the morning."]},
+    "chicken-bowl": {"name": "Gochujang chicken rice bowl", "cuisine": "Asian", "minutes": 5, "serves": "3 lunches (Mon, Tue, Fri)", "protein": 44, "equip": "microwave", "ingredients": [
+      {"r": "gochujang-chicken", "qty": "1 portion each"}, {"r": "sesame-rice", "qty": "¾ cup each"}, {"r": "roast-veg", "qty": "1 cup each"}, {"g": "cucumbers", "qty": "a few slices each"}, {"r": "gochujang-sauce", "qty": "2 tbsp each"}, {"g": "scallions", "qty": "a pinch each"}],
+      "steps": ["Pack rice, roasted vegetables and chicken in each container, with the cucumber on the side.", "Reheat the warm part 2 minutes.", "Add the cucumber, a spoon of sauce and green onions."], "tip": "Friday's comes from the frozen portion you moved to the fridge Wednesday."},
+    "bulgogi-wraps": {"name": "Turkey bulgogi lettuce wraps", "cuisine": "Asian", "minutes": 10, "serves": "2 (Mon dinner, Wed lunch)", "protein": 36, "equip": "microwave", "ingredients": [
+      {"r": "turkey-bulgogi", "qty": "1 portion each"}, {"g": "lettuce", "qty": "half the head each"}, {"r": "sesame-rice", "qty": "½ cup each"}, {"g": "cucumbers", "qty": "a handful of matchsticks each"}, {"g": "carrots", "qty": "1 carrot each, grated"}, {"r": "gochujang-sauce", "qty": "2 tbsp each"}, {"g": "scallions", "qty": "a pinch each"}],
+      "steps": ["Warm the bulgogi and rice, 1 to 2 minutes.", "Spoon rice and bulgogi into lettuce cups.", "Top with cucumber, carrot, sauce and green onions, fold and eat with your hands.", "For Wednesday, pack the filling and the lettuce separately so the leaves stay crisp."]},
+    "gochujang-tacos": {"name": "Gochujang chicken tacos", "cuisine": "Asian", "minutes": 10, "serves": "1", "protein": 40, "equip": "skillet", "ingredients": [
+      {"h": "tortillas", "qty": "4"}, {"r": "gochujang-chicken", "qty": "1 portion, chopped"}, {"g": "lettuce", "qty": "a few leaves, shredded"}, {"g": "cucumbers", "qty": "a few slices, chopped"}, {"r": "gochujang-sauce", "qty": "3 tbsp"}, {"g": "scallions", "qty": "a pinch"}],
+      "steps": ["Crisp the chicken in a hot skillet for 3 minutes.", "Warm the tortillas in the same pan, 30 seconds a side.", "Fill with chicken, lettuce and cucumber, then drizzle with sauce and add green onions."], "tip": "Uses up last week's corn tortillas."},
+    "bibimbap": {"name": "Bibimbap: Korean rice bowl with a fried egg", "cuisine": "Asian", "minutes": 25, "serves": "3 (dinner for two + Thursday lunch)", "protein": 40, "equip": "skillet", "isNew": true, "ingredients": [
+      {"r": "sesame-rice", "qty": "¾ cup each"}, {"r": "turkey-bulgogi", "qty": "3 portions"}, {"g": "spinach", "qty": "the bag"}, {"g": "carrots", "qty": "2, in matchsticks"}, {"g": "cucumbers", "qty": "1, in matchsticks"}, {"g": "eggs", "qty": "3 (one saved for Thursday)"}, {"g": "garlic", "qty": "1 clove, minced"}, {"g": "sesameoil", "qty": "2 tsp"}, {"g": "soy", "qty": "1 tsp"}, {"r": "gochujang-sauce", "qty": "2 tbsp each"}, {"g": "scallions", "qty": "a handful"}, {"p": "salt", "qty": "a pinch"}],
+      "steps": ["Wilt the spinach with the garlic and 1 tsp sesame oil in a skillet, 2 minutes. Season with the soy sauce and set it aside.", "Sauté the carrot matchsticks 2 minutes so they are bright but still crunchy, and set aside.", "Warm the bulgogi and rice.", "Fry 2 eggs in the last of the sesame oil until the whites are set and the yolks still runny.", "Build each bowl: rice, then the spinach, carrots, cucumber and bulgogi in little piles around the top, an egg in the middle.", "Add a spoon of sauce and green onions, then stir everything together before eating. Pack Thursday's bowl and fry its egg fresh at lunch."], "tip": "This week's new one. Bibimbap means mixed rice: you arrange it pretty, then stir it all up so the runny yolk coats everything."},
+    "bulgogi-fried-rice": {"name": "15-minute bulgogi fried rice", "cuisine": "Asian", "minutes": 15, "serves": "1", "protein": 42, "equip": "large skillet", "ingredients": [
+      {"r": "sesame-rice", "qty": "1½ cups, the cooled plate"}, {"r": "turkey-bulgogi", "qty": "1 portion"}, {"r": "roast-veg", "qty": "1 cup, chopped"}, {"h": "corn", "qty": "½ cup"}, {"g": "eggs", "qty": "2"}, {"g": "soy", "qty": "1 tbsp"}, {"g": "scallions", "qty": "the rest"}, {"p": "oil", "qty": "1 tbsp"}],
+      "steps": ["Heat the oil in a large skillet over high heat. Add the rice and press it flat; let it crisp 2 minutes before stirring.", "Add the bulgogi, vegetables and corn and stir-fry 3 minutes.", "Push everything aside, scramble the eggs in the gap, then fold them in.", "Finish with soy sauce and green onions."], "tip": "Day-old rice is drier, so it fries instead of steaming."},
+    "peanut-noodles": {"name": "Peanut sesame noodles with gochujang chicken", "cuisine": "Asian", "minutes": 20, "serves": "3 (dinner for two + Saturday lunch)", "protein": 40, "equip": "pot", "ingredients": [
+      {"g": "spaghetti", "qty": "12 oz"}, {"r": "gochujang-chicken", "qty": "2 portions, sliced"}, {"r": "roast-veg", "qty": "2 cups"}, {"h": "pb", "qty": "⅓ cup"}, {"g": "soy", "qty": "3 tbsp"}, {"g": "vinegar", "qty": "2 tbsp"}, {"h": "honey", "qty": "1 tbsp"}, {"g": "gochujang", "qty": "1 tbsp"}, {"g": "garlic", "qty": "2 cloves, grated"}, {"g": "ginger", "qty": "1 tsp, grated"}, {"g": "sesameoil", "qty": "1 tbsp"}, {"g": "cucumbers", "qty": "the rest, in matchsticks"}, {"g": "scallions", "qty": "a handful"}],
+      "steps": ["Boil the spaghetti in salted water for 9 minutes. Save ½ cup of the water, then drain.", "Whisk the peanut butter, soy sauce, vinegar, honey, gochujang, garlic, ginger and sesame oil with a splash of the pasta water until smooth.", "Toss the hot noodles with the sauce, the chicken and the vegetables, adding more pasta water until glossy.", "Top with cucumber and green onions. Pack one bowl for Saturday; it is good cold too."], "tip": "Made from the frozen chicken you moved to the fridge Wednesday."}
+  }
+}
