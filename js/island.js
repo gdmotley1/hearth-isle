@@ -1,4 +1,4 @@
-/* Hearth Isle night-island renderer (Lanternlight). isoScene(progress 0..1, palette, idPrefix) -> {svg, W}. Exposes window.Isle. */
+/* Motley Island night-island renderer (Lanternlight). isoScene(progress 0..1, palette, idPrefix) -> {svg, W}. Exposes window.Isle. */
 (function(){
 /* ================= shared data ================= */
 const STAGES=[
@@ -253,6 +253,30 @@ function person(sx,sy,c,p,scale=1){
   return `<g transform="translate(${sx.toFixed(1)} ${sy.toFixed(1)}) scale(${scale})"><g class="bob"><ellipse cx="0" cy="0" rx="2.6" ry="1.2" fill="${p.shadow}"/><rect x="-1.6" y="-6.2" width="3.2" height="5.6" rx="1.3" fill="${p.shirts[c]}"/><circle cx="0" cy="-7.8" r="1.8" fill="${p.skin}"/></g></g>`;
 }
 
+/* The lantern tugboat moored off the east shore: red hull, cream wheelhouse with lit windows,
+   a smokestack puffing, tire bumpers and a lantern on the bow that throws light on the water. */
+function isoTug(x,y,p,id){
+  const f=n=>n.toFixed(1),hull='#8e3a30',hullD='#6a2a24',cab='#e3d6b8',cabD='#b9ab8c',roof='#3b4252',stack='#2f3542';
+  let s=`<ellipse cx="${f(x)}" cy="${f(y+2.6)}" rx="16" ry="2.4" fill="rgba(0,0,0,.25)"/>`;
+  // hull with a raised bow on the right, a dark waterline and a pale deck edge
+  s+=`<path d="M${f(x-14)} ${f(y-3.5)}L${f(x+11)} ${f(y-3.5)}Q${f(x+15.5)} ${f(y-4.2)} ${f(x+16)} ${f(y-7.5)}L${f(x+12.5)} ${f(y+1.8)}Q${f(x)} ${f(y+3.4)} ${f(x-12)} ${f(y+1.8)}Z" fill="${hull}"/>`;
+  s+=`<path d="M${f(x-12.4)} ${f(y+.6)}Q${f(x)} ${f(y+2.3)} ${f(x+12.9)} ${f(y+.6)}" stroke="#1e1a1a" stroke-width="1.6" fill="none"/>`;
+  s+=`<path d="M${f(x-14)} ${f(y-3.5)}L${f(x+11)} ${f(y-3.5)}Q${f(x+15.5)} ${f(y-4.2)} ${f(x+16)} ${f(y-7.5)}" stroke="#d8cfbf" stroke-width=".8" fill="none"/>`;
+  // tire bumpers along the side
+  [-9,-3.5,2,7.5].forEach(dx=>{s+=`<circle cx="${f(x+dx)}" cy="${f(y-1.2)}" r="1.25" fill="#1d1d1f" stroke="#3a3a3d" stroke-width=".5"/>`;});
+  // wheelhouse with a dark roof and two warm windows
+  s+=`<rect x="${f(x-5.5)}" y="${f(y-12.5)}" width="10" height="9" rx=".8" fill="${cab}"/><rect x="${f(x+2.5)}" y="${f(y-12.5)}" width="2" height="9" fill="${cabD}"/>`;
+  s+=`<rect x="${f(x-6.6)}" y="${f(y-14)}" width="12.4" height="2" rx=".8" fill="${roof}"/>`;
+  const wf=p.night?` filter="url(#gw${id})"`:'';
+  s+=`<rect x="${f(x-4)}" y="${f(y-10.6)}" width="2.6" height="2.6" rx=".4" fill="${p.win}"${wf}/><rect x="${f(x-.4)}" y="${f(y-10.6)}" width="2.6" height="2.6" rx=".4" fill="${p.win}"${wf}/>`;
+  // smokestack with a red band, puffing
+  s+=`<rect x="${f(x-11)}" y="${f(y-15.5)}" width="3.4" height="12" rx=".6" fill="${stack}"/><rect x="${f(x-11)}" y="${f(y-14)}" width="3.4" height="1.6" fill="#c0392b"/>`;
+  s+=`<circle class="smoke" cx="${f(x-9.3)}" cy="${f(y-18)}" r="2.2" fill="${p.smoke}"/><circle class="smoke" style="animation-delay:-2s" cx="${f(x-9.3)}" cy="${f(y-18)}" r="1.8" fill="${p.smoke}"/>`;
+  // bow lantern on a short post
+  s+=`<path d="M${f(x+12.5)} ${f(y-6)}v-5" stroke="#4a3a2c" stroke-width=".8"/><rect x="${f(x+11.3)}" y="${f(y-13.4)}" width="2.4" height="2.8" rx=".7" fill="#ffd77e"${wf}/>`;
+  if(p.night){s=glow(x+12.5,y-12,16,id,.9)+s;light(x+12.5,y+2,26,.85);}
+  return `<g class="float">${s}</g>`;
+}
 function isoScene(prog,p,id,opt={}){
   const f=Math.max(0,Math.min(4,prog*4)),stage=Math.floor(f+1e-9);let gst=f<.6?0:f<1.5?1:f<2.5?2:f<3.6?3:4;
   WINTER=!!opt.winter; CROPSEL=opt.crops||{};
@@ -307,7 +331,7 @@ function isoScene(prog,p,id,opt={}){
   // boat moored off the east shore
   let bx=0;for(let x=0;x<=10;x++)if(L(x,0)||L(x,1))bx=x;
   const [bsx,bsy]=P(bx+2.2,.6,-D+2);
-  items.push({z:99,k:'boat',svg:()=>`<g class="float"><path d="M${bsx-11} ${bsy-3}h22l-4 5h-14z" fill="${p.wood}"/><path d="M${bsx-11} ${bsy-3}h22" stroke="${p.woodD}" stroke-width="1.2"/><path d="M${bsx} ${bsy-3}v-15" stroke="${p.woodD}" stroke-width="1.1"/><path d="M${bsx+.8} ${bsy-17}l8 11h-8z" fill="${p.canvas}"/></g>`});
+  items.push({z:99,k:'boat',svg:()=>isoTug(bsx,bsy,p,id)});
   items.sort((a,b)=>a.z-b.z);
   items.forEach(it=>{s+=`<g class="o" data-k="${it.k}" data-z="${it.z}">${it.svg()}</g>`;});
   // warm light pooling from fires, windows and lanterns, painted over everything

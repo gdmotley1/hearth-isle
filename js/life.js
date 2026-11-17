@@ -1,4 +1,4 @@
-/* Hearth Isle island life: a calm diorama. Each settler has a spot and one simple loop
+/* Motley Island island life: a calm diorama. Each settler has a spot and one simple loop
    (sitting by the fire, chopping wood, tending crops, hammering at the Gardens, strolling a path),
    drawn once with SVG animation so nothing jitters. Also the sky, dust when a building rises,
    and sky lanterns. Life.start(svg, scene, opts) after each island draw. */

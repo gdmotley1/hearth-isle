@@ -1,6 +1,6 @@
 {
-  "name": "Hearth Isle",
-  "short_name": "Hearth Isle",
+  "name": "Motley Island",
+  "short_name": "Motley Island",
   "description": "Train, cook and grow your island.",
   "start_url": "./index.html",
   "scope": "./",

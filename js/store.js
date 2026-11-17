@@ -1,4 +1,4 @@
-/* Hearth Isle state: everything lives in this phone's localStorage under one key.
+/* Motley Island state: everything lives in this phone's localStorage under one key.
    The log is the source of truth; every total, the island and the settlers are derived from it. */
 (function(){
 const KEY = 'hearth.v1';
@@ -115,7 +115,7 @@ function lastSets(sid, before){
 function setStart(s){ state.start = s; save(); }
 function setOnboarded(){ state.onboarded = true; save(); }
 function exportJSON(){ return JSON.stringify(state, null, 1); }
-function importJSON(txt){ const s = JSON.parse(txt); if (!s || s.v !== 1 || !Array.isArray(s.log)) throw new Error('That file is not a Hearth Isle backup.'); state = Object.assign(fresh(), s); save(); }
+function importJSON(txt){ const s = JSON.parse(txt); if (!s || s.v !== 1 || !Array.isArray(s.log)) throw new Error('That file is not a Motley Island backup.'); state = Object.assign(fresh(), s); save(); }
 function reset(){ state = fresh(); save(); }
 
 window.Store = {PTS, EXTRA, SEASON, RES, ymd, parse, mondayOf, weekNo, seasonWeek, totals, progress, settlers, gardens,

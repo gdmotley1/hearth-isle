@@ -1,4 +1,4 @@
-/* Hearth Isle cloud backup. Every change to progress is copied to a private row in Supabase,
+/* Motley Island cloud backup. Every change to progress is copied to a private row in Supabase,
    a few seconds after it happens and again whenever the app is put away. The only thing you need
    to restore on a new phone is the backup code: the storage slot is derived from it.
    The key below is Supabase's publishable key: it is meant to be public, and the database only

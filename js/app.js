@@ -1,4 +1,4 @@
-/* Hearth Isle app: hash router, four tabs (Isle, Train, Market, Kitchen), detail screens,
+/* Motley Island app: hash router, four tabs (Isle, Train, Market, Kitchen), detail screens,
    a guided workout player, cook mode and first-run onboarding. */
 (function(){
 const $ = (s, r = document) => r.querySelector(s);
@@ -593,7 +593,7 @@ function islandSheet(){
   const t = Store.totals(), u = unlockState(), g = Store.gardens(), bal = u.bal;
   const upcoming = u.list.slice(u.built, u.built + 4);
   sheet(`<div class="grab"></div>
-    <div><div class="over gold">Your island</div><h2 class="t2" style="margin-top:8px">Hearth Isle</h2></div>
+    <div><div class="over gold">Your island</div><h2 class="t2" style="margin-top:8px">Motley Island</h2></div>
     <div class="stats3"><div><span class="cap">Settlers</span><b>${Store.settlers()}</b></div><div><span class="cap">Built</span><b>${u.built}<span class="cap"> / ${u.list.length}</span></b></div><div><span class="cap">Points</span><b>${t.all}<span class="cap"> / ${Store.SEASON.total}</span></b></div></div>
     <div class="meters"><div class="gardens"><div class="meter2"><p>Hanging Gardens<b style="font-size:15px">${g.label}</b></p></div><div class="bar2"><i style="width:${g.pct}%"></i></div></div>
       ${Store.RES.map(k => `<div class="meter2" style="--c:var(--${k})"><p>${RESN[k]}<b class="num">${Math.max(0, Math.floor(bal[k]))}</b></p><span class="cap">${t[k]} earned this season</span></div>`).join('')}</div>
@@ -693,7 +693,7 @@ function vIsle(){
   view.innerHTML = `<div class="isleful">
     <div class="world full" id="world" role="button" aria-label="Your island. Tap a settler or a building to meet them, or anywhere else for details."><svg id="isl" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="topfade"></div>
-    <header class="ttl"><div><div class="over">Season one · week ${sw} of 12</div><h1 class="lt">Hearth Isle</h1></div>
+    <header class="ttl"><div><div class="over">Season one · week ${sw} of 12</div><h1 class="lt">Motley Island</h1></div>
       <span class="hbtns"><a class="iconbtn tap" href="#chronicle" aria-label="The Island Chronicle">${ic('book')}</a><a class="iconbtn tap" href="#settings" aria-label="Settings">${ic('gear')}</a></span></header>
     <div class="hud">
       <div class="resbar">${Store.RES.map(r => `<span class="rchip r-${r}">${ic(r)}<b class="num">${Math.max(0, Math.floor(bal[r]))}</b></span>`).join('')}<span class="rchip r-gold">${ic('people')}<b class="num">${Store.settlers()}</b></span></div>
@@ -702,7 +702,7 @@ function vIsle(){
         <span class="tx"><span class="over gold">${Store.state.target ? 'Saving for' : 'Building next'} · tap to choose</span><span class="hl">${BUILD_T[u.next.t]}</span>
         ${priceChips(u.parts)}<span class="meter">${twBar('next', u.pct)}</span></span></button>` : `<div class="nextup glassy"><span class="tx"><span class="over gold">Season complete</span><span class="hl">Everything is built</span></span></div>`}
     </div></div>`;
-  scrollAt = 99999; setBar('Hearth Isle');
+  scrollAt = 99999; setBar('Motley Island');
   const world = $('#world');
   Life.sky(world, {winter:season().winter});
   drawIsland($('#isl'));
@@ -1622,7 +1622,7 @@ function vChronicle(){
   const first = Store.parse(Store.state.start), weeks = [];
   for (let m = new Date(first); Store.ymd(m) <= Store.ymd(today()); m.setDate(m.getDate() + 7)) weeks.push(weekSummary(new Date(m)));
   const shown = weeks.reverse().filter((s, i) => s.entries || s.done || i === 0);
-  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">Hearth Isle · season one</span><h1 class="lt">The Island Chronicle</h1>
+  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">Motley Island · season one</span><h1 class="lt">The Island Chronicle</h1>
     <span class="cap" style="font-size:14px;margin-top:4px">One chapter a week, written from what you actually did.</span></header>
     <div class="page stagger" style="margin-top:22px">${shown.map((s, i) => recapCard(s, false).replace('<article class="chapter', `<article class="chapter${i === 0 && !s.done ? ' current' : ''}`)).join('')}
     <p class="fine" style="text-align:center">${Store.settlers()} settlers · ${unlockState().built} of ${Isle.unlocks().length} built</p></div>`;
@@ -1644,16 +1644,16 @@ function vSettings(){
       <p class="fine">Save your backup code somewhere safe, like your Notes app or password manager. Anyone with the code can see your progress, and nobody without it can.</p></section>
     <section class="sect"><div class="sect-h"><span class="over">Backup file</span></div><div class="group">
       <button class="row tap" type="button" id="exp" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative"><span class="tile r-land">${ic('download')}</span><span class="tx"><b>Save a backup</b><small>Downloads a small file with your progress</small></span></button>
-      <label class="row tap" for="imp" style="cursor:pointer"><span class="tile r-land">${ic('upload')}</span><span class="tx"><b>Restore a backup</b><small>Pick a Hearth Isle backup file</small></span></label><input id="imp" type="file" accept="application/json,.json" hidden></div>
+      <label class="row tap" for="imp" style="cursor:pointer"><span class="tile r-land">${ic('upload')}</span><span class="tx"><b>Restore a backup</b><small>Pick a Motley Island backup file</small></span></label><input id="imp" type="file" accept="application/json,.json" hidden></div>
       <p class="fine">An extra copy you can keep in iCloud Drive or Files.</p></section>
     <section class="sect"><div class="sect-h"><span class="over">Start over</span></div><button class="btn danger wide" type="button" id="rst">Erase my progress</button></section>
-    <p class="fine" style="text-align:center">Hearth Isle · season one</p>
+    <p class="fine" style="text-align:center">Motley Island · season one</p>
   </div>`;
   scrollAt = 90; setBar('Settings', true); wireBack();
   $('#start').onchange = e => { if (e.target.value){ Store.setStart(e.target.value); toast('Start date saved.'); rerender(); } };
   $('#exp').onclick = () => {
     const blob = new Blob([Store.exportJSON()], {type:'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `hearth-isle-${Store.ymd(today())}.json`;
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `motley-island-${Store.ymd(today())}.json`;
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
   };
   $('#imp').onchange = async e => {
@@ -1684,11 +1684,11 @@ function showCodeCard(){ const i = Cloud.info(); return i.on && i.code && i.last
 /* Hand the code to the iPhone share sheet (pick Notes); fall back to copying it. */
 async function saveCode(){
   const code = Cloud.info().code; if (!code) return;
-  const text = `Hearth Isle backup code: ${code}\n\nOn a new phone, open Hearth Isle, tap "Restore your island" and paste this code.`;
+  const text = `Motley Island backup code: ${code}\n\nOn a new phone, open Motley Island, tap "Restore your island" and paste this code.`;
   haptic();
   const done = msg => { setPref('codeSaved', true); toast(msg); const c = $('#savecode'); if (c) c.animate([{opacity:1}, {opacity:0, transform:'scale(.97)'}], {duration:220}); setTimeout(() => c.remove(), 230); };
   if (navigator.share){
-    try { await navigator.share({title:'Hearth Isle backup code', text}); done('Saved. You never need to do that again.'); }
+    try { await navigator.share({title:'Motley Island backup code', text}); done('Saved. You never need to do that again.'); }
     catch(e){ if (e && e.name !== 'AbortError') { try { await navigator.clipboard.writeText(text); done('Copied. Paste it into Notes.'); } catch(err) {} } }
     return;
   }
@@ -1699,7 +1699,7 @@ function codeSheet(){
   const sh = sheet(`<div class="grab"></div><div><div class="over gold">Cloud backup</div><h2 class="t2" style="margin-top:8px">Your backup code</h2></div>
     <div class="bcode num">${esc(code)}</div>
     <div class="btns"><button class="btn quiet" type="button" id="ccopy">Copy</button><button class="btn" type="button" id="cshare">${ic('upload')}Save to Notes</button></div>
-    <p class="fine">Paste it into your Notes app or password manager. On a new phone, open Hearth Isle and choose Restore from a backup code.</p>`);
+    <p class="fine">Paste it into your Notes app or password manager. On a new phone, open Motley Island and choose Restore from a backup code.</p>`);
   $('#cshare', sh).onclick = () => saveCode();
   $('#ccopy', sh).onclick = async () => {
     haptic();
@@ -1846,7 +1846,7 @@ async function boot(){
     const [w, m, m2] = await Promise.all([fetch('data/workouts.json').then(r => r.json()), get(cw), nw ? get(nw).catch(() => null) : null]);
     W = w; M = m; MW[cw] = m; if (m2) MW[nw] = m2;
   } catch(e) {
-    view.innerHTML = `<header class="lhead"><h1 class="lt">Hearth Isle</h1><p class="cap">The plan did not load. Check your connection and open the app again.</p></header>`;
+    view.innerHTML = `<header class="lhead"><h1 class="lt">Motley Island</h1><p class="cap">The plan did not load. Check your connection and open the app again.</p></header>`;
     return;
   }
   window.addEventListener('hashchange', () => route());
