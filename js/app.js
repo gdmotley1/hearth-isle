@@ -1153,15 +1153,20 @@ function paintTimerSheet(el){
 /* ---------------- Settings ---------------- */
 function vSettings(){
   let armed = false;
-  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">Saved on this phone</span><h1 class="lt">Settings</h1></header>
+  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">Saved on this phone and backed up online</span><h1 class="lt">Settings</h1></header>
   <div class="page stagger" style="margin-top:22px">
     <section class="sect"><div class="sect-h"><span class="over">Program</span></div><div class="group">
       <label class="row" for="start"><span class="tile r-gold">${ic('calendar')}</span><span class="tx"><b>Week 1 started</b><small>You are in week ${Store.weekNo()} · season week ${Store.seasonWeek()}</small></span>
         <input id="start" type="date" value="${Store.state.start}" style="all:unset;font:500 14px var(--f-b);color:var(--gold2);max-width:130px;text-align:right"></label></div></section>
-    <section class="sect"><div class="sect-h"><span class="over">Your data</span></div><div class="group">
+    <section class="sect"><div class="sect-h"><span class="over">Cloud backup</span><span class="cap" id="cstat"></span></div><div class="group">
+      <div class="row"><span class="tile r-land">${ic('upload')}</span><span class="tx"><b>Automatic backup</b><small id="cline">Every change is saved online a few seconds later</small></span><button class="btn quiet small" type="button" id="cnow">Back up now</button></div>
+      <button class="row tap" type="button" id="ccode" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative"><span class="tile r-gold">${ic('info')}</span><span class="tx"><b>Your backup code</b><small>The one thing you need to restore on a new phone</small></span>${ic('chev', 'i chev')}</button>
+      <button class="row tap" type="button" id="crest" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative"><span class="tile r-land">${ic('download')}</span><span class="tx"><b>Restore from a backup code</b><small>Bring an island over from another phone</small></span>${ic('chev', 'i chev')}</button></div>
+      <p class="fine">Save your backup code somewhere safe, like your Notes app or password manager. Anyone with the code can see your progress, and nobody without it can.</p></section>
+    <section class="sect"><div class="sect-h"><span class="over">Backup file</span></div><div class="group">
       <button class="row tap" type="button" id="exp" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative"><span class="tile r-land">${ic('download')}</span><span class="tx"><b>Save a backup</b><small>Downloads a small file with your progress</small></span></button>
       <label class="row tap" for="imp" style="cursor:pointer"><span class="tile r-land">${ic('upload')}</span><span class="tx"><b>Restore a backup</b><small>Pick a Hearth Isle backup file</small></span></label><input id="imp" type="file" accept="application/json,.json" hidden></div>
-      <p class="fine">Progress lives only on this phone. Save a backup now and then so a new phone never costs you your island.</p></section>
+      <p class="fine">An extra copy you can keep in iCloud Drive or Files.</p></section>
     <section class="sect"><div class="sect-h"><span class="over">Start over</span></div><button class="btn danger wide" type="button" id="rst">Erase my progress</button></section>
     <p class="fine" style="text-align:center">Hearth Isle · season one</p>
   </div>`;
@@ -1179,7 +1184,55 @@ function vSettings(){
   };
   $('#rst').onclick = e => {
     if (!armed){ armed = true; e.currentTarget.textContent = 'Tap again to erase everything'; return; }
-    Store.reset(); seen = null; lastAll = null; toast('Progress erased.'); location.hash = '#isle'; onboarding();
+    Store.reset(); Cloud.fresh(); seen = null; lastAll = null; toast('Progress erased. Your old cloud backup is untouched.'); location.hash = '#isle'; onboarding();
+  };
+  const paintCloud = i => {
+    const st = $('#cstat'), ln = $('#cline'); if (!st) return;
+    st.textContent = !i.on ? 'off' : i.status === 'saving' ? 'saving…' : i.status === 'offline' ? 'offline, will retry' : i.status === 'error' ? 'could not reach the server' : i.last ? 'on' : 'starting';
+    ln.textContent = i.last ? `Last backed up ${ago(i.last)}` : 'Every change is saved online a few seconds later';
+  };
+  paintCloud(Cloud.info()); Cloud.onChange(paintCloud);
+  $('#cnow').onclick = () => { haptic(); Cloud.push(); };
+  $('#ccode').onclick = codeSheet;
+  $('#crest').onclick = () => restoreSheet();
+}
+function ago(iso){
+  const s = Math.max(0, (Date.now() - Date.parse(iso)) / 1000);
+  return s < 60 ? 'just now' : s < 3600 ? `${Math.round(s / 60)} min ago` : s < 86400 ? `${Math.round(s / 3600)} hr ago` : new Date(iso).toLocaleDateString(undefined, {month:'short', day:'numeric'});
+}
+function codeSheet(){
+  const code = Cloud.info().code;
+  const sh = sheet(`<div class="grab"></div><div><div class="over gold">Cloud backup</div><h2 class="t2" style="margin-top:8px">Your backup code</h2></div>
+    <div class="bcode num">${esc(code)}</div>
+    <button class="btn wide" type="button" id="ccopy">${ic('check')}Copy code</button>
+    <p class="fine">Paste it into your Notes app or password manager. On a new phone, open Hearth Isle and choose Restore from a backup code.</p>`);
+  $('#ccopy', sh).onclick = async () => {
+    haptic();
+    try { await navigator.clipboard.writeText(code); toast('Code copied.'); } catch(e) { toast('Select the code and copy it.'); }
+  };
+}
+function restoreSheet(after){
+  const sh = sheet(`<div class="grab"></div><div><div class="over gold">Cloud backup</div><h2 class="t2" style="margin-top:8px">Restore your island</h2></div>
+    <label class="field"><span class="cap">Backup code</span><input id="rcode" type="text" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"></label>
+    <div id="rfound"></div>
+    <button class="btn wide" type="button" id="rfind">Find my backup</button>`);
+  let found = null;
+  $('#rfind', sh).onclick = async () => {
+    const b = $('#rfind', sh);
+    if (found){
+      b.disabled = true; b.textContent = 'Restoring…';
+      try { await Cloud.restore($('#rcode', sh).value); seen = null; lastAll = null; closeLayer(); haptic(); toast('Your island is back.'); if (after) after(); location.hash = '#isle'; rerender(); }
+      catch(e){ toast(e.message); b.disabled = false; b.textContent = 'Replace this phone with the backup'; }
+      return;
+    }
+    b.disabled = true; b.textContent = 'Looking…';
+    try {
+      const p = await Cloud.peek($('#rcode', sh).value), pts = (p.data.log || []).reduce((a, e) => a + (e.pts || 0), 0);
+      found = p;
+      $('#rfound', sh).innerHTML = `<div class="callout">${ic('check')}<span>Found it: ${Math.round(pts)} points, ${(p.data.log || []).length} things logged, last saved ${ago(p.updated)}. Restoring replaces what is on this phone.</span></div>`;
+      b.textContent = 'Replace this phone with the backup';
+    } catch(e){ toast(e.message); b.textContent = 'Find my backup'; }
+    b.disabled = false;
   };
 }
 
@@ -1201,9 +1254,10 @@ function onboarding(){
     ][step];
     el.innerHTML = `<div class="art"><svg id="onbisl" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg></div>
       <div class="panel"><div class="dots">${[0, 1, 2].map(i => `<i class="${i === step ? 'on' : ''}"></i>`).join('')}</div>${body}
-      <button class="btn wide" type="button" id="onext">${step < 2 ? 'Continue' : 'Begin season one'}</button></div>`;
+      <button class="btn wide" type="button" id="onext">${step < 2 ? 'Continue' : 'Begin season one'}</button>${step === 0 ? `<button class="linkbtn" type="button" id="onrest">Coming from another phone? Restore your island</button>` : ''}</div>`;
     drawIsland($('#onbisl', el), prog, .5, 1.05, 'onb');
     $$('.opts button', el).forEach(b => b.onclick = () => { pick = b.dataset.v; paint(); });
+    const rb = $('#onrest', el); if (rb) rb.onclick = () => { el.style.zIndex = '30'; restoreSheet(() => el.remove()); };
     $('#onext', el).onclick = () => {
       if (step < 2){ step++; paint(); return; }
       Store.setStart(pick); Store.setOnboarded();
@@ -1304,6 +1358,7 @@ async function boot(){
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && (play || cook)) keepAwake(true); });
   route();
   onboarding();
+  Cloud.start();
   const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !local){
     // When an update installs, swap to it right away, unless a workout or cook mode is open.

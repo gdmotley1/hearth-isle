@@ -38,7 +38,7 @@ function load(){
   return fresh();
 }
 let state = load();
-function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} if (window.onHearthSave) window.onHearthSave(); }
 
 function weekNo(d = new Date()){ return Math.max(1, Math.floor((parse(ymd(d)) - parse(state.start)) / 864e5 / 7) + 1); }
 function seasonWeek(d){ return ((weekNo(d)-1) % SEASON.weeks) + 1; }

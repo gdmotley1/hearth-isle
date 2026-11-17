@@ -565,4 +565,7 @@ details.pantry summary::-webkit-details-marker{display:none}
 .fw-spark{position:absolute;width:4px;height:4px;border-radius:50%}
 .bunting .flag{animation:flag 1.6s ease-in-out infinite alternate}
 @keyframes flag{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+/* ---------- cloud backup ---------- */
+.bcode{padding:18px 12px;border-radius:var(--r-m);background:var(--fill);text-align:center;font:600 19px/1.4 var(--f-b);letter-spacing:.06em;color:var(--gold2);-webkit-user-select:all;user-select:all;word-break:break-all}
+.linkbtn{all:unset;cursor:pointer;align-self:center;font:500 13.5px var(--f-b);color:var(--sub);text-decoration:underline;text-decoration-color:var(--ghost);text-underline-offset:3px;padding:6px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
