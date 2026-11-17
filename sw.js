@@ -1,6 +1,6 @@
 ﻿/* Motley Island service worker: the app works offline after the first visit.
    Bump VERSION whenever a file below changes so phones pick up the update. */
-const VERSION = 'hearth-v41';
+const VERSION = 'hearth-v42';
 const SHELL = [
   './index.html',
   './manifest.webmanifest',
@@ -23,6 +23,7 @@ const SHELL = [
   './data/meals-week7.json',
   './data/meals-week8.json',
   './data/meals-week9.json',
+  './data/meals-week10.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/apple-touch-icon.png'
