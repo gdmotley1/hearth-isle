@@ -45,7 +45,7 @@ const P = {
   check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>', play:'<path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/>',
   clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>', flame:'<path d="M12 3c1.3 3.2 5 5 5 9.5a5 5 0 0 1-10 0c0-2.4 1.2-3.8 2-4.8.4 1.6 1.3 2.6 2.4 2.8C10.9 7.8 11.3 5.3 12 3z"/>',
   layers:'<path d="M12 3.5 21 8l-9 4.5L3 8z"/><path d="M3 12.5l9 4.5 9-4.5M3 16.5l9 4.5 9-4.5"/>', people:'<circle cx="9" cy="8" r="3"/><path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5M16 5.5a3 3 0 0 1 0 5.6M17.5 14.6c1.8.6 3 2.4 3 4.9"/>',
-  plus:'<path d="M12 5v14M5 12h14"/>', sound:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>', mute:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>', timer:'<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 1.5M9.5 2.5h5"/>', minus:'<path d="M5 12h14"/>', info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>', book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20M8 7.5h8M8 11h6"/>', sound:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>', mute:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>', timer:'<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 1.5M9.5 2.5h5"/>', minus:'<path d="M5 12h14"/>', info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
   list:'<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>', cart:'<path d="M3 4h2.5l2.2 11h10.6L20.5 8H7"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/>',
   download:'<path d="M12 4v11M7 10.5l5 5 5-5M4.5 19.5h15"/>', upload:'<path d="M12 15.5v-11M7 9l5-5 5 5M4.5 19.5h15"/>', calendar:'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
   Mexican:'<path d="M3 16.5a9 9 0 0 1 18 0z"/><path d="M6.5 12.8c1-1 2-1 3 0s2 1 3 0 2-1 3 0 1.8.8 2 1"/>',
@@ -325,7 +325,7 @@ function rerender(){ const y = view.scrollTop; route(true); view.scrollTop = y; 
 function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id = 'h'){
   const live = id === 'h';
   if (live){ zoom = ISLE_ZOOM; anchor = ISLE_ANCHOR; }
-  const r = Isle.isoScene(prog, Isle.PAL_B, id, {live});
+  const ss = season(), r = Isle.isoScene(prog, Isle.PAL_B, id, {live, winter:ss.winter, holiday:ss.holiday});
   const box = svg.getBoundingClientRect();
   const w = 2 * r.W * zoom, h = w * (box.height / Math.max(1, box.width));
   svg.setAttribute('viewBox', `${(-w / 2).toFixed(1)} ${(8 - anchor * h).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
@@ -345,10 +345,21 @@ function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id 
   seen = now; lastGst = r.gst;
   if (newcomer) Life.boatIn(svg);
   const count = Math.min(16, Store.settlers());
-  Life.start(svg, r, {count, newcomer:newcomer && Store.settlers() <= 16});
+  Life.start(svg, r, {count, newcomer:newcomer && Store.settlers() <= 16, winter:season().winter});
   newcomer = false;
 }
 let scene = null;
+/* The island follows the real calendar: snow from December through February, the holiday tree
+   from December 18 to 26, a winter festival on the weekend before Christmas, fireworks on New Year's Eve. */
+function season(d = today()){
+  const m = d.getMonth() + 1, day = d.getDate();
+  const winter = m === 12 || m <= 2;
+  const holiday = m === 12 && day >= 18 && day <= 26;
+  const sat = new Date(d.getFullYear(), 11, 25); sat.setDate(25 - ((sat.getDay() + 1) % 7 || 7));
+  const festival = m === 12 && (day === sat.getDate() || day === sat.getDate() + 1);
+  const nye = m === 12 && day === 31;
+  return {winter, holiday, festival, nye};
+}
 // The home island fits the screen with a little room around it, centered between the title and the Today card.
 const ISLE_ZOOM = 1, ISLE_ANCHOR = .6;
 function settlerStory(i, st, role){
@@ -372,7 +383,7 @@ function settlerStory(i, st, role){
 }
 function buildingStory(k, t){
   if (t === 'gardens'){ const g = Store.gardens(); return {title:'Hanging Gardens', sub:`${g.label} · ${g.pct}%`, line:'The first Wonder. Every point you earn adds stone, soil and vines.'}; }
-  const base = {fire:['The first campfire', 'Lit the night the settlers landed.'], tent:['The first tent', 'Where the first three settlers slept.'], tree:['Old tree', 'It was here before anyone arrived.']};
+  const base = {xmas:['The holiday tree', 'The settlers dragged it in from the pine grove and every one of them hung an ornament.'], fire:['The first campfire', 'Lit the night the settlers landed.'], tent:['The first tent', 'Where the first three settlers slept.'], tree:['Old tree', 'It was here before anyone arrived.']};
   const list = Isle.unlocks(), i = list.findIndex(u => u.k === k);
   if (i < 0){ const b = base[t] || ['Island', 'Part of the island.']; return {title:b[0], sub:'Since day one', line:b[1]}; }
   return {title:BUILD_T[t] || t, sub:`Built by ${SETTLERS[i % SETTLERS.length]}`, line:`Went up at ${Math.round(Store.thToPts(list[i].th))} points. ${i + 1} of ${list.length} things to build this season.`};
@@ -556,7 +567,7 @@ function vIsle(){
     <div class="world" id="world" role="button" aria-label="Your island. Tap a settler or a building to meet them, or anywhere else for details."><svg id="isl" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="topfade"></div>
     <header class="ttl"><div><div class="over">Season one · week ${sw} of 12</div><h1 class="lt">Hearth Isle</h1></div>
-      <a class="iconbtn tap" href="#settings" aria-label="Settings">${ic('gear')}</a></header>
+      <span class="hbtns"><a class="iconbtn tap" href="#chronicle" aria-label="The Island Chronicle">${ic('book')}</a><a class="iconbtn tap" href="#settings" aria-label="Settings">${ic('gear')}</a></span></header>
     <div class="page stagger">
       <section class="card today">
         ${ring(dp.done, dp.total)}
@@ -567,6 +578,7 @@ function vIsle(){
         <span class="tile r-gold">${ic(u.next.t.startsWith('g') ? 'harvest' : 'house')}</span>
         <span class="tx"><span class="over gold">Next on the island</span><span class="hl">${BUILD_T[u.next.t]}</span>
         <span class="cap">${plural(u.need, 'point')} away · ${Store.settlers()} settlers</span><span class="meter">${twBar('next', u.pct)}</span></span></button>` : ''}
+      ${recapDue() ? `<button class="harvest tap" type="button" id="harvest"><span class="over gold">${dayKey(today()) === 'sun' ? 'Sunday harvest' : 'Last week on the island'}</span><span class="hl">${esc(chapterTitle(weekSummary(recapDue())))}</span><span class="cap">See what your week built and read this week's chapter</span>${ic('chev', 'i chev')}</button>` : ''}
       ${showCodeCard() ? `<div class="callout savecode" id="savecode">${ic('upload')}<span><b>Your island backs up online.</b> Save your backup code to Notes once, so a new phone can bring everything back.<span class="sc-btns"><button class="btn small" type="button" id="scsave">Save to Notes</button><button class="linkbtn" type="button" id="sclater">Later</button></span></span></div>` : ''}
       ${menu && menu.heads ? `<div class="callout">${ic('info')}<span>${esc(menu.heads)}</span></div>` : ''}
       ${d === 'sun' ? `<a class="callout tap" href="#prep/sun/${nextW() || mealWeek()}">${ic('calendar')}<span>Prep day. Shop the Market list, then open Sunday prep.</span></a>` : ''}
@@ -582,13 +594,14 @@ function vIsle(){
     </div></div>`;
   scrollAt = 330; setBar('Hearth Isle');
   const world = $('#world');
-  Life.sky(world);
+  Life.sky(world, {winter:season().winter});
   drawIsland($('#isl'));
   wireCamera(world, $('#isl'));
   world.insertAdjacentHTML('beforeend', `<button class="camreset" type="button" aria-label="Show the whole island">${ic('isle')}Whole island</button>`);
   $('.camreset', world).addEventListener('click', e => { e.stopPropagation(); haptic(); closeBubble(); resetCam(); });
   const nu = $('#nextup'); if (nu) nu.onclick = islandSheet;
   const scs = $('#scsave'); if (scs) scs.onclick = () => saveCode();
+  const hv = $('#harvest'); if (hv) hv.onclick = () => { haptic(); harvestSheet(recapDue()); };
   const scl = $('#sclater'); if (scl) scl.onclick = () => { codeLater = true; haptic(); const c = $('#savecode'); c.animate([{opacity:1}, {opacity:0, transform:'scale(.97)'}], {duration:220}); setTimeout(() => c.remove(), 230); };
   wireTicks();
   const c = $('[data-cta]'); if (c) c.onclick = () => toggleTask(c.dataset.cta, $(`.tick[data-task="${c.dataset.cta}"]`));
@@ -606,6 +619,18 @@ function vIsle(){
     }, 40);
   }
   playIslandFx(world);
+  seasonalMoment(world);
+}
+function seasonalMoment(world){
+  const ss = season(), ds = Store.ymd(today());
+  if (ss.winter && !prefs.winterSeen){ setPref('winterSeen', ds); setTimeout(() => announce('Winter has come to the island', 'Snow on the rooftops', 'spirit'), 900); }
+  if ((ss.festival || ss.nye) && prefs.festSeen !== ds){
+    setPref('festSeen', ds);
+    setTimeout(() => {
+      announce(ss.nye ? 'Happy New Year' : 'The winter festival', ss.nye ? 'Fireworks over the island' : 'Lights, lanterns and a tree in the square', 'flame');
+      Life.fireworks(world, ss.nye ? 10 : 7); Life.lanterns(world); if (ss.festival) Life.bunting($('#isl'), scene);
+    }, 1200);
+  }
 }
 /* Play queued task effects once the island is actually on screen. */
 function playIslandFx(world){
@@ -1153,6 +1178,127 @@ function paintTimerSheet(el){
   $$('[data-del]', el).forEach(b => b.onclick = () => { timers = timers.filter(x => x.id !== b.dataset.del); saveTimers(); haptic(); el.dataset.sig = ''; paintTimers(); if (!timers.length) closeLayer(); });
 }
 
+/* ---------------- Sunday harvest and the Island Chronicle ----------------
+   Everything here is written from the progress log on the phone: no network, no AI. */
+const NUMW = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+const numw = n => n <= 12 ? NUMW[n] : String(n);
+const listify = a => a.length <= 1 ? (a[0] || '') : a.length === 2 ? `${a[0]} and ${a[1]}` : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`;
+const cap1 = t => t.charAt(0).toUpperCase() + t.slice(1);
+function weekSummary(mon){
+  mon = Store.parse(Store.mondayOf(mon));
+  const sunD = new Date(mon); sunD.setDate(mon.getDate() + 6);
+  const start = Store.ymd(mon), end = Store.ymd(sunD), todayS = Store.ymd(today());
+  const log = Store.state.log, inWk = log.filter(e => e.date >= start && e.date <= end);
+  const before = log.filter(e => e.date < start).reduce((a, e) => a + e.pts, 0), gained = inWk.reduce((a, e) => a + e.pts, 0), after = before + gained;
+  const res = {stone:0, land:0, harvest:0, spirit:0}; inWk.forEach(e => { res[e.res] = (res[e.res] || 0) + e.pts; });
+  const count = k => inWk.filter(e => e.key === k).length;
+  const meals = count('breakfast') + count('lunch') + count('dinner');
+  const list = Isle.unlocks(), built = list.filter(u => { const q = Store.thToPts(u.th); return q > before + 1e-9 && q <= after + 1e-9; });
+  const s0 = 3 + Math.floor(before / 45), s1 = 3 + Math.floor(after / 45), arrived = [];
+  for (let i = s0; i < s1; i++) arrived.push(SETTLERS[i % SETTLERS.length]);
+  const sets = Store.state.sets || {};
+  const lifted = Object.keys(sets).filter(k => { const d = k.split('|')[0]; return d >= start && d <= end && Array.isArray(sets[k]); }).map(k => {
+    const [d, sid] = k.split('|'), now = sets[k].reduce((a, x) => a + x[2], 0), prev = Store.lastSets(sid, d);
+    return {sid, title:(W.sessions[sid] || {}).title || sid, now, was:prev ? prev.reduce((a, x) => a + x[2], 0) : null};
+  });
+  const gains = lifted.filter(x => x.was != null).sort((a, b) => (b.now - b.was) - (a.now - a.was));
+  const best = gains[0] || lifted.sort((a, b) => b.now - a.now)[0] || null;
+  // the sleep streak running into the end of this week (or today)
+  let streak = 0; const cur = Store.parse(end < todayS ? end : todayS);
+  while (log.some(e => e.date === Store.ymd(cur) && e.key === 'sleep')){ streak++; cur.setDate(cur.getDate() - 1); }
+  return {start, end, mon, wk:Store.weekNo(mon), gained, res, lifts:count('lift'), mobility:count('mobility'), court:count('pickleball'),
+    walks:count('walk') + count('intervals'), meals, sleeps:count('sleep'), extras:inWk.filter(e => e.extra).length, built, arrived, best, streak,
+    after, settlers:s1, entries:inWk.length, done:end < todayS};
+}
+const TITLE = {gfound:'The Gardens begin', g1:'The first tier', g2:'The second tier', g3:'The Hanging Gardens', windmill:'The windmill turns', tower:'The watchtower',
+  well:'The village well', stall:'Market day', house:'A new cottage', farm:'New fields', tree:'The orchard', pine:'The pine grove', lantern:'Lanterns at dusk', flowers:'Flower beds', rock:'The standing stone'};
+const RANK = ['g3','g2','g1','gfound','windmill','tower','well','stall','house','lantern','farm','tree','pine','flowers','rock'];
+const PLURAL = {house:'cottages', farm:'farm plots', tree:'orchard trees', pine:'pine groves', lantern:'lanterns', flowers:'flower beds'};
+/* "a farm plot, a farm plot" -> "two farm plots" */
+function builtPhrases(built){
+  const n = {}; built.forEach(u => { n[u.t] = (n[u.t] || 0) + 1; });
+  return Object.keys(n).map(t => n[t] > 1 && PLURAL[t] ? `${numw(n[t])} ${PLURAL[t]}` : BUILD[t]);
+}
+function chapterTitle(s){
+  if (!s.entries) return `Chapter ${s.wk}: A quiet week`;
+  const top = RANK.find(t => s.built.some(u => u.t === t));
+  if (top) return `Chapter ${s.wk}: ${TITLE[top]}`;
+  if (s.arrived.length) return `Chapter ${s.wk}: ${s.arrived[0]} arrives`;
+  return `Chapter ${s.wk}: ${['Stores for winter', 'Quiet fires', 'The long walk', 'Full baskets'][s.wk % 4]}`;
+}
+function chapterText(s){
+  const pick = (arr, k = 0) => arr[(s.wk * 7 + k * 3) % arr.length];
+  if (!s.entries) return 'The settlers kept the fire going and watched the boat for you. Nothing was built this week, and nothing was lost. Every point from here builds something new.';
+  const deeds = [];
+  if (s.lifts) deeds.push(s.lifts === 1 ? 'one lifting session' : `${numw(s.lifts)} lifting sessions`);
+  if (s.court) deeds.push(`${numw(s.court)} ${s.court === 1 ? 'night' : 'nights'} of pickleball`);
+  if (s.walks) deeds.push(`${numw(s.walks)} ${s.walks === 1 ? 'walk' : 'walks'}`);
+  if (s.meals) deeds.push(`${numw(s.meals)} home-cooked ${s.meals === 1 ? 'meal' : 'meals'}`);
+  const out = [];
+  out.push(deeds.length ? `${pick(['This was the week of', `Week ${s.wk} brought`, 'You gave the island'])} ${listify(deeds)}.` : `It was a lighter week, but ${numw(s.entries)} small things still moved the island forward.`);
+  if (s.built.length){
+    const who = SETTLERS[(Isle.unlocks().findIndex(u => u.k === s.built[0].k)) % SETTLERS.length];
+    const phr = builtPhrases(s.built);
+    out.push(phr.length === 1 && s.built.length === 1 ? `${who} finished ${BUILD[s.built[0].t]}${pick([', and the whole village came out to see it.', ' by lantern light on the last night.', ', and the island feels bigger for it.'], 1)}`
+      : `The settlers raised ${listify(phr)}${pick([', working late by lantern light.', '. The village had never been busier.', ', and still asked what was next.'], 1)}`);
+  } else {
+    const u = unlockState(s.after);
+    out.push(u.next ? `Nothing new went up, but the builders are close: ${BUILD[u.next.t]} is ${plural(u.need, 'point')} away.` : 'Everything on the island is built. The settlers spent the week admiring it.');
+  }
+  if (s.best){
+    if (s.best.was != null && s.best.now > s.best.was) out.push(`${s.best.title} climbed from ${s.best.was} reps to ${s.best.now}. ${pick(['Tobi says the quarry has never been so full.', 'The stonemasons noticed.', 'Stone stacked high by the gardens.'], 2)}`);
+    else if (s.best.was != null) out.push(`${s.best.title} held at ${s.best.now} reps, and steady is how quarries get dug.`);
+    else out.push(`${s.best.title} went in the book at ${s.best.now} reps, the mark to beat next time.`);
+  }
+  if (s.sleeps >= 5) out.push(`You slept well ${numw(s.sleeps)} nights, and the lanterns burned bright all week.`);
+  else if (s.sleeps) out.push(`${cap1(numw(s.sleeps))} good ${s.sleeps === 1 ? 'night' : 'nights'} of sleep kept the fire lit.`);
+  if (s.arrived.length) out.push(`${listify(s.arrived)} ${pick(['rowed in on the evening boat', 'stepped off the boat with everything they owned', 'arrived with the tide'], 3)}. ${cap1(numw(s.settlers))} settlers call the island home now.`);
+  return out.join(' ');
+}
+/* The recap is due on Sunday (this week) and on Monday (last week) until it has been opened. */
+function recapDue(){
+  const d = today(), dk = dayKey(d); let mon = null;
+  if (dk === 'sun') mon = Store.parse(Store.mondayOf(d));
+  else if (dk === 'mon'){ mon = Store.parse(Store.mondayOf(d)); mon.setDate(mon.getDate() - 7); }
+  if (!mon || Store.ymd(mon) < Store.state.start) return null;
+  return (prefs.recapSeen || '') === Store.ymd(mon) ? null : mon;
+}
+function recapCard(s, big){
+  const tot = Math.max(1, s.gained);
+  const bars = Store.RES.map(k => `<div class="hbar" style="--c:var(--${k});flex:${Math.max(.0001, s.res[k] / tot)}"></div>`).join('');
+  const cnt = {}; s.built.forEach(u => { cnt[u.t] = (cnt[u.t] || 0) + 1; });
+  const built = s.built.length ? `<div class="hbuilt">${Object.keys(cnt).map(t => `<span><i class="tile r-gold">${ic(t.startsWith('g') ? 'harvest' : 'house')}</i>${esc(BUILD_T[t])}${cnt[t] > 1 ? ` ×${cnt[t]}` : ''}</span>`).join('')}</div>` : '';
+  const stat = (n, l) => `<div><b class="num">${n}</b><span class="cap">${l}</span></div>`;
+  return `<article class="chapter${big ? ' big' : ''}">
+    <span class="over gold">Week ${s.wk} · ${Store.parse(s.start).toLocaleDateString(undefined, {month:'short', day:'numeric'})} to ${Store.parse(s.end).toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>
+    <h2 class="t2">${esc(chapterTitle(s))}</h2>
+    ${s.entries ? `<div class="hstats">${stat('+' + s.gained, 'points')}${stat(s.built.length, s.built.length === 1 ? 'built' : 'built')}${stat(s.arrived.length, s.arrived.length === 1 ? 'arrived' : 'arrived')}${stat(s.streak, s.streak === 1 ? 'night slept' : 'nights in a row')}</div>
+    <div class="hbars">${bars}</div>` : ''}
+    ${built}
+    ${s.best ? `<p class="hlift">${ic('lift')}<span><b>${esc(s.best.title)}</b> · ${s.best.now} reps${s.best.was != null ? ` <em class="${s.best.now >= s.best.was ? 'up' : 'down'}">${s.best.now - s.best.was >= 0 ? '+' : ''}${s.best.now - s.best.was} vs last time</em>` : ''}</span></p>` : ''}
+    <p class="story">${esc(chapterText(s))}</p>
+  </article>`;
+}
+function harvestSheet(mon){
+  const s = weekSummary(mon);
+  setPref('recapSeen', Store.ymd(Store.parse(Store.mondayOf(mon))));
+  const sh = sheet(`<div class="grab"></div><div class="over gold" style="text-align:center">The Island Chronicle</div>${recapCard(s, true)}
+    <a class="btn quiet wide" href="#chronicle">${ic('book')}Read every chapter</a>`);
+  sh.classList.add('harvestsheet');
+  const card = $('#harvest'); if (card) card.remove();
+  if (s.built.length || s.arrived.length) setTimeout(() => { const w = $('#world'); if (w) Life.fireworks(w, 3); }, 500);
+}
+function vChronicle(){
+  const first = Store.parse(Store.state.start), weeks = [];
+  for (let m = new Date(first); Store.ymd(m) <= Store.ymd(today()); m.setDate(m.getDate() + 7)) weeks.push(weekSummary(new Date(m)));
+  const shown = weeks.reverse().filter((s, i) => s.entries || s.done || i === 0);
+  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">Hearth Isle · season one</span><h1 class="lt">The Island Chronicle</h1>
+    <span class="cap" style="font-size:14px;margin-top:4px">One chapter a week, written from what you actually did.</span></header>
+    <div class="page stagger" style="margin-top:22px">${shown.map((s, i) => recapCard(s, false).replace('<article class="chapter', `<article class="chapter${i === 0 && !s.done ? ' current' : ''}`)).join('')}
+    <p class="fine" style="text-align:center">${Store.settlers()} settlers · ${unlockState().built} of ${Isle.unlocks().length} built</p></div>`;
+  scrollAt = 90; setBar('Chronicle', true); wireBack();
+}
+
 /* ---------------- Settings ---------------- */
 function vSettings(){
   let armed = false;
@@ -1290,8 +1436,8 @@ function onboarding(){
 /* ---------------- router ---------------- */
 const TABS = [['isle','Isle'],['train','Train'],['market','Market'],['kitchen','Kitchen']];
 nav.innerHTML = TABS.map(([k, l]) => `<a href="#${k}" data-tab="${k}" aria-label="${l}">${ic(k)}<span>${l}</span></a>`).join('');
-const TAB_OF = {session:'train', play:'train', recipe:'kitchen', cook:'kitchen', prep:'kitchen', settings:'isle'};
-const DETAIL = new Set(['session','recipe','prep','settings']);
+const TAB_OF = {session:'train', play:'train', recipe:'kitchen', cook:'kitchen', prep:'kitchen', settings:'isle', chronicle:'isle'};
+const DETAIL = new Set(['session','recipe','prep','settings','chronicle']);
 let lastName = null, lastTab = null, quiet = false;
 const stack = [];
 function route(keep){
@@ -1314,7 +1460,7 @@ function route(keep){
   if (name !== 'isle'){ cam.s = 1; cam.cx = 0; cam.cy = 0; }
   dock.innerHTML = ''; layer.innerHTML = '';
   view.style.transform = '';
-  ({isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg, arg2), cook:() => vCook(arg, arg2), prep:() => vPrep(arg, arg2), settings:vSettings}[name] || vIsle)();
+  ({isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg, arg2), cook:() => vCook(arg, arg2), prep:() => vPrep(arg, arg2), settings:vSettings, chronicle:vChronicle}[name] || vIsle)();
   if (!keep){
     view.scrollTop = 0; app.classList.remove('scrolled');
     const first = view.firstElementChild;

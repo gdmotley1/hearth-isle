@@ -65,14 +65,16 @@ function person(i, a, d){
   const head = `<circle cx="0" cy="${-8.9 + top}" r="2.05" fill="${sk}"/><path d="M-2.1 ${-8.8 + top}a2.1 2.1 0 0 1 4.2 0q-.9 -.7 -2.1 -.45q-1.2 .2 -2.1 .45z" fill="${hair}"/><circle cx=".95" cy="${-8.7 + top}" r=".3" fill="#2a1d16"/>`;
   const swing = walk && !st ? `<path d="M.2 -6.2 L.5 -3.3" stroke="${sk}" stroke-width="1.15" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="-26 .2 -6.2;26 .2 -6.2;-26 .2 -6.2" dur=".72s" repeatCount="indefinite"/></path>` : '';
   const seat = sit ? '<rect x="-2.4" y="-1.5" width="4.8" height="1.5" rx=".6" fill="#5f4532"/>' : '';
-  return `<ellipse cx="0" cy="0" rx="2.8" ry="1.25" fill="rgba(0,0,0,.3)"/>${seat}<g>${legs}${torso}${head}${swing}${ARM[a] ? ARM[a](d, sk) : ''}${(BODY[a] || (() => ''))(d)}</g>${a === 'chop' ? '<rect x="2.6" y="-1.2" width="3.2" height="1.4" rx=".5" fill="#6b4a2f"/>' : ''}`;
+  const top0 = sit ? 2 : 0, ph = ((i * 1.37) % 3.4).toFixed(2);
+  const breath = COLD && !st ? `<g opacity="0"><animate attributeName="opacity" values="0;.75;0;0" keyTimes="0;.2;.55;1" dur="3.4s" begin="-${ph}s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0;2.6 -1.4;3.4 -1.9" keyTimes="0;.55;1" dur="3.4s" begin="-${ph}s" repeatCount="indefinite"/><circle cx="2.7" cy="${-8.6 + top0}" r=".85" fill="#eef3f9"/><circle cx="3.6" cy="${-9.1 + top0}" r=".6" fill="#eef3f9"/></g>` : '';
+  return `<ellipse cx="0" cy="0" rx="2.8" ry="1.25" fill="rgba(0,0,0,.3)"/>${seat}<g>${legs}${torso}${head}${breath}${swing}${ARM[a] ? ARM[a](d, sk) : ''}${(BODY[a] || (() => ''))(d)}</g>${a === 'chop' ? '<rect x="2.6" y="-1.2" width="3.2" height="1.4" rx=".5" fill="#6b4a2f"/>' : ''}`;
 }
 
-let state = null;
+let state = null, COLD = false;
 function night(){ const h = new Date().getHours(); return h >= 23 || h < 5; }
 
 function start(svg, scene, opts = {}){
-  stop();
+  stop(); COLD = !!opts.winter;
   const vis = new Map(scene.vis.map(o => [o.k, o]));
   const zOf = o => o.x + o.y + (o.w || 1) + (o.h || 1) - (o.t === 'farm' || o.t === 'flowers' ? 1.5 : 0);
   const walks = Isle.WALK || [];
@@ -315,12 +317,13 @@ const SKY = {
   dusk: {w1:'#2d3462', w2:'#1b1e3f', glow:'rgba(236,128,146,.18)', stars:.6}
 };
 let skyTimer = 0, shootTimer = 0;
-function sky(world){
+function sky(world, opt = {}){
   clearInterval(skyTimer); clearTimeout(shootTimer);
   let el = world.querySelector('.sky');
   if (!el){ el = document.createElement('div'); el.className = 'sky'; world.prepend(el); }
   let seed = 7; const r = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-  el.innerHTML = `<i class="glow"></i><i class="moon"></i><i class="cloud c1"></i><i class="cloud c2"></i>` +
+  const flakes = opt.winter && !reduce() ? Array.from({length:38}, (_, k) => `<i class="flake" style="left:${(r() * 100).toFixed(1)}%;--fs:${(1.6 + r() * 2.2).toFixed(1)}px;--sway:${((r() - .5) * 40).toFixed(0)}px;animation-duration:${(9 + r() * 9).toFixed(1)}s;animation-delay:-${(r() * 18).toFixed(1)}s;opacity:${(.45 + r() * .5).toFixed(2)}"></i>`).join('') : '';
+  el.innerHTML = flakes + `<i class="glow"></i><i class="moon"></i><i class="cloud c1"></i><i class="cloud c2"></i>` +
     Array.from({length:42}, () => `<i class="star" style="left:${(r() * 100).toFixed(1)}%;top:${(r() * 44).toFixed(1)}%;--s:${(1 + r() * 1.6).toFixed(1)}px;animation-delay:-${(r() * 5).toFixed(1)}s;animation-duration:${(3 + r() * 4).toFixed(1)}s"></i>`).join('');
   const paint = () => {
     const now = new Date(), h = now.getHours() + now.getMinutes() / 60, ph = SKY[phase(Math.floor(h))];

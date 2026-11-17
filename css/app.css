@@ -573,4 +573,39 @@ details.pantry summary::-webkit-details-marker{display:none}
 .savecode b{color:var(--land);font-weight:600}
 .sc-btns{display:flex;align-items:center;gap:6px;margin-top:10px}
 .sc-btns .btn{height:38px;padding:0 16px;font-size:14px}
+/* ---------- winter ---------- */
+.sky .flake{position:absolute;top:-4%;width:var(--fs);height:var(--fs);border-radius:50%;background:#f1f5fb;box-shadow:0 0 3px rgba(241,245,251,.6);animation:flake 12s linear infinite}
+@keyframes flake{0%{transform:translate(0,0)}50%{transform:translate(var(--sway),55vh)}100%{transform:translate(0,110vh)}}
+.bulb{animation:bulb 2.6s ease-in-out infinite}
+@keyframes bulb{0%,100%{opacity:1}50%{opacity:.35}}
+.star{animation:starpulse 2.2s ease-in-out infinite}
+@keyframes starpulse{50%{transform:scale(1.18);opacity:.85}}
+/* ---------- Sunday harvest and the Chronicle ---------- */
+.hbtns{display:flex;gap:2px;pointer-events:auto}
+.harvest{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:flex;flex-direction:column;gap:4px;padding:16px 44px 16px 18px;border-radius:var(--r-m);
+  background:linear-gradient(120deg,rgba(244,189,99,.16),rgba(147,212,126,.08));box-shadow:inset 0 0 0 1px rgba(244,189,99,.25),0 0 30px -12px rgba(244,189,99,.4)}
+.harvest .hl{font:400 19px/1.2 var(--f-d)}
+.harvest .chev{position:absolute;right:16px;top:50%;margin-top:-8px}
+.chapter{display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:var(--r-l);background:var(--fill);box-shadow:inset 0 0 0 1px var(--hair)}
+.chapter.current{box-shadow:inset 0 0 0 1px rgba(244,189,99,.25)}
+.chapter.big{background:none;box-shadow:none;padding:4px 0 0}
+.chapter .t2{margin-top:-4px}
+.hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.hstats div{display:flex;flex-direction:column;gap:2px;padding:10px 4px;border-radius:12px;background:var(--fill2);text-align:center}
+.hstats b{font:400 20px var(--f-d)}
+.hstats .cap{font-size:10.5px}
+.hbars{display:flex;gap:3px;height:6px}
+.hbar{border-radius:3px;background:var(--c);box-shadow:0 0 8px var(--c);min-width:0}
+.hbuilt{display:flex;flex-wrap:wrap;gap:6px}
+.hbuilt span{display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 5px;border-radius:999px;background:var(--gold-a);font:600 12.5px var(--f-b);color:var(--gold2)}
+.hbuilt .tile{width:24px;height:24px;border-radius:50%}
+.hbuilt .tile svg{width:14px;height:14px}
+.hlift{display:flex;gap:10px;align-items:center;margin:0;font:500 13.5px var(--f-b);color:var(--sub)}
+.hlift svg{width:18px;height:18px;color:var(--stone);flex:none}
+.hlift b{color:var(--ink);font-weight:600}
+.hlift em{font-style:normal;font-weight:600}
+.hlift em.up{color:var(--harvest)}
+.hlift em.down{color:var(--danger)}
+.story{margin:0;font:italic 400 16.5px/1.6 var(--f-d);color:var(--ink);opacity:.92}
+.chapter.big .story{font-size:18px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

@@ -51,7 +51,8 @@ function box(x0,y0,x1,y1,z0,h,cT,cL,cR){
    +(cT?poly([P(x0,y0,z0+h),P(x1,y0,z0+h),P(x1,y1,z0+h),P(x0,y1,z0+h)],cT):'');
 }
 function shadowAt(sx,sy,rx,p){return `<ellipse cx="${sx}" cy="${sy}" rx="${rx}" ry="${rx/2}" fill="${p.shadow}"/>`;}
-let LIGHTS=[];
+let LIGHTS=[], WINTER=false;
+const SNOW='#d5dde7',SNOW2='#c4cedb',SNOWD='#a9b5c4',BULBS=['#ff6b6b','#ffd166','#7bd389','#6ec1ff'];
 const light=(x,y,r,o=1)=>LIGHTS.push([x,y,r,o]);
 const H=(x,y)=>{let h=(x*374761393+y*668265263)|0;h=(h^(h>>>13))*1274126177|0;return (h^(h>>>16))>>>0;};
 const lerp=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
@@ -85,6 +86,15 @@ function isoHouse(o,p,id){
   s+=`<path d="${sh}" stroke="${roofD}" stroke-width=".7" opacity=".55"/>`;
   s+=`<polyline points="${pts([B,C,Dd])}" fill="none" stroke="${roofD}" stroke-width="1.4" stroke-linejoin="round"/>`;
   s+=`<path d="M${pts([Dd])}L${pts([C])}" stroke="rgba(255,235,200,.28)" stroke-width=".9"/>`;
+  if(WINTER){
+    const a=lerp(A,Dd,.42),b=lerp(B,C,.42);
+    s+=poly([a,b,C,Dd],SNOW);
+    let sc='';for(let k=0;k<6;k++){const q=lerp(a,b,(k+.5)/6);sc+=`<ellipse cx="${q[0].toFixed(1)}" cy="${(q[1]+.4).toFixed(1)}" rx="2" ry="1.1" fill="${SNOW}"/>`;}
+    s+=sc+`<path d="M${pts([Dd])}L${pts([C])}" stroke="#eef3f9" stroke-width="1.1"/>`;
+    const [chx,chy]=P(x0+.19,ym-.09,h+12.2);s+=`<ellipse cx="${chx.toFixed(1)}" cy="${chy.toFixed(1)}" rx="2.4" ry="1.1" fill="${SNOW}"/>`;
+    let lb='';const eave=[[A,B,8],[B,C,5]];eave.forEach(([u,v,n],j)=>{for(let k=0;k<n;k++){const q=lerp(u,v,(k+.5)/n);lb+=`<circle class="bulb" style="animation-delay:-${((k+j*3+o.x*2)%7*.37).toFixed(2)}s" cx="${q[0].toFixed(1)}" cy="${(q[1]+.9).toFixed(1)}" r=".75" fill="${BULBS[(k+j)%4]}"/>`;}});
+    s+=`<path d="M${pts([A])}Q${((A[0]+B[0])/2).toFixed(1)} ${((A[1]+B[1])/2+1.6).toFixed(1)} ${pts([B])}" fill="none" stroke="#2b2420" stroke-width=".35"/>`+lb;
+  }
   const [cx,cy]=P(x0+.19,ym-.09,h+13);
   const dl=(o.x*7+o.y*3+20)%4;
   s+=`<circle class="smoke" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="2.4" fill="${p.smoke}" style="animation-delay:-${dl}s"/><circle class="smoke" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="2" fill="${p.smoke}" style="animation-delay:-${(dl+2)%4}s"/>`;
@@ -95,7 +105,8 @@ function isoTree(o,p,id){
   const [sx,sy]=P(o.x+.5,o.y+.5);
   let s=shadowAt(sx+2,sy,7,p)+`<rect x="${sx-1.3}" y="${sy-8}" width="2.6" height="8" rx="1" fill="${p.trunk}"/>`;
   let c=`<circle cx="${sx}" cy="${sy-14}" r="7.5" fill="${p.can}"/><circle cx="${sx+2.6}" cy="${sy-11.2}" r="5" fill="${p.canD}"/><circle cx="${sx-2.2}" cy="${sy-16.5}" r="4.2" fill="${p.canL}"/><circle cx="${sx-3.4}" cy="${sy-18}" r="1.8" fill="#3d7464" opacity=".9"/><path d="M${sx-6.5} ${sy-12}a7.5 7.5 0 0 0 13 0" fill="none" stroke="${p.canD}" stroke-width="1.6" opacity=".7"/>`;
-  if(o.fruit) c+=`<circle cx="${sx-3}" cy="${sy-11}" r="1.3" fill="#e2573f"/><circle cx="${sx+3.5}" cy="${sy-15}" r="1.3" fill="#e2573f"/><circle cx="${sx+.5}" cy="${sy-18.5}" r="1.3" fill="#e2573f"/>`;
+  if(WINTER) c+=`<ellipse cx="${sx-1}" cy="${sy-20.2}" rx="4.6" ry="2.2" fill="${SNOW}"/><ellipse cx="${sx-3.6}" cy="${sy-17.6}" rx="2.2" ry="1.3" fill="${SNOW2}"/><ellipse cx="${sx+3.4}" cy="${sy-15.2}" rx="2.4" ry="1.2" fill="${SNOW2}"/>`;
+  if(o.fruit&&!WINTER) c+=`<circle cx="${sx-3}" cy="${sy-11}" r="1.3" fill="#e2573f"/><circle cx="${sx+3.5}" cy="${sy-15}" r="1.3" fill="#e2573f"/><circle cx="${sx+.5}" cy="${sy-18.5}" r="1.3" fill="#e2573f"/>`;
   s+=`<g class="sway" style="transform-origin:${sx}px ${sy}px;animation-delay:-${(H(o.x,o.y)%50)/10}s">${c}</g>`;
   return s;
 }
@@ -103,7 +114,8 @@ function isoPine(o,p){
   const [sx,sy]=P(o.x+.5,o.y+.5);
   let s=shadowAt(sx+2,sy,6,p)+`<rect x="${sx-1.1}" y="${sy-5}" width="2.2" height="5" fill="${p.trunk}"/>`;
   let c='';[[0,11],[6,9],[12,7]].forEach(([dy,w],i)=>{const b=sy-4-dy,t=b-12;
-    c+=poly([[sx-w/2*1.0,b],[sx,b+2.5],[sx,t]],p.pineL)+poly([[sx,b+2.5],[sx+w/2,b],[sx,t]],p.pineD);});
+    c+=poly([[sx-w/2*1.0,b],[sx,b+2.5],[sx,t]],p.pineL)+poly([[sx,b+2.5],[sx+w/2,b],[sx,t]],p.pineD);
+    if(WINTER)c+=poly([[sx-w*.2,t+4.8],[sx,t],[sx+w*.2,t+4.8],[sx,t+5.6]],SNOW)+poly([[sx-w/2+.6,b-.3],[sx-w/4,b-1.6],[sx,b+1.4],[sx,b+2.3]],SNOW2);});
   s+=`<g class="sway" style="transform-origin:${sx}px ${sy}px;animation-delay:-${(H(o.x,o.y)%50)/10}s">${c}</g>`;
   return s;
 }
@@ -122,10 +134,14 @@ function isoFire(o,p,id){
 function isoTent(o,p){
   const x0=o.x+.2,x1=o.x+.85,y0=o.y+.2,y1=o.y+.8,ym=(y0+y1)/2,h=11;
   return shadowAt(...P(o.x+.6,o.y+.6),9,p)+poly([P(x1,y0),P(x1,y1),P(x1,ym,h)],p.canvasD)+poly([P(x1,ym-.13),P(x1,ym+.13),P(x1,ym,6.5)],'#5a4636')
-   +poly([P(x0,y1),P(x1,y1),P(x1,ym,h),P(x0,ym,h)],p.canvas)+`<polyline points="${pts([P(x0,ym,h),P(x1,ym,h)])}" stroke="${p.canvasD}" stroke-width="1.2"/>`;
+   +poly([P(x0,y1),P(x1,y1),P(x1,ym,h),P(x0,ym,h)],p.canvas)+`<polyline points="${pts([P(x0,ym,h),P(x1,ym,h)])}" stroke="${p.canvasD}" stroke-width="1.2"/>`
+   +(WINTER?poly([P(x0,ym+.12,h-2.4),P(x1,ym+.12,h-2.4),P(x1,ym,h+.3),P(x0,ym,h+.3)],SNOW):'');
 }
 function isoFarm(o,p){
   const i=.1;let s=poly([P(o.x+i,o.y+i),P(o.x+1-i,o.y+i),P(o.x+1-i,o.y+1-i),P(o.x+i,o.y+1-i)],p.soil);
+  if(WINTER){s+=poly([P(o.x+i+.03,o.y+i+.03),P(o.x+1-i-.03,o.y+i+.03),P(o.x+1-i-.03,o.y+1-i-.03),P(o.x+i+.03,o.y+1-i-.03)],SNOW2);
+    for(let r=0;r<3;r++){const y=o.y+.25+r*.25;s+=`<line x1="${P(o.x+.18,y)[0]}" y1="${P(o.x+.18,y)[1]}" x2="${P(o.x+.82,y)[0]}" y2="${P(o.x+.82,y)[1]}" stroke="${SNOWD}" stroke-width="1.4" stroke-linecap="round"/>`;}
+    return s;}
   const c=p.crops[o.crop||0];
   for(let r=0;r<3;r++){const y=o.y+.25+r*.25;
     s+=`<line x1="${P(o.x+.18,y)[0]}" y1="${P(o.x+.18,y)[1]}" x2="${P(o.x+.82,y)[0]}" y2="${P(o.x+.82,y)[1]}" stroke="${p.night?'#3b2e23':'#a07a52'}" stroke-width="1.2"/>`;
@@ -191,7 +207,7 @@ function isoGardens(o,p,stage,id){
   const tiers=stage>=4?3:stage-1;
   for(let i=0;i<tiers;i++){
     const ins=.08+.3*i,x0=gx+ins,y0=gy+ins,x1=gx+2-ins,y1=gy+2-ins,z0=i*12,h=12;
-    s+=box(x0,y0,x1,y1,z0,h,p.g1,p.stoneL,p.stoneR);
+    s+=box(x0,y0,x1,y1,z0,h,WINTER?SNOW2:p.g1,p.stoneL,p.stoneR);
     // grass lip
     s+=poly([P(x0,y1,z0+h),P(x1,y1,z0+h),P(x1,y1,z0+h-2.2),P(x0,y1,z0+h-2.2)],p.vine)+poly([P(x1,y0,z0+h),P(x1,y1,z0+h),P(x1,y1,z0+h-2.2),P(x1,y0,z0+h-2.2)],p.canD);
     // vines
@@ -218,7 +234,19 @@ function isoGardens(o,p,stage,id){
   }
   return s;
 }
-const DRAW={house:isoHouse,tree:isoTree,pine:isoPine,fire:isoFire,tent:isoTent,farm:isoFarm,well:isoWell,stall:isoStall,windmill:isoWindmill,tower:isoTower,lantern:isoLantern,flowers:isoFlowers,rock:isoRock};
+function isoXmasTree(o,p,id){
+  const [sx,sy]=P(o.x+.5,o.y+.5);
+  let s=shadowAt(sx+2,sy,9,p)+`<rect x="${sx-1.4}" y="${sy-5}" width="2.8" height="5" fill="${p.trunk}"/>`;
+  [[0,17],[8,13.5],[15,10],[21,6.5]].forEach(([dy,w])=>{const b=sy-3-dy,t=b-13;
+    s+=poly([[sx-w/2,b],[sx,b+3],[sx,t]],'#2d5c47')+poly([[sx,b+3],[sx+w/2,b],[sx,t]],'#1f4434')+poly([[sx-w*.18,t+4.4],[sx,t],[sx+w*.18,t+4.4],[sx,t+5.2]],SNOW);});
+  const orn=[[-5,-8,0],[4,-10,1],[-2,-15,2],[5,-18,3],[-4,-22,1],[2,-26,0],[-1,-31,2],[3,-34,3],[-6,-12,3],[6,-6,2]];
+  orn.forEach(([dx,dy,c],k)=>{s+=`<circle class="bulb" style="animation-delay:-${(k*.31).toFixed(2)}s" cx="${sx+dx}" cy="${sy+dy}" r="1.05" fill="${BULBS[c]}"/>`;});
+  s+=`<path class="star" style="transform-origin:${sx}px ${sy-40}px" d="M${sx} ${sy-44.5}l1.3 2.9 3.1.3-2.4 2.1.7 3.1-2.7-1.6-2.7 1.6.7-3.1-2.4-2.1 3.1-.3z" fill="#ffd977" filter="url(#gw${id})"/>`;
+  s+=`<rect x="${sx+3}" y="${sy-2.6}" width="4" height="3" rx=".5" fill="#c0392b"/><path d="M${sx+5} ${sy-2.6}v3M${sx+3} ${sy-1.1}h4" stroke="#ffd166" stroke-width=".6"/><rect x="${sx-7.5}" y="${sy-2.2}" width="3.6" height="2.6" rx=".5" fill="#2f6fb0"/><path d="M${sx-5.7} ${sy-2.2}v2.6" stroke="#f3efe6" stroke-width=".6"/>`;
+  if(p.night){s=glow(sx,sy-18,34,id,.7)+s;light(sx,sy-6,40,.9);}
+  return s;
+}
+const DRAW={xmas:isoXmasTree,house:isoHouse,tree:isoTree,pine:isoPine,fire:isoFire,tent:isoTent,farm:isoFarm,well:isoWell,stall:isoStall,windmill:isoWindmill,tower:isoTower,lantern:isoLantern,flowers:isoFlowers,rock:isoRock};
 
 function person(sx,sy,c,p,scale=1){
   return `<g transform="translate(${sx.toFixed(1)} ${sy.toFixed(1)}) scale(${scale})"><g class="bob"><ellipse cx="0" cy="0" rx="2.6" ry="1.2" fill="${p.shadow}"/><rect x="-1.6" y="-6.2" width="3.2" height="5.6" rx="1.3" fill="${p.shirts[c]}"/><circle cx="0" cy="-7.8" r="1.8" fill="${p.skin}"/></g></g>`;
@@ -226,7 +254,9 @@ function person(sx,sy,c,p,scale=1){
 
 function isoScene(prog,p,id,opt={}){
   const f=Math.max(0,Math.min(4,prog*4)),stage=Math.floor(f+1e-9),gst=f<.6?0:f<1.5?1:f<2.5?2:f<3.6?3:4;
+  WINTER=!!opt.winter;
   const vis=OBJ.filter(o=>o.th<=f);
+  if(opt.holiday)vis.push({k:'xmas',t:'xmas',x:-2,y:-1,s:0,th:0});
   const forced=new Set();
   vis.forEach(o=>{const w=o.w||1,h=o.h||1;for(let i=-1;i<=w;i++)for(let j=-1;j<=h;j++)forced.add((o.x+i)+','+(o.y+j));});
   if(!opt.live)WALK.filter(w=>w.th<=f).forEach(w=>{[w.f,w.t].forEach(([a,b])=>forced.add(Math.floor(a)+','+Math.floor(b)));});
@@ -256,13 +286,13 @@ function isoScene(prog,p,id,opt={}){
   tiles.forEach(([x,y])=>{
     const sand=!L(x+1,y)||!L(x-1,y)||!L(x,y+1)||!L(x,y-1);
     const path=pathSet.has(x+','+y);
-    const hh=H(x,y),c=path?p.path:sand?p.sand:[p.g1,p.g2,p.g3,p.g1][hh%4];
+    const hh=H(x,y),c=WINTER?(path?'#6b6457':sand?'#9fa6b0':[SNOW,SNOW2,SNOW,'#9fb0b4'][hh%4]):path?p.path:sand?p.sand:[p.g1,p.g2,p.g3,p.g1][hh%4];
     s+=isoTile(x,y,c);
-    if(!sand&&!path&&hh%3===0){const [tx,ty]=P(x+.25+(hh>>4)%50/100,y+.25+(hh>>8)%50/100);s+=`<path d="M${tx.toFixed(1)} ${ty.toFixed(1)}l-1.1 -2.6M${tx.toFixed(1)} ${ty.toFixed(1)}l.1 -3.2M${tx.toFixed(1)} ${ty.toFixed(1)}l1.2 -2.4" stroke="${hh%2?p.tuft:p.tuftD}" stroke-width=".8" stroke-linecap="round"/>`;}
+    if(!WINTER&&!sand&&!path&&hh%3===0){const [tx,ty]=P(x+.25+(hh>>4)%50/100,y+.25+(hh>>8)%50/100);s+=`<path d="M${tx.toFixed(1)} ${ty.toFixed(1)}l-1.1 -2.6M${tx.toFixed(1)} ${ty.toFixed(1)}l.1 -3.2M${tx.toFixed(1)} ${ty.toFixed(1)}l1.2 -2.4" stroke="${hh%2?p.tuft:p.tuftD}" stroke-width=".8" stroke-linecap="round"/>`;}
     if(sand&&hh%4===0){const [tx,ty]=P(x+.3+(hh>>4)%40/100,y+.3+(hh>>8)%40/100);s+=`<ellipse cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" rx="1.4" ry=".8" fill="${p.pebble}"/>`;}
     if(path&&hh%2===0){const [tx,ty]=P(x+.5,y+.5);s+=`<ellipse cx="${(tx-3).toFixed(1)}" cy="${(ty+.5).toFixed(1)}" rx="2.2" ry="1.1" fill="#6d6655"/><ellipse cx="${(tx+3).toFixed(1)}" cy="${(ty-1).toFixed(1)}" rx="1.8" ry=".9" fill="#6d6655"/>`;}
-    if(!L(x+1,y)){s+=poly([P(x+1,y),P(x+1,y+1),P(x+1,y+1,-D),P(x+1,y,-D)],`url(#cr${id})`)+poly([P(x+1,y),P(x+1,y+1),P(x+1,y+1,-3),P(x+1,y,-3)],sand?p.sSideR:p.gSideR);}
-    if(!L(x,y+1)){s+=poly([P(x,y+1),P(x+1,y+1),P(x+1,y+1,-D),P(x,y+1,-D)],`url(#cl${id})`)+poly([P(x,y+1),P(x+1,y+1),P(x+1,y+1,-3),P(x,y+1,-3)],sand?p.sSideL:p.gSideL);}
+    if(!L(x+1,y)){s+=poly([P(x+1,y),P(x+1,y+1),P(x+1,y+1,-D),P(x+1,y,-D)],`url(#cr${id})`)+poly([P(x+1,y),P(x+1,y+1),P(x+1,y+1,-3),P(x+1,y,-3)],WINTER?'#8d99a8':sand?p.sSideR:p.gSideR);}
+    if(!L(x,y+1)){s+=poly([P(x,y+1),P(x+1,y+1),P(x+1,y+1,-D),P(x,y+1,-D)],`url(#cl${id})`)+poly([P(x,y+1),P(x+1,y+1),P(x+1,y+1,-3),P(x,y+1,-3)],WINTER?'#a5b0be':sand?p.sSideL:p.gSideL);}
   });
   // objects + walkers in depth order
   const items=[];
