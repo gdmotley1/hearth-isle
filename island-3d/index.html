@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Motley Island 3D</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--gold:#f4bd63;--ink:#eef2f8;--sub:#9aa8c0}
+  html,body{margin:0;height:100%;background:#070d18;overflow:hidden;font-family:Inter,system-ui,sans-serif;color:var(--ink);-webkit-user-select:none;user-select:none}
+  canvas{display:block;touch-action:none}
+  .ttl{position:fixed;top:calc(env(safe-area-inset-top) + 18px);left:20px;right:20px;pointer-events:none}
+  .over{font:600 11px/1.4 Inter;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+  h1{margin:4px 0 0;font:400 34px/1.1 Fraunces,serif;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.5)}
+  .hint{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 22px);transform:translateX(-50%);padding:10px 16px;border-radius:999px;
+    background:rgba(16,25,42,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);font:500 13px Inter;color:var(--sub);white-space:nowrap;transition:opacity .6s}
+  .bubble{position:fixed;max-width:240px;padding:12px 14px;border-radius:16px;background:rgba(16,25,42,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    font:500 13px/1.4 Inter;color:var(--ink);pointer-events:none;transform:translate(-50%,calc(-100% - 14px));opacity:0;transition:opacity .25s}
+  .bubble b{display:block;font:500 17px Fraunces,serif;margin-bottom:2px}.bubble.on{opacity:1}
+  .load{position:fixed;inset:0;display:grid;place-items:center;font:500 14px Inter;color:var(--sub);transition:opacity .8s}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head><body>
+<div class="load" id="load">Raising the island…</div>
+<div class="ttl"><div class="over">Season one · 3D prototype</div><h1>Motley Island</h1></div>
+<div class="bubble" id="bubble"></div>
+<div class="hint" id="hint">Drag to turn · pinch to zoom · tap a settler</div>
+<script type="module" src="island3d.js"></script>
+</body></html>
