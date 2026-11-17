@@ -567,6 +567,7 @@ function vIsle(){
         <span class="tile r-gold">${ic(u.next.t.startsWith('g') ? 'harvest' : 'house')}</span>
         <span class="tx"><span class="over gold">Next on the island</span><span class="hl">${BUILD_T[u.next.t]}</span>
         <span class="cap">${plural(u.need, 'point')} away · ${Store.settlers()} settlers</span><span class="meter">${twBar('next', u.pct)}</span></span></button>` : ''}
+      ${showCodeCard() ? `<div class="callout savecode" id="savecode">${ic('upload')}<span><b>Your island backs up online.</b> Save your backup code to Notes once, so a new phone can bring everything back.<span class="sc-btns"><button class="btn small" type="button" id="scsave">Save to Notes</button><button class="linkbtn" type="button" id="sclater">Later</button></span></span></div>` : ''}
       ${menu && menu.heads ? `<div class="callout">${ic('info')}<span>${esc(menu.heads)}</span></div>` : ''}
       ${d === 'sun' ? `<a class="callout tap" href="#prep/sun/${nextW() || mealWeek()}">${ic('calendar')}<span>Prep day. Shop the Market list, then open Sunday prep.</span></a>` : ''}
       <div class="week" aria-label="This week">${weekHTML}</div>
@@ -587,6 +588,8 @@ function vIsle(){
   world.insertAdjacentHTML('beforeend', `<button class="camreset" type="button" aria-label="Show the whole island">${ic('isle')}Whole island</button>`);
   $('.camreset', world).addEventListener('click', e => { e.stopPropagation(); haptic(); closeBubble(); resetCam(); });
   const nu = $('#nextup'); if (nu) nu.onclick = islandSheet;
+  const scs = $('#scsave'); if (scs) scs.onclick = () => saveCode();
+  const scl = $('#sclater'); if (scl) scl.onclick = () => { codeLater = true; haptic(); const c = $('#savecode'); c.animate([{opacity:1}, {opacity:0, transform:'scale(.97)'}], {duration:220}); setTimeout(() => c.remove(), 230); };
   wireTicks();
   const c = $('[data-cta]'); if (c) c.onclick = () => toggleTask(c.dataset.cta, $(`.tick[data-task="${c.dataset.cta}"]`));
   $('#extra').onclick = openExtra;
@@ -1200,12 +1203,28 @@ function ago(iso){
   const s = Math.max(0, (Date.now() - Date.parse(iso)) / 1000);
   return s < 60 ? 'just now' : s < 3600 ? `${Math.round(s / 60)} min ago` : s < 86400 ? `${Math.round(s / 3600)} hr ago` : new Date(iso).toLocaleDateString(undefined, {month:'short', day:'numeric'});
 }
+let codeLater = false;
+function showCodeCard(){ const i = Cloud.info(); return i.on && i.code && i.last && !prefs.codeSaved && !codeLater; }
+/* Hand the code to the iPhone share sheet (pick Notes); fall back to copying it. */
+async function saveCode(){
+  const code = Cloud.info().code; if (!code) return;
+  const text = `Hearth Isle backup code: ${code}\n\nOn a new phone, open Hearth Isle, tap "Restore your island" and paste this code.`;
+  haptic();
+  const done = msg => { setPref('codeSaved', true); toast(msg); const c = $('#savecode'); if (c) c.animate([{opacity:1}, {opacity:0, transform:'scale(.97)'}], {duration:220}); setTimeout(() => c.remove(), 230); };
+  if (navigator.share){
+    try { await navigator.share({title:'Hearth Isle backup code', text}); done('Saved. You never need to do that again.'); }
+    catch(e){ if (e && e.name !== 'AbortError') { try { await navigator.clipboard.writeText(text); done('Copied. Paste it into Notes.'); } catch(err) {} } }
+    return;
+  }
+  try { await navigator.clipboard.writeText(text); done('Copied. Paste it into Notes.'); } catch(e) { codeSheet(); }
+}
 function codeSheet(){
   const code = Cloud.info().code;
   const sh = sheet(`<div class="grab"></div><div><div class="over gold">Cloud backup</div><h2 class="t2" style="margin-top:8px">Your backup code</h2></div>
     <div class="bcode num">${esc(code)}</div>
-    <button class="btn wide" type="button" id="ccopy">${ic('check')}Copy code</button>
+    <div class="btns"><button class="btn quiet" type="button" id="ccopy">Copy</button><button class="btn" type="button" id="cshare">${ic('upload')}Save to Notes</button></div>
     <p class="fine">Paste it into your Notes app or password manager. On a new phone, open Hearth Isle and choose Restore from a backup code.</p>`);
+  $('#cshare', sh).onclick = () => saveCode();
   $('#ccopy', sh).onclick = async () => {
     haptic();
     try { await navigator.clipboard.writeText(code); toast('Code copied.'); } catch(e) { toast('Select the code and copy it.'); }
@@ -1359,6 +1378,7 @@ async function boot(){
   route();
   onboarding();
   Cloud.start();
+  Cloud.onChange(i => { if (i.status === 'ok' && showCodeCard() && /^#?(isle)?$/.test(location.hash.replace('#', '')) && !$('#savecode')) rerender(); });
   const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !local){
     // When an update installs, swap to it right away, unless a workout or cook mode is open.
