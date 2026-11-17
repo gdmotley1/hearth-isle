@@ -7,6 +7,8 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 const app = $('#app'), view = $('#view'), nav = $('#nav'), layer = $('#layer');
 const bar = document.createElement('div'); bar.className = 'bar'; app.appendChild(bar);
 const dock = document.createElement('div'); dock.className = 'dock'; app.appendChild(dock);
+// A screen with its own bottom button tucks the tab bar away so the two never overlap.
+new MutationObserver(() => app.classList.toggle('docked', !!dock.innerHTML.trim())).observe(dock, {childList:true, subtree:true});
 
 const DAYS = ['mon','tue','wed','thu','fri','sat','sun'];
 const DAYN = {mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Friday',sat:'Saturday',sun:'Sunday'};
@@ -109,8 +111,9 @@ function tasksFor(date){
   const d = dayKey(date), ds = Store.ymd(date), out = planItems(d), wn = mealWeekOf(date), D = MW[wn] || M, menu = D.menu[d];
   if (menu) Object.keys(SLOT).forEach(slot => { const t = mealTask(ds, slot, menu, D, wn); if (t) out.push(t); });
   out.push({key:'sleep', type:'sleep', icon:'sleep', label:'Slept 7+ hours', meta:'Last night'});
-  const times = (W.routine && W.routine.times[d]) || {};
-  return out.map(t => { Object.assign(t, Store.PTS[t.type], {at:times[t.key] || '23:59', done:Store.isDone(ds, t.key), optional:t.optional || weekend(d)}); if (t.fixedPts != null) t.pts = t.fixedPts; return t; })
+  if (weekend(d)) out.push({key:'plan', type:'plan', icon:'calendar', label:"Plan next week's meals", meta:'Swap recipes and the grocery list follows', go:'#plan', planTask:true});
+  const times = Object.assign({plan:'10:00'}, (W.routine && W.routine.times[d]) || {});
+  return out.map(t => { Object.assign(t, Store.PTS[t.type], {at:times[t.key] || '23:59', done:t.planTask ? !!planDoneThisWeek() : Store.isDone(ds, t.key), optional:t.optional || weekend(d)}); if (t.fixedPts != null) t.pts = t.fixedPts; return t; })
     .sort((a, b) => a.at.localeCompare(b.at));
 }
 /* '17:30' -> '5:30 PM' */
@@ -280,6 +283,8 @@ function wireTicks(date = today()){
 }
 function toggleTask(key, btn, date = today()){
   const ds = Store.ymd(date), t = tasksFor(date).find(x => x.key === key); if (!t) return;
+  // planning is earned in the planner: the checkbox opens it, or undoes this weekend's plan
+  if (t.planTask){ const e = planDoneThisWeek(); if (e){ Store.undo(e.date, 'plan'); haptic(); setTimeout(rerender, 200); } else location.hash = '#plan'; return; }
   const before = Store.totals().all, dp0 = dayProgress(date);
   const rowEl = btn && btn.closest('.row');
   if (t.done){ Store.undo(ds, key); const sw = Store.getSwap(ds, key); if (sw && sw.type !== 'recipe') Store.setSwap(ds, key, null); if (rowEl) rowEl.classList.remove('done'); haptic(); }
@@ -702,6 +707,15 @@ async function mealSheet(date, slot){
   const ap = $('#aplan', sh); if (ap) ap.onclick = () => { if (sw.type !== 'recipe') Store.undo(ds, slot); Store.setSwap(ds, slot, null); closeLayer(); haptic(); toast('Back to the plan.'); setTimeout(rerender, 300); };
   await loadAllWeeks();
   if (!sh.isConnected) return;
+  mountRecipePicker(sh, {slot, wn, plannedId, D, onPick:(n, id, r) => {
+    if (sw && sw.type !== 'recipe') Store.undo(ds, slot);
+    Store.setSwap(ds, slot, {type:'recipe', id, wk:n, name:r.name, minutes:r.minutes});
+    closeLayer(); haptic(); toast(`Swapped in ${r.name}.`); setTimeout(rerender, 300);
+  }});
+}
+/* A searchable list of every recipe from every week: fits-the-meal first, then favorites, this week, earlier weeks.
+   Recipes from other weeks list the groceries you would still need. */
+function mountRecipePicker(sh, {slot, wn, plannedId, D, onPick}){
   const have = new Set([...D.groceries.map(g => g.name.toLowerCase()), ...(D.have || []).map(h => h.name.toLowerCase())]);
   const all = [];
   MEAL_WEEKS.forEach(n => { const W2 = MW[n]; if (!W2) return; Object.entries(W2.recipes).forEach(([id, r]) => { if (r.component || r.cuisine === 'Snack' || (n === wn && id === plannedId)) return;
@@ -716,12 +730,7 @@ async function mealSheet(date, slot){
     const fav = list.filter(x => x.fav), wk = list.filter(x => !x.fav && x.n === wn && (q || fits(x))), rest = list.filter(x => !x.fav && x.n !== wn && (q || fits(x))), other = q ? [] : list.filter(x => !x.fav && !fits(x));
     const grp = (t, a) => a.length ? `<div class="sect-h" style="margin-top:6px"><span class="over">${t}</span></div><div class="group">${a.slice(0, q ? 40 : 30).map(rowH).join('')}</div>` : '';
     $('#rlist', sh).innerHTML = (grp('Favorites', fav) + grp('This week', wk) + grp('Earlier weeks', rest) + grp(slot === 'breakfast' ? 'Lunch and dinner recipes' : 'Breakfast recipes', other)) || '<p class="fine">No recipes match.</p>';
-    $$('[data-pick]', sh).forEach(b => b.onclick = () => {
-      const [n, id] = b.dataset.pick.split(':'), r = MW[+n].recipes[id];
-      if (sw && sw.type !== 'recipe') Store.undo(ds, slot);
-      Store.setSwap(ds, slot, {type:'recipe', id, wk:+n, name:r.name, minutes:r.minutes});
-      closeLayer(); haptic(); toast(`Swapped in ${r.name}.`); setTimeout(rerender, 300);
-    });
+    $$('[data-pick]', sh).forEach(b => b.onclick = () => { const [n, id] = b.dataset.pick.split(':'); onPick(+n, id, MW[+n].recipes[id]); });
   };
   $('#rq', sh).addEventListener('input', paint); paint();
 }
@@ -764,6 +773,108 @@ function homeSheet(date, slot){
     <p class="fine">Home cooking earns the full ${Store.PTS[slot].pts} Harvest.</p>
     <button class="btn wide" type="button" id="hlog">Log it · +${Store.PTS[slot].pts} Harvest</button>`);
   $('#hlog', sh).onclick = () => { const nm = $('#hq', sh).value.trim() || 'Something homemade'; logMeal(ds, slot, nm, Store.PTS[slot].pts, {type:'home', name:nm}); };
+}
+
+/* ---------------- weekly planner ----------------
+   A calendar week's plan is its meal file plus any recipe swaps on its dates. The grocery list is rebuilt
+   from the recipes actually chosen: added recipes bring their groceries, items only dropped meals needed
+   fall off, building blocks nothing uses anymore fall off, and anything already at home is not bought again. */
+const nextMonday = () => { const m = Store.parse(Store.mondayOf(today())); m.setDate(m.getDate() + 7); return m; };
+const monOfShown = wk => wk === mealWeek() ? Store.parse(Store.mondayOf(today())) : nextMonday();
+function weekRefs(mon){
+  const wn = mealWeekOf(mon), D = MW[wn] || M, refs = [];
+  DAYS.slice(0, 5).forEach((dk, i) => {
+    const menu = D.menu[dk]; if (!menu) return;
+    const d = new Date(mon); d.setDate(mon.getDate() + i); const ds = Store.ymd(d);
+    Object.keys(SLOT).forEach(slot => { const sw = Store.getSwap(ds, slot);
+      if (sw && sw.type === 'recipe') refs.push({wk:sw.wk, id:sw.id, swapped:true});
+      else refs.push({wk:wn, id:menu[slot]}); });
+  });
+  return {wn, D, refs};
+}
+function plannedGroceries(mon){
+  const {wn, D, refs} = weekRefs(mon);
+  const ready = refs.every(x => MW[x.wk]);
+  if (!ready || !refs.some(x => x.swapped)) return {wn, D, list:D.groceries.map(g => Object.assign({uid:g.id, from:wn}, g)), added:[], dropped:[], swaps:0, ready};
+  const seen = new Set(), need = [];
+  // A swapped-in recipe that leans on its own week's building block uses this week's equivalent when there is one
+  // (roasted vegetables, rice, a yogurt sauce), so the list does not grow a second tray of vegetables.
+  const KIND = [['roast', 'vegetable', 'roots', 'tray'], ['rice'], ['yogurt', 'feta', 'ranch', 'tzatziki', 'crema'], ['marinara'], ['pickled']];
+  const kindOf = name => KIND.findIndex(ws => ws.some(w => name.toLowerCase().includes(w)));
+  const local = {}; Object.entries(D.recipes).forEach(([id, r]) => { if (r.component){ const k = kindOf(r.name); if (k >= 0 && !(k in local)) local[k] = id; } });
+  const visit = (wk, id) => { const k = wk + ':' + id; if (seen.has(k)) return; seen.add(k); const r = MW[wk] && MW[wk].recipes[id]; if (!r) return; need.push({wk, id, r});
+    (r.ingredients || []).forEach(i => { if (!i.r) return; const sub = MW[wk].recipes[i.r]; const kd = wk !== wn && sub && sub.component ? kindOf(sub.name) : -1; if (kd >= 0 && local[kd]) visit(wn, local[kd]); else visit(wk, i.r); }); };
+  refs.forEach(x => visit(x.wk, x.id));
+  const inRecipes = new Set(); Object.values(D.recipes).forEach(r => (r.ingredients || []).forEach(i => i.g && inRecipes.add(i.g)));
+  const used = new Set(); need.filter(x => x.wk === wn).forEach(x => x.r.ingredients.forEach(i => i.g && used.add(i.g)));
+  const haveN = new Set((D.have || []).map(h => h.name.toLowerCase())), byName = new Map();
+  // keep this week's items still needed, plus snack items no recipe uses
+  D.groceries.forEach(g => { if (used.has(g.id) || !inRecipes.has(g.id)) byName.set(g.name.toLowerCase(), Object.assign({uid:g.id, from:wn}, g)); });
+  // add what swapped-in recipes from other weeks need
+  need.filter(x => x.wk !== wn).forEach(x => x.r.ingredients.forEach(i => { if (!i.g) return; const g = MW[x.wk].groceries.find(y => y.id === i.g); if (!g) return;
+    const k = g.name.toLowerCase(); if (byName.has(k) || haveN.has(k)) return; byName.set(k, Object.assign({}, g, {uid:`${x.wk}~${g.id}`, from:x.wk, forRecipe:x.r.name})); }));
+  const list = [...byName.values()];
+  return {wn, D, list, added:list.filter(g => g.from !== wn), dropped:D.groceries.filter(g => !byName.has(g.name.toLowerCase())), swaps:refs.filter(x => x.swapped).length, ready};
+}
+function planDoneThisWeek(){
+  const mon = Store.ymd(Store.parse(Store.mondayOf(today()))), sunD = Store.parse(mon); sunD.setDate(sunD.getDate() + 6); const sun = Store.ymd(sunD);
+  return Store.state.log.find(e => e.key === 'plan' && e.date >= mon && e.date <= sun) || null;
+}
+function lockPlan(){
+  if (planDoneThisWeek()) return;
+  const before = Store.totals().all, ds = Store.ymd(today());
+  Store.complete(ds, 'plan', "Planned next week's meals", 'plan');
+  haptic(); reward('harvest', Store.PTS.plan.pts, "Planned next week's meals", () => { Store.undo(ds, 'plan'); toast('Undone.'); rerender(); }); celebrate(before);
+}
+async function vPlan(){
+  const mon = nextMonday(), wnPre = mealWeekOf(mon);
+  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">Weekly planner</span><h1 class="lt">Plan next week</h1></header><div class="page"><p class="fine">Loading every recipe…</p></div>`;
+  scrollAt = 90; setBar('Plan next week', true); wireBack();
+  await loadAllWeeks();
+  if (location.hash !== '#plan') return;
+  const G = plannedGroceries(mon), D = G.D, wn = G.wn, total = G.list.reduce((a, g) => a + g.price, 0), done = planDoneThisWeek();
+  const fromDate = mon.toLocaleDateString(undefined, {month:'short', day:'numeric'}), fri = new Date(mon); fri.setDate(mon.getDate() + 4);
+  const blocks = Object.entries(D.recipes).filter(([, r]) => r.component), refs = weekRefs(mon).refs;
+  const usesBlock = id => { const seen = new Set(), stack = refs.filter(x => x.wk === wn).map(x => x.id); while (stack.length){ const k = stack.pop(); if (seen.has(k)) continue; seen.add(k); (D.recipes[k] && D.recipes[k].ingredients || []).forEach(i => i.r && stack.push(i.r)); } return seen.has(id); };
+  const unused = blocks.filter(([id]) => !usesBlock(id)).map(([, r]) => r.name);
+  const days = DAYS.slice(0, 5).map((dk, i) => {
+    const d = new Date(mon); d.setDate(mon.getDate() + i); const ds = Store.ymd(d), menu = D.menu[dk];
+    if (!menu) return '';
+    return `<section class="sect"><div class="sect-h"><span class="over">${DAYN[dk]} · ${d.toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>${menu.shared ? `<span class="cap">${SLOT[menu.shared].toLowerCase()} for two</span>` : ''}</div><div class="group">${Object.keys(SLOT).map(slot => {
+      const t = mealTask(ds, slot, menu, D, wn); if (!t) return '';
+      const r = t.recipe && (MW[(Store.getSwap(ds, slot) || {}).wk || wn] || D).recipes[t.recipe];
+      return `<div class="row${t.swapped ? ' swapped' : ''}"><span class="tile ctile c-${r ? r.cuisine : 'Prep'}">${ic(r ? r.cuisine : t.icon)}</span><span class="tx"><b>${esc(t.label)}</b><small>${SLOT[slot]}${t.swapped ? ' · swapped in' : ''}${r ? ` · ${r.minutes} min · ${r.protein}g protein` : ''}</small></span>
+        <button class="btn quiet small" type="button" data-plan="${ds}|${slot}|${dk}">Swap</button></div>`; }).join('')}</div></section>`;
+  }).join('');
+  view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">Weekly planner · ${esc(D.title)}</span><h1 class="lt">Plan next week</h1>
+    <span class="cap" style="font-size:14px;margin-top:4px">${fromDate} to ${fri.toLocaleDateString(undefined, {month:'short', day:'numeric'})}. Swap anything, and the grocery list follows.</span></header>
+    <div class="page stagger" style="margin-top:22px">
+      <a class="card planbudget tap" href="#market" id="pmkt"><div class="big"><b class="num">${money(total)}</b><span class="cap">${G.list.length} items · ${money(D.budget - total)} under budget</span></div>
+        ${G.swaps ? `<span class="cap">${plural(G.swaps, 'swap')} · ${G.added.length ? `+${G.added.length} added` : 'nothing added'} · ${G.dropped.length ? `${G.dropped.length} dropped` : 'nothing dropped'}</span>` : `<span class="cap">The suggested plan, as written</span>`}
+        <span class="over gold">Open the grocery list ${ic('chev')}</span></a>
+      ${unused.length ? `<div class="callout">${ic('info')}<span>Nothing uses ${listify(unused.map(x => x.toLowerCase()))} anymore, so skip ${unused.length === 1 ? 'that' : 'those'} on Sunday. Its groceries are off the list.</span></div>` : ''}
+      ${days}
+      ${G.swaps ? `<button class="btn quiet wide" type="button" id="preset">Reset to the suggested plan</button>` : ''}
+      <div style="height:84px"></div>
+    </div>`;
+  scrollAt = 90; setBar('Plan next week', true); wireBack();
+  dock.innerHTML = done ? `<div class="btn wide planned">${ic('check')}Planned · +${done.pts} Harvest earned. Changes still update the list.</div>` : `<button class="btn wide" type="button" id="plock">${ic('check')}Lock in my plan · +${Store.PTS.plan.pts} Harvest</button>`;
+  const lk = $('#plock'); if (lk) lk.onclick = () => { lockPlan(); setTimeout(() => location.hash = '#isle', 500); };
+  $('#pmkt').onclick = () => { shopWeek = wn; };
+  const rs = $('#preset'); if (rs) rs.onclick = () => { DAYS.slice(0, 5).forEach((dk, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); Object.keys(SLOT).forEach(slot => { const sw = Store.getSwap(Store.ymd(d), slot); if (sw && sw.type === 'recipe') Store.setSwap(Store.ymd(d), slot, null); }); }); haptic(); toast('Back to the suggested plan.'); rerender(); };
+  $$('[data-plan]', view).forEach(b => b.onclick = () => {
+    const [ds, slot, dk] = b.dataset.plan.split('|'), menu = D.menu[dk], plannedId = menu[slot], sw = Store.getSwap(ds, slot);
+    haptic();
+    const sh = sheet(`<div class="grab"></div><div><div class="over gold">${SLOT[slot]} · ${DAYN[dk]}</div><h2 class="t2" style="margin-top:8px">Pick a recipe</h2></div>
+      ${sw ? `<button class="btn quiet wide" type="button" id="pback">Use the suggested: ${esc(D.recipes[plannedId].name)}</button>` : ''}
+      <label class="field"><input id="rq" type="search" placeholder="Search every recipe" autocomplete="off"></label><div id="rlist"></div>`);
+    sh.classList.add('swapsheet');
+    const pb = $('#pback', sh); if (pb) pb.onclick = () => { Store.setSwap(ds, slot, null); closeLayer(); haptic(); setTimeout(rerender, 280); };
+    mountRecipePicker(sh, {slot, wn, plannedId, D, onPick:(n, id, r) => {
+      Store.setSwap(ds, slot, n === wn && id === plannedId ? null : {type:'recipe', id, wk:n, name:r.name, minutes:r.minutes});
+      closeLayer(); haptic(); toast(`${r.name} on ${DAYN[dk]}.`); setTimeout(rerender, 280);
+    }});
+  });
 }
 
 /* ---------------- day preview (tap a day in the week strip) ---------------- */
@@ -1064,27 +1175,29 @@ function findRecipe(id, n){
 /* ---------------- Market ---------------- */
 function vMarket(){
   const wk = planWeek(), D = wkOf(wk), pre = `w${wk}:`;
-  const total = D.groceries.reduce((a, g) => a + g.price, 0);
-  const got = D.groceries.filter(g => Store.flag('grocery', pre + g.id));
+  const P = plannedGroceries(monOfShown(wk)), G = P.list;
+  if (!P.ready) loadAllWeeks().then(() => { if (location.hash === '#market') rerender(); });
+  const total = G.reduce((a, g) => a + g.price, 0);
+  const got = G.filter(g => Store.flag('grocery', pre + g.uid));
   // Aldi walk order: produce at the door, shelf aisles, dairy and meat along the back, frozen by the registers.
   const order = ['Produce','Shelf','Dairy and eggs','Meat','Frozen'];
-  const publix = D.groceries.filter(g => g.store === 'Publix').length;
-  const show = g => { const on = Store.flag('grocery', pre + g.id); return mkFilter === 'all' || (mkFilter === 'need' ? !on : on); };
+  const publix = G.filter(g => g.store === 'Publix').length;
+  const show = g => { const on = Store.flag('grocery', pre + g.uid); return mkFilter === 'all' || (mkFilter === 'need' ? !on : on); };
   const ahead = wk !== mealWeek();
   view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)} · Aldi${publix ? ' + Publix' : ''}</span><h1 class="lt">Market</h1></header>
   <div class="page stagger" style="margin-top:20px">
     ${weekSwitch(wk)}
-    ${ahead ? `<div class="callout">${ic('calendar')}<span>This is next week's list. Shop it this weekend so Sunday prep is ready.</span></div>` : ''}
+    ${ahead ? `<a class="callout tap" href="#plan">${ic('calendar')}<span>This is next week's list. ${P.swaps ? `It follows your plan: ${plural(P.swaps, 'swap')}, ${P.added.length} added, ${P.dropped.length} dropped.` : 'Want different meals? Plan next week and the list updates.'}</span></a>` : P.swaps ? `<div class="callout">${ic('swap')}<span>Updated for your swaps: ${P.added.length} added, ${P.dropped.length} dropped.</span></div>` : ''}
     <section class="card budget"><div class="big"><b>${money(total)}</b><span class="cap">${money(D.budget - total)} under your ${money(D.budget)} budget</span></div>
-      <div class="bar2">${twBar('cart' + wk, got.length / D.groceries.length * 100)}</div>
-      <span class="cap">${got.length} of ${D.groceries.length} in the cart · ${money(got.reduce((a, g) => a + g.price, 0))}</span></section>
+      <div class="bar2">${twBar('cart' + wk, got.length / Math.max(1, G.length) * 100)}</div>
+      <span class="cap">${got.length} of ${G.length} in the cart · ${money(got.reduce((a, g) => a + g.price, 0))}</span></section>
     <div class="seg" role="tablist" data-filter>${[['all','All'],['need','To buy'],['got','In cart']].map(([k, l]) => `<button type="button" role="tab" data-f="${k}" class="${mkFilter === k ? 'on' : ''}">${l}</button>`).join('')}</div>
-    ${[...order.map(sec => [sec, D.groceries.filter(g => g.section === sec && g.store !== 'Publix')]), ['Publix stop', D.groceries.filter(g => g.store === 'Publix')]].map(([sec, all]) => { const items = all.filter(show); if (!items.length) return '';
+    ${[...order.map(sec => [sec, G.filter(g => g.section === sec && g.store !== 'Publix')]), ['Publix stop', G.filter(g => g.store === 'Publix')]].map(([sec, all]) => { const items = all.filter(show); if (!items.length) return '';
       return `<section class="sect"><div class="sect-h"><span class="over">${sec}</span><span class="cap">${money(items.reduce((a, g) => a + g.price, 0))}</span></div><div class="group">${items.map(g => {
-        const on = Store.flag('grocery', pre + g.id);
-        return `<div class="row item sw${on ? ' done' : ''}" data-g="${g.id}" role="button" aria-pressed="${on}"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b>${esc(g.name)}</b><small>${esc(g.qty)}</small></span><span class="trail">${money(g.price)}</span></div>`; }).join('')}</div></section>`; }).join('')}
+        const on = Store.flag('grocery', pre + g.uid);
+        return `<div class="row item sw${on ? ' done' : ''}" data-g="${g.uid}" role="button" aria-pressed="${on}"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b>${esc(g.name)}</b><small>${esc(g.qty)}${g.forRecipe ? ` · for ${esc(g.forRecipe)}` : ''}</small></span><span class="trail">${money(g.price)}</span></div>`; }).join('')}</div></section>`; }).join('')}
     ${mkFilter === 'got' && !got.length ? `<p class="fine" style="text-align:center;padding:24px 0">Nothing in the cart yet. Tap items as they go in.</p>` : ''}
-    ${mkFilter === 'need' && got.length === D.groceries.length ? `<div class="callout">${ic('check')}<span>Everything is in the cart. Nice work.</span></div>` : ''}
+    ${mkFilter === 'need' && got.length === G.length ? `<div class="callout">${ic('check')}<span>Everything is in the cart. Nice work.</span></div>` : ''}
     ${D.have && D.have.length ? `<section class="sect"><div class="sect-h"><span class="over">Already home from last week</span><span class="cap">not bought again</span></div><div class="group">${D.have.map(h => `<div class="row" style="min-height:54px"><span class="tile r-land">${ic('check')}</span><span class="tx"><b>${esc(h.name)}</b>${h.note ? `<small>${esc(h.note)}</small>` : ''}</span></div>`).join('')}</div></section>` : ''}
     <details class="pantry sect"><summary class="sect-h"><span class="over">Spices and oils</span><span class="cap">${D.pantry.length} items · not counted ›</span></summary><div class="pchips">${D.pantry.map(p => `<span>${esc(p.name)}</span>`).join('')}</div></details>
     <p class="fine">${esc(D.priceNote)}</p>
@@ -1123,14 +1236,18 @@ function vKitchen(){
     ${ahead ? '' : `<section class="sect"><div class="sect-h"><span class="over">${tmenu ? 'Today' : 'This weekend'}</span></div>
       ${tmenu ? `<div class="rail">${Object.keys(SLOT).map(s => mealCard(D, wk, s, tmenu[s], tmenu.shared === s)).join('')}</div>`
         : `<div class="card"><h2 class="t3">Festival days</h2><p class="cap" style="margin:8px 0 0">${esc(D.weekendNote)}</p></div>`}</section>`}
+    <a class="harvest tap" href="#plan"><span class="over gold">${weekend(td) ? 'This weekend' : 'Weekly planner'}</span><span class="hl">Plan next week</span><span class="cap">Swap in any recipe and the grocery list follows${weekend(td) && !planDoneThisWeek() ? ` · +${Store.PTS.plan.pts} Harvest` : ''}</span>${ic('chev', 'i chev')}</a>
     ${blocksHTML(D, wk)}
     <section class="sect"><div class="sect-h"><span class="over">Prep sessions</span></div><div class="group">${D.prep.map(p => {
       const n = p.steps.filter((_, i) => Store.flag('prep', `w${wk}:${p.id}:${i}`)).length;
       return `<a class="row tap full" href="#prep/${p.id}/${wk}"><span class="tile r-harvest">${ic('calendar')}</span><span class="tx"><b>${esc(p.title)}</b><small>${p.minutes} min · ${n ? `${n} of ${p.steps.length} steps done` : esc(p.makes)}</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}</div></section>
     <section class="sect"><div class="sect-h"><span class="over">The week</span></div>
       <div class="days">${DAYS.map(d => `<button type="button" data-d="${d}" class="${d === kitchenDay ? 'on' : ''}${d === td && !ahead ? ' today' : ''}">${DAYN[d].slice(0, 3).toUpperCase()}<b>${DAYN[d][0]}</b><i>${D.menu[d] ? '<u class="land"></u>' : ''}</i></button>`).join('')}</div>
-      ${menu ? `<div class="group">${Object.keys(SLOT).map(s => { const r = D.recipes[menu[s]];
-          return `<a class="row tap" href="#recipe/${menu[s]}/${wk}"><span class="tile ctile c-${r.cuisine}">${ic(r.cuisine)}</span><span class="tx"><b>${esc(r.name)}</b><small>${SLOT[s]}${menu.shared === s ? ' · for two' : ''} · ${r.minutes} min · ${r.protein}g protein</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}
+      ${menu ? `<div class="group">${Object.keys(SLOT).map(s => { const kd = new Date(monOfShown(wk)); kd.setDate(kd.getDate() + DAYS.indexOf(kitchenDay));
+          const t = mealTask(Store.ymd(kd), s, menu, D, wk), sw = Store.getSwap(Store.ymd(kd), s), r = t && t.recipe ? ((sw && sw.type === 'recipe' ? MW[sw.wk] : D) || D).recipes[t.recipe] : null;
+          if (!t) return '';
+          if (!r) return `<div class="row"><span class="tile">${ic(t.icon)}</span><span class="tx"><b>${esc(t.label)}</b><small>${esc(t.meta)}</small></span></div>`;
+          return `<a class="row tap" href="${t.go}"><span class="tile ctile c-${r.cuisine}">${ic(r.cuisine)}</span><span class="tx"><b>${esc(r.name)}</b><small>${SLOT[s]}${t.swapped ? ' · swapped in' : menu.shared === s ? ' · for two' : ''} · ${r.minutes} min · ${r.protein}g protein</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}
         <div class="row full"><span class="tile ctile c-Snack">${ic('Snack')}</span><span class="tx"><b>Snacks</b><small style="white-space:normal">${D.snacks.map(esc).join(' · ')}</small></span></div></div>`
         : `<p class="fine">${esc(D.weekendNote)}</p>`}</section>
     <section class="sect"><div class="sect-h"><span class="over">Recipe library</span></div>
@@ -1560,8 +1677,8 @@ function onboarding(){
 /* ---------------- router ---------------- */
 const TABS = [['isle','Isle'],['train','Train'],['market','Market'],['kitchen','Kitchen']];
 nav.innerHTML = TABS.map(([k, l]) => `<a href="#${k}" data-tab="${k}" aria-label="${l}">${ic(k)}<span>${l}</span></a>`).join('');
-const TAB_OF = {session:'train', play:'train', recipe:'kitchen', cook:'kitchen', prep:'kitchen', settings:'isle', chronicle:'isle'};
-const DETAIL = new Set(['session','recipe','prep','settings','chronicle']);
+const TAB_OF = {session:'train', play:'train', recipe:'kitchen', cook:'kitchen', prep:'kitchen', settings:'isle', chronicle:'isle', plan:'kitchen'};
+const DETAIL = new Set(['session','recipe','prep','settings','chronicle','plan']);
 let lastName = null, lastTab = null, quiet = false;
 const stack = [];
 function route(keep){
@@ -1585,7 +1702,7 @@ function route(keep){
   if (name !== 'isle'){ cam.s = 1; cam.cx = 0; cam.cy = 0; }
   dock.innerHTML = ''; layer.innerHTML = '';
   view.style.transform = '';
-  ({isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg, arg2), cook:() => vCook(arg, arg2), prep:() => vPrep(arg, arg2), settings:vSettings, chronicle:vChronicle}[name] || vIsle)();
+  ({isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg, arg2), cook:() => vCook(arg, arg2), prep:() => vPrep(arg, arg2), settings:vSettings, chronicle:vChronicle, plan:vPlan}[name] || vIsle)();
   if (!keep){
     view.scrollTop = 0; app.classList.remove('scrolled');
     const first = view.firstElementChild;

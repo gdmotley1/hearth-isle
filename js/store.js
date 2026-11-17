@@ -13,7 +13,8 @@ const PTS = {
   breakfast:  {res:'harvest', pts:4},
   lunch:      {res:'harvest', pts:4},
   dinner:     {res:'harvest', pts:5},
-  sleep:      {res:'spirit',  pts:4}
+  sleep:      {res:'spirit',  pts:4},
+  plan:       {res:'harvest', pts:8}
 };
 // Self-reported extras: points per minute bucket, or a flat amount.
 const EXTRA = {
