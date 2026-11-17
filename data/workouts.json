@@ -34,7 +34,8 @@
         "Feet shoulder width, toes turned out a little.",
         "Sit straight down for 3 seconds until your elbows brush your knees.",
         "Drive up through your whole foot."
-      ]
+      ],
+      "harder": "Pause 2 seconds at the bottom of every rep."
     },
     "floor_press": {
       "name": "Dumbbell floor press",
@@ -45,7 +46,8 @@
         "Start with arms straight over your chest.",
         "Lower until your upper arms touch the floor at about 45 degrees from your body.",
         "Pause one beat, then press back up."
-      ]
+      ],
+      "harder": "Lower for 4 seconds, then press one arm at a time."
     },
     "split_squat": {
       "name": "Bulgarian split squat",
@@ -56,7 +58,8 @@
         "Hold a dumbbell at each side.",
         "Lower until your back knee nearly touches the floor.",
         "Push through the front heel to stand. Finish all reps, then switch legs."
-      ]
+      ],
+      "harder": "Lower for 4 seconds and pause 1 second just above the floor."
     },
     "shoulder_press": {
       "name": "Seated shoulder press",
@@ -67,7 +70,8 @@
         "Brace your stomach so your lower back does not arch.",
         "Press overhead until your arms are straight.",
         "Lower back to your shoulders under control."
-      ]
+      ],
+      "harder": "Stand up and press one arm at a time, ribs down."
     },
     "pushup": {
       "name": "Push-up",
@@ -78,7 +82,8 @@
         "Lower your chest to just above the floor, elbows at about 45 degrees.",
         "Push the floor away.",
         "If form breaks, put your hands on the couch seat."
-      ]
+      ],
+      "harder": "Put your feet up on the couch seat."
     },
     "db_rdl": {
       "name": "Dumbbell Romanian deadlift",
@@ -89,7 +94,8 @@
         "Push your hips back and slide the weights down your legs for 3 seconds.",
         "Stop when you feel a strong hamstring stretch, about mid-shin.",
         "Squeeze your glutes to stand back up."
-      ]
+      ],
+      "harder": "Switch to single-leg RDLs, both dumbbells in one hand."
     },
     "row": {
       "name": "One-arm dumbbell row",
@@ -100,7 +106,8 @@
         "Hold the dumbbell with the other arm hanging straight.",
         "Row it to your hip, keeping your shoulders level.",
         "Lower slowly. Finish all reps, then switch sides."
-      ]
+      ],
+      "harder": "Pause 2 seconds with the dumbbell at your hip."
     },
     "reverse_lunge": {
       "name": "Reverse lunge",
@@ -111,7 +118,8 @@
         "Take a long step back and lower until both knees are bent about 90 degrees.",
         "Push through the front foot to return.",
         "Alternate legs, or finish one side first."
-      ]
+      ],
+      "harder": "Step back onto a folded towel and pause at the bottom."
     },
     "rear_fly": {
       "name": "Rear delt fly",
@@ -122,7 +130,8 @@
         "Let the dumbbells hang with a slight bend in the elbows.",
         "Raise them out to the sides to shoulder height.",
         "Lower slowly."
-      ]
+      ],
+      "harder": "Hold 2 seconds at the top of every rep."
     },
     "hammer_curl": {
       "name": "Hammer curl",
@@ -132,7 +141,8 @@
         "Stand tall, palms facing each other.",
         "Curl both dumbbells up without swinging.",
         "Lower over 2 seconds."
-      ]
+      ],
+      "harder": "Lower for 4 seconds, one arm at a time."
     },
     "plank": {
       "name": "Plank",
@@ -142,7 +152,8 @@
         "Forearms on the floor under your shoulders.",
         "Body in one straight line.",
         "Breathe slowly and hold for the time shown."
-      ]
+      ],
+      "harder": "Lift one foot an inch off the floor, switching halfway."
     },
     "thruster": {
       "name": "Dumbbell thruster",
@@ -153,7 +164,8 @@
         "Squat down to parallel.",
         "Stand up fast and use that drive to press the dumbbells overhead.",
         "Bring them back to your shoulders as you start the next squat."
-      ]
+      ],
+      "harder": "Pause 1 second at the bottom of the squat before you drive up."
     },
     "renegade_row": {
       "name": "Renegade row",
@@ -163,7 +175,8 @@
         "Get in a push-up position with your hands on the dumbbell handles and feet wide.",
         "Row one dumbbell to your hip without twisting.",
         "Set it down and row the other side. That is 1 rep each side."
-      ]
+      ],
+      "harder": "Bring your feet closer together."
     },
     "sl_rdl": {
       "name": "Single-leg RDL",
@@ -174,7 +187,8 @@
         "Hinge forward and let your free leg float back.",
         "Lower until your torso is nearly parallel to the floor.",
         "Stand back up. Finish all reps, then switch."
-      ]
+      ],
+      "harder": "Hold both dumbbells and lower for 4 seconds."
     },
     "db_swing": {
       "name": "Single-dumbbell swing",
@@ -185,7 +199,8 @@
         "Hike it back between your legs by hinging your hips.",
         "Snap your hips forward so the dumbbell floats to chest height.",
         "Let it fall back and repeat smoothly."
-      ]
+      ],
+      "harder": "Switch to one-arm swings, changing hands each set."
     },
     "dead_bug": {
       "name": "Dead bug",
@@ -195,7 +210,8 @@
         "Lie on your back, arms straight up, knees bent at 90 degrees over your hips.",
         "Slowly lower one arm and the opposite leg toward the floor.",
         "Return and switch sides. Each side counts as 1 rep."
-      ]
+      ],
+      "harder": "Hold a dumbbell in both hands over your chest."
     },
     "worlds_greatest": {
       "name": "World's greatest stretch",
@@ -246,7 +262,8 @@
         "Lie on your back, knees bent, feet flat.",
         "Drive through your heels to lift your hips.",
         "Squeeze, then lower slowly."
-      ]
+      ],
+      "harder": "Do it one leg at a time with the other knee pulled in."
     }
   },
   "sessions": {

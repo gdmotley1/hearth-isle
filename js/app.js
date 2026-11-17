@@ -1111,10 +1111,11 @@ function vSession(id){
     ${id !== 'M' ? `<div class="callout">${ic('info')}<span><b>${esc(ph.name)} phase.</b> ${esc(ph.note)}</span></div>` : ''}
     <div class="group">${s.blocks.map((b, bi) => { const ex = W.exercises[b.ex], lw = lastOf(bi);
       return `<div class="move"><div class="move-h"><span class="tile r-stone">${esc(b.group)}</span><span class="tx" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b class="hl">${esc(ex.name)}</b><small class="cap">${b.sets} × ${esc(b.reps)}${b.rest ? ` · rest ${b.rest}s` : ''} · ${esc(ex.equip)}</small>${lw.length ? `<small class="cap lastline">Last time ${lw.join(' · ')}</small>` : ''}</span></div>
-        <details><summary>${esc(ex.cue)} · How to</summary><ol>${ex.how.map(h => `<li>${esc(h)}</li>`).join('')}</ol></details></div>`; }).join('')}</div>
+        <details><summary>${esc(ex.cue)} · How to</summary>${Demo.has(b.ex) ? `<div class="howmini">${Demo.svg(b.ex)}</div>` : ''}<ol>${ex.how.map(h => `<li>${esc(h)}</li>`).join('')}</ol></details></div>`; }).join('')}</div>
     <div style="height:70px"></div>
   </div>`;
   scrollAt = 90; setBar(s.title, true); wireBack();
+  $$('.move details', view).forEach(d => d.addEventListener('toggle', () => { if (d.open) Demo.play(d); }));
   dock.innerHTML = `<a class="btn wide" href="#play/${id}">${ic('play', 'i solid')}Start workout</a>`;
 }
 
@@ -1147,6 +1148,28 @@ const repTarget = b => +((b.reps.match(/^\d+/) || [])[0] || 0);
 const isHold = b => /\bsec\b/i.test(b.reps);
 const logsReps = (p, b) => p.id !== 'M' && !isHold(b);
 function lastFor(p, bi){ return p.last.filter(x => x[0] === bi).sort((a, b) => a[1] - b[1]).map(x => x[2]); }
+/* Coaching: what to aim for on this set, from the plan, the phase and what you did last time. */
+const phaseAdd = (p, b) => p.id !== 'M' && !isHold(b) && repTarget(b) && phase().from >= 5 ? 2 : 0;
+const targetOf = (p, b) => repTarget(b) ? repTarget(b) + phaseAdd(p, b) : 0;
+function coachFor(p, st){
+  const b = p.s.blocks[st.bi], ex = W.exercises[b.ex];
+  if (!logsReps(p, b)) return null;
+  const target = targetOf(p, b), was = lastFor(p, st.bi)[st.set - 1];
+  if (was == null) return {aim:target || null, line:target ? `First time logging this. Aim for ${target}, with 1 to 2 left in the tank.` : 'First time logging this. Stop when your form slips.'};
+  if (target && was >= target + 3 && ex.harder) return {aim:was, line:`Last time ${was}. That is getting easy, so make it harder:`, harder:ex.harder};
+  return {aim:was + 1, line:`Last time ${was}. Go for ${was + 1}.`};
+}
+/* How to do a move: the demo, numbered steps, the form cue and a harder version. */
+function howSheet(k){
+  const ex = W.exercises[k];
+  const sh = sheet(`<div class="grab"></div>${Demo.has(k) ? `<div class="howstage">${Demo.svg(k)}</div>` : ''}
+    <div><span class="over gold">${esc(ex.equip)}</span><h2 class="t2" style="margin-top:6px">${esc(ex.name)}</h2></div>
+    <ol class="howlist">${ex.how.map(h => `<li>${esc(h)}</li>`).join('')}</ol>
+    <div class="callout">${ic('info')}<span><b>Form cue.</b> ${esc(ex.cue)}</span></div>
+    ${ex.harder ? `<p class="fine" style="margin:0"><b>Too easy?</b> ${esc(ex.harder)}</p>` : ''}
+    <button class="btn wide" type="button" id="hgot">Got it</button>`);
+  Demo.play(sh); $('#hgot', sh).onclick = () => closeLayer();
+}
 function playTick(){
   const p = play; if (!p) return;
   const c = $('#pclock'); if (c) c.textContent = fmt((Date.now() - p.t0) / 1000);
@@ -1180,6 +1203,8 @@ function renderPlay(){
     const trend = m => { if (!m.was.length) return ''; const a = m.now.reduce((x, y) => x + y, 0), b = m.was.slice(0, m.now.length).reduce((x, y) => x + y, 0); return a > b ? `<em class="up">+${a - b}</em>` : a < b ? `<em class="down">${a - b}</em>` : '<em>same</em>'; };
     view.innerHTML = `<div class="player">${top}<div class="finish"><div class="medal">${ic('check')}</div><div><span class="over gold">Session complete</span><h1 class="lt" style="margin-top:10px">${esc(s.title)}</h1></div>
       <div class="stats"><div><span class="cap">Time</span><b>${fmt((p.end - p.t0) / 1000)}</b></div><div><span class="cap">Reps</span><b>${total || p.steps.length}</b>${total && p.last.length ? `<small class="${delta > 0 ? 'up' : delta < 0 ? 'down' : ''}">${delta > 0 ? '+' + delta : delta < 0 ? delta : 'same as'} ${delta ? 'vs last' : 'last time'}</small>` : total ? '<small>first log</small>' : ''}</div><div><span class="cap">${RESN[pts.res]}</span><b>+${already ? 0 : pts.pts}</b></div></div>
+      ${(() => { const easy = moves.filter(m => { const t = targetOf(p, m.b), h = W.exercises[m.b.ex].harder; return t && h && m.now.every(r => r >= t + 3); });
+        return easy.length ? `<div class="coach"><i class="cdot"></i><span>Next time, make it harder. ${easy.map(m => `<b>${esc(W.exercises[m.b.ex].name)}:</b> ${esc(W.exercises[m.b.ex].harder)}`).join(' ')}</span></div>` : ''; })()}
       ${moves.length ? `<div class="group movesum">${moves.map(m => `<div class="row"><span class="tx"><b>${esc(W.exercises[m.b.ex].name)}</b><small>${m.now.join(' · ')}${m.was.length ? ` <span class="faint">· last ${m.was.join(' · ')}</span>` : ''}</small></span>${trend(m)}</div>`).join('')}</div>` : ''}</div>
       <button class="btn wide" type="button" id="collect">${already ? 'Back to the island' : `Collect +${pts.pts} ${RESN[pts.res]}`}</button></div>`;
     $('#collect').onclick = () => {
@@ -1195,39 +1220,41 @@ function renderPlay(){
   const b = s.blocks[st.bi], ex = W.exercises[b.ex];
   const nx = p.steps[p.i + 1], nex = nx && W.exercises[s.blocks[nx.bi].ex];
   if (p.mode === 'rest'){
-    view.innerHTML = `<div class="player">${top}<div class="pbody rest"><span class="over gold">Rest</span><div class="bigring"><svg viewBox="0 0 120 120"><circle class="bgc" cx="60" cy="60" r="54"/><circle class="fgc" id="rring" cx="60" cy="60" r="54" stroke-dasharray="339.3" stroke-dashoffset="0"/></svg><div><b id="rleft" class="num">${Math.ceil((p.restEnd - Date.now()) / 1000)}</b></div></div>
-      ${nex ? `<div class="pnext" style="width:100%"><span class="tile r-stone">${esc(s.blocks[nx.bi].group)}</span><span class="tx"><span class="over">Up next</span><b class="hl" style="display:block;margin-top:4px">${esc(nex.name)}</b>${(() => { const w = lastFor(p, nx.bi)[nx.set - 1]; return w ? `<small class="cap">Last time ${w} on this set</small>` : ''; })()}</span></div>` : ''}</div>
+    const nco = nx && coachFor(p, nx), nk = nx && s.blocks[nx.bi].ex;
+    view.innerHTML = `<div class="player">${top}<div class="pbody rest"><span class="over gold">Rest</span><div class="bigring mid"><svg viewBox="0 0 120 120"><circle class="bgc" cx="60" cy="60" r="54"/><circle class="fgc" id="rring" cx="60" cy="60" r="54" stroke-dasharray="339.3" stroke-dashoffset="0"/></svg><div><b id="rleft" class="num">${Math.ceil((p.restEnd - Date.now()) / 1000)}</b></div></div>
+      ${nex ? `<button type="button" class="upnext" id="phow">${Demo.has(nk) ? Demo.svg(nk) : ''}<span class="tx"><span class="over">Up next · ${esc(s.blocks[nx.bi].group)}</span><b>${esc(nex.name)}</b>${nco ? `<small>${esc(nco.line)}</small>` : ''}<i>${ic('info')}How to</i></span></button>` : ''}</div>
       <div class="btns"><button class="btn quiet" type="button" id="radd">+15 sec</button><button class="btn" type="button" id="rskip">Skip rest</button></div></div>`;
     paintRest(Math.ceil((p.restEnd - Date.now()) / 1000));
+    Demo.play(view); if (nex) $('#phow').onclick = () => howSheet(nk);
     $('#radd').onclick = () => { p.restEnd += 15000; p.restTotal += 15; haptic(); paintRest(Math.ceil((p.restEnd - Date.now()) / 1000)); };
     $('#rskip').onclick = () => { haptic(); p.mode = 'work'; p.i++; p.reps = null; renderPlay(); };
   } else {
-    const target = repTarget(b), logs = logsReps(p, b), was = lastFor(p, st.bi);
-    if (p.reps === null) p.reps = target || was[st.set - 1] || 10;
+    const target = targetOf(p, b), logs = logsReps(p, b), co = coachFor(p, st);
+    if (p.reps === null) p.reps = (co && co.aim) || target || 10;
     const unit = esc(b.reps.replace(/^\d+\s*/, '') || 'reps');
     let big;
     if (isHold(b)){
-      const secs = target || 30;
+      const secs = repTarget(b) || 30;
       big = `<div class="hold"><div class="bigring sm"><svg viewBox="0 0 120 120"><circle class="bgc" cx="60" cy="60" r="54"/><circle class="fgc" id="hring" cx="60" cy="60" r="54" stroke-dasharray="339.3" stroke-dashoffset="${p.hold ? 0 : 339.3}"/></svg><div><b id="hleft" class="num">${p.hold ? Math.ceil((p.hold.end - Date.now()) / 1000) : secs}</b></div></div>
         ${p.hold ? '' : `<button class="btn quiet small" type="button" id="hstart">${ic('play', 'i solid')}Start ${secs} sec</button>`}</div>`;
     } else if (logs){
-      big = `<div class="preps adj"><button type="button" class="adjb" data-d="-1" aria-label="One less">${ic('minus')}</button><b id="rv">${p.reps}</b><button type="button" class="adjb" data-d="1" aria-label="One more">${ic('plus')}</button><span>${target ? unit : 'reps'}</span></div>`;
+      big = `<div class="preps adj"><button type="button" class="adjb" data-d="-1" aria-label="One less">${ic('minus')}</button><span class="rv"><b id="rv">${p.reps}</b><span>${target ? unit : 'reps'}</span></span><button type="button" class="adjb" data-d="1" aria-label="One more">${ic('plus')}</button></div>`;
     } else {
       big = `<div class="preps">${target ? `<b>${target}</b><span>${unit}</span>` : `<b style="font-size:44px">${esc(b.reps)}</b>`}</div>`;
     }
-    view.innerHTML = `<div class="player">${top}<div class="pbody"><span class="over gold">${st.round ? `Round ${st.set} of ${st.sets}` : `${esc(b.group)} · Set ${st.set} of ${st.sets}`}</span>
-      <h1 class="pname">${esc(ex.name)}</h1>
-      ${big}
-      ${logs && was.length ? `<p class="plast">Last time <b>${was.map((r, k) => k === st.set - 1 ? `<u>${r}</u>` : r).join(' · ')}</b></p>` : logs && p.i === 0 && target ? `<p class="plast">Tap minus or plus if you did a different number.</p>` : ''}
-      <p class="pcue" style="margin:0">${esc(ex.cue)}</p>
-      <details class="move" style="padding:0"><summary style="padding-left:0">How to do it</summary><ol>${ex.how.map(h => `<li>${esc(h)}</li>`).join('')}</ol></details></div>
-      ${nex ? `<div class="pnext"><span class="tile r-stone">${esc(s.blocks[nx.bi].group)}</span><span class="tx"><span class="over">Then</span><b class="hl" style="display:block;margin-top:4px">${esc(nex.name)}${st.rest ? ` · after ${st.rest}s rest` : ''}</b></span></div>` : ''}
+    view.innerHTML = `<div class="player">${top}<div class="pbody">
+      <button type="button" class="pstage" id="phow" aria-label="How to do ${esc(ex.name)}">${Demo.has(b.ex) ? Demo.svg(b.ex) : `<span class="nodemo">${esc(ex.how[0])}</span>`}<span class="ptag">${st.round ? `Round ${st.set} of ${st.sets}` : `${esc(b.group)} · Set ${st.set} of ${st.sets}`}</span><span class="phow">${ic('info')}How to</span></button>
+      <div class="phead"><h1 class="pname">${esc(ex.name)}</h1><p class="pcue">${esc(ex.cue)}</p></div>
+      ${co ? `<div class="coach"><i class="cdot"></i><span>${esc(co.line)}${co.harder ? ` <b>${esc(co.harder)}</b>` : ''}</span></div>` : ''}
+      ${big}</div>
+      ${nex ? `<p class="pthen"><span class="over">Then</span><b>${esc(nex.name)}</b>${st.rest ? `<span>after ${st.rest}s rest</span>` : ''}</p>` : ''}
       <button class="btn wide" type="button" id="pdone">${ic('check')}${nx ? 'Done' : 'Finish workout'}</button></div>`;
+    Demo.play(view); $('#phow').onclick = () => howSheet(b.ex);
     $$('.adjb', view).forEach(x => x.onclick = () => {
       p.reps = Math.max(0, Math.min(99, p.reps + +x.dataset.d)); haptic();
       const v = $('#rv'); v.textContent = p.reps; v.animate([{transform:'scale(1.12)'}, {transform:'none'}], {duration:220, easing:'cubic-bezier(.3,1.4,.5,1)'});
     });
-    const hs = $('#hstart'); if (hs) hs.onclick = () => { const secs = target || 30; p.hold = {end:Date.now() + secs * 1000, total:secs}; p.beeped = 0; haptic(); renderPlay(); };
+    const hs = $('#hstart'); if (hs) hs.onclick = () => { const secs = repTarget(b) || 30; p.hold = {end:Date.now() + secs * 1000, total:secs}; p.beeped = 0; haptic(); renderPlay(); };
     $('#pdone').onclick = e => {
       haptic(); burst(e.currentTarget);
       if (logs) p.log.push([st.bi, st.set, p.reps]);
