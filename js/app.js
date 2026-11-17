@@ -45,7 +45,7 @@ const P = {
   check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>', play:'<path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/>',
   clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>', flame:'<path d="M12 3c1.3 3.2 5 5 5 9.5a5 5 0 0 1-10 0c0-2.4 1.2-3.8 2-4.8.4 1.6 1.3 2.6 2.4 2.8C10.9 7.8 11.3 5.3 12 3z"/>',
   layers:'<path d="M12 3.5 21 8l-9 4.5L3 8z"/><path d="M3 12.5l9 4.5 9-4.5M3 16.5l9 4.5 9-4.5"/>', people:'<circle cx="9" cy="8" r="3"/><path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5M16 5.5a3 3 0 0 1 0 5.6M17.5 14.6c1.8.6 3 2.4 3 4.9"/>',
-  plus:'<path d="M12 5v14M5 12h14"/>', book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20M8 7.5h8M8 11h6"/>', sound:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>', mute:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>', timer:'<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 1.5M9.5 2.5h5"/>', minus:'<path d="M5 12h14"/>', info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>', out:'<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M16 3c-1.5 2-2 4-2 6s.9 3 2 3v9"/>', swap:'<path d="M7 7h12l-3-3M17 17H5l3 3"/>', heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20M8 7.5h8M8 11h6"/>', sound:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>', mute:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>', timer:'<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 1.5M9.5 2.5h5"/>', minus:'<path d="M5 12h14"/>', info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
   list:'<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>', cart:'<path d="M3 4h2.5l2.2 11h10.6L20.5 8H7"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/>',
   download:'<path d="M12 4v11M7 10.5l5 5 5-5M4.5 19.5h15"/>', upload:'<path d="M12 15.5v-11M7 9l5-5 5 5M4.5 19.5h15"/>', calendar:'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
   Mexican:'<path d="M3 16.5a9 9 0 0 1 18 0z"/><path d="M6.5 12.8c1-1 2-1 3 0s2 1 3 0 2-1 3 0 1.8.8 2 1"/>',
@@ -94,15 +94,23 @@ function planItems(d){
   });
   return out;
 }
+const TIERN = {L:'light', B:'balanced', I:'indulgent'};
+/* One meal slot on a date: the planned recipe, or whatever replaced it. */
+function mealTask(ds, slot, menu, D, wn){
+  const id = menu[slot], r = D.recipes[id], sw = Store.getSwap(ds, slot), base = {key:slot, type:slot, icon:slot, meal:true, planned:id, wn};
+  if (sw && sw.type === 'recipe') return Object.assign(base, {label:sw.name, meta:`${SLOT[slot]} · swapped in · ${sw.minutes} min`, go:`#recipe/${sw.id}/${sw.wk}`, recipe:sw.id, swapped:true});
+  if (sw && sw.type === 'out') return Object.assign(base, {icon:'out', label:sw.dish, meta:`${SLOT[slot]} · ate out · ${TIERN[sw.tier] || ''}`, swapped:true, fixedPts:sw.pts});
+  if (sw && sw.type === 'home') return Object.assign(base, {label:sw.name, meta:`${SLOT[slot]} · made at home`, swapped:true});
+  if (sw && sw.type === 'skip') return Object.assign(base, {icon:'minus', label:`Skipped ${SLOT[slot].toLowerCase()}`, meta:'No points, no guilt', swapped:true, fixedPts:0});
+  if (!r) return null;
+  return Object.assign(base, {label:r.name, meta:`${SLOT[slot]}${menu.shared === slot ? ' · for two' : ''} · ${r.minutes} min`, go:`#recipe/${id}/${wn}`, recipe:id});
+}
 function tasksFor(date){
-  const d = dayKey(date), ds = Store.ymd(date), out = planItems(d), menu = M.menu[d];
-  if (menu) Object.keys(SLOT).forEach(slot => {
-    const r = M.recipes[menu[slot]]; if (!r) return;
-    out.push({key:slot, type:slot, icon:slot, label:r.name, meta:`${SLOT[slot]}${menu.shared === slot ? ' · for two' : ''} · ${r.minutes} min`, go:'#recipe/' + menu[slot], recipe:menu[slot]});
-  });
+  const d = dayKey(date), ds = Store.ymd(date), out = planItems(d), wn = mealWeekOf(date), D = MW[wn] || M, menu = D.menu[d];
+  if (menu) Object.keys(SLOT).forEach(slot => { const t = mealTask(ds, slot, menu, D, wn); if (t) out.push(t); });
   out.push({key:'sleep', type:'sleep', icon:'sleep', label:'Slept 7+ hours', meta:'Last night'});
   const times = (W.routine && W.routine.times[d]) || {};
-  return out.map(t => Object.assign(t, Store.PTS[t.type], {at:times[t.key] || '23:59', done:Store.isDone(ds, t.key), optional:t.optional || weekend(d)}))
+  return out.map(t => { Object.assign(t, Store.PTS[t.type], {at:times[t.key] || '23:59', done:Store.isDone(ds, t.key), optional:t.optional || weekend(d)}); if (t.fixedPts != null) t.pts = t.fixedPts; return t; })
     .sort((a, b) => a.at.localeCompare(b.at));
 }
 /* '17:30' -> '5:30 PM' */
@@ -201,12 +209,13 @@ function burst(el){
 }
 let rewardQ = Promise.resolve();
 let islandFx = [];
-function reward(res, pts, sub){
-  islandFx.push({res, pts}); if (islandFx.length > 4) islandFx.shift();
+function reward(res, pts, sub, undo){
+  const fx = {res, pts}; islandFx.push(fx); if (islandFx.length > 4) islandFx.shift();
   rewardQ = rewardQ.then(() => new Promise(done => {
-    const r = document.createElement('div'); r.className = 'reward';
-    r.innerHTML = `<span class="tile r-${res}">${ic(res)}</span><span><b>+${pts} ${RESN[res]}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span>`;
-    document.body.appendChild(r); setTimeout(() => { r.remove(); }, 2700); setTimeout(done, 1100);
+    const r = document.createElement('div'); r.className = 'reward' + (undo ? ' canundo' : '');
+    r.innerHTML = `<span class="tile r-${res}">${ic(res)}</span><span><b>+${pts} ${RESN[res]}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span>${undo ? '<i class="undo">Undo</i>' : ''}`;
+    if (undo) r.addEventListener('click', () => { haptic(); islandFx = islandFx.filter(x => x !== fx); r.remove(); undo(); }, {once:true});
+    document.body.appendChild(r); setTimeout(() => { r.remove(); }, undo ? 3600 : 2700); setTimeout(done, 1100);
   }));
 }
 function toast(txt){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = txt; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
@@ -257,25 +266,27 @@ function mini(f, rest){
   return `<svg class="mini" viewBox="0 0 30 30"><circle class="bgc" cx="15" cy="15" r="${r}"/>${f > 0 ? `<circle class="fgc" cx="15" cy="15" r="${r}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * (1 - Math.min(1, f))).toFixed(1)}"/>` : ''}</svg>`;
 }
 function taskRow(t, opts = {}){
-  const main = `<span class="tile r-${t.res}">${ic(t.icon)}</span><span class="tx"><b>${esc(t.label)}</b><small>${opts.time && t.at < '23:59' ? `<span class="at">${clock(t.at)}</span> · ` : ''}<em>+${t.pts} ${RESN[t.res].toLowerCase()}</em> · ${esc(t.meta)}</small></span>`;
+  const main = `<span class="tile r-${t.res}">${ic(t.icon)}</span><span class="tx"><b>${esc(t.label)}</b><small>${opts.time && t.at < '23:59' ? `<span class="at">${clock(t.at)}</span> · ` : ''}${t.pts ? `<em>+${t.pts} ${RESN[t.res].toLowerCase()}</em> · ` : ''}${esc(t.meta)}</small></span>`;
   return `<div class="row${t.done ? ' done' : ''}${opts.disabled ? '' : ' sw'}" data-key="${t.key}">
     ${t.go ? `<a class="main tap" href="${t.go}">${main}</a>` : `<div class="main" data-tick-row>${main}</div>`}
+    ${t.meal && !opts.disabled ? `<button class="swapbtn" type="button" data-swap="${t.key}" aria-label="Swap ${esc(t.label)}">${ic('swap')}</button>` : ''}
     <button class="tick" type="button" data-task="${t.key}" aria-label="${t.done ? 'Undo' : 'Complete'} ${esc(t.label)}" ${opts.disabled ? 'disabled' : ''}>${ic('check', '')}</button></div>`;
 }
 function wireTicks(date = today()){
   $$('.tick[data-task]', view).forEach(b => b.addEventListener('click', () => toggleTask(b.dataset.task, b, date)));
   $$('[data-tick-row]', view).forEach(m => m.addEventListener('click', () => { const b = m.parentElement.querySelector('.tick'); if (b && !b.disabled) b.click(); }));
   wireSwipe('.row.sw[data-key]', row => { const b = $('.tick', row); if (b && !b.disabled) b.click(); });
+  $$('[data-swap]', view).forEach(b => b.addEventListener('click', e => { e.stopPropagation(); haptic(); mealSheet(date, b.dataset.swap); }));
 }
 function toggleTask(key, btn, date = today()){
   const ds = Store.ymd(date), t = tasksFor(date).find(x => x.key === key); if (!t) return;
   const before = Store.totals().all, dp0 = dayProgress(date);
   const rowEl = btn && btn.closest('.row');
-  if (t.done){ Store.undo(ds, key); if (rowEl) rowEl.classList.remove('done'); haptic(); }
+  if (t.done){ Store.undo(ds, key); const sw = Store.getSwap(ds, key); if (sw && sw.type !== 'recipe') Store.setSwap(ds, key, null); if (rowEl) rowEl.classList.remove('done'); haptic(); }
   else {
     Store.complete(ds, key, t.label, t.type);
     if (rowEl) rowEl.classList.add('done');
-    haptic(); burst(btn); reward(t.res, t.pts, t.label); celebrate(before);
+    haptic(); burst(btn); reward(t.res, t.pts, t.label, () => { Store.undo(ds, key); toast('Undone.'); rerender(); }); celebrate(before);
     const dp1 = dayProgress(date);
     if (!weekend(dayKey(date)) && dp1.total && dp1.done === dp1.total && dp0.done < dp0.total){
       festival = true; announce('Day complete', 'The settlers are lighting lanterns', 'flame');
@@ -547,7 +558,7 @@ function vIsle(){
   let cta = '';
   if (next){
     if (next.session) cta = `<a class="btn wide" href="#play/${next.session}">${ic('play', 'i solid')}Start ${esc(next.label)}</a>`;
-    else if (next.recipe) cta = `<a class="btn wide" href="#recipe/${next.recipe}">${ic(next.icon)}Cook ${esc(M.recipes[next.recipe].name)}</a>`;
+    else if (next.recipe) cta = `<a class="btn wide" href="${next.go}">${ic(next.icon)}Cook ${esc(next.label)}</a>`;
     else cta = `<button class="btn wide" type="button" data-cta="${next.key}">${ic('check')}Mark ${esc(next.label.toLowerCase())} done</button>`;
   }
   const left = dp.total - dp.done;
@@ -590,7 +601,7 @@ function vIsle(){
       <section class="sect"><div class="sect-h"><span class="over">This season</span><span class="cap"><span id="tot" class="num">${t.all}</span> of ${Store.SEASON.total}</span></div>
         <div class="meters"><div class="gardens"><div class="meter2"><p>Hanging Gardens<b style="font-size:15px">${g.label}</b></p></div><div class="bar2">${twBar('gardens', g.pct)}</div></div>
         ${Store.RES.map(k => `<div class="meter2" style="--c:var(--${k})"><p>${RESN[k]}<b class="num">${t[k]}</b></p><div class="bar2">${twBar('res:' + k, Math.min(100, t[k] / Store.SEASON[k] * 100))}</div></div>`).join('')}</div></section>
-      ${recent.length ? `<section class="sect"><div class="sect-h"><span class="over">Island log</span></div><div class="group">${recent.map(e => `<div class="row"><span class="tile r-${e.res}">${ic(e.res)}</span><span class="tx"><b>${esc(e.label)}</b><small>${when(e)}</small></span><span class="trail" style="color:var(--${e.res})">+${e.pts}</span></div>`).join('')}</div></section>` : ''}
+      ${recent.length ? `<section class="sect"><div class="sect-h"><span class="over">Island log</span></div><div class="group">${recent.map(e => `<div class="row"><span class="tile r-${e.res}">${ic(e.res)}</span><span class="tx"><b>${esc(e.label)}</b><small>${when(e)}</small></span><span class="trail" style="color:var(--${e.res})">${e.pts ? '+' + e.pts : '·'}</span></div>`).join('')}</div></section>` : ''}
     </div></div>`;
   scrollAt = 330; setBar('Hearth Isle');
   const world = $('#world');
@@ -646,6 +657,115 @@ function playIslandFx(world){
 }
 let lastDone = null;
 
+/* ---------------- swapping meals ---------------- */
+const loadWeek = n => MW[n] ? Promise.resolve(MW[n]) : fetch(`data/meals-week${n}.json`).then(r => r.json()).then(j => (MW[n] = j)).catch(() => null);
+const loadAllWeeks = () => Promise.all(MEAL_WEEKS.map(loadWeek));
+let DISHES = null;
+const loadDishes = () => DISHES ? Promise.resolve(DISHES) : fetch('data/dishes.json').then(r => r.json()).then(j => (DISHES = j));
+function dateOf(dk, near){ const mon = Store.parse(Store.mondayOf(near)); const d = new Date(mon); d.setDate(mon.getDate() + DAYS.indexOf(dk)); return d; }
+function logMeal(ds, slot, label, pts, swap){
+  const before = Store.totals().all;
+  if (Store.isDone(ds, slot)) Store.undo(ds, slot);
+  Store.setSwap(ds, slot, swap);
+  Store.completeWith(ds, slot, label, 'harvest', pts);
+  closeLayer(); haptic();
+  if (pts > 0){ reward('harvest', pts, label, () => { Store.undo(ds, slot); Store.setSwap(ds, slot, null); toast('Undone.'); rerender(); }); celebrate(before); }
+  else toast('Logged. No points, no guilt.');
+  setTimeout(rerender, 320);
+}
+async function mealSheet(date, slot){
+  const ds = Store.ymd(date), dk = dayKey(date), wn = mealWeekOf(date), D = MW[wn] || M, menu = D.menu[dk];
+  if (!menu) return;
+  const cur = mealTask(ds, slot, menu, D, wn), sw = Store.getSwap(ds, slot), plannedId = menu[slot];
+  // leftovers: a dinner that feeds a later lunch, or a lunch that is an earlier dinner
+  let chain = '';
+  const order = DAYS.slice(0, 5);
+  if (slot === 'dinner'){ const later = order.slice(order.indexOf(dk) + 1).find(x => D.menu[x] && D.menu[x].lunch === plannedId);
+    if (later) chain = `<div class="callout">${ic('info')}<span>This dinner also makes ${DAYN[later]}'s lunch. <button class="linkbtn inline" type="button" id="chain" data-day="${later}">Swap that lunch too</button></span></div>`; }
+  if (slot === 'lunch'){ const earlier = order.slice(0, order.indexOf(dk)).reverse().find(x => D.menu[x] && D.menu[x].dinner === plannedId);
+    if (earlier) chain = `<div class="callout">${ic('info')}<span>This lunch is the leftovers from ${DAYN[earlier]}'s dinner.</span></div>`; }
+  const sh = sheet(`<div class="grab"></div><div><div class="over gold">${SLOT[slot]} · ${DAYN[dk]}</div><h2 class="t2" style="margin-top:8px">${sw ? 'Change' : 'Swap'} ${esc(cur.label)}</h2></div>
+    ${chain}
+    <div class="swapacts">
+      <button type="button" id="aout"><span class="tile r-gold">${ic('out')}</span><b>Ate out</b><small>Search a dish</small></button>
+      <button type="button" id="ahome"><span class="tile r-harvest">${ic('kitchen')}</span><b>Made something else</b><small>Full points</small></button>
+      <button type="button" id="askip"><span class="tile">${ic('minus')}</span><b>Skip it</b><small>No points, no guilt</small></button>
+    </div>
+    ${sw ? `<button class="btn quiet wide" type="button" id="aplan">Back to the plan: ${esc(D.recipes[plannedId] ? D.recipes[plannedId].name : 'planned meal')}</button>` : ''}
+    <label class="field"><span class="cap">Or swap in another recipe</span><input id="rq" type="search" placeholder="Search every recipe" autocomplete="off"></label>
+    <div id="rlist"><p class="fine">Loading recipes…</p></div>`);
+  sh.classList.add('swapsheet');
+  const ch = $('#chain', sh); if (ch) ch.onclick = () => { const d2 = dateOf(ch.dataset.day, date); closeLayer(); setTimeout(() => mealSheet(d2, 'lunch'), 300); };
+  $('#aout', sh).onclick = () => outSheet(date, slot);
+  $('#ahome', sh).onclick = () => homeSheet(date, slot);
+  $('#askip', sh).onclick = () => logMeal(ds, slot, `Skipped ${SLOT[slot].toLowerCase()}`, 0, {type:'skip'});
+  const ap = $('#aplan', sh); if (ap) ap.onclick = () => { if (sw.type !== 'recipe') Store.undo(ds, slot); Store.setSwap(ds, slot, null); closeLayer(); haptic(); toast('Back to the plan.'); setTimeout(rerender, 300); };
+  await loadAllWeeks();
+  if (!sh.isConnected) return;
+  const have = new Set([...D.groceries.map(g => g.name.toLowerCase()), ...(D.have || []).map(h => h.name.toLowerCase())]);
+  const all = [];
+  MEAL_WEEKS.forEach(n => { const W2 = MW[n]; if (!W2) return; Object.entries(W2.recipes).forEach(([id, r]) => { if (r.component || r.cuisine === 'Snack' || (n === wn && id === plannedId)) return;
+    const need = n === wn ? [] : (r.ingredients || []).filter(i => i.g).map(i => (W2.groceries.find(g => g.id === i.g) || {}).name).filter(x => x && !have.has(x.toLowerCase()));
+    all.push({id, n, r, need, fav:Store.isFav(`${n}:${id}`)}); }); });
+  const fits = x => (x.r.cuisine === 'Breakfast') === (slot === 'breakfast');
+  const seenName = new Set(), uniq = all.sort((a, b) => (fits(b) - fits(a)) || (b.fav - a.fav) || ((b.n === wn) - (a.n === wn)) || (b.n - a.n)).filter(x => { const k = x.r.name.toLowerCase(); if (seenName.has(k)) return false; seenName.add(k); return true; });
+  const rowH = x => `<button class="row tap" type="button" data-pick="${x.n}:${x.id}" style="all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative;width:100%"><span class="tile ctile c-${x.r.cuisine}">${ic(x.r.cuisine)}</span><span class="tx"><b>${x.fav ? '<span class="favdot">♥</span> ' : ''}${esc(x.r.name)}</b><small>${x.n === wn ? 'This week' : `Week ${x.n}`} · ${x.r.minutes} min · ${x.r.protein}g protein${x.need.length ? ` · need ${esc(x.need.slice(0, 3).join(', ').toLowerCase())}${x.need.length > 3 ? '…' : ''}` : ''}</small></span></button>`;
+  const paint = () => {
+    const q = $('#rq', sh).value.trim().toLowerCase();
+    const list = uniq.filter(x => !q || x.r.name.toLowerCase().includes(q) || x.r.cuisine.toLowerCase().includes(q));
+    const fav = list.filter(x => x.fav), wk = list.filter(x => !x.fav && x.n === wn && (q || fits(x))), rest = list.filter(x => !x.fav && x.n !== wn && (q || fits(x))), other = q ? [] : list.filter(x => !x.fav && !fits(x));
+    const grp = (t, a) => a.length ? `<div class="sect-h" style="margin-top:6px"><span class="over">${t}</span></div><div class="group">${a.slice(0, q ? 40 : 30).map(rowH).join('')}</div>` : '';
+    $('#rlist', sh).innerHTML = (grp('Favorites', fav) + grp('This week', wk) + grp('Earlier weeks', rest) + grp(slot === 'breakfast' ? 'Lunch and dinner recipes' : 'Breakfast recipes', other)) || '<p class="fine">No recipes match.</p>';
+    $$('[data-pick]', sh).forEach(b => b.onclick = () => {
+      const [n, id] = b.dataset.pick.split(':'), r = MW[+n].recipes[id];
+      if (sw && sw.type !== 'recipe') Store.undo(ds, slot);
+      Store.setSwap(ds, slot, {type:'recipe', id, wk:+n, name:r.name, minutes:r.minutes});
+      closeLayer(); haptic(); toast(`Swapped in ${r.name}.`); setTimeout(rerender, 300);
+    });
+  };
+  $('#rq', sh).addEventListener('input', paint); paint();
+}
+async function outSheet(date, slot){
+  const ds = Store.ymd(date), data = await loadDishes(), PT = data.points;
+  const sh = sheet(`<div class="grab"></div><div><div class="over gold">Ate out · ${SLOT[slot]}</div><h2 class="t2" style="margin-top:8px">What did you have?</h2></div>
+    <label class="field"><input id="dq" type="search" placeholder="Burger, burrito bowl, pad thai…" autocomplete="off"></label>
+    <div class="tierkey"><span class="tier L">Light +${PT.L}</span><span class="tier B">Balanced +${PT.B}</span><span class="tier I">Indulgent +${PT.I}</span></div>
+    <div id="dlist"></div>`);
+  sh.classList.add('swapsheet');
+  const pickTier = t => `<span class="tier ${t}">${TIERN[t]} · +${PT[t]}</span>`;
+  const confirm = (name, tier, warn) => {
+    let extra = false;
+    sh.innerHTML = `<div class="grab"></div><div><div class="over gold">Ate out · ${SLOT[slot]}</div><h2 class="t2" style="margin-top:8px">${esc(name)}</h2></div>
+      ${tier ? `<div>${pickTier(tier)}</div>` : `<div class="tierpick">${['L', 'B', 'I'].map(t => `<button type="button" data-t="${t}" class="tier ${t}">${cap1(TIERN[t])} +${PT[t]}</button>`).join('')}</div>`}
+      ${warn ? `<div class="callout warn">${ic('info')}<span>${esc(warn)}</span></div>` : ''}
+      <div class="group"><label class="row extra"><input type="checkbox" id="x1"><span class="tx"><b>Made a good call</b><small>Boxed half to go, swapped fries for a salad or veggies, or water instead of soda</small></span><em>+${PT.bonus}</em></label></div>
+      <button class="btn wide" type="button" id="dlog" ${tier ? '' : 'disabled'}>Log it</button>`;
+    let t = tier;
+    const upd = () => { const b = $('#dlog', sh); b.disabled = !t; b.textContent = t ? `Log it · +${PT[t] + (extra ? PT.bonus : 0)} Harvest` : 'Pick how healthy it was'; };
+    $$('.tierpick button', sh).forEach(b => b.onclick = () => { t = b.dataset.t; haptic(); $$('.tierpick button', sh).forEach(x => x.classList.toggle('on', x === b)); upd(); });
+    $('#x1', sh).onchange = e => { extra = e.target.checked; haptic(); upd(); };
+    $('#dlog', sh).onclick = () => { const pts = PT[t] + (extra ? PT.bonus : 0); logMeal(ds, slot, `Ate out: ${name}`, pts, {type:'out', dish:name, tier:t, pts}); };
+    upd();
+  };
+  const paint = () => {
+    const q = $('#dq', sh).value.trim().toLowerCase();
+    const list = data.dishes.filter(x => !q || x.n.toLowerCase().includes(q) || x.c.toLowerCase().includes(q));
+    $('#dlist', sh).innerHTML = `<div class="group">${list.slice(0, q ? 60 : 24).map((x, i) => `<button type="button" class="row tap dish" data-i="${data.dishes.indexOf(x)}"><span class="tx"><b>${esc(x.n)}</b><small>${esc(x.c)}${x.w ? ' · <span class="warnword">check first</span>' : ''}</small></span><span class="tier ${x.t}">+${PT[x.t]}</span></button>`).join('')}
+      <button type="button" class="row tap dish" id="dcustom"><span class="tile r-gold">${ic('plus')}</span><span class="tx"><b>${q ? `Something else: "${esc($('#dq', sh).value.trim())}"` : 'Something else'}</b><small>Name it and pick how healthy it was</small></span></button></div>`;
+    $$('.dish[data-i]', sh).forEach(b => b.onclick = () => { const x = data.dishes[+b.dataset.i]; haptic(); confirm(x.n, x.t, x.w); });
+    $('#dcustom', sh).onclick = () => { const nm = $('#dq', sh).value.trim(); if (nm) { haptic(); confirm(nm, null, null); } else { $('#dq', sh).focus(); toast('Type what you had first.'); } };
+  };
+  $('#dq', sh).addEventListener('input', paint); paint();
+}
+function homeSheet(date, slot){
+  const ds = Store.ymd(date);
+  const sh = sheet(`<div class="grab"></div><div><div class="over gold">Made something else · ${SLOT[slot]}</div><h2 class="t2" style="margin-top:8px">What did you make?</h2></div>
+    <label class="field"><input id="hq" type="text" maxlength="60" placeholder="Turkey sandwich, eggs and toast…" autocomplete="off"></label>
+    <p class="fine">Home cooking earns the full ${Store.PTS[slot].pts} Harvest.</p>
+    <button class="btn wide" type="button" id="hlog">Log it · +${Store.PTS[slot].pts} Harvest</button>`);
+  $('#hlog', sh).onclick = () => { const nm = $('#hq', sh).value.trim() || 'Something homemade'; logMeal(ds, slot, nm, Store.PTS[slot].pts, {type:'home', name:nm}); };
+}
+
 /* ---------------- day preview (tap a day in the week strip) ---------------- */
 function mealWeekOf(date){ const w = Store.weekNo(date); return MEAL_WEEKS.filter(n => n <= w).pop() || MEAL_WEEKS[0]; }
 function dayPlan(date){
@@ -653,7 +773,8 @@ function dayPlan(date){
   const times = (W.routine && W.routine.times[d]) || {}, isPast = ds < Store.ymd(today()), isToday = ds === Store.ymd(today());
   const rows = planItems(d).map(t => Object.assign(t, Store.PTS[t.type], {at:times[t.key] || '23:59'}));
   const menu = D && D.menu[d];
-  if (menu) Object.keys(SLOT).forEach(slot => { const r = D.recipes[menu[slot]]; if (r) rows.push(Object.assign({key:slot, type:slot, icon:slot, label:r.name, meta:`${SLOT[slot]}${menu.shared === slot ? ' · for two' : ''} · ${r.minutes} min`, go:`#recipe/${menu[slot]}/${wn}`, at:times[slot] || '23:59'}, Store.PTS[slot])); });
+  if (menu) Object.keys(SLOT).forEach(slot => { const t = mealTask(ds, slot, menu, D, wn); if (t){ Object.assign(t, Store.PTS[slot], {at:times[slot] || '23:59'}); if (t.fixedPts != null) t.pts = t.fixedPts; rows.push(t); } });
+  if (isPast || isToday) rows.push(Object.assign({key:'sleep', type:'sleep', icon:'sleep', label:'Slept 7+ hours', meta:'Last night', at:times.sleep || '06:45'}, Store.PTS.sleep));
   // Sunday prep belongs to the week that starts the next day.
   const nd = new Date(date); nd.setDate(nd.getDate() + 1);
   const pwn = d === 'sun' ? mealWeekOf(nd) : wn, PD = MW[pwn] || (pwn === mealWeek() ? M : null);
@@ -666,7 +787,7 @@ function daySheet(off){
   const base = Store.parse(Store.ymd(today())), date = new Date(base); date.setDate(base.getDate() + off);
   const P = dayPlan(date), when = off === 0 ? 'Today' : off === 1 ? 'Tomorrow' : off === -1 ? 'Yesterday' : off > 0 ? `In ${off} days` : `${-off} days ago`;
   const row = t => { const main = `<span class="tile r-${t.res}">${ic(t.icon)}</span><span class="tx"><b>${esc(t.label)}</b><small>${t.at < '23:59' ? `<span class="at">${clock(t.at)}</span> · ` : ''}${esc(t.meta)}</small></span>`;
-    const end = t.done ? `<span class="tick on" aria-label="Done">${ic('check', '')}</span>` : t.go ? ic('chev', 'i chev') : '';
+    const end = (P.isPast || P.isToday) ? `<button class="tick${t.done ? ' on' : ''}" type="button" data-dtask="${t.key}" aria-label="${t.done ? 'Undo' : 'Complete'} ${esc(t.label)}">${ic('check', '')}</button>` : t.go ? ic('chev', 'i chev') : '';
     return t.go ? `<a class="row tap${t.done ? ' done' : ''}" href="${t.go}">${main}${end}</a>` : `<div class="row${t.done ? ' done' : ''}">${main}${end}</div>`; };
   const body = `${P.menu && P.menu.heads ? `<div class="callout">${ic('info')}<span>${esc(P.menu.heads)}</span></div>` : ''}
     ${P.rows.length ? `<div class="group">${P.rows.map(row).join('')}</div>` : `<div class="callout">${ic('extra')}<span>${weekend(P.d) ? 'Festival day. Nothing planned, and anything you do still builds the island.' : 'Nothing planned.'}</span></div>`}
@@ -680,6 +801,7 @@ function daySheet(off){
   sh.classList.add('daysheet');
   const go = n => { haptic(); const k = off + n; if (k < -6 || k > 13) return; layer.innerHTML = ''; daySheet(k); const s2 = $('.sheet', layer); s2.style.animation = 'none'; const b = $('.daybody', s2); b.classList.add(n > 0 ? 'from-r' : 'from-l'); };
   $$('[data-step]', sh).forEach(b => b.onclick = () => go(+b.dataset.step));
+  $$('[data-dtask]', sh).forEach(b => b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); toggleTask(b.dataset.dtask, b, date); b.classList.toggle('on'); setTimeout(() => { daySheet(off); const s2 = $('.sheet', layer); if (s2) s2.style.animation = 'none'; }, 470); }));
   let sx = null, sy = 0;
   sh.addEventListener('pointerdown', e => { if (e.target.closest('button, .grab')) return; sx = e.clientX; sy = e.clientY; });
   sh.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5){ swallowClick(); go(dx < 0 ? 1 : -1); } });
@@ -1037,7 +1159,8 @@ function ingName(D, i, n){
 function vRecipe(id, wn){
   const [D, n] = findRecipe(id, wn); if (!D) return vKitchen();
   const r = D.recipes[id];
-  view.innerHTML = `${floatBack()}<div class="hero-r c-${r.cuisine}">${ic(r.cuisine)}</div>
+  const fk = `${n}:${id}`;
+  view.innerHTML = `${floatBack()}<button class="backbtn favbtn${Store.isFav(fk) ? ' on' : ''}" type="button" id="fav" aria-label="Favorite">${ic('heart')}</button><div class="hero-r c-${r.cuisine}">${ic(r.cuisine)}</div>
   <div class="page stagger" style="margin-top:-34px;position:relative">
     <div><span class="over gold">${esc(r.cuisine)}${r.isNew ? ' · new this week' : ''} · ${esc(D.title)}</span><h1 class="lt" style="margin-top:10px">${esc(r.name)}</h1></div>
     <div class="stats3"><div><span class="cap">Time</span><b>${r.minutes}<span class="cap"> min</span></b></div><div><span class="cap">Protein</span><b>${r.protein}<span class="cap"> g</span></b></div><div><span class="cap">Makes</span><b style="font-size:14px;font-family:var(--f-b);font-weight:600;line-height:1.3">${esc(r.serves)}</b></div></div>
@@ -1050,6 +1173,7 @@ function vRecipe(id, wn){
     <section class="sect"><div class="sect-h"><span class="over">Method</span><span class="cap">${plural(r.steps.length, 'step')}</span></div><ol class="steps">${r.steps.map((s, k) => `<li><span>${k + 1}</span><div>${stepText(s, `${r.name} · step ${k + 1}`)}</div></li>`).join('')}</ol></section>
   </div>`;
   scrollAt = 180; setBar(r.name, true); wireBack();
+  $('#fav').onclick = e => { const on = !Store.isFav(fk); Store.setFav(fk, on ? {id, wk:n, name:r.name} : null); e.currentTarget.classList.toggle('on', on); haptic(); toast(on ? 'Saved to favorites. Swaps show it first.' : 'Removed from favorites.'); };
   $$('[data-stop]', view).forEach(a => a.addEventListener('click', e => e.stopPropagation()));
   wireTchips();
   $$('.ing', view).forEach(el => el.onclick = () => { const k = `${n}:${id}:${el.dataset.k}`, on = !Store.flag('ing', k); Store.flag('ing', k, on); el.classList.toggle('done', on); if (on) haptic(); });
@@ -1192,7 +1316,7 @@ function weekSummary(mon){
   const before = log.filter(e => e.date < start).reduce((a, e) => a + e.pts, 0), gained = inWk.reduce((a, e) => a + e.pts, 0), after = before + gained;
   const res = {stone:0, land:0, harvest:0, spirit:0}; inWk.forEach(e => { res[e.res] = (res[e.res] || 0) + e.pts; });
   const count = k => inWk.filter(e => e.key === k).length;
-  const meals = count('breakfast') + count('lunch') + count('dinner');
+  const isMeal = e => ['breakfast', 'lunch', 'dinner'].includes(e.key), meals = inWk.filter(e => isMeal(e) && e.pts > 0 && !/^Ate out/.test(e.label)).length;
   const list = Isle.unlocks(), built = list.filter(u => { const q = Store.thToPts(u.th); return q > before + 1e-9 && q <= after + 1e-9; });
   const s0 = 3 + Math.floor(before / 45), s1 = 3 + Math.floor(after / 45), arrived = [];
   for (let i = s0; i < s1; i++) arrived.push(SETTLERS[i % SETTLERS.length]);
@@ -1443,6 +1567,7 @@ const stack = [];
 function route(keep){
   const hash = location.hash || '#isle';
   const [name, arg, arg2] = (hash.slice(1) || 'isle').split('/');
+  if ((name === 'recipe' || name === 'cook') && arg2 && !MW[+arg2] && MEAL_WEEKS.includes(+arg2)){ loadWeek(+arg2).then(() => route(keep)); return; }
   const tab = TAB_OF[name] || name;
   let dir = 'enter';
   if (!keep){
@@ -1524,6 +1649,7 @@ async function boot(){
   route();
   onboarding();
   Cloud.start();
+  setTimeout(loadAllWeeks, 4000);
   Cloud.onChange(i => { if (i.status === 'ok' && showCodeCard() && /^#?(isle)?$/.test(location.hash.replace('#', '')) && !$('#savecode')) rerender(); });
   const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !local){

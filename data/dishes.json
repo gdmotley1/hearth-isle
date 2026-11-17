@@ -1,0 +1,669 @@
+{
+ "note": "Restaurant dishes for the Ate out search. t: L light, B balanced, I indulgent. w: allergy or hidden-ingredient warning for a tree nut allergy and no fish or shellfish. No fish or shellfish dishes are listed.",
+ "points": {
+  "L": 3,
+  "B": 2,
+  "I": 1,
+  "bonus": 1
+ },
+ "dishes": [
+  {
+   "n": "Grilled chicken salad",
+   "c": "Salads",
+   "t": "L",
+   "w": "Candied pecans or walnuts are a common topping. Ask for it without nuts."
+  },
+  {
+   "n": "Cobb salad",
+   "c": "Salads",
+   "t": "B"
+  },
+  {
+   "n": "Caesar salad with grilled chicken",
+   "c": "Salads",
+   "t": "B",
+   "w": "Caesar dressing is made with anchovies. Ask for ranch or a vinaigrette."
+  },
+  {
+   "n": "Greek salad with chicken",
+   "c": "Salads",
+   "t": "L"
+  },
+  {
+   "n": "Southwest chicken salad",
+   "c": "Salads",
+   "t": "B"
+  },
+  {
+   "n": "Chicken salad sandwich",
+   "c": "Sandwiches",
+   "t": "B",
+   "w": "Chicken salad often has pecans, walnuts or almonds mixed in. Ask first."
+  },
+  {
+   "n": "Waldorf salad",
+   "c": "Salads",
+   "t": "B",
+   "w": "Made with walnuts. Skip it."
+  },
+  {
+   "n": "Steakhouse wedge salad",
+   "c": "Salads",
+   "t": "B"
+  },
+  {
+   "n": "Grilled chicken sandwich",
+   "c": "Sandwiches",
+   "t": "B"
+  },
+  {
+   "n": "Turkey club",
+   "c": "Sandwiches",
+   "t": "B"
+  },
+  {
+   "n": "Turkey and avocado wrap",
+   "c": "Sandwiches",
+   "t": "L"
+  },
+  {
+   "n": "Chicken caesar wrap",
+   "c": "Sandwiches",
+   "t": "B",
+   "w": "Caesar dressing is made with anchovies. Ask for ranch."
+  },
+  {
+   "n": "Philly cheesesteak",
+   "c": "Sandwiches",
+   "t": "I"
+  },
+  {
+   "n": "Reuben",
+   "c": "Sandwiches",
+   "t": "I"
+  },
+  {
+   "n": "BLT",
+   "c": "Sandwiches",
+   "t": "B"
+  },
+  {
+   "n": "Cuban sandwich",
+   "c": "Sandwiches",
+   "t": "B"
+  },
+  {
+   "n": "Grilled cheese and tomato soup",
+   "c": "Sandwiches",
+   "t": "B"
+  },
+  {
+   "n": "Chicken pesto panini",
+   "c": "Sandwiches",
+   "t": "B",
+   "w": "Pesto is usually made with pine nuts. Ask for it without."
+  },
+  {
+   "n": "Sub sandwich, 6 inch",
+   "c": "Sandwiches",
+   "t": "B"
+  },
+  {
+   "n": "Sub sandwich, footlong",
+   "c": "Sandwiches",
+   "t": "I"
+  },
+  {
+   "n": "Burger and fries",
+   "c": "American",
+   "t": "I",
+   "w": "Some burger sauces and steak sauces contain Worcestershire, which has anchovies."
+  },
+  {
+   "n": "Burger with a side salad",
+   "c": "American",
+   "t": "B",
+   "w": "Some burger sauces contain Worcestershire, which has anchovies."
+  },
+  {
+   "n": "Lettuce-wrap burger",
+   "c": "American",
+   "t": "L"
+  },
+  {
+   "n": "Double bacon cheeseburger",
+   "c": "American",
+   "t": "I"
+  },
+  {
+   "n": "Chicken tenders and fries",
+   "c": "American",
+   "t": "I"
+  },
+  {
+   "n": "Buffalo wings",
+   "c": "American",
+   "t": "I"
+  },
+  {
+   "n": "Grilled chicken plate with vegetables",
+   "c": "American",
+   "t": "L"
+  },
+  {
+   "n": "Sirloin steak with vegetables",
+   "c": "American",
+   "t": "L"
+  },
+  {
+   "n": "Ribeye steak with potato",
+   "c": "American",
+   "t": "B",
+   "w": "Steak sauce and marinades often contain Worcestershire, which has anchovies."
+  },
+  {
+   "n": "BBQ pulled pork plate",
+   "c": "Southern",
+   "t": "B"
+  },
+  {
+   "n": "BBQ ribs with sides",
+   "c": "Southern",
+   "t": "I"
+  },
+  {
+   "n": "Smoked brisket plate",
+   "c": "Southern",
+   "t": "B"
+  },
+  {
+   "n": "Fried chicken with sides",
+   "c": "Southern",
+   "t": "I"
+  },
+  {
+   "n": "Chicken and waffles",
+   "c": "Southern",
+   "t": "I",
+   "w": "Some places add pecan butter or pecan syrup. Ask."
+  },
+  {
+   "n": "Meat and three, grilled meat with vegetables",
+   "c": "Southern",
+   "t": "B"
+  },
+  {
+   "n": "Chicken fried steak",
+   "c": "Southern",
+   "t": "I"
+  },
+  {
+   "n": "Mac and cheese",
+   "c": "Southern",
+   "t": "I"
+  },
+  {
+   "n": "Chicken pot pie",
+   "c": "American",
+   "t": "I"
+  },
+  {
+   "n": "Meatloaf and mashed potatoes",
+   "c": "American",
+   "t": "B",
+   "w": "Meatloaf often has Worcestershire, which has anchovies."
+  },
+  {
+   "n": "Chili, cup or bowl",
+   "c": "American",
+   "t": "B"
+  },
+  {
+   "n": "Chicken noodle soup",
+   "c": "American",
+   "t": "L"
+  },
+  {
+   "n": "Hot dog",
+   "c": "American",
+   "t": "I"
+  },
+  {
+   "n": "Chicken burrito bowl",
+   "c": "Mexican",
+   "t": "L"
+  },
+  {
+   "n": "Steak burrito bowl",
+   "c": "Mexican",
+   "t": "L"
+  },
+  {
+   "n": "Chicken burrito",
+   "c": "Mexican",
+   "t": "B"
+  },
+  {
+   "n": "Loaded burrito with queso",
+   "c": "Mexican",
+   "t": "I"
+  },
+  {
+   "n": "Chicken fajitas",
+   "c": "Mexican",
+   "t": "B"
+  },
+  {
+   "n": "Steak fajitas",
+   "c": "Mexican",
+   "t": "B"
+  },
+  {
+   "n": "Street tacos, chicken or steak",
+   "c": "Mexican",
+   "t": "B"
+  },
+  {
+   "n": "Carnitas tacos",
+   "c": "Mexican",
+   "t": "B"
+  },
+  {
+   "n": "Chicken enchiladas",
+   "c": "Mexican",
+   "t": "I"
+  },
+  {
+   "n": "Chicken mole",
+   "c": "Mexican",
+   "t": "B",
+   "w": "Mole sauce is often made with almonds or other nuts. Ask first."
+  },
+  {
+   "n": "Quesadilla",
+   "c": "Mexican",
+   "t": "I"
+  },
+  {
+   "n": "Nachos",
+   "c": "Mexican",
+   "t": "I"
+  },
+  {
+   "n": "Chips and queso, plus an entree",
+   "c": "Mexican",
+   "t": "I"
+  },
+  {
+   "n": "Tortilla soup",
+   "c": "Mexican",
+   "t": "L"
+  },
+  {
+   "n": "Chicken tortilla salad",
+   "c": "Mexican",
+   "t": "B"
+  },
+  {
+   "n": "Spaghetti and meatballs",
+   "c": "Italian",
+   "t": "I"
+  },
+  {
+   "n": "Chicken parmesan with pasta",
+   "c": "Italian",
+   "t": "I"
+  },
+  {
+   "n": "Grilled chicken with vegetables, Italian",
+   "c": "Italian",
+   "t": "L"
+  },
+  {
+   "n": "Pasta with marinara and chicken",
+   "c": "Italian",
+   "t": "B"
+  },
+  {
+   "n": "Fettuccine alfredo",
+   "c": "Italian",
+   "t": "I"
+  },
+  {
+   "n": "Lasagna",
+   "c": "Italian",
+   "t": "I"
+  },
+  {
+   "n": "Pesto pasta",
+   "c": "Italian",
+   "t": "B",
+   "w": "Pesto is usually made with pine nuts. Skip it or ask for marinara."
+  },
+  {
+   "n": "Chicken piccata",
+   "c": "Italian",
+   "t": "B"
+  },
+  {
+   "n": "Minestrone soup and salad",
+   "c": "Italian",
+   "t": "L"
+  },
+  {
+   "n": "Caprese salad",
+   "c": "Italian",
+   "t": "L"
+  },
+  {
+   "n": "Pizza, 2 slices",
+   "c": "Pizza",
+   "t": "I"
+  },
+  {
+   "n": "Pizza, 1 slice with a salad",
+   "c": "Pizza",
+   "t": "B"
+  },
+  {
+   "n": "Personal pizza",
+   "c": "Pizza",
+   "t": "I"
+  },
+  {
+   "n": "Thin crust veggie pizza, 2 slices",
+   "c": "Pizza",
+   "t": "B",
+   "w": "Some veggie and white pizzas use pesto, which has pine nuts."
+  },
+  {
+   "n": "Calzone",
+   "c": "Pizza",
+   "t": "I"
+  },
+  {
+   "n": "Chicken teriyaki bowl",
+   "c": "Asian",
+   "t": "B"
+  },
+  {
+   "n": "Chicken and broccoli",
+   "c": "Asian",
+   "t": "L",
+   "w": "Brown sauce often contains oyster sauce. Ask for it without."
+  },
+  {
+   "n": "Orange chicken with rice",
+   "c": "Asian",
+   "t": "I"
+  },
+  {
+   "n": "General Tso's chicken",
+   "c": "Asian",
+   "t": "I"
+  },
+  {
+   "n": "Kung pao chicken",
+   "c": "Asian",
+   "t": "B",
+   "w": "Usually peanuts, which are fine, but some places use cashews. Ask."
+  },
+  {
+   "n": "Cashew chicken",
+   "c": "Asian",
+   "t": "B",
+   "w": "Made with cashews, a tree nut. Skip it."
+  },
+  {
+   "n": "Almond chicken",
+   "c": "Asian",
+   "t": "B",
+   "w": "Made with almonds, a tree nut. Skip it."
+  },
+  {
+   "n": "Beef and broccoli",
+   "c": "Asian",
+   "t": "B",
+   "w": "Usually made with oyster sauce. Ask for it without."
+  },
+  {
+   "n": "Chicken fried rice",
+   "c": "Asian",
+   "t": "I",
+   "w": "Some kitchens add oyster or fish sauce. Ask."
+  },
+  {
+   "n": "Lo mein",
+   "c": "Asian",
+   "t": "I",
+   "w": "Often made with oyster sauce. Ask for it without."
+  },
+  {
+   "n": "Egg drop soup and steamed dumplings",
+   "c": "Asian",
+   "t": "B"
+  },
+  {
+   "n": "Pad thai with chicken",
+   "c": "Asian",
+   "t": "I",
+   "w": "Usually made with fish sauce and sometimes dried shrimp. Ask for it without."
+  },
+  {
+   "n": "Thai curry with chicken",
+   "c": "Asian",
+   "t": "B",
+   "w": "Thai curries usually have fish sauce or shrimp paste. Ask for it without."
+  },
+  {
+   "n": "Chicken pho",
+   "c": "Asian",
+   "t": "L",
+   "w": "Pho broth is seasoned with fish sauce. Ask before ordering."
+  },
+  {
+   "n": "Vietnamese banh mi, chicken or pork",
+   "c": "Asian",
+   "t": "B",
+   "w": "Marinades and pate often include fish sauce. Ask."
+  },
+  {
+   "n": "Korean BBQ bowl",
+   "c": "Asian",
+   "t": "B",
+   "w": "Kimchi is usually made with fish sauce or shrimp. Skip the kimchi."
+  },
+  {
+   "n": "Chicken ramen",
+   "c": "Asian",
+   "t": "B",
+   "w": "Many ramen broths use fish stock or bonito. Ask."
+  },
+  {
+   "n": "Hibachi chicken with vegetables",
+   "c": "Asian",
+   "t": "B"
+  },
+  {
+   "n": "Hibachi steak with fried rice",
+   "c": "Asian",
+   "t": "I"
+  },
+  {
+   "n": "Chicken satay",
+   "c": "Asian",
+   "t": "B",
+   "w": "Peanut sauce is fine, but marinades can have fish sauce. Ask."
+  },
+  {
+   "n": "Chicken tikka masala with rice",
+   "c": "Indian",
+   "t": "B",
+   "w": "Some recipes thicken the sauce with cashews or almonds. Ask first."
+  },
+  {
+   "n": "Chicken korma",
+   "c": "Indian",
+   "t": "I",
+   "w": "Korma is usually made with cashews or almonds. Skip it."
+  },
+  {
+   "n": "Tandoori chicken",
+   "c": "Indian",
+   "t": "L"
+  },
+  {
+   "n": "Butter chicken with naan",
+   "c": "Indian",
+   "t": "I",
+   "w": "Often made with cashew paste. Ask first."
+  },
+  {
+   "n": "Chana masala",
+   "c": "Indian",
+   "t": "L"
+  },
+  {
+   "n": "Chicken shawarma plate",
+   "c": "Mediterranean",
+   "t": "L"
+  },
+  {
+   "n": "Chicken gyro",
+   "c": "Mediterranean",
+   "t": "B"
+  },
+  {
+   "n": "Falafel wrap",
+   "c": "Mediterranean",
+   "t": "B"
+  },
+  {
+   "n": "Chicken kebab with rice and salad",
+   "c": "Mediterranean",
+   "t": "L"
+  },
+  {
+   "n": "Mediterranean bowl with chicken",
+   "c": "Mediterranean",
+   "t": "L"
+  },
+  {
+   "n": "Hummus and pita platter",
+   "c": "Mediterranean",
+   "t": "B"
+  },
+  {
+   "n": "Egg and veggie omelet",
+   "c": "Breakfast",
+   "t": "L"
+  },
+  {
+   "n": "Eggs, bacon and toast",
+   "c": "Breakfast",
+   "t": "B"
+  },
+  {
+   "n": "Pancakes or waffles",
+   "c": "Breakfast",
+   "t": "I",
+   "w": "Some come with pecans or nut butters. Ask."
+  },
+  {
+   "n": "Biscuits and gravy",
+   "c": "Breakfast",
+   "t": "I"
+  },
+  {
+   "n": "Breakfast burrito",
+   "c": "Breakfast",
+   "t": "B"
+  },
+  {
+   "n": "Breakfast sandwich",
+   "c": "Breakfast",
+   "t": "B"
+  },
+  {
+   "n": "Yogurt parfait",
+   "c": "Breakfast",
+   "t": "L",
+   "w": "Most granola has almonds or other tree nuts. Ask for it without granola."
+  },
+  {
+   "n": "Oatmeal with fruit",
+   "c": "Breakfast",
+   "t": "L",
+   "w": "Toppings often include walnuts or pecans. Ask for fruit only."
+  },
+  {
+   "n": "Avocado toast with egg",
+   "c": "Breakfast",
+   "t": "L"
+  },
+  {
+   "n": "French toast",
+   "c": "Breakfast",
+   "t": "I",
+   "w": "Some versions use pecans or praline topping. Ask."
+  },
+  {
+   "n": "Bagel with cream cheese",
+   "c": "Breakfast",
+   "t": "B"
+  },
+  {
+   "n": "Chicken sandwich, fast food",
+   "c": "Fast food",
+   "t": "I"
+  },
+  {
+   "n": "Grilled nuggets with a side salad",
+   "c": "Fast food",
+   "t": "L"
+  },
+  {
+   "n": "Fried nuggets and fries",
+   "c": "Fast food",
+   "t": "I"
+  },
+  {
+   "n": "Fast food burger combo",
+   "c": "Fast food",
+   "t": "I"
+  },
+  {
+   "n": "Grilled chicken wrap, fast food",
+   "c": "Fast food",
+   "t": "B"
+  },
+  {
+   "n": "Taco place, 2 tacos",
+   "c": "Fast food",
+   "t": "B"
+  },
+  {
+   "n": "Protein bowl, fast casual",
+   "c": "Fast food",
+   "t": "L"
+  },
+  {
+   "n": "Poke-style bowl with chicken or tofu",
+   "c": "Fast food",
+   "t": "L",
+   "w": "Poke shops are built around raw fish. Make sure yours is chicken or tofu, and check the sauces."
+  },
+  {
+   "n": "Smoothie",
+   "c": "Treats",
+   "t": "B",
+   "w": "Many smoothies add almond milk or nut butters. Ask for regular milk and peanut butter only."
+  },
+  {
+   "n": "Specialty coffee drink",
+   "c": "Treats",
+   "t": "I",
+   "w": "Almond milk and hazelnut or pistachio syrups are common. Check the order."
+  }
+ ]
+}

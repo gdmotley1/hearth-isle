@@ -32,7 +32,7 @@ const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
 const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
 function mondayOf(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay()+6)%7); return ymd(x); }
 
-function fresh(){ return {v:1, start:mondayOf(new Date()), log:[], grocery:{}, sets:{}, prep:{}, ing:{}, onboarded:false}; }
+function fresh(){ return {v:1, start:mondayOf(new Date()), log:[], grocery:{}, sets:{}, prep:{}, ing:{}, swaps:{}, favs:{}, onboarded:false}; }
 function load(){
   try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 1) return Object.assign(fresh(), s); } catch(e) {}
   return fresh();
@@ -68,6 +68,18 @@ function complete(date, key, label, type){
   const e = {id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), date, key, label, res:p.res, pts:p.pts, at:Date.now()};
   state.log.push(e); save(); return e;
 }
+/* A log entry with its own points (eating out, skipping a meal). Same shape as every other entry. */
+function completeWith(date, key, label, res, pts){
+  if (isDone(date, key)) return null;
+  const e = {id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), date, key, label, res, pts, at:Date.now()};
+  state.log.push(e); save(); return e;
+}
+/* What replaced a planned meal: swaps['2026-11-17|dinner'] = {type:'recipe'|'out'|'home'|'skip', ...}. */
+function setSwap(date, slot, v){ state.swaps = state.swaps || {}; if (v) state.swaps[date + '|' + slot] = v; else delete state.swaps[date + '|' + slot]; save(); }
+const getSwap = (date, slot) => (state.swaps || {})[date + '|' + slot] || null;
+/* Hearted recipes, by week and id: favs['3:peruvian-chicken'] = {id, wk, name}. */
+function setFav(key, v){ state.favs = state.favs || {}; if (v) state.favs[key] = v; else delete state.favs[key]; save(); }
+const isFav = key => !!(state.favs || {})[key];
 function undo(date, key){ state.log = state.log.filter(e => !(e.date === date && e.key === key)); save(); }
 function addExtra(type, minutes, note){
   const x = EXTRA[type]; if (!x) return null;
@@ -101,6 +113,6 @@ function importJSON(txt){ const s = JSON.parse(txt); if (!s || s.v !== 1 || !Arr
 function reset(){ state = fresh(); save(); }
 
 window.Store = {PTS, EXTRA, SEASON, RES, ymd, parse, mondayOf, weekNo, seasonWeek, totals, progress, settlers, gardens,
-  isDone, complete, undo, addExtra, saveSets, lastSets, thToPts, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
+  isDone, complete, completeWith, setSwap, getSwap, setFav, isFav, undo, addExtra, saveSets, lastSets, thToPts, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
   get state(){ return state; }};
 })();

@@ -608,4 +608,39 @@ details.pantry summary::-webkit-details-marker{display:none}
 .hlift em.down{color:var(--danger)}
 .story{margin:0;font:italic 400 16.5px/1.6 var(--f-d);color:var(--ink);opacity:.92}
 .chapter.big .story{font-size:18px}
+/* ---------- meal swaps, eating out, undo, favorites ---------- */
+.swapbtn{all:unset;cursor:pointer;flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--faint);transition:color .2s,background .2s}
+.swapbtn:active{background:var(--fill2);color:var(--ink)}
+.swapbtn svg{width:16px;height:16px}
+.swapacts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.swapacts button{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:12px;border-radius:16px;background:var(--fill);box-shadow:inset 0 0 0 1px var(--hair)}
+.swapacts button:active{background:var(--fill2)}
+.swapacts b{font:600 13.5px/1.25 var(--f-b)}
+.swapacts small{font:500 11.5px var(--f-b);color:var(--sub)}
+.swapsheet{max-height:92vh}
+.swapsheet .group .row + .row::before{left:68px}
+.tierkey,.tierpick{display:flex;gap:6px;flex-wrap:wrap}
+.tier{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;font:600 12px var(--f-b);white-space:nowrap}
+.tier.L{background:var(--harvest-a);color:var(--harvest)}
+.tier.B{background:var(--land-a);color:var(--land)}
+.tier.I{background:rgba(241,156,134,.12);color:var(--danger)}
+.tierpick button{all:unset;cursor:pointer;height:40px;padding:0 16px;box-shadow:inset 0 0 0 1px transparent}
+.tierpick button.on{box-shadow:inset 0 0 0 1.6px currentColor}
+.dish{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;min-height:58px;position:relative}
+.dish + .dish::before{content:"";position:absolute;top:0;left:14px;right:0;height:1px;background:var(--hair)}
+.warnword{color:var(--gold2)}
+.callout.warn{background:rgba(241,156,134,.1);color:#ffc9b8}
+.row.extra{cursor:pointer;gap:12px}
+.row.extra input{width:22px;height:22px;accent-color:var(--gold);flex:none}
+.row.extra em{font:600 13px var(--f-b);font-style:normal;color:var(--harvest)}
+.linkbtn.inline{display:inline;padding:0;color:var(--gold2);text-decoration-color:rgba(244,189,99,.4)}
+.reward.canundo{pointer-events:auto;cursor:pointer;padding-right:12px}
+.reward .undo{font:600 12.5px var(--f-b);font-style:normal;color:var(--gold2);margin-left:6px;padding:6px 10px;border-radius:999px;background:var(--gold-a)}
+.favbtn{position:fixed;top:calc(var(--top) + 10px);right:max(16px,calc(50% - 244px));z-index:30;transition:opacity .2s}
+.favbtn svg{width:19px;height:19px}
+.favbtn.on{color:#ff7a8a}
+.favbtn.on svg{fill:#ff7a8a}
+#app.scrolled .favbtn{opacity:0;pointer-events:none}
+.favdot{color:#ff7a8a}
+.daybody .tick{width:28px;height:28px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
