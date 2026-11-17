@@ -1,0 +1,142 @@
+{
+  "week": 6,
+  "title": "Week 6",
+  "budget": 200,
+  "style": "batch",
+  "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax. Christmas week: Sunday's mojo pork covers nine meals, Christmas Eve is a 15-minute sheet pan and Christmas dinner for two is this week's new one.",
+  "allergyNote": "Nothing on this plan contains tree nuts or fish. The mojo marinade is homemade, so there is nothing hidden in it. Holiday cookies, candy and stuffing from other people often contain tree nuts, so ask before you eat them.",
+  "weekendNote": "Christmas weekend. Nothing is required. A portion of cranberry chicken with couscous is waiting for Saturday's lunch.",
+  "snacks": ["Clementines and string cheese", "Cottage cheese with a drizzle of honey", "2 hard-boiled eggs", "A banana"],
+  "have": [
+    {"id": "oats", "name": "Rolled oats", "note": "still plenty"},
+    {"id": "honey", "name": "Honey"},
+    {"id": "rice", "name": "Jasmine rice", "note": "about half the bag"},
+    {"id": "parm", "name": "Grated parmesan", "note": "about a cup"},
+    {"id": "raisins", "name": "Golden raisins", "note": "about half the box"},
+    {"id": "couscous", "name": "Plain couscous", "note": "about half the box"},
+    {"id": "onion", "name": "Yellow onions", "note": "about 3 left"},
+    {"id": "garlic", "name": "Garlic", "note": "about 1 bulb"}
+  ],
+  "menu": {
+    "mon": {"breakfast": "egg-bake", "lunch": "mojo-bowl", "dinner": "mojo-tacos", "heads": "Everything today comes from Sunday's prep. Dinner makes Wednesday's lunch."},
+    "tue": {"breakfast": "gingerbread-oats", "lunch": "mojo-bowl", "dinner": "pork-bean-soup", "heads": "Tonight's soup takes 20 minutes after pickleball and covers Thursday and Friday lunches."},
+    "wed": {"breakfast": "egg-bake", "lunch": "mojo-tacos", "dinner": "cuban-sandwich", "shared": "dinner", "heads": "Tonight, move the frozen pork portion to the fridge for Christmas Eve nachos."},
+    "thu": {"breakfast": "gingerbread-oats", "lunch": "pork-bean-soup", "dinner": "pork-nachos", "heads": "Christmas Eve. Dinner is a 15-minute sheet pan after pickleball."},
+    "fri": {"breakfast": "egg-bake", "lunch": "pork-bean-soup", "dinner": "cranberry-chicken", "shared": "dinner", "heads": "Merry Christmas. Dinner for two is this week's new one, and it makes Saturday's lunch."}
+  },
+  "prep": [
+    {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 100, "makes": "About 9 portions of mojo pork, 2 trays of roasted roots, lime rice and beans, chipotle crema, pickled onions, a breakfast bake, 2 jars of oats, 6 eggs", "steps": [
+      "Start the mojo pork in the crock pot first thing (low 8 hours or high 5).",
+      "Heat the oven to 425°F. Chop the carrots, Brussels sprouts, sweet potatoes and 1 red onion and roast them on 2 sheet pans for 25 to 30 minutes, swapping the pans halfway.",
+      "Cook 2 cups of rice and stir in the black beans, lime and cilantro.",
+      "Slice the other red onion thin and pour the warm pickling brine over it. Stir the chipotle crema together.",
+      "Turn the oven down to 375°F. Mix the breakfast bake with 2 cups of the roasted roots and bake it 30 minutes.",
+      "Mix 2 jars of gingerbread oats. Air-fry 6 eggs at 270°F for 15 minutes.",
+      "Shred the pork in its juices and portion it: 2 for bowls, 2 for tacos, 2 for soup, 2 for Cuban sandwiches in the fridge.",
+      "Freeze 1 portion for Christmas Eve nachos. Cooked pork keeps 3 to 4 days, so Thursday's waits in the freezer.",
+      "Pack 2 mojo bowls. Keep the crema and pickled onions in jars."
+    ]},
+    {"id": "wed", "day": "wed", "title": "Wednesday night", "minutes": 25, "makes": "Cuban sandwiches for two and nachos ready for Christmas Eve", "steps": [
+      "Move the frozen pork portion to the fridge.",
+      "Press the Cuban sandwiches in the cast iron and warm the roasted roots alongside."
+    ]}
+  ],
+  "groceries": [
+    {"id": "pork", "name": "Boneless pork shoulder roast", "qty": "about 4.5 lb", "section": "Meat", "store": "Aldi", "price": 9.86},
+    {"id": "thighs", "name": "Boneless skinless chicken thighs", "qty": "about 2 lb", "section": "Meat", "store": "Aldi", "price": 5.98},
+    {"id": "eggs", "name": "Large eggs", "qty": "18 count", "section": "Dairy and eggs", "store": "Aldi", "price": 4.29},
+    {"id": "yogurt", "name": "Plain nonfat Greek yogurt", "qty": "32 oz tub", "section": "Dairy and eggs", "store": "Aldi", "price": 4.29},
+    {"id": "milk", "name": "2% milk", "qty": "half gallon", "section": "Dairy and eggs", "store": "Aldi", "price": 1.89},
+    {"id": "cheddar", "name": "Shredded sharp cheddar", "qty": "8 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 2.49},
+    {"id": "swiss", "name": "Sliced Swiss cheese", "qty": "8 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 2.79},
+    {"id": "cottage", "name": "Low-fat cottage cheese", "qty": "24 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 3.29},
+    {"id": "string", "name": "Mozzarella string cheese", "qty": "12 count", "section": "Dairy and eggs", "store": "Aldi", "price": 3.79},
+    {"id": "carrots", "name": "Carrots", "qty": "2 lb bag", "section": "Produce", "store": "Aldi", "price": 1.29},
+    {"id": "brussels", "name": "Brussels sprouts", "qty": "about 2 lb", "section": "Produce", "store": "Aldi", "price": 3.49},
+    {"id": "sweetpot", "name": "Sweet potatoes", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 2.99},
+    {"id": "redonion", "name": "Red onions", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.78},
+    {"id": "oranges", "name": "Navel oranges", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.38},
+    {"id": "limes", "name": "Limes", "qty": "1 bag (about 6)", "section": "Produce", "store": "Aldi", "price": 2.49},
+    {"id": "cilantro", "name": "Cilantro", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.79},
+    {"id": "parsley", "name": "Flat-leaf parsley", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.99},
+    {"id": "kale", "name": "Chopped kale", "qty": "10 oz bag", "section": "Produce", "store": "Aldi", "price": 2.29},
+    {"id": "spinach", "name": "Baby spinach", "qty": "6 oz bag", "section": "Produce", "store": "Aldi", "price": 1.99},
+    {"id": "slaw", "name": "Coleslaw mix", "qty": "14 oz bag", "section": "Produce", "store": "Aldi", "price": 1.69},
+    {"id": "pepper", "name": "Red bell pepper", "qty": "1", "section": "Produce", "store": "Aldi", "price": 1.29},
+    {"id": "cranberries", "name": "Fresh cranberries", "qty": "12 oz bag", "section": "Produce", "store": "Aldi", "price": 2.49},
+    {"id": "clementines", "name": "Clementines", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 3.49},
+    {"id": "bananas", "name": "Bananas", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 1.49},
+    {"id": "blackbeans", "name": "Black beans", "qty": "2 cans", "section": "Shelf", "store": "Aldi", "price": 1.70},
+    {"id": "whitebeans", "name": "Cannellini beans", "qty": "2 cans", "section": "Shelf", "store": "Aldi", "price": 1.78},
+    {"id": "diced", "name": "Diced tomatoes", "qty": "14.5 oz can", "section": "Shelf", "store": "Aldi", "price": 0.89},
+    {"id": "broth", "name": "Low-sodium chicken broth", "qty": "32 oz carton", "section": "Shelf", "store": "Aldi", "price": 1.79},
+    {"id": "tortillas", "name": "Corn tortillas", "qty": "30 count", "section": "Shelf", "store": "Aldi", "price": 1.99},
+    {"id": "chips", "name": "Tortilla chips", "qty": "small bag", "section": "Shelf", "store": "Aldi", "price": 1.99},
+    {"id": "pickles", "name": "Dill pickle chips", "qty": "16 oz jar", "section": "Shelf", "store": "Aldi", "price": 1.99},
+    {"id": "bread", "name": "French bread loaf", "qty": "1", "section": "Shelf", "store": "Aldi", "price": 1.69},
+    {"id": "chipotle", "name": "Chipotle peppers in adobo", "qty": "7 oz can", "section": "Shelf", "store": "Publix", "price": 1.99}
+  ],
+  "pantry": [
+    {"id": "oil", "name": "Olive oil"},
+    {"id": "spray", "name": "Cooking spray"},
+    {"id": "salt", "name": "Salt"},
+    {"id": "pepper", "name": "Black pepper"},
+    {"id": "garlicpowder", "name": "Garlic powder"},
+    {"id": "cumin", "name": "Ground cumin"},
+    {"id": "oregano", "name": "Dried oregano"},
+    {"id": "paprika", "name": "Smoked paprika"},
+    {"id": "italian", "name": "Italian seasoning"},
+    {"id": "rosemary", "name": "Dried rosemary"},
+    {"id": "cinnamon", "name": "Ground cinnamon"},
+    {"id": "ginger", "name": "Ground ginger"},
+    {"id": "nutmeg", "name": "Ground nutmeg"},
+    {"id": "flakes", "name": "Red pepper flakes"},
+    {"id": "mustard", "name": "Yellow mustard"},
+    {"id": "vinegar", "name": "Apple cider vinegar"},
+    {"id": "balsamic", "name": "Balsamic vinegar"}
+  ],
+  "recipes": {
+    "mojo-pork": {"name": "Crock-pot mojo pork", "cuisine": "Prep", "component": true, "minutes": 15, "serves": "about 9 portions", "protein": 38, "equip": "crock pot", "ingredients": [
+      {"g": "pork", "qty": "4.5 lb, trimmed of the thick fat"}, {"g": "oranges", "qty": "juice of 2"}, {"g": "limes", "qty": "juice of 2"}, {"h": "garlic", "qty": "8 cloves, smashed"}, {"h": "onion", "qty": "1, sliced"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "oregano", "qty": "2 tsp"}, {"p": "salt", "qty": "2½ tsp"}, {"p": "pepper", "qty": "1 tsp"}],
+      "steps": ["Rub the pork all over with the salt, pepper, cumin and oregano.", "Lay the onion and garlic in the crock pot, set the pork on top and pour the orange and lime juice over it.", "Cook on low 8 hours or high 5, until it falls apart.", "Shred with two forks, skim the fat off the juices and stir the meat back into them.", "Portion into 9 containers of about 1 cup. Fridge 8, freeze 1."], "tip": "Cuban-style citrus and garlic pork. It goes bright in bowls and tacos, cozy in soup and rich in a pressed sandwich."},
+    "roast-roots": {"name": "Two-tray roasted roots and Brussels sprouts", "cuisine": "Prep", "component": true, "minutes": 40, "serves": "about 9 cups", "protein": 4, "equip": "2 sheet pans", "ingredients": [
+      {"g": "carrots", "qty": "1½ lb, in thick coins"}, {"g": "brussels", "qty": "2 lb, halved"}, {"g": "sweetpot", "qty": "2, in ¾-inch cubes"}, {"g": "redonion", "qty": "1, in wedges"}, {"p": "oil", "qty": "3 tbsp"}, {"p": "garlicpowder", "qty": "1 tsp"}, {"p": "rosemary", "qty": "1 tsp"}, {"p": "salt", "qty": "1½ tsp"}, {"p": "pepper", "qty": "½ tsp"}],
+      "steps": ["Heat the oven to 425°F.", "Toss everything with the oil and seasoning and spread it over 2 sheet pans, Brussels sprouts cut side down.", "Roast 25 to 30 minutes, swapping the pans halfway, until the sprouts are deeply browned.", "Cool, then store in one big container."], "tip": "Cut side down is what makes the Brussels sprouts crisp and sweet instead of soggy."},
+    "rice-beans": {"name": "Cilantro lime rice and black beans", "cuisine": "Prep", "component": true, "minutes": 25, "serves": "about 7 cups", "protein": 9, "equip": "pot", "ingredients": [
+      {"h": "rice", "qty": "2 cups dry"}, {"g": "blackbeans", "qty": "2 cans, rinsed"}, {"g": "limes", "qty": "zest and juice of 1"}, {"g": "cilantro", "qty": "a big handful, chopped"}, {"p": "salt", "qty": "1½ tsp"}, {"p": "oil", "qty": "1 tbsp"}],
+      "steps": ["Cook the rice with the salt and oil.", "Fold in the warm beans, lime zest and juice and cilantro.", "Cool and store. It keeps 5 days."]},
+    "chipotle-crema": {"name": "Chipotle yogurt crema", "cuisine": "Prep", "component": true, "minutes": 5, "serves": "about 1¼ cups", "protein": 6, "equip": "jar", "ingredients": [
+      {"g": "yogurt", "qty": "1 cup"}, {"g": "chipotle", "qty": "1 pepper plus 1 tbsp sauce, minced"}, {"g": "limes", "qty": "juice of ½"}, {"p": "salt", "qty": "½ tsp"}],
+      "steps": ["Stir everything together with 1 tbsp water.", "Taste and add more adobo sauce if you want it hotter. Freeze the rest of the can in a small bag."]},
+    "pickled-onions": {"name": "Quick pickled red onions", "cuisine": "Prep", "component": true, "minutes": 5, "serves": "1 jar", "protein": 0, "equip": "jar", "ingredients": [
+      {"g": "redonion", "qty": "1, sliced thin"}, {"p": "vinegar", "qty": "½ cup"}, {"h": "honey", "qty": "1 tbsp"}, {"p": "salt", "qty": "1 tsp"}],
+      "steps": ["Pack the onion into a jar.", "Warm the vinegar, ½ cup water, honey and salt until it dissolves and pour it over.", "Ready in 30 minutes. Keeps 2 weeks in the fridge."], "tip": "They turn bright pink and make every bowl, taco and sandwich taste finished."},
+    "egg-bake": {"name": "Roasted veggie breakfast bake", "cuisine": "Breakfast", "minutes": 40, "serves": "4 squares", "protein": 26, "equip": "cast iron or baking dish", "ingredients": [
+      {"g": "eggs", "qty": "10"}, {"g": "milk", "qty": "½ cup"}, {"r": "roast-roots", "qty": "2 cups, chopped"}, {"g": "spinach", "qty": "2 big handfuls"}, {"g": "cheddar", "qty": "½ cup"}, {"h": "parm", "qty": "¼ cup"}, {"p": "salt", "qty": "¾ tsp"}, {"p": "pepper", "qty": "½ tsp"}, {"p": "spray", "qty": "for the pan"}],
+      "steps": ["Heat the oven to 375°F and spray the pan.", "Whisk the eggs, milk, salt and pepper.", "Scatter the roasted roots and spinach in the pan, pour the eggs over and top with both cheeses.", "Bake 28 to 32 minutes, until the center is just set.", "Cool, cut into 4 and refrigerate. Reheat 60 seconds."], "tip": "Three breakfasts this week plus a spare square for a snack."},
+    "gingerbread-oats": {"name": "Gingerbread overnight oats", "cuisine": "Breakfast", "minutes": 10, "serves": "2 jars", "protein": 22, "equip": "2 jars", "ingredients": [
+      {"h": "oats", "qty": "1 cup"}, {"g": "milk", "qty": "1 cup"}, {"g": "yogurt", "qty": "1 cup"}, {"h": "honey", "qty": "2 tbsp"}, {"h": "raisins", "qty": "3 tbsp"}, {"p": "ginger", "qty": "1 tsp"}, {"p": "cinnamon", "qty": "1 tsp"}, {"p": "nutmeg", "qty": "a pinch"}, {"p": "salt", "qty": "a pinch"}],
+      "steps": ["Stir the milk, yogurt, honey, spices and salt together.", "Stir in the oats and raisins and split across 2 jars.", "Keeps 4 days. It tastes like a gingerbread cookie, cold or warm."]},
+    "hb-eggs": {"name": "Air-fryer hard-boiled eggs", "cuisine": "Snack", "minutes": 20, "serves": "6 eggs", "protein": 6, "equip": "air fryer", "ingredients": [
+      {"g": "eggs", "qty": "6"}, {"p": "salt", "qty": "for serving"}],
+      "steps": ["Put the eggs straight into the air fryer basket.", "Cook at 270°F for 15 minutes.", "Move them to a bowl of ice water for 5 minutes, then refrigerate."]},
+    "mojo-bowl": {"name": "Mojo pork rice bowl", "cuisine": "Mexican", "minutes": 5, "serves": "2 lunches", "protein": 44, "equip": "microwave", "ingredients": [
+      {"r": "mojo-pork", "qty": "1 portion each"}, {"r": "rice-beans", "qty": "1 cup each"}, {"r": "roast-roots", "qty": "1 cup each"}, {"r": "chipotle-crema", "qty": "2 tbsp each"}, {"r": "pickled-onions", "qty": "a few rings each"}, {"g": "cilantro", "qty": "for topping"}],
+      "steps": ["Pack rice and beans, roasted roots and pork in each container.", "Reheat 2 minutes.", "Top with the crema, pickled onions and cilantro."], "tip": "Built entirely from Sunday's blocks."},
+    "mojo-tacos": {"name": "Mojo pork tacos with chipotle crema", "cuisine": "Mexican", "minutes": 15, "serves": "2 (dinner + Wednesday lunch)", "protein": 40, "equip": "cast iron", "ingredients": [
+      {"r": "mojo-pork", "qty": "2 portions"}, {"g": "tortillas", "qty": "6 for tonight"}, {"g": "slaw", "qty": "2 cups"}, {"r": "pickled-onions", "qty": "a big spoonful"}, {"r": "chipotle-crema", "qty": "¼ cup"}, {"r": "rice-beans", "qty": "1 cup for Wednesday"}, {"g": "limes", "qty": "1, in wedges"}, {"g": "cilantro", "qty": "for topping"}],
+      "steps": ["Crisp the pork in a hot dry cast iron for 4 minutes without stirring, so the edges caramelize.", "Warm the tortillas in the same pan.", "Fill with pork, slaw, pickled onions, crema and cilantro, with lime to squeeze.", "Pack the second portion over rice and beans with slaw and crema for Wednesday's lunch."], "tip": "Crisping the pork in a dry pan is the difference between good and great."},
+    "pork-bean-soup": {"name": "Pork, white bean and kale soup", "cuisine": "Italian", "minutes": 25, "serves": "3 (dinner + Thursday and Friday lunch)", "protein": 38, "equip": "pot", "ingredients": [
+      {"r": "mojo-pork", "qty": "2 portions"}, {"g": "whitebeans", "qty": "2 cans, rinsed"}, {"g": "broth", "qty": "2¾ cups plus 1 cup water"}, {"g": "diced", "qty": "1 can"}, {"g": "kale", "qty": "4 big handfuls"}, {"g": "carrots", "qty": "2, diced"}, {"h": "onion", "qty": "1, diced"}, {"h": "garlic", "qty": "3 cloves"}, {"p": "italian", "qty": "1½ tsp"}, {"p": "flakes", "qty": "a pinch"}, {"p": "oil", "qty": "1 tbsp"}, {"h": "parm", "qty": "for topping"}],
+      "steps": ["Soften the onion and carrots in the oil for 6 minutes, then add the garlic, Italian seasoning and pepper flakes for 30 seconds.", "Add the broth, water, tomatoes and beans and simmer 10 minutes. Mash a few beans against the pot to thicken it.", "Stir in the pork and kale and simmer 3 minutes more.", "Top with parmesan. Pack 2 bowls for Thursday and Friday."], "tip": "Quick enough for after Tuesday pickleball, and it gets better by Thursday."},
+    "cuban-sandwich": {"name": "Pressed Cuban sandwiches with roasted roots", "cuisine": "American", "minutes": 20, "serves": "2", "protein": 46, "equip": "cast iron and a heavy pan", "ingredients": [
+      {"g": "bread", "qty": "the loaf, split into 2 long pieces"}, {"r": "mojo-pork", "qty": "2 portions"}, {"g": "swiss", "qty": "6 slices"}, {"g": "pickles", "qty": "a layer of chips"}, {"p": "mustard", "qty": "2 tbsp"}, {"r": "roast-roots", "qty": "2 cups, for the side"}, {"p": "spray", "qty": "for the pan"}],
+      "steps": ["Warm the pork in the microwave for 1 minute.", "Spread mustard on both sides of the bread, then layer Swiss, pork, pickles and more Swiss.", "Spray the cast iron and set it over medium. Lay in the sandwiches and press them with a heavy pan.", "Cook 3 to 4 minutes a side until golden and the cheese melts.", "Cut on the diagonal and serve with the roasted roots, warmed in the oven or air fryer."], "tip": "Dinner for two the night before Christmas Eve. The heavy pan on top is what makes it a real Cubano."},
+    "pork-nachos": {"name": "Christmas Eve sheet-pan nachos", "cuisine": "Mexican", "minutes": 15, "serves": "1", "protein": 40, "equip": "sheet pan", "ingredients": [
+      {"g": "chips", "qty": "2 big handfuls"}, {"r": "mojo-pork", "qty": "1 portion, from the freezer"}, {"r": "rice-beans", "qty": "½ cup"}, {"g": "cheddar", "qty": "½ cup"}, {"g": "pepper", "qty": "1, diced"}, {"r": "pickled-onions", "qty": "a spoonful"}, {"r": "chipotle-crema", "qty": "3 tbsp"}, {"g": "cilantro", "qty": "for topping"}],
+      "steps": ["Heat the oven to 400°F.", "Spread the chips on a sheet pan and top with the pork, rice and beans, pepper and cheddar.", "Bake 6 to 8 minutes until the cheese bubbles.", "Finish with crema, pickled onions and cilantro."], "tip": "A festive 15 minutes after pickleball on Christmas Eve."},
+    "cranberry-chicken": {"name": "Cranberry balsamic chicken with herbed couscous", "cuisine": "Mediterranean", "minutes": 35, "serves": "3 (Christmas dinner for two + Saturday lunch)", "protein": 44, "equip": "cast iron, small pot", "isNew": true, "ingredients": [
+      {"g": "thighs", "qty": "2 lb"}, {"g": "cranberries", "qty": "the bag"}, {"p": "balsamic", "qty": "¼ cup"}, {"h": "honey", "qty": "3 tbsp"}, {"h": "garlic", "qty": "3 cloves, minced"}, {"p": "rosemary", "qty": "1 tsp"}, {"p": "salt", "qty": "1 tsp"}, {"p": "pepper", "qty": "½ tsp"}, {"p": "oil", "qty": "1 tbsp"}, {"h": "couscous", "qty": "1 cup"}, {"g": "broth", "qty": "1¼ cups (the rest of the carton)"}, {"g": "parsley", "qty": "a big handful, chopped"}, {"g": "clementines", "qty": "zest and juice of 1"}, {"r": "roast-roots", "qty": "2 cups, for the side"}],
+      "steps": ["Season the thighs with salt, pepper and rosemary. Sear them in the oil in the cast iron, 5 minutes a side, then set them aside.", "Add the garlic, cranberries, balsamic, honey and ¼ cup water to the pan. Simmer 6 to 8 minutes until the berries burst into a glossy sauce.", "Nestle the chicken back in, spoon sauce over and simmer 5 minutes until it reaches 165°F.", "Meanwhile, bring 1¼ cups broth to a boil, stir in the couscous, cover off the heat 5 minutes and fluff with parsley and the clementine zest and juice.", "Serve over couscous with the roasted roots. Pack one plate for Saturday."], "tip": "This week's new one: a Christmas dinner that takes 35 minutes. The cranberries cook down into their own jammy sauce."}
+  }
+}
