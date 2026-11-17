@@ -839,10 +839,10 @@ function mountRecipePicker(sh, {slot, wn, plannedId, D, onPick}){
   const all = [];
   MEAL_WEEKS.forEach(n => { const W2 = MW[n]; if (!W2) return; Object.entries(W2.recipes).forEach(([id, r]) => { if (r.component || r.cuisine === 'Snack' || (n === wn && id === plannedId)) return;
     const need = n === wn ? [] : (r.ingredients || []).filter(i => i.g).map(i => (W2.groceries.find(g => g.id === i.g) || {}).name).filter(x => x && !have.has(x.toLowerCase()));
-    all.push({id, n, r, need, fav:Store.isFav(`${n}:${id}`)}); }); });
+    const rt = Store.getRate(`${n}:${id}`); all.push({id, n, r, need, rt, fav:Store.isFav(`${n}:${id}`) || rt === 1}); }); });
   const fits = x => (x.r.cuisine === 'Breakfast') === (slot === 'breakfast');
-  const seenName = new Set(), uniq = all.sort((a, b) => (fits(b) - fits(a)) || (b.fav - a.fav) || ((b.n === wn) - (a.n === wn)) || (b.n - a.n)).filter(x => { const k = x.r.name.toLowerCase(); if (seenName.has(k)) return false; seenName.add(k); return true; });
-  const rowH = x => `<button class="row tap" type="button" data-pick="${x.n}:${x.id}" style="all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative;width:100%"><span class="tile ctile c-${x.r.cuisine}">${ic(x.r.cuisine)}</span><span class="tx"><b>${x.fav ? '<span class="favdot">♥</span> ' : ''}${esc(x.r.name)}</b><small>${x.n === wn ? 'This week' : `Week ${x.n}`} · ${x.r.minutes} min · ${x.r.protein}g protein${x.need.length ? ` · need ${esc(x.need.slice(0, 3).join(', ').toLowerCase())}${x.need.length > 3 ? '…' : ''}` : ''}</small></span></button>`;
+  const seenName = new Set(), uniq = all.sort((a, b) => (fits(b) - fits(a)) || ((a.rt === -1) - (b.rt === -1)) || (b.fav - a.fav) || ((b.n === wn) - (a.n === wn)) || (b.n - a.n)).filter(x => { const k = x.r.name.toLowerCase(); if (seenName.has(k)) return false; seenName.add(k); return true; });
+  const rowH = x => `<button class="row tap" type="button" data-pick="${x.n}:${x.id}" style="all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative;width:100%"><span class="tile ctile c-${x.r.cuisine}">${ic(x.r.cuisine)}</span><span class="tx"><b>${x.fav ? '<span class="favdot">♥</span> ' : ''}${esc(x.r.name)}</b><small>${x.rt === -1 ? 'You said skip it · ' : ''}${x.n === wn ? 'This week' : `Week ${x.n}`} · ${x.r.minutes} min · ${x.r.protein}g protein${x.need.length ? ` · need ${esc(x.need.slice(0, 3).join(', ').toLowerCase())}${x.need.length > 3 ? '…' : ''}` : ''}</small></span></button>`;
   const paint = () => {
     const q = $('#rq', sh).value.trim().toLowerCase();
     const list = uniq.filter(x => !q || x.r.name.toLowerCase().includes(q) || x.r.cuisine.toLowerCase().includes(q));
@@ -1372,6 +1372,7 @@ function vKitchen(){
     ${ahead ? '' : `<section class="sect"><div class="sect-h"><span class="over">${tmenu ? 'Today' : 'This weekend'}</span></div>
       ${tmenu ? `<div class="rail">${Object.keys(SLOT).map(s => mealCard(D, wk, s, tmenu[s], tmenu.shared === s)).join('')}</div>`
         : `<div class="card"><h2 class="t3">Festival days</h2><p class="cap" style="margin:8px 0 0">${esc(D.weekendNote)}</p></div>`}</section>`}
+    ${ahead ? '' : toRateHTML()}
     <a class="harvest tap" href="#plan"><span class="over gold">${weekend(td) ? 'This weekend' : 'Weekly planner'}</span><span class="hl">Plan next week</span><span class="cap">Swap in any recipe and the grocery list follows${weekend(td) && !planDoneThisWeek() ? ` · +${Store.PTS.plan.pts} Harvest` : ''}</span>${ic('chev', 'i chev')}</a>
     ${blocksHTML(D, wk)}
     <section class="sect"><div class="sect-h"><span class="over">Prep sessions</span></div><div class="group">${D.prep.map(p => {
@@ -1392,6 +1393,24 @@ function vKitchen(){
   scrollAt = 50; setBar('Kitchen');
   wireWeekSwitch();
   $$('.days button', view).forEach(b => b.onclick = () => { kitchenDay = b.dataset.d; rerender(); });
+  wireRate(view, '', (v, seg) => { if (v !== null) setTimeout(() => { const row = seg.closest('.ratecard'); if (row) row.classList.add('gone'); }, 500); });
+}
+/* Lunches and dinners eaten in the last 7 days with no verdict yet (up to 3), so meals checked off on Today get rated too. */
+function eatenUnrated(){
+  const since = new Date(today()); since.setDate(since.getDate() - 7); const from = Store.ymd(since), seen = new Set(), out = [];
+  Store.state.log.filter(e => (e.key === 'lunch' || e.key === 'dinner') && e.date >= from && e.pts > 0).sort((a, b) => b.at - a.at).forEach(e => {
+    const sw = Store.getSwap(e.date, e.key), n = sw && sw.type === 'recipe' ? sw.wk : mealWeekOf(Store.parse(e.date)), D = MW[n]; if (!D) return;
+    const id = sw && sw.type === 'recipe' ? sw.id : Object.keys(D.recipes).find(k => D.recipes[k].name === e.label);
+    const r = id && D.recipes[id], key = `${n}:${id}`;
+    if (!r || r.component || seen.has(r.name) || Store.getRate(key) !== null) return;
+    seen.add(r.name); out.push({key, r});
+  });
+  return out.slice(0, 3);
+}
+function toRateHTML(){
+  const list = eatenUnrated(); if (!list.length) return '';
+  return `<section class="sect"><div class="sect-h"><span class="over">How was it?</span><span class="cap">shapes future weeks</span></div><div class="group">${list.map(({key, r}) =>
+    `<div class="row full ratecard"><span class="tx" style="gap:10px"><b>${esc(r.name)}</b>${rateSeg(key, ` data-name="${esc(r.name)}"`)}</span></div>`).join('')}</div></section>`;
 }
 function blocksHTML(D, wk){
   const blocks = Object.entries(D.recipes).filter(([, r]) => r.component);
@@ -1409,6 +1428,27 @@ function ingName(D, i, n){
   const r = D.recipes[i.r];
   return n ? `<a href="#recipe/${i.r}/${n}" data-stop style="color:var(--gold2);text-decoration:underline;text-decoration-color:rgba(244,189,99,.35);text-underline-offset:3px">${esc(r ? r.name : i.r)}</a>${r && r.component ? ' <span class="cap">· from Sunday prep</span>' : ''}` : esc(r ? r.name : i.r);
 }
+/* Meal ratings: make it again, it was fine, skip it. Loved recipes rise to the top of swaps, skipped ones sink. */
+const RATE = [[1, 'Make again'], [0, 'It was fine'], [-1, 'Skip it']];
+const RATE_TOAST = {'1':'Noted. It goes to the top of swaps.', '0':'Noted.', '-1':'Noted. It drops to the bottom of swaps.'};
+const rateSeg = (key, extra = '') => { const v = Store.getRate(key); return `<div class="seg rateseg" data-rate="${key}"${extra}>${RATE.map(([n, t]) => `<button type="button" data-v="${n}" class="${v === n ? 'on' : ''}">${t}</button>`).join('')}</div>`; };
+function wireRate(root, name, after){
+  $$('.rateseg', root).forEach(seg => seg.querySelectorAll('button').forEach(b => b.onclick = () => {
+    const key = seg.dataset.rate, v = +b.dataset.v, nm = seg.dataset.name || name, off = Store.getRate(key) === v;
+    Store.setRate(key, off ? null : v, nm); haptic();
+    seg.querySelectorAll('button').forEach(x => x.classList.toggle('on', !off && +x.dataset.v === v));
+    if (!off) toast(RATE_TOAST[v]);
+    if (after) after(off ? null : v, seg);
+  }));
+}
+function rateSheet(key, name, done){
+  const sh = sheet(`<div class="grab"></div><div><span class="over gold">Done cooking</span><h2 class="t2" style="margin-top:6px">How was ${esc(name)}?</h2></div>
+    <p class="cap" style="margin:0">Your answer shapes the swaps list and the meal weeks still to come.</p>${rateSeg(key)}
+    <button class="btn quiet wide" type="button" id="rlater">Not now</button>`);
+  let left = false; const go = () => { if (left) return; left = true; closeLayer(); setTimeout(done, 250); };
+  wireRate(sh, name, () => setTimeout(go, 450));
+  $('#rlater', sh).onclick = go;
+}
 function vRecipe(id, wn){
   const [D, n] = findRecipe(id, wn); if (!D) return vKitchen();
   const r = D.recipes[id];
@@ -1419,6 +1459,7 @@ function vRecipe(id, wn){
     <div class="stats3"><div><span class="cap">Time</span><b>${r.minutes}<span class="cap"> min</span></b></div><div><span class="cap">Protein</span><b>${r.protein}<span class="cap"> g</span></b></div><div><span class="cap">Makes</span><b style="font-size:14px;font-family:var(--f-b);font-weight:600;line-height:1.3">${esc(r.serves)}</b></div></div>
     ${r.tip ? `<div class="callout">${ic('info')}<span>${esc(r.tip)}</span></div>` : ''}
     <a class="btn wide" href="#cook/${id}/${n}">${ic('kitchen')}Start cook mode</a>
+    ${r.component ? '' : `<section class="sect"><div class="sect-h"><span class="over">Your verdict</span><span class="cap">after you have eaten it</span></div>${rateSeg(fk)}</section>`}
     <section class="sect"><div class="sect-h"><span class="over">Ingredients</span><span class="cap">${esc(r.equip)}</span></div><div class="group">${r.ingredients.map((i, k) => {
       const on = Store.flag('ing', `${n}:${id}:${k}`);
       return `<div class="row ing${on ? ' done' : ''}" data-k="${k}" role="button" aria-pressed="${on}"><span class="tx"><b>${ingName(D, i, n)}</b></span><span class="q">${esc(i.qty)}</span></div>`; }).join('')}</div>
@@ -1428,7 +1469,7 @@ function vRecipe(id, wn){
   scrollAt = 180; setBar(r.name, true); wireBack();
   $('#fav').onclick = e => { const on = !Store.isFav(fk); Store.setFav(fk, on ? {id, wk:n, name:r.name} : null); e.currentTarget.classList.toggle('on', on); haptic(); toast(on ? 'Saved to favorites. Swaps show it first.' : 'Removed from favorites.'); };
   $$('[data-stop]', view).forEach(a => a.addEventListener('click', e => e.stopPropagation()));
-  wireTchips();
+  wireTchips(); wireRate(view, r.name);
   $$('.ing', view).forEach(el => el.onclick = () => { const k = `${n}:${id}:${el.dataset.k}`, on = !Store.flag('ing', k); Store.flag('ing', k, on); el.classList.toggle('done', on); if (on) haptic(); });
 }
 function vCook(id, wn){
@@ -1457,10 +1498,11 @@ function vCook(id, wn){
     if (!last){ cook.i++; cook.dir = 1; haptic(); vCook(id, n); return; }
     const d = dayKey(today()), menu = n === mealWeek() && M.menu[d], slot = menu && Object.keys(SLOT).find(s => menu[s] === id);
     endCook();
-    if (slot && !Store.isDone(Store.ymd(today()), slot)){
+    const finish = () => { if (slot && !Store.isDone(Store.ymd(today()), slot)){
       const before = Store.totals().all; Store.complete(Store.ymd(today()), slot, r.name, slot);
       reward(Store.PTS[slot].res, Store.PTS[slot].pts, r.name); celebrate(before); location.hash = '#isle';
-    } else { toast('Enjoy it.'); goBack(); }
+    } else { toast('Enjoy it.'); goBack(); } };
+    if (r.component || Store.getRate(`${n}:${id}`) !== null) finish(); else rateSheet(`${n}:${id}`, r.name, finish);
   };
 }
 function endCook(){ cook = null; keepAwake(false); }

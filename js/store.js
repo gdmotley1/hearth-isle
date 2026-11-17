@@ -40,7 +40,7 @@ const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
 const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
 function mondayOf(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay()+6)%7); return ymd(x); }
 
-function fresh(){ return {v:1, start:mondayOf(new Date()), log:[], grocery:{}, sets:{}, prep:{}, ing:{}, swaps:{}, favs:{}, built:null, target:null, crops:{}, onboarded:false}; }
+function fresh(){ return {v:1, start:mondayOf(new Date()), log:[], grocery:{}, sets:{}, prep:{}, ing:{}, swaps:{}, favs:{}, rate:{}, built:null, target:null, crops:{}, onboarded:false}; }
 function load(){
   try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 1) return Object.assign(fresh(), s); } catch(e) {}
   return fresh();
@@ -88,6 +88,10 @@ const getSwap = (date, slot) => (state.swaps || {})[date + '|' + slot] || null;
 /* Hearted recipes, by week and id: favs['3:peruvian-chicken'] = {id, wk, name}. */
 function setFav(key, v){ state.favs = state.favs || {}; if (v) state.favs[key] = v; else delete state.favs[key]; save(); }
 const isFav = key => !!(state.favs || {})[key];
+/* Your verdict on a recipe after eating it, by week and id: rate['8:pozole-verde'] = {v, name, d}.
+   v is 1 (make it again), 0 (it was fine) or -1 (skip it next time). */
+function setRate(key, v, name){ state.rate = state.rate || {}; if (v === null || v === undefined) delete state.rate[key]; else state.rate[key] = {v, name, d:ymd(new Date())}; save(); }
+const getRate = key => { const r = (state.rate || {})[key]; return r ? r.v : null; };
 /* Buildings in the order they went up, with what each one cost: built = [{k, s:{stone, land, ...}, d}]. */
 function saveBuilt(list){ state.built = list; save(); }
 /* The building the settlers save for (null: the usual order), and what each farm plot grows. */
@@ -126,6 +130,6 @@ function importJSON(txt){ const s = JSON.parse(txt); if (!s || s.v !== 1 || !Arr
 function reset(){ state = fresh(); save(); }
 
 window.Store = {PTS, EXTRA, SEASON, repBonus, RES, ymd, parse, mondayOf, weekNo, seasonWeek, totals, progress, settlers, gardens,
-  isDone, complete, completeWith, setSwap, getSwap, setFav, isFav, saveBuilt, setTarget, setCrop, undo, addExtra, saveSets, lastSets, thToPts, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
+  isDone, complete, completeWith, setSwap, getSwap, setFav, isFav, setRate, getRate, saveBuilt, setTarget, setCrop, undo, addExtra, saveSets, lastSets, thToPts, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
   get state(){ return state; }};
 })();
