@@ -47,7 +47,7 @@ const P = {
   check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>', play:'<path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/>',
   clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>', flame:'<path d="M12 3c1.3 3.2 5 5 5 9.5a5 5 0 0 1-10 0c0-2.4 1.2-3.8 2-4.8.4 1.6 1.3 2.6 2.4 2.8C10.9 7.8 11.3 5.3 12 3z"/>',
   layers:'<path d="M12 3.5 21 8l-9 4.5L3 8z"/><path d="M3 12.5l9 4.5 9-4.5M3 16.5l9 4.5 9-4.5"/>', people:'<circle cx="9" cy="8" r="3"/><path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5M16 5.5a3 3 0 0 1 0 5.6M17.5 14.6c1.8.6 3 2.4 3 4.9"/>',
-  plus:'<path d="M12 5v14M5 12h14"/>', out:'<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M16 3c-1.5 2-2 4-2 6s.9 3 2 3v9"/>', swap:'<path d="M7 7h12l-3-3M17 17H5l3 3"/>', heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20M8 7.5h8M8 11h6"/>', sound:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>', mute:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>', timer:'<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 1.5M9.5 2.5h5"/>', minus:'<path d="M5 12h14"/>', info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>', today:'<path d="M10 6h10M10 12h10M10 18h10"/><path d="M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5L7.5 11M3.5 18l1.5 1.5L7.5 17"/>', out:'<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M16 3c-1.5 2-2 4-2 6s.9 3 2 3v9"/>', swap:'<path d="M7 7h12l-3-3M17 17H5l3 3"/>', heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20M8 7.5h8M8 11h6"/>', sound:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>', mute:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>', timer:'<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 1.5M9.5 2.5h5"/>', minus:'<path d="M5 12h14"/>', info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
   list:'<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>', cart:'<path d="M3 4h2.5l2.2 11h10.6L20.5 8H7"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/>',
   download:'<path d="M12 4v11M7 10.5l5 5 5-5M4.5 19.5h15"/>', upload:'<path d="M12 15.5v-11M7 9l5-5 5 5M4.5 19.5h15"/>', calendar:'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
   Mexican:'<path d="M3 16.5a9 9 0 0 1 18 0z"/><path d="M6.5 12.8c1-1 2-1 3 0s2 1 3 0 2-1 3 0 1.8.8 2 1"/>',
@@ -165,14 +165,31 @@ function payFor(k, bal){
   for (const r of Store.RES.filter(x => rem[x] > 0).sort((a, b) => rem[b] - rem[a])){ const take = Math.min(rem[r], owe); spend[r] += take; rem[r] -= take; owe -= take; if (!owe) break; }
   return owe > 0 ? null : spend;
 }
-/* Build everything that can now be paid for, in order. Returns the new entries. */
+/* What can be built next: the next few unbuilt buildings in order, with each Gardens tier after the one before it. */
+function buildChoices(b = builtSet(), max = 4){
+  const out = [];
+  for (const u of Isle.unlocks()){
+    if (b.has(u.k)) continue;
+    const prev = {g1:'gfound', g2:'g1', g3:'g2'}[u.t]; if (prev && !b.has(prev)) continue;
+    out.push(u); if (out.length >= max) break;
+  }
+  return out;
+}
+/* The building the settlers are saving for: the one you picked, or the next in the usual order. */
+function nextUp(b = builtSet()){
+  const t = Store.state.target, list = Isle.unlocks();
+  if (t && !b.has(t)){ const u = list.find(x => x.k === t); if (u && buildChoices(b, 99).some(x => x.k === t)) return u; }
+  return buildChoices(b, 1)[0] || null;
+}
+/* Build everything that can now be paid for. Returns the new entries. */
 function settle(){
-  const list = Isle.unlocks(), built = (Store.state.built || []).slice(), added = [];
+  const built = (Store.state.built || []).slice(), added = [];
   for (;;){
-    const next = list[built.length]; if (!next) break;
+    const next = nextUp(new Set(built.map(e => e.k))); if (!next) break;
     const sp = payFor(next.k, (() => { const b = balances(); added.forEach(e => Store.RES.forEach(r => { b[r] -= e.s[r] || 0; })); return b; })());
     if (!sp) break;
     const e = {k:next.k, s:sp, d:Store.ymd(today())}; built.push(e); added.push(e);
+    if (Store.state.target === next.k) Store.setTarget(null);
   }
   if (added.length) Store.saveBuilt(built);
   return added;
@@ -189,7 +206,7 @@ function migrateBuilt(){
 }
 const builtSet = () => new Set((Store.state.built || []).map(e => e.k));
 function unlockState(){
-  const list = Isle.unlocks(), built = (Store.state.built || []).length, next = list[built] || null, bal = balances();
+  const list = Isle.unlocks(), built = (Store.state.built || []).length, next = nextUp(), bal = balances();
   if (!next) return {list, next:null, nextI:-1, built, need:0, pct:100, parts:[], bal};
   const c = COSTS[next.k]; let have = 0;
   const parts = Store.RES.filter(r => c[r]).map(r => { const h = Math.max(0, Math.min(c[r], bal[r])); have += h; return {r, have:Math.max(0, Math.floor(bal[r])), cost:c[r]}; });
@@ -285,7 +302,7 @@ function toast(txt){ const t = document.createElement('div'); t.className = 'toa
 function celebrate(before){
   const added = settle(), s0 = 3 + Math.floor(before / 45), s1 = Store.settlers();
   if (added.length){
-    const list = Isle.unlocks(), n = (Store.state.built || []).length, u = list[n - 1], who = SETTLERS[(n - 1) % SETTLERS.length];
+    const list = Isle.unlocks(), n = (Store.state.built || []).length, u = list.find(x => x.k === added[added.length - 1].k), who = SETTLERS[(n - 1) % SETTLERS.length];
     buildFocus = true;
     if (/^g[123]$/.test(u.t)) gardensFest = true;
     announce(BUILD_T[u.t], u.t.startsWith('g') ? 'The settlers finished' : `${who} built`, u.t.startsWith('g') ? 'harvest' : 'house');
@@ -314,7 +331,7 @@ function setBar(title, back){
   bar.innerHTML = `${back ? `<button class="backbtn" type="button" data-back aria-label="Back">${ic('back')}</button>` : '<span></span>'}<b>${esc(title)}</b><span></span>`;
   const b = $('[data-back]', bar); if (b) b.onclick = goBack;
 }
-function goBack(){ if (history.length > 1) history.back(); else location.hash = '#isle'; }
+function goBack(){ if (history.length > 1) history.back(); else location.hash = '#today'; }
 function floatBack(){ return `<button class="backbtn floatback" type="button" data-back aria-label="Back">${ic('back')}</button>`; }
 function wireBack(){ $$('[data-back]', view).forEach(b => b.onclick = goBack); }
 function ring(done, total, size = 84, id = 'today'){
@@ -400,7 +417,7 @@ function rerender(){ const y = view.scrollTop; route(true); view.scrollTop = y; 
 function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id = 'h'){
   const live = id === 'h';
   if (live){ zoom = ISLE_ZOOM; anchor = ISLE_ANCHOR; }
-  const ss = season(), r = Isle.isoScene(prog, Isle.PAL_B, id, {live, winter:ss.winter, holiday:ss.holiday, built:live ? builtSet() : null});
+  const ss = season(), r = Isle.isoScene(prog, Isle.PAL_B, id, {live, winter:ss.winter, holiday:ss.holiday, built:live ? builtSet() : null, crops:Store.state.crops});
   const box = svg.getBoundingClientRect();
   const w = 2 * r.W * zoom, h = w * (box.height / Math.max(1, box.width));
   svg.setAttribute('viewBox', `${(-w / 2).toFixed(1)} ${(8 - anchor * h).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
@@ -436,7 +453,7 @@ function season(d = today()){
   return {winter, holiday, festival, nye};
 }
 // The home island fits the screen with a little room around it, centered between the title and the Today card.
-const ISLE_ZOOM = 1, ISLE_ANCHOR = .6;
+const ISLE_ZOOM = 1, ISLE_ANCHOR = .47;
 function settlerStory(i, st, role){
   const ds = Store.ymd(today()), hour = today().getHours();
   const done = new Set(Store.state.log.filter(e => e.date === ds).map(e => e.res));
@@ -614,8 +631,8 @@ function closeLayer(fromY){
 }
 
 /* ---------------- Isle ---------------- */
-function vIsle(){
-  const now = today(), d = dayKey(now), t = Store.totals(), g = Store.gardens(), sw = Store.seasonWeek(), u = unlockState();
+function vToday(){
+  const now = today(), d = dayKey(now), sw = Store.seasonWeek();
   const tasks = tasksFor(now), dp = dayProgress(now), menu = M.menu[d], fest = weekend(d);
   const hour = now.getHours(), greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
   const parts = dayParts(d), hm = `${String(hour).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -627,6 +644,7 @@ function vIsle(){
   if (next){
     if (next.session) cta = `<a class="btn wide" href="#play/${next.session}">${ic('play', 'i solid')}Start ${esc(next.label)}</a>`;
     else if (next.recipe) cta = `<a class="btn wide" href="${next.go}">${ic(next.icon)}Cook ${esc(next.label)}</a>`;
+    else if (next.planTask) cta = `<a class="btn wide" href="#plan">${ic('calendar')}Plan next week</a>`;
     else cta = `<button class="btn wide" type="button" data-cta="${next.key}">${ic('check')}Mark ${esc(next.label.toLowerCase())} done</button>`;
   }
   const left = dp.total - dp.done;
@@ -640,23 +658,14 @@ function vIsle(){
     return `<button type="button" data-off="${i - DAYS.indexOf(d)}" aria-label="See ${DAYN[dk]}" class="tap${dk === d ? ' today' : ''}${weekend(dk) ? ' rest' : ''}">${mini(future ? 0 : p.done / Math.max(1, p.total), weekend(dk))}${DAYN[dk][0]}</button>`;
   }).join('');
   const groups = parts.map((p, i) => [p[0], tasks.filter(x => partOf(x.at) === i), p[1], i === nowPart]);
-  const recent = Store.state.log.slice(-5).reverse();
-  const when = e => { const diff = Math.round((Store.parse(Store.ymd(now)) - Store.parse(e.date)) / 864e5); return diff === 0 ? 'Today' : diff === 1 ? 'Yesterday' : DAYN[dayKey(Store.parse(e.date))]; };
-  view.innerHTML = `<div class="isle">
-    <div class="world" id="world" role="button" aria-label="Your island. Tap a settler or a building to meet them, or anywhere else for details."><svg id="isl" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg></div>
-    <div class="topfade"></div>
-    <header class="ttl"><div><div class="over">Season one · week ${sw} of 12</div><h1 class="lt">Hearth Isle</h1></div>
-      <span class="hbtns"><a class="iconbtn tap" href="#chronicle" aria-label="The Island Chronicle">${ic('book')}</a><a class="iconbtn tap" href="#settings" aria-label="Settings">${ic('gear')}</a></span></header>
-    <div class="page stagger">
+  view.innerHTML = `<header class="lhead"><div class="row1"><div><span class="over gold">${DAYN[d]} · ${now.toLocaleDateString(undefined, {month:'short', day:'numeric'})} · week ${sw}</span><h1 class="lt" style="margin-top:6px">${fest ? 'Festival day' : left === 0 ? 'Day complete' : 'Today'}</h1></div>
+      <a class="iconbtn tap" href="#settings" aria-label="Settings">${ic('gear')}</a></div></header>
+    <div class="page stagger" style="margin-top:20px">
       <section class="card today">
         ${ring(dp.done, dp.total)}
-        <div class="tx"><span class="over gold">${DAYN[d]} · ${now.toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span><h2 class="t2">${fest ? 'Festival day' : left === 0 ? 'Day complete' : 'Today'}</h2><span class="cap">${line}</span></div>
+        <div class="tx"><span class="cap" style="font-size:14px">${line}</span></div>
         ${cta}
       </section>
-      ${u.next ? `<button class="nextup tap" type="button" id="nextup">
-        <span class="tile r-gold">${ic(u.next.t.startsWith('g') ? 'harvest' : 'house')}</span>
-        <span class="tx"><span class="over gold">Next on the island</span><span class="hl">${BUILD_T[u.next.t]}</span>
-        ${priceChips(u.parts)}<span class="meter">${twBar('next', u.pct)}</span>${u.parts.some(p => p.have < p.cost) && Store.RES.some(r => Math.floor(u.bal[r]) > ((COSTS[u.next.k] || {})[r] || 0)) ? `<span class="cap" style="margin-top:6px">Short on ${listify(u.parts.filter(p => p.have < p.cost).map(p => RESN[p.r]))}? Settlers trade 2 of your extra for 1.</span>` : ''}</span></button>` : ''}
       ${recapDue() ? `<button class="harvest tap" type="button" id="harvest"><span class="over gold">${dayKey(today()) === 'sun' ? 'Sunday harvest' : 'Last week on the island'}</span><span class="hl">${esc(chapterTitle(weekSummary(recapDue())))}</span><span class="cap">See what your week built and read this week's chapter</span>${ic('chev', 'i chev')}</button>` : ''}
       ${showCodeCard() ? `<div class="callout savecode" id="savecode">${ic('upload')}<span><b>Your island backs up online.</b> Save your backup code to Notes once, so a new phone can bring everything back.<span class="sc-btns"><button class="btn small" type="button" id="scsave">Save to Notes</button><button class="linkbtn" type="button" id="sclater">Later</button></span></span></div>` : ''}
       ${menu && menu.heads ? `<div class="callout">${ic('info')}<span>${esc(menu.heads)}</span></div>` : ''}
@@ -666,15 +675,8 @@ function vIsle(){
       <div class="timeline">${groups.map(([name, list, sub, isNow]) => list.length ? `<div class="part${isNow ? ' now' : ''}"><div class="part-h"><span class="over${isNow ? ' gold' : ''}">${name}${isNow ? ' · now' : ''}</span>${sub ? `<span class="cap">${sub}</span>` : ''}</div>
         <div class="group">${list.map(x => taskRow(x, {time:true})).join('')}</div></div>` : '').join('')}</div></section>
       <div class="group"><div class="row"><button class="main tap" type="button" id="extra" style="all:unset;cursor:pointer;flex:1;display:flex;align-items:center;gap:14px"><span class="tile r-gold">${ic('extra')}</span><span class="tx"><b>Log something extra</b><small>A hike, a bike ride, extra sets</small></span></button>${ic('plus', 'i chev')}</div></div>
-    </div></div>`;
-  scrollAt = 330; setBar('Hearth Isle');
-  const world = $('#world');
-  Life.sky(world, {winter:season().winter});
-  drawIsland($('#isl'));
-  wireCamera(world, $('#isl'));
-  world.insertAdjacentHTML('beforeend', `<button class="camreset" type="button" aria-label="Show the whole island">${ic('isle')}Whole island</button>`);
-  $('.camreset', world).addEventListener('click', e => { e.stopPropagation(); haptic(); closeBubble(); resetCam(); });
-  const nu = $('#nextup'); if (nu) nu.onclick = islandSheet;
+    </div>`;
+  scrollAt = 60; setBar('Today');
   const scs = $('#scsave'); if (scs) scs.onclick = () => saveCode();
   const hv = $('#harvest'); if (hv) hv.onclick = () => { haptic(); harvestSheet(recapDue()); };
   const scl = $('#sclater'); if (scl) scl.onclick = () => { codeLater = true; haptic(); const c = $('#savecode'); c.animate([{opacity:1}, {opacity:0, transform:'scale(.97)'}], {duration:220}); setTimeout(() => c.remove(), 230); };
@@ -682,19 +684,60 @@ function vIsle(){
   const c = $('[data-cta]'); if (c) c.onclick = () => toggleTask(c.dataset.cta, $(`.tick[data-task="${c.dataset.cta}"]`));
   $('#extra').onclick = openExtra;
   $$('.week button', view).forEach(b => b.onclick = () => { haptic(); daySheet(+b.dataset.off); });
-  countUp($('#tot'), lastAll, t.all); lastAll = t.all;
   const rb = $('.ring b[data-count]', view); countUp(rb, lastDone, dp.done); lastDone = dp.done;
+  playTw();
+}
+/* The island, full screen: balances and the next building on top of it. */
+function vIsle(){
+  const sw = Store.seasonWeek(), u = unlockState(), bal = u.bal;
+  view.innerHTML = `<div class="isleful">
+    <div class="world full" id="world" role="button" aria-label="Your island. Tap a settler or a building to meet them, or anywhere else for details."><svg id="isl" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="topfade"></div>
+    <header class="ttl"><div><div class="over">Season one · week ${sw} of 12</div><h1 class="lt">Hearth Isle</h1></div>
+      <span class="hbtns"><a class="iconbtn tap" href="#chronicle" aria-label="The Island Chronicle">${ic('book')}</a><a class="iconbtn tap" href="#settings" aria-label="Settings">${ic('gear')}</a></span></header>
+    <div class="hud">
+      <div class="resbar">${Store.RES.map(r => `<span class="rchip r-${r}">${ic(r)}<b class="num">${Math.max(0, Math.floor(bal[r]))}</b></span>`).join('')}<span class="rchip r-gold">${ic('people')}<b class="num">${Store.settlers()}</b></span></div>
+      ${u.next ? `<button class="nextup glassy tap" type="button" id="nextup">
+        <span class="tile r-gold">${ic(u.next.t.startsWith('g') ? 'harvest' : 'house')}</span>
+        <span class="tx"><span class="over gold">${Store.state.target ? 'Saving for' : 'Building next'} · tap to choose</span><span class="hl">${BUILD_T[u.next.t]}</span>
+        ${priceChips(u.parts)}<span class="meter">${twBar('next', u.pct)}</span></span></button>` : `<div class="nextup glassy"><span class="tx"><span class="over gold">Season complete</span><span class="hl">Everything is built</span></span></div>`}
+    </div></div>`;
+  scrollAt = 99999; setBar('Hearth Isle');
+  const world = $('#world');
+  Life.sky(world, {winter:season().winter});
+  drawIsland($('#isl'));
+  wireCamera(world, $('#isl'));
+  world.insertAdjacentHTML('beforeend', `<button class="camreset" type="button" aria-label="Show the whole island">${ic('isle')}Whole island</button>`);
+  $('.camreset', world).addEventListener('click', e => { e.stopPropagation(); haptic(); closeBubble(); resetCam(); });
+  const nu = $('#nextup'); if (nu && nu.tagName === 'BUTTON') nu.onclick = () => { haptic(); buildSheet(); };
   playTw();
   if (buildFocus || festival || gardensFest){
     const fest = festival, gf = gardensFest; buildFocus = false; festival = false; gardensFest = false;
     setTimeout(() => {
-      view.scrollTo({top:0, behavior:'smooth'});
       if (fest) setTimeout(() => { Life.lanterns(world); Life.fireworks(world, 6); }, 350);
       if (gf) setTimeout(() => { Life.bunting($('#isl'), scene); Life.fireworks(world, 8); }, 2600);
     }, 40);
   }
   playIslandFx(world);
   seasonalMoment(world);
+}
+const CROPN = {greens:'Greens', wheat:'Wheat', pumpkins:'Pumpkins', berries:'Berries'};
+/* Choose what the settlers build next, and what each farm plot grows. */
+function buildSheet(){
+  const b = builtSet(), choices = buildChoices(b), cur = nextUp(b), tgt = Store.state.target;
+  const farms = (Store.state.built || []).filter(e => Isle.unlocks().find(u => u.k === e.k && u.t === 'farm'));
+  const sh = sheet(`<div class="grab"></div><div><div class="over gold">The settlers are ready</div><h2 class="t2" style="margin-top:8px">What should they build next?</h2></div>
+    <div class="group">${choices.map(u => `<button type="button" class="row tap choice${cur && cur.k === u.k ? ' on' : ''}" data-k="${u.k}"><span class="tile r-gold">${ic(u.t.startsWith('g') ? 'harvest' : 'house')}</span><span class="tx"><b>${BUILD_T[u.t]}${cur && cur.k === u.k ? ' <span class="cap">· saving for this</span>' : ''}</b>${priceChips(costParts(u.k), true)}</span></button>`).join('')}</div>
+    <p class="fine">Whatever you pick, resources go toward it first. ${tgt ? 'After it is built the settlers go back to the usual order.' : 'Right now they are following the usual order.'}</p>
+    ${farms.length ? `<div class="sect"><div class="sect-h"><span class="over">What your fields grow</span></div><div class="group">${farms.map((e, i) => { const now = (Store.state.crops || {})[e.k] || ['greens', 'wheat', 'pumpkins'][i % 3];
+      return `<div class="row fieldrow"><span class="tx"><b>Field ${i + 1}</b></span><span class="cropchips">${Object.keys(CROPN).map(c => `<button type="button" class="cropbtn c-${c}${now === c ? ' on' : ''}" data-f="${e.k}" data-c="${c}">${CROPN[c]}</button>`).join('')}</span></div>`; }).join('')}</div></div>` : ''}`);
+  $$('.choice', sh).forEach(x => x.onclick = () => {
+    const k = x.dataset.k, def = buildChoices(b, 1)[0];
+    Store.setTarget(def && def.k === k ? null : k); haptic();
+    const before = Store.totals().all; celebrate(before);
+    closeLayer(); toast(`The settlers are saving for ${BUILD[Isle.unlocks().find(u => u.k === k).t]}.`); setTimeout(rerender, 300);
+  });
+  $$('.cropbtn', sh).forEach(x => x.onclick = () => { Store.setCrop(x.dataset.f, x.dataset.c); haptic(); $$(`.cropbtn[data-f="${x.dataset.f}"]`, sh).forEach(y => y.classList.toggle('on', y === x)); const svg = $('#isl'); if (svg){ const keep = seen; drawIsland(svg); seen = keep; } });
 }
 function seasonalMoment(world){
   const ss = season(), ds = Store.ymd(today());
@@ -918,7 +961,7 @@ async function vPlan(){
     </div>`;
   scrollAt = 90; setBar('Plan next week', true); wireBack();
   dock.innerHTML = done ? `<div class="btn wide planned">${ic('check')}Planned · +${done.pts} Harvest earned. Changes still update the list.</div>` : `<button class="btn wide" type="button" id="plock">${ic('check')}Lock in my plan · +${Store.PTS.plan.pts} Harvest</button>`;
-  const lk = $('#plock'); if (lk) lk.onclick = () => { lockPlan(); setTimeout(() => location.hash = '#isle', 500); };
+  const lk = $('#plock'); if (lk) lk.onclick = () => { lockPlan(); setTimeout(() => location.hash = '#today', 500); };
   $('#pmkt').onclick = () => { shopWeek = wn; };
   const rs = $('#preset'); if (rs) rs.onclick = () => { DAYS.slice(0, 5).forEach((dk, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); Object.keys(SLOT).forEach(slot => { const sw = Store.getSwap(Store.ymd(d), slot); if (sw && sw.type === 'recipe') Store.setSwap(Store.ymd(d), slot, null); }); }); haptic(); toast('Back to the suggested plan.'); rerender(); };
   $$('[data-plan]', view).forEach(b => b.onclick = () => {
@@ -1128,7 +1171,7 @@ function renderPlay(){
         haptic(); reward(pts.res, pts.pts, s.title); celebrate(before); }
       endPlay(); location.hash = '#isle';
     };
-    $('#pclose').onclick = () => { endPlay(); location.hash = '#isle'; };
+    $('#pclose').onclick = () => { endPlay(); location.hash = '#today'; };
     $('#psnd').onclick = toggleSound;
     return;
   }
@@ -1721,15 +1764,15 @@ function onboarding(){
 }
 
 /* ---------------- router ---------------- */
-const TABS = [['isle','Isle'],['train','Train'],['market','Market'],['kitchen','Kitchen']];
+const TABS = [['today','Today'],['train','Train'],['isle','Isle'],['market','Market'],['kitchen','Kitchen']];
 nav.innerHTML = TABS.map(([k, l]) => `<a href="#${k}" data-tab="${k}" aria-label="${l}">${ic(k)}<span>${l}</span></a>`).join('');
-const TAB_OF = {session:'train', play:'train', recipe:'kitchen', cook:'kitchen', prep:'kitchen', settings:'isle', chronicle:'isle', plan:'kitchen'};
+const TAB_OF = {session:'train', play:'train', recipe:'kitchen', cook:'kitchen', prep:'kitchen', settings:'today', chronicle:'isle', plan:'kitchen'};
 const DETAIL = new Set(['session','recipe','prep','settings','chronicle','plan']);
 let lastName = null, lastTab = null, quiet = false;
 const stack = [];
 function route(keep){
-  const hash = location.hash || '#isle';
-  const [name, arg, arg2] = (hash.slice(1) || 'isle').split('/');
+  const hash = location.hash || '#today';
+  const [name, arg, arg2] = (hash.slice(1) || 'today').split('/');
   if ((name === 'recipe' || name === 'cook') && arg2 && !MW[+arg2] && MEAL_WEEKS.includes(+arg2)){ loadWeek(+arg2).then(() => route(keep)); return; }
   const tab = TAB_OF[name] || name;
   let dir = 'enter';
@@ -1748,7 +1791,7 @@ function route(keep){
   if (name !== 'isle'){ cam.s = 1; cam.cx = 0; cam.cy = 0; }
   dock.innerHTML = ''; layer.innerHTML = '';
   view.style.transform = '';
-  ({isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg, arg2), cook:() => vCook(arg, arg2), prep:() => vPrep(arg, arg2), settings:vSettings, chronicle:vChronicle, plan:vPlan}[name] || vIsle)();
+  ({today:vToday, isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg, arg2), cook:() => vCook(arg, arg2), prep:() => vPrep(arg, arg2), settings:vSettings, chronicle:vChronicle, plan:vPlan}[name] || vToday)();
   if (!keep){
     view.scrollTop = 0; app.classList.remove('scrolled');
     const first = view.firstElementChild;
@@ -1814,7 +1857,7 @@ async function boot(){
   onboarding();
   Cloud.start();
   setTimeout(loadAllWeeks, 4000);
-  Cloud.onChange(i => { if (i.status === 'ok' && showCodeCard() && /^#?(isle)?$/.test(location.hash.replace('#', '')) && !$('#savecode')) rerender(); });
+  Cloud.onChange(i => { if (i.status === 'ok' && showCodeCard() && /^(today)?$/.test(location.hash.replace('#', '')) && !$('#savecode')) rerender(); });
   const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !local){
     // When an update installs, swap to it right away, unless a workout or cook mode is open.

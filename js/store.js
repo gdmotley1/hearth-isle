@@ -33,7 +33,7 @@ const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
 const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
 function mondayOf(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay()+6)%7); return ymd(x); }
 
-function fresh(){ return {v:1, start:mondayOf(new Date()), log:[], grocery:{}, sets:{}, prep:{}, ing:{}, swaps:{}, favs:{}, built:null, onboarded:false}; }
+function fresh(){ return {v:1, start:mondayOf(new Date()), log:[], grocery:{}, sets:{}, prep:{}, ing:{}, swaps:{}, favs:{}, built:null, target:null, crops:{}, onboarded:false}; }
 function load(){
   try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 1) return Object.assign(fresh(), s); } catch(e) {}
   return fresh();
@@ -83,6 +83,9 @@ function setFav(key, v){ state.favs = state.favs || {}; if (v) state.favs[key] =
 const isFav = key => !!(state.favs || {})[key];
 /* Buildings in the order they went up, with what each one cost: built = [{k, s:{stone, land, ...}, d}]. */
 function saveBuilt(list){ state.built = list; save(); }
+/* The building the settlers save for (null: the usual order), and what each farm plot grows. */
+function setTarget(k){ state.target = k || null; save(); }
+function setCrop(k, crop){ state.crops = state.crops || {}; state.crops[k] = crop; save(); }
 function undo(date, key){ state.log = state.log.filter(e => !(e.date === date && e.key === key)); save(); }
 function addExtra(type, minutes, note){
   const x = EXTRA[type]; if (!x) return null;
@@ -116,6 +119,6 @@ function importJSON(txt){ const s = JSON.parse(txt); if (!s || s.v !== 1 || !Arr
 function reset(){ state = fresh(); save(); }
 
 window.Store = {PTS, EXTRA, SEASON, RES, ymd, parse, mondayOf, weekNo, seasonWeek, totals, progress, settlers, gardens,
-  isDone, complete, completeWith, setSwap, getSwap, setFav, isFav, saveBuilt, undo, addExtra, saveSets, lastSets, thToPts, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
+  isDone, complete, completeWith, setSwap, getSwap, setFav, isFav, saveBuilt, setTarget, setCrop, undo, addExtra, saveSets, lastSets, thToPts, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
   get state(){ return state; }};
 })();

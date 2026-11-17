@@ -51,7 +51,8 @@ function box(x0,y0,x1,y1,z0,h,cT,cL,cR){
    +(cT?poly([P(x0,y0,z0+h),P(x1,y0,z0+h),P(x1,y1,z0+h),P(x0,y1,z0+h)],cT):'');
 }
 function shadowAt(sx,sy,rx,p){return `<ellipse cx="${sx}" cy="${sy}" rx="${rx}" ry="${rx/2}" fill="${p.shadow}"/>`;}
-let LIGHTS=[], WINTER=false;
+let LIGHTS=[], WINTER=false, CROPSEL={};
+const CROPS={greens:{c:'#3f7a52',r:1.9},wheat:{c:'#c9a85a',r:1.6},pumpkins:{c:'#d9822b',r:2.4},berries:{c:'#a3405f',r:1.5}};
 const SNOW='#d5dde7',SNOW2='#c4cedb',SNOWD='#a9b5c4',BULBS=['#ff6b6b','#ffd166','#7bd389','#6ec1ff'];
 const light=(x,y,r,o=1)=>LIGHTS.push([x,y,r,o]);
 const H=(x,y)=>{let h=(x*374761393+y*668265263)|0;h=(h^(h>>>13))*1274126177|0;return (h^(h>>>16))>>>0;};
@@ -142,10 +143,10 @@ function isoFarm(o,p){
   if(WINTER){s+=poly([P(o.x+i+.03,o.y+i+.03),P(o.x+1-i-.03,o.y+i+.03),P(o.x+1-i-.03,o.y+1-i-.03),P(o.x+i+.03,o.y+1-i-.03)],SNOW2);
     for(let r=0;r<3;r++){const y=o.y+.25+r*.25;s+=`<line x1="${P(o.x+.18,y)[0]}" y1="${P(o.x+.18,y)[1]}" x2="${P(o.x+.82,y)[0]}" y2="${P(o.x+.82,y)[1]}" stroke="${SNOWD}" stroke-width="1.4" stroke-linecap="round"/>`;}
     return s;}
-  const c=p.crops[o.crop||0];
+  const cs=CROPS[CROPSEL[o.k]],c=cs?cs.c:p.crops[o.crop||0],cr=cs?cs.r:1.9;
   for(let r=0;r<3;r++){const y=o.y+.25+r*.25;
     s+=`<line x1="${P(o.x+.18,y)[0]}" y1="${P(o.x+.18,y)[1]}" x2="${P(o.x+.82,y)[0]}" y2="${P(o.x+.82,y)[1]}" stroke="${p.night?'#3b2e23':'#a07a52'}" stroke-width="1.2"/>`;
-    for(let k=0;k<4;k++){const [cx,cy]=P(o.x+.22+k*.19,y,1.6);s+=`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="1.9" fill="${c}"/>`;}}
+    for(let k=0;k<4;k++){const [cx,cy]=P(o.x+.22+k*.19,y,1.6);s+=`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${cr}" fill="${c}"/>`;}}
   return s;
 }
 function isoWell(o,p){
@@ -254,7 +255,7 @@ function person(sx,sy,c,p,scale=1){
 
 function isoScene(prog,p,id,opt={}){
   const f=Math.max(0,Math.min(4,prog*4)),stage=Math.floor(f+1e-9);let gst=f<.6?0:f<1.5?1:f<2.5?2:f<3.6?3:4;
-  WINTER=!!opt.winter;
+  WINTER=!!opt.winter; CROPSEL=opt.crops||{};
   // With a built list, buildings appear when they were paid for; without one (onboarding art), by progress.
   const B=opt.built;
   const vis=B?OBJ.filter(o=>o.th===0||(o.t==='gardens'?B.has('gfound'):B.has(o.k))):OBJ.filter(o=>o.th<=f);

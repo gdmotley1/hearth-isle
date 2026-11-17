@@ -665,4 +665,26 @@ details.pantry summary::-webkit-details-marker{display:none}
 .pchip svg{width:12px;height:12px}
 .pchip.ok{box-shadow:inset 0 0 0 1px currentColor}
 .price.small .pchip{height:20px;font-size:11px}
+/* ---------- full-screen island ---------- */
+.isleful{position:absolute;inset:0;overflow:hidden}
+.world.full{position:absolute;inset:0;height:auto;-webkit-mask-image:none;mask-image:none}
+.isleful .ttl{z-index:2}
+.hud{position:absolute;left:16px;right:16px;bottom:calc(84px + var(--bot));z-index:3;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.hud > *{pointer-events:auto}
+.resbar{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.rchip{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 11px 0 8px;border-radius:999px;background:rgba(14,22,38,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 0 0 1px var(--edge);color:var(--tc);font:600 13px var(--f-b)}
+.rchip svg{width:15px;height:15px}
+.rchip b{color:var(--ink);font-weight:600}
+.nextup.glassy{background:rgba(14,22,38,.78);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 0 0 1px rgba(244,189,99,.22),0 16px 40px -16px rgba(0,0,0,.8)}
+.isleful .camreset{bottom:auto;top:calc(var(--top) + 96px)}
+.lhead .row1 .iconbtn{margin-right:-8px}
+/* choosing the next building and the crops */
+.choice{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:14px;width:100%;padding:12px 14px;min-height:64px;position:relative}
+.choice + .choice::before{content:"";position:absolute;top:0;left:68px;right:0;height:1px;background:var(--hair)}
+.choice.on{background:var(--gold-a)}
+.fieldrow{flex-wrap:wrap;gap:8px}
+.cropchips{display:flex;gap:5px;flex-wrap:wrap}
+.cropbtn{all:unset;cursor:pointer;height:28px;padding:0 10px;border-radius:999px;font:600 12px var(--f-b);background:var(--fill2);color:var(--sub)}
+.cropbtn.on{color:#1a1206}
+.cropbtn.on.c-greens{background:#6fbf7e}.cropbtn.on.c-wheat{background:#e2c27a}.cropbtn.on.c-pumpkins{background:#f0a35a}.cropbtn.on.c-berries{background:#d57b98}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
