@@ -674,13 +674,37 @@ function sheet(html){
       g = null;
     };
     grab.addEventListener('pointerup', end); grab.addEventListener('pointercancel', end);
+    // A close button pinned to the top of every sheet, so it never scrolls out of reach.
+    const x = document.createElement('button'); x.type = 'button'; x.className = 'sheetx'; x.setAttribute('aria-label', 'Close'); x.innerHTML = ic('close');
+    x.addEventListener('pointerdown', e => e.stopPropagation()); x.onclick = () => { haptic(); closeLayer(); };
+    grab.appendChild(x);
+    // Swipe down anywhere on the sheet closes it, once it is scrolled to the top.
+    let t = null;
+    sh.addEventListener('touchstart', e => { if (e.touches.length !== 1 || e.target.closest('.grab, input, textarea, select')) { t = null; return; }
+      t = {y0:e.touches[0].clientY, x0:e.touches[0].clientX, top:sh.scrollTop <= 0, dy:0, t0:performance.now(), on:false}; }, {passive:true});
+    sh.addEventListener('touchmove', e => {
+      if (!t || !t.top) return;
+      const dy = e.touches[0].clientY - t.y0, dx = Math.abs(e.touches[0].clientX - t.x0);
+      if (!t.on){ if (dy > 10 && dy > dx * 1.4 && sh.scrollTop <= 0){ t.on = true; t.y0 += dy; sh.style.animation = 'none'; } else { if (dy < -4 || dx > 12) t = null; return; } }
+      e.preventDefault(); t.dy = Math.max(0, e.touches[0].clientY - t.y0); sh.style.transform = `translateY(${t.dy}px)`;
+    }, {passive:false});
+    sh.addEventListener('touchend', () => {
+      if (!t || !t.on){ t = null; return; }
+      const v = t.dy / Math.max(1, performance.now() - t.t0);
+      if (t.dy > 90 || (v > .5 && t.dy > 30)) closeLayer(t.dy);
+      else { sh.animate([{transform:`translateY(${t.dy}px)`}, {transform:'translateY(0)'}], {duration:260, easing:'cubic-bezier(.3,1.3,.5,1)'}); sh.style.transform = ''; }
+      t = null;
+    });
   }
   return sh;
 }
 function closeLayer(fromY){
   const s = $('.sheet', layer);
   if (!s){ layer.innerHTML = ''; return; }
-  s.animate([{transform:`translateY(${typeof fromY === 'number' ? fromY : 0}px)`}, {transform:'translateY(100%)'}], {duration:280, easing:'cubic-bezier(.4,0,1,1)', fill:'forwards'}).onfinish = () => { layer.innerHTML = ''; };
+  // Clear when the slide-out ends, and after 350 ms regardless, so a stalled animation never leaves a sheet stuck open.
+  const done = () => { if (layer.contains(s)) layer.innerHTML = ''; };
+  s.animate([{transform:`translateY(${typeof fromY === 'number' ? fromY : 0}px)`}, {transform:'translateY(100%)'}], {duration:280, easing:'cubic-bezier(.4,0,1,1)', fill:'forwards'}).onfinish = done;
+  setTimeout(done, 350);
   const sc = $('.scrim', layer); if (sc) sc.animate([{opacity:1}, {opacity:0}], {duration:280, fill:'forwards'});
 }
 
@@ -750,7 +774,7 @@ function vIsle(){
     <header class="ttl"><div><div class="over">Season one · week ${sw} of 12</div><h1 class="lt">Motley Island</h1></div>
       <span class="hbtns"><a class="iconbtn tap" href="#chronicle" aria-label="The Island Chronicle">${ic('book')}</a><a class="iconbtn tap" href="#settings" aria-label="Settings">${ic('gear')}</a></span></header>
     <div class="hud">
-      <div class="resbar">${Store.RES.map(r => `<span class="rchip r-${r}">${ic(r)}<b class="num">${Math.max(0, Math.floor(bal[r]))}</b></span>`).join('')}<span class="rchip r-gold">${ic('people')}<b class="num">${Store.settlers()}</b></span></div>
+      <button class="resbar tap" type="button" id="resbar" aria-label="Your resources and settlers">${Store.RES.map(r => `<span class="rchip r-${r}">${ic(r)}<b class="num">${Math.max(0, Math.floor(bal[r]))}</b></span>`).join('')}<span class="rchip r-gold">${ic('people')}<b class="num">${Store.settlers()}</b></span></button>
       ${u.next ? `<button class="nextup glassy tap" type="button" id="nextup">
         <span class="tile r-gold">${ic(u.next.t.startsWith('g') ? 'harvest' : 'house')}</span>
         <span class="tx"><span class="over gold">${Store.state.target ? 'Saving for' : 'Building next'} · tap to choose</span><span class="hl">${BUILD_T[u.next.t]}</span>
@@ -764,6 +788,7 @@ function vIsle(){
   world.insertAdjacentHTML('beforeend', `<button class="camreset" type="button" aria-label="Show the whole island">${ic('isle')}Whole island</button>`);
   $('.camreset', world).addEventListener('click', e => { e.stopPropagation(); haptic(); closeBubble(); resetCam(); });
   const nu = $('#nextup'); if (nu && nu.tagName === 'BUTTON') nu.onclick = () => { haptic(); buildSheet(); };
+  $('#resbar').onclick = () => { haptic(); islandSheet(); };
   playTw();
   if (buildFocus || festival || gardensFest){
     const fest = festival, gf = gardensFest; buildFocus = false; festival = false; gardensFest = false;

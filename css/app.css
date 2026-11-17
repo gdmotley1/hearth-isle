@@ -452,7 +452,7 @@ details.pantry summary::-webkit-details-marker{display:none}
 #view{background:var(--bg)}
 
 /* ---------- sheets: a bigger grab zone you can drag down ---------- */
-.sheet .grab{align-self:stretch;height:26px;margin:-10px -20px -8px;width:auto;border-radius:0;background:none;touch-action:none;cursor:grab;position:relative;flex:none}
+.sheet .grab{align-self:stretch;height:44px;margin:-10px -20px -18px;width:auto;border-radius:0;background:linear-gradient(rgba(16,25,42,.97) 70%,rgba(16,25,42,0));touch-action:none;cursor:grab;position:sticky;top:-10px;z-index:3;flex:none}
 .sheet .grab::before{content:"";position:absolute;left:50%;top:10px;width:36px;height:5px;margin-left:-18px;border-radius:5px;background:rgba(255,255,255,.22)}
 
 /* ---------- workout player ---------- */
@@ -750,3 +750,7 @@ details.pantry summary::-webkit-details-marker{display:none}
 .swt.on{background:var(--gold-a)}
 .swt.on i{transform:translateX(18px);background:var(--gold2)}
 .swt:disabled{opacity:.5}
+.sheetx{all:unset;cursor:pointer;position:absolute;right:12px;top:8px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);color:var(--ink)}
+.sheetx svg{width:16px;height:16px}
+.sheetx:active{background:rgba(255,255,255,.2)}
+button.resbar{border:0;background:none;padding:0;margin:0 auto;font:inherit;color:inherit;width:100%;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent}
