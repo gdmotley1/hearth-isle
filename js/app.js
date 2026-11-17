@@ -1197,20 +1197,23 @@ function renderPlay(){
     const key = plannedToday ? plannedToday.type : null, already = key && Store.isDone(Store.ymd(today()), key);
     const pts = key ? Store.PTS[key] : {res:'stone', pts:Math.max(1, Math.round(s.minutes / Store.EXTRA.strength.per))};
     const total = p.log.reduce((a, x) => a + x[2], 0);
+    const over = p.log.reduce((a, [bi, , r]) => { const b = s.blocks[bi], t = targetOf(p, b); return a + (logsReps(p, b) && t ? Math.max(0, r - t) : 0); }, 0);
+    const bkey = (key || 'extra:' + p.id) + '+reps', bonus = already || Store.isDone(Store.ymd(today()), bkey) ? 0 : Store.repBonus(over), gain = (already ? 0 : pts.pts) + bonus;
     const lastSame = p.last.filter(x => p.log.some(y => y[0] === x[0] && y[1] === x[1]));
     const lastTotal = lastSame.reduce((a, x) => a + x[2], 0), delta = total - lastTotal;
     const moves = s.blocks.map((b, bi) => ({b, bi, now:p.log.filter(x => x[0] === bi).map(x => x[2]), was:lastFor(p, bi)})).filter(m => m.now.length);
     const trend = m => { if (!m.was.length) return ''; const a = m.now.reduce((x, y) => x + y, 0), b = m.was.slice(0, m.now.length).reduce((x, y) => x + y, 0); return a > b ? `<em class="up">+${a - b}</em>` : a < b ? `<em class="down">${a - b}</em>` : '<em>same</em>'; };
     view.innerHTML = `<div class="player">${top}<div class="finish"><div class="medal">${ic('check')}</div><div><span class="over gold">Session complete</span><h1 class="lt" style="margin-top:10px">${esc(s.title)}</h1></div>
-      <div class="stats"><div><span class="cap">Time</span><b>${fmt((p.end - p.t0) / 1000)}</b></div><div><span class="cap">Reps</span><b>${total || p.steps.length}</b>${total && p.last.length ? `<small class="${delta > 0 ? 'up' : delta < 0 ? 'down' : ''}">${delta > 0 ? '+' + delta : delta < 0 ? delta : 'same as'} ${delta ? 'vs last' : 'last time'}</small>` : total ? '<small>first log</small>' : ''}</div><div><span class="cap">${RESN[pts.res]}</span><b>+${already ? 0 : pts.pts}</b></div></div>
+      <div class="stats"><div><span class="cap">Time</span><b>${fmt((p.end - p.t0) / 1000)}</b></div><div><span class="cap">Reps</span><b>${total || p.steps.length}</b>${total && p.last.length ? `<small class="${delta > 0 ? 'up' : delta < 0 ? 'down' : ''}">${delta > 0 ? '+' + delta : delta < 0 ? delta : 'same as'} ${delta ? 'vs last' : 'last time'}</small>` : total ? '<small>first log</small>' : ''}</div><div><span class="cap">${RESN[pts.res]}</span><b>+${gain}</b>${bonus ? `<small class="up">+${bonus} for ${over} extra rep${over === 1 ? '' : 's'}</small>` : ''}</div></div>
       ${(() => { const easy = moves.filter(m => { const t = targetOf(p, m.b), h = W.exercises[m.b.ex].harder; return t && h && m.now.every(r => r >= t + 3); });
         return easy.length ? `<div class="coach"><i class="cdot"></i><span>Next time, make it harder. ${easy.map(m => `<b>${esc(W.exercises[m.b.ex].name)}:</b> ${esc(W.exercises[m.b.ex].harder)}`).join(' ')}</span></div>` : ''; })()}
       ${moves.length ? `<div class="group movesum">${moves.map(m => `<div class="row"><span class="tx"><b>${esc(W.exercises[m.b.ex].name)}</b><small>${m.now.join(' · ')}${m.was.length ? ` <span class="faint">· last ${m.was.join(' · ')}</span>` : ''}</small></span>${trend(m)}</div>`).join('')}</div>` : ''}</div>
-      <button class="btn wide" type="button" id="collect">${already ? 'Back to the island' : `Collect +${pts.pts} ${RESN[pts.res]}`}</button></div>`;
+      <button class="btn wide" type="button" id="collect">${gain ? `Collect +${gain} ${RESN[pts.res]}` : 'Back to the island'}</button></div>`;
     $('#collect').onclick = () => {
-      if (!already){ const before = Store.totals().all;
-        if (key) Store.complete(Store.ymd(today()), key, s.title, key); else Store.addExtra('strength', s.minutes, s.title);
-        haptic(); reward(pts.res, pts.pts, s.title); celebrate(before); }
+      if (gain){ const before = Store.totals().all;
+        if (!already){ if (key) Store.complete(Store.ymd(today()), key, s.title, key); else Store.addExtra('strength', s.minutes, s.title); }
+        if (bonus) Store.completeWith(Store.ymd(today()), bkey, `Extra reps · ${s.title}`, 'stone', bonus);
+        haptic(); reward(pts.res, gain, bonus ? `${s.title} · +${bonus} for extra reps` : s.title); celebrate(before); }
       endPlay(); location.hash = '#isle';
     };
     $('#pclose').onclick = () => { endPlay(); location.hash = '#today'; };

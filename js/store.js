@@ -25,6 +25,13 @@ const EXTRA = {
 };
 // A 12-week season. A full plan week earns about 207 points; the total is set at three-quarters of
 // that for 12 weeks (155 x 12), so a solid season finishes the island in week 12, a perfect one around week 9.
+/* Extra reps (above each set's target) earn a little more Stone, worth less per rep as they pile up:
+   the first 6 pay 1 Stone per 3 reps, the next 12 one per 4, then one per 5, capped at 5 a session. */
+function repBonus(extra){
+  const e = Math.max(0, extra|0);
+  const v = Math.min(e, 6) / 3 + Math.min(Math.max(e - 6, 0), 12) / 4 + Math.max(e - 18, 0) / 5;
+  return Math.min(5, Math.floor(v + 1e-9));
+}
 const SEASON = {weeks:12, total:1860, stone:480, land:800, harvest:865, spirit:290};
 const RES = ['stone','land','harvest','spirit'];
 
@@ -86,7 +93,7 @@ function saveBuilt(list){ state.built = list; save(); }
 /* The building the settlers save for (null: the usual order), and what each farm plot grows. */
 function setTarget(k){ state.target = k || null; save(); }
 function setCrop(k, crop){ state.crops = state.crops || {}; state.crops[k] = crop; save(); }
-function undo(date, key){ state.log = state.log.filter(e => !(e.date === date && e.key === key)); save(); }
+function undo(date, key){ state.log = state.log.filter(e => !(e.date === date && (e.key === key || e.key === key + '+reps'))); save(); }
 function addExtra(type, minutes, note){
   const x = EXTRA[type]; if (!x) return null;
   const pts = x.flat || Math.max(1, Math.round((+minutes||0) / x.per));
@@ -118,7 +125,7 @@ function exportJSON(){ return JSON.stringify(state, null, 1); }
 function importJSON(txt){ const s = JSON.parse(txt); if (!s || s.v !== 1 || !Array.isArray(s.log)) throw new Error('That file is not a Motley Island backup.'); state = Object.assign(fresh(), s); save(); }
 function reset(){ state = fresh(); save(); }
 
-window.Store = {PTS, EXTRA, SEASON, RES, ymd, parse, mondayOf, weekNo, seasonWeek, totals, progress, settlers, gardens,
+window.Store = {PTS, EXTRA, SEASON, repBonus, RES, ymd, parse, mondayOf, weekNo, seasonWeek, totals, progress, settlers, gardens,
   isDone, complete, completeWith, setSwap, getSwap, setFav, isFav, saveBuilt, setTarget, setCrop, undo, addExtra, saveSets, lastSets, thToPts, setOnboarded, removeEntry, flag, clearPrefix, setStart, exportJSON, importJSON, reset,
   get state(){ return state; }};
 })();
