@@ -119,6 +119,45 @@ function tasksFor(date){
   return out.map(t => { Object.assign(t, Store.PTS[t.type], {at:times[t.key] || '23:59', done:t.planTask ? !!planDoneThisWeek() : Store.isDone(ds, t.key), optional:t.optional || weekend(d)}); if (t.fixedPts != null) t.pts = t.fixedPts; return t; })
     .sort((a, b) => a.at.localeCompare(b.at));
 }
+/* Reminders for today and the next 7 days, as {tag, at (UTC), title, body, url, need?}. Things already done
+   are left out, and the list is re-sent after every change, so finishing a task cancels its reminder.
+   The evening check-in carries the day's required tasks; the server sends it only if one is still open. */
+async function buildReminders(kinds){
+  await loadAllWeeks();
+  const now = Date.now(), out = [], cut = (t, n = 170) => t.length > n ? t.slice(0, n - 1).trim() + '…' : t;
+  for (let i = 0; i <= 7; i++){
+    const date = new Date(today()); date.setDate(date.getDate() + i);
+    const d = dayKey(date), ds = Store.ymd(date), times = (W.routine && W.routine.times[d]) || {};
+    const add = (kind, key, hm, title, body, url, need) => { if (!hm) return; const [h, m] = hm.split(':').map(Number);
+      const at = new Date(date.getFullYear(), date.getMonth(), date.getDate(), h, m); if (at.getTime() <= now + 30e3) return;
+      const it = {tag:`${ds}|${kind}|${key}`, at:at.toISOString(), title, body:cut(body || ''), url:url || '#today'}; if (need){ it.need = need; it.day = ds; } out.push(it); };
+    if (kinds.workout) planItems(d).filter(t => ['lift', 'mobility', 'walk', 'intervals'].includes(t.type) && !t.optional && !Store.isDone(ds, t.key)).forEach(t => {
+      const title = t.type === 'lift' ? `Lift time: ${t.label}` : t.type === 'mobility' ? `Mobility: ${t.label}` : t.type === 'walk' ? 'Walk time' : 'Walk-jog intervals';
+      add('workout', t.key, times[t.key], title, `${t.meta}.${t.session ? ' Tap to start.' : ''}`, t.session ? `#play/${t.session}` : '#today'); });
+    if (kinds.prep){
+      const pd = new Date(date); if (d === 'sun') pd.setDate(pd.getDate() + 1);
+      const wn = mealWeekOf(pd), D = MW[wn];
+      // Sunday prep at 2 PM; a morning session before breakfast; a thaw step at 8 PM; any other weeknight cook at 5:10 PM.
+      (D && D.prep || []).filter(p => p.day === d).forEach(p => { if (p.steps.every((_, k) => Store.flag('prep', `w${wn}:${p.id}:${k}`))) return;
+        const thaw = p.steps.filter(x => /frozen|freezer|thaw|to the fridge/i.test(x)), url = `#prep/${p.id}/${wn}`;
+        if (d === 'sun') add('prep', p.id, '14:00', p.title, `About ${p.minutes} min. Makes ${p.makes.charAt(0).toLowerCase() + p.makes.slice(1)}.`, url);
+        else if (/morning/i.test(p.title)) add('prep', p.id, '06:50', p.title, p.steps.join(' '), url);
+        else if (thaw.length) add('prep', p.id, '20:00', 'Thaw for later this week', thaw.join(' '), url);
+        else add('prep', p.id, '17:10', p.title, p.steps.join(' '), url); });
+    }
+    if (weekend(d)) continue;
+    const wn = mealWeekOf(date), D = MW[wn], menu = D && D.menu[d];
+    if (kinds.dinner && menu && !Store.isDone(ds, 'dinner')){
+      const t = mealTask(ds, 'dinner', menu, D, wn);
+      if (t) add('dinner', 'dinner', '17:05', `Tonight: ${t.label}`, [t.meta.replace(/^Dinner · /, ''), t.swapped ? '' : menu.heads].filter(Boolean).join('. '), t.go || '#kitchen');
+    }
+    if (kinds.evening){
+      const need = tasksFor(date).filter(t => !t.optional && !t.planTask).map(t => ({k:t.key, l:t.meal ? SLOT[t.key] : t.key === 'sleep' ? 'Sleep' : t.label}));
+      if (need.length) add('evening', 'check', '21:00', 'Evening check-in', '', '#today', need);
+    }
+  }
+  return out.sort((a, b) => a.at.localeCompare(b.at));
+}
 /* '17:30' -> '5:30 PM' */
 const clock = hm => { const [h, m] = hm.split(':').map(Number); return `${(h + 11) % 12 + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`; };
 /* Parts of the day built around work 8 to 5 with lunch at home 12 to 1. */
@@ -1720,6 +1759,23 @@ function vChronicle(){
 }
 
 /* ---------------- Settings ---------------- */
+/* Settings: reminders on or off, and which kinds. Turning them on asks iOS for permission, so it starts from a tap. */
+function paintReminders(){
+  const el = $('#remsec'); if (!el) return;
+  const i = Remind.info(), on = i.on;
+  const sw = (id, v) => `<button class="swt${v ? ' on' : ''}" type="button" role="switch" aria-checked="${!!v}" id="${id}"><i></i></button>`;
+  el.innerHTML = `<div class="sect-h"><span class="over">Reminders</span><span class="cap">${on ? 'on this phone' : ''}</span></div><div class="group">
+    <div class="row"><span class="tile r-gold">${ic('timer')}</span><span class="tx"><b>Reminders</b><small>${on ? 'Sent to this phone at the right time' : Remind.installed() ? 'Workout, prep, dinner and evening nudges' : 'Open the app from your Home Screen to use them'}</small></span>${sw('remon', on)}</div>
+    ${on ? Object.entries(Remind.KINDS).map(([k, t]) => `<div class="row"><span class="tx"><b>${t}</b><small>${{workout:'At your lift, walk and mobility times', prep:'Sunday 2 PM prep, and Wednesday 8 PM thaw and prep', dinner:'5:05 PM on weekdays: what is for dinner', evening:'9 PM on weekdays, only if something is still open'}[k]}</small></span>${sw('rk-' + k, i.kinds[k])}</div>`).join('') : ''}</div>
+    ${i.error ? `<p class="fine" style="color:#ff9a8a">${esc(i.error)}</p>` : ''}`;
+  $('#remon').onclick = async e => {
+    const b = e.currentTarget; b.disabled = true; haptic();
+    try { if (on){ await Remind.disable(); toast('Reminders are off.'); } else { await Remind.enable(); toast('Reminders are on.'); } }
+    catch(err){ toast(err.message || 'Could not turn on reminders.'); }
+    paintReminders();
+  };
+  Object.keys(Remind.KINDS).forEach(k => { const b = $('#rk-' + k); if (b) b.onclick = () => { const v = !b.classList.contains('on'); Remind.setKind(k, v); b.classList.toggle('on', v); b.setAttribute('aria-checked', v); haptic(); }; });
+}
 function vSettings(){
   let armed = false;
   view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">Saved on this phone and backed up online</span><h1 class="lt">Settings</h1></header>
@@ -1727,6 +1783,7 @@ function vSettings(){
     <section class="sect"><div class="sect-h"><span class="over">Program</span></div><div class="group">
       <label class="row" for="start"><span class="tile r-gold">${ic('calendar')}</span><span class="tx"><b>Week 1 started</b><small>You are in week ${Store.weekNo()} · season week ${Store.seasonWeek()}</small></span>
         <input id="start" type="date" value="${Store.state.start}" style="all:unset;font:500 14px var(--f-b);color:var(--gold2);max-width:130px;text-align:right"></label></div></section>
+    <section class="sect" id="remsec"></section>
     <section class="sect"><div class="sect-h"><span class="over">Cloud backup</span><span class="cap" id="cstat"></span></div><div class="group">
       <div class="row"><span class="tile r-land">${ic('upload')}</span><span class="tx"><b>Automatic backup</b><small id="cline">Every change is saved online a few seconds later</small></span><button class="btn quiet small" type="button" id="cnow">Back up now</button></div>
       <button class="row tap" type="button" id="ccode" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative"><span class="tile r-gold">${ic('info')}</span><span class="tx"><b>Your backup code</b><small>The one thing you need to restore on a new phone</small></span>${ic('chev', 'i chev')}</button>
@@ -1740,6 +1797,7 @@ function vSettings(){
     <p class="fine" style="text-align:center">Motley Island · season one</p>
   </div>`;
   scrollAt = 90; setBar('Settings', true); wireBack();
+  paintReminders();
   $('#start').onchange = e => { if (e.target.value){ Store.setStart(e.target.value); toast('Start date saved.'); rerender(); } };
   $('#exp').onclick = () => {
     const blob = new Blob([Store.exportJSON()], {type:'application/json'});
@@ -1945,8 +2003,9 @@ async function boot(){
   migrateBuilt(); settle();
   route();
   onboarding();
-  Cloud.start();
+  Cloud.start().then(() => Remind.start(buildReminders));
   setTimeout(loadAllWeeks, 4000);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.go) location.hash = e.data.go; });
   Cloud.onChange(i => { if (i.status === 'ok' && showCodeCard() && /^(today)?$/.test(location.hash.replace('#', '')) && !$('#savecode')) rerender(); });
   const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !local){

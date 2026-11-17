@@ -744,3 +744,9 @@ details.pantry summary::-webkit-details-marker{display:none}
 .ratecard{flex-direction:column;align-items:stretch;transition:opacity .4s,max-height .5s .1s,padding .5s .1s;max-height:140px;overflow:hidden}
 .ratecard .tx{width:100%}
 .ratecard.gone{opacity:0;max-height:0;padding-top:0;padding-bottom:0;min-height:0}
+
+.swt{all:unset;cursor:pointer;flex:none;width:46px;height:28px;border-radius:14px;background:var(--fill);position:relative;transition:background .25s}
+.swt i{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#cfd6e3;box-shadow:0 2px 6px rgba(0,0,0,.35);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s}
+.swt.on{background:var(--gold-a)}
+.swt.on i{transform:translateX(18px);background:var(--gold2)}
+.swt:disabled{opacity:.5}

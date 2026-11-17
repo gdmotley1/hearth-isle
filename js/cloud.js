@@ -82,5 +82,8 @@ async function start(){
   if (!conf.last || Date.now() - Date.parse(conf.last) > 3600e3) schedule(2500);
 }
 
-window.Cloud = {start, info, push:() => push(false), peek, restore, setOn, fresh, onChange:f => listeners.push(f), pretty, tidy};
+/* The backup slot and code, for signing other calls (reminders). */
+async function auth(){ if (!conf || !conf.code) return null; if (!conf.id) { conf.id = await slot(conf.code); saveConf(); } return {id:conf.id, code:conf.code}; }
+
+window.Cloud = {start, auth, rpc, info, push:() => push(false), peek, restore, setOn, fresh, onChange:f => listeners.push(f), pretty, tidy};
 })();
