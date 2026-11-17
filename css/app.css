@@ -653,4 +653,10 @@ details.pantry summary::-webkit-details-marker{display:none}
 .btn.planned{background:var(--harvest-a);color:var(--harvest);box-shadow:inset 0 0 0 1px rgba(147,212,126,.3);font-size:13.5px;text-align:center;cursor:default}
 #app.docked .nav{transform:translate(-50%,160%)}
 #app.docked .tdock{bottom:calc(84px + var(--bot))}
+/* ---------- simpler Market ---------- */
+.cartbox summary{list-style:none;cursor:pointer}
+.cartbox summary::-webkit-details-marker{display:none}
+.cartbox .group{margin-top:10px;opacity:.75}
+.cartbox .linkbtn{display:block;margin:10px auto 0}
+.budget .big .cap{text-align:right}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

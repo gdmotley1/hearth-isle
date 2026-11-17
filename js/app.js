@@ -517,10 +517,13 @@ function islandSheet(){
   const upcoming = u.list.slice(u.built, u.built + 4);
   sheet(`<div class="grab"></div>
     <div><div class="over gold">Your island</div><h2 class="t2" style="margin-top:8px">Hearth Isle</h2></div>
-    <div class="stats3"><div><span class="cap">Settlers</span><b>${Store.settlers()}</b></div><div><span class="cap">Built</span><b>${u.built}<span class="cap"> / ${u.list.length}</span></b></div><div><span class="cap">Gardens</span><b>${g.pct}%</b></div></div>
+    <div class="stats3"><div><span class="cap">Settlers</span><b>${Store.settlers()}</b></div><div><span class="cap">Built</span><b>${u.built}<span class="cap"> / ${u.list.length}</span></b></div><div><span class="cap">Points</span><b>${t.all}<span class="cap"> / ${Store.SEASON.total}</span></b></div></div>
+    <div class="meters"><div class="gardens"><div class="meter2"><p>Hanging Gardens<b style="font-size:15px">${g.label}</b></p></div><div class="bar2"><i style="width:${g.pct}%"></i></div></div>
+      ${Store.RES.map(k => `<div class="meter2" style="--c:var(--${k})"><p>${RESN[k]}<b class="num">${t[k]}</b></p><div class="bar2"><i style="width:${Math.min(100, t[k] / Store.SEASON[k] * 100).toFixed(1)}%"></i></div></div>`).join('')}</div>
     ${upcoming.length ? `<div class="sect"><div class="sect-h"><span class="over">Coming next</span></div><div class="group">${upcoming.map(x => `<div class="row"><span class="tile r-gold">${ic(x.t.startsWith('g') ? 'harvest' : 'house')}</span><span class="tx"><b>${BUILD_T[x.t]}</b><small>${Math.max(0, Math.ceil(Store.thToPts(x.th) - t.all))} points away</small></span></div>`).join('')}</div></div>`
       : `<div class="callout">${ic('extra')}<span>Everything this season is built. Season two starts a new Wonder.</span></div>`}
-    <p class="fine">Every 45 points brings a new settler. Points come from the four resources: Stone from strength work, Land from walks, runs and pickleball, Harvest from home-cooked meals, and Spirit from sleep and mobility.</p>`);
+    <p class="fine">Stone from strength work, Land from walks and pickleball, Harvest from meals, Spirit from sleep and mobility. Every 45 points brings a settler.</p>
+    <a class="btn quiet wide" href="#chronicle">${ic('book')}The Island Chronicle</a>`);
 }
 
 /* ---------------- sheet ---------------- */
@@ -569,7 +572,7 @@ function vIsle(){
   const left = dp.total - dp.done;
   const line = fest ? 'Festival day. Nothing is required, and anything you do still builds.' :
     left === 0 ? 'Everything is done. The settlers are celebrating.' :
-    `${greet}. ${left === 1 ? 'One thing left' : `${left} things left`}.${next && next.at < '23:59' ? (next.type === 'sleep' ? ' Start by logging last night\'s sleep.' : ` Next up: ${SLOT[next.type] ? SLOT[next.type].toLowerCase() : next.label} at ${clock(next.at)}.`) : ''}`;
+    `${greet}.${next && next.at < '23:59' ? (next.type === 'sleep' ? ' Start by logging last night\'s sleep.' : ` Next up: ${SLOT[next.type] ? SLOT[next.type].toLowerCase() : next.label} at ${clock(next.at)}.`) : ''}`;
   const mon = Store.parse(Store.mondayOf(now));
   const weekHTML = DAYS.map((dk, i) => {
     const dt = new Date(mon); dt.setDate(mon.getDate() + i);
@@ -599,14 +602,10 @@ function vIsle(){
       ${menu && menu.heads ? `<div class="callout">${ic('info')}<span>${esc(menu.heads)}</span></div>` : ''}
       ${d === 'sun' ? `<a class="callout tap" href="#prep/sun/${nextW() || mealWeek()}">${ic('calendar')}<span>Prep day. Shop the Market list, then open Sunday prep.</span></a>` : ''}
       <div class="week" aria-label="This week">${weekHTML}</div>
-      <section class="sect"><div class="sect-h"><span class="over">Today, in order</span><span class="cap">${dp.done} of ${dp.total} done</span></div>
+      <section class="sect">
       <div class="timeline">${groups.map(([name, list, sub, isNow]) => list.length ? `<div class="part${isNow ? ' now' : ''}"><div class="part-h"><span class="over${isNow ? ' gold' : ''}">${name}${isNow ? ' · now' : ''}</span>${sub ? `<span class="cap">${sub}</span>` : ''}</div>
         <div class="group">${list.map(x => taskRow(x, {time:true})).join('')}</div></div>` : '').join('')}</div></section>
       <div class="group"><div class="row"><button class="main tap" type="button" id="extra" style="all:unset;cursor:pointer;flex:1;display:flex;align-items:center;gap:14px"><span class="tile r-gold">${ic('extra')}</span><span class="tx"><b>Log something extra</b><small>A hike, a bike ride, extra sets</small></span></button>${ic('plus', 'i chev')}</div></div>
-      <section class="sect"><div class="sect-h"><span class="over">This season</span><span class="cap"><span id="tot" class="num">${t.all}</span> of ${Store.SEASON.total}</span></div>
-        <div class="meters"><div class="gardens"><div class="meter2"><p>Hanging Gardens<b style="font-size:15px">${g.label}</b></p></div><div class="bar2">${twBar('gardens', g.pct)}</div></div>
-        ${Store.RES.map(k => `<div class="meter2" style="--c:var(--${k})"><p>${RESN[k]}<b class="num">${t[k]}</b></p><div class="bar2">${twBar('res:' + k, Math.min(100, t[k] / Store.SEASON[k] * 100))}</div></div>`).join('')}</div></section>
-      ${recent.length ? `<section class="sect"><div class="sect-h"><span class="over">Island log</span></div><div class="group">${recent.map(e => `<div class="row"><span class="tile r-${e.res}">${ic(e.res)}</span><span class="tx"><b>${esc(e.label)}</b><small>${when(e)}</small></span><span class="trail" style="color:var(--${e.res})">${e.pts ? '+' + e.pts : '·'}</span></div>`).join('')}</div></section>` : ''}
     </div></div>`;
   scrollAt = 330; setBar('Hearth Isle');
   const world = $('#world');
@@ -947,7 +946,7 @@ function vTrain(){
   const items = planItems(trainDay).map(t => Object.assign(t, Store.PTS[t.type], {done:isToday && Store.isDone(ds, t.key)}));
   const main = items.find(i => i.type === 'lift') || items.find(i => i.type === 'mobility');
   const court = items.find(i => i.type === 'pickleball');
-  const others = items.filter(i => i !== main);
+  const others = items.filter(i => i !== main && !(i === court && !(main && main.type === 'lift')));
   const s = main && W.sessions[main.session];
   let hero;
   if (main && main.type === 'lift'){
@@ -972,15 +971,9 @@ function vTrain(){
       return `<button type="button" data-d="${d}" class="${d === trainDay ? 'on' : ''}${d === td ? ' today' : ''}">${DAYN[d].slice(0, 3).toUpperCase()}<b>${DAYN[d][0]}</b><i>${dots}</i></button>`; }).join('')}</div>
     ${hero}
     ${others.length ? `<section class="sect"><div class="sect-h"><span class="over">${isToday ? 'Also today' : 'Also planned'}</span></div><div class="group">${others.map(t => taskRow(t, {disabled:!isToday})).join('')}</div></section>` : ''}
-    <section class="sect"><div class="sect-h"><span class="over">12-week program</span><span class="cap">Week ${sw}</span></div>
-      <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:12px">
-        <div class="phasebar">${Array.from({length:total}, (_, i) => `<i class="${i + 1 < nowW ? 'past' : i + 1 === nowW ? 'now' : ''}"></i>`).join('')}</div>
-        <div class="phaselbl">${W.phases.map(p => `<span class="${p === ph ? 'on' : ''}">${p.name}</span>`).join('')}</div>
-        <span class="cap" style="color:var(--ink);opacity:.85">${esc(ph.note)}</span></div></section>
-    <section class="sect"><div class="sect-h"><span class="over">Session library</span></div><div class="group">
+    <section class="sect"><div class="sect-h"><span class="over">All sessions</span></div><div class="group">
       ${Object.entries(W.sessions).map(([id, x]) => `<a class="row tap" href="#session/${id}"><span class="tile ${id === 'M' ? 'r-spirit' : 'r-stone'}">${ic(id === 'M' ? 'mobility' : 'lift')}</span><span class="tx"><b>${esc(x.title)}</b><small>${id === 'M' ? 'Before pickleball' : 'Session ' + id} · ${x.minutes} min · ${totalSets(x)} sets</small></span>${ic('chev', 'i chev')}</a>`).join('')}
     </div></section>
-    <p class="fine">Built for ${W.equipment.join(', ')}. When a set feels easy, slow the lowering down before adding reps.</p>
   </div>`;
   scrollAt = 50; setBar('Train');
   $$('.days button', view).forEach(b => b.onclick = () => { trainDay = b.dataset.d; rerender(); });
@@ -1177,44 +1170,37 @@ function vMarket(){
   const wk = planWeek(), D = wkOf(wk), pre = `w${wk}:`;
   const P = plannedGroceries(monOfShown(wk)), G = P.list;
   if (!P.ready) loadAllWeeks().then(() => { if (location.hash === '#market') rerender(); });
-  const total = G.reduce((a, g) => a + g.price, 0);
-  const got = G.filter(g => Store.flag('grocery', pre + g.uid));
+  const inCart = g => Store.flag('grocery', pre + g.uid);
+  const total = G.reduce((a, g) => a + g.price, 0), got = G.filter(inCart), left = G.filter(g => !inCart(g));
   // Aldi walk order: produce at the door, shelf aisles, dairy and meat along the back, frozen by the registers.
   const order = ['Produce','Shelf','Dairy and eggs','Meat','Frozen'];
-  const publix = G.filter(g => g.store === 'Publix').length;
-  const show = g => { const on = Store.flag('grocery', pre + g.uid); return mkFilter === 'all' || (mkFilter === 'need' ? !on : on); };
-  const ahead = wk !== mealWeek();
-  view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)} · Aldi${publix ? ' + Publix' : ''}</span><h1 class="lt">Market</h1></header>
+  const ahead = wk !== mealWeek(), over = total - D.budget;
+  const item = g => `<div class="row item sw${inCart(g) ? ' done' : ''}" data-g="${g.uid}" role="button" aria-pressed="${inCart(g)}"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b>${esc(g.name)}</b><small>${esc(g.qty)}${g.forRecipe ? ` · for ${esc(g.forRecipe)}` : ''}</small></span><span class="trail">${money(g.price)}</span></div>`;
+  const aisles = [...order.map(sec => [sec, left.filter(g => g.section === sec && g.store !== 'Publix')]), ['Publix', left.filter(g => g.store === 'Publix')]];
+  view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)}${ahead ? ' · next week' : ''}</span><h1 class="lt">Market</h1></header>
   <div class="page stagger" style="margin-top:20px">
     ${weekSwitch(wk)}
-    ${ahead ? `<a class="callout tap" href="#plan">${ic('calendar')}<span>This is next week's list. ${P.swaps ? `It follows your plan: ${plural(P.swaps, 'swap')}, ${P.added.length} added, ${P.dropped.length} dropped.` : 'Want different meals? Plan next week and the list updates.'}</span></a>` : P.swaps ? `<div class="callout">${ic('swap')}<span>Updated for your swaps: ${P.added.length} added, ${P.dropped.length} dropped.</span></div>` : ''}
-    <section class="card budget"><div class="big"><b>${money(total)}</b><span class="cap">${money(D.budget - total)} under your ${money(D.budget)} budget</span></div>
-      <div class="bar2">${twBar('cart' + wk, got.length / Math.max(1, G.length) * 100)}</div>
-      <span class="cap">${got.length} of ${G.length} in the cart · ${money(got.reduce((a, g) => a + g.price, 0))}</span></section>
-    <div class="seg" role="tablist" data-filter>${[['all','All'],['need','To buy'],['got','In cart']].map(([k, l]) => `<button type="button" role="tab" data-f="${k}" class="${mkFilter === k ? 'on' : ''}">${l}</button>`).join('')}</div>
-    ${[...order.map(sec => [sec, G.filter(g => g.section === sec && g.store !== 'Publix')]), ['Publix stop', G.filter(g => g.store === 'Publix')]].map(([sec, all]) => { const items = all.filter(show); if (!items.length) return '';
-      return `<section class="sect"><div class="sect-h"><span class="over">${sec}</span><span class="cap">${money(items.reduce((a, g) => a + g.price, 0))}</span></div><div class="group">${items.map(g => {
-        const on = Store.flag('grocery', pre + g.uid);
-        return `<div class="row item sw${on ? ' done' : ''}" data-g="${g.uid}" role="button" aria-pressed="${on}"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b>${esc(g.name)}</b><small>${esc(g.qty)}${g.forRecipe ? ` · for ${esc(g.forRecipe)}` : ''}</small></span><span class="trail">${money(g.price)}</span></div>`; }).join('')}</div></section>`; }).join('')}
-    ${mkFilter === 'got' && !got.length ? `<p class="fine" style="text-align:center;padding:24px 0">Nothing in the cart yet. Tap items as they go in.</p>` : ''}
-    ${mkFilter === 'need' && got.length === G.length ? `<div class="callout">${ic('check')}<span>Everything is in the cart. Nice work.</span></div>` : ''}
-    ${D.have && D.have.length ? `<section class="sect"><div class="sect-h"><span class="over">Already home from last week</span><span class="cap">not bought again</span></div><div class="group">${D.have.map(h => `<div class="row" style="min-height:54px"><span class="tile r-land">${ic('check')}</span><span class="tx"><b>${esc(h.name)}</b>${h.note ? `<small>${esc(h.note)}</small>` : ''}</span></div>`).join('')}</div></section>` : ''}
-    <details class="pantry sect"><summary class="sect-h"><span class="over">Spices and oils</span><span class="cap">${D.pantry.length} items · not counted ›</span></summary><div class="pchips">${D.pantry.map(p => `<span>${esc(p.name)}</span>`).join('')}</div></details>
-    <p class="fine">${esc(D.priceNote)}</p>
-    <p class="fine">${esc(D.allergyNote)}</p>
-    ${got.length ? `<button class="btn quiet wide" type="button" id="clr">Start a fresh list</button>` : ''}
+    ${P.swaps ? `<a class="callout tap" href="#plan">${ic('swap')}<span>Follows your plan: ${P.added.length} added, ${P.dropped.length} dropped.</span></a>` : ahead ? `<a class="callout tap" href="#plan">${ic('calendar')}<span>Want different meals next week? Plan it and this list follows.</span></a>` : ''}
+    <section class="card budget"><div class="big"><b class="num">${money(total)}</b><span class="cap">${over > 0 ? `<span style="color:var(--danger)">${money(over)} over budget</span>` : `${got.length} of ${G.length} in the cart`}</span></div>
+      <div class="bar2">${twBar('cart' + wk, got.length / Math.max(1, G.length) * 100)}</div></section>
+    ${!left.length ? `<div class="callout">${ic('check')}<span>Everything is in the cart.</span></div>` : ''}
+    ${aisles.map(([sec, items]) => items.length ? `<section class="sect"><div class="sect-h"><span class="over">${sec}</span></div><div class="group">${items.map(item).join('')}</div></section>` : '').join('')}
+    ${got.length ? `<details class="sect cartbox"${left.length ? '' : ' open'}><summary class="sect-h"><span class="over">In the cart · ${got.length}</span><span class="cap">${money(got.reduce((a, g) => a + g.price, 0))} ›</span></summary>
+      <div class="group">${got.map(item).join('')}</div><button class="linkbtn" type="button" id="clr">Clear the cart and start over</button></details>` : ''}
+    ${D.have && D.have.length ? `<p class="fine"><b style="color:var(--sub)">Already home:</b> ${D.have.map(h => esc(h.name.toLowerCase())).join(', ')}.</p>` : ''}
+    <details class="pantry sect"><summary class="sect-h"><span class="over">Spices, oils and notes</span><span class="cap">not counted ›</span></summary><div class="pchips">${D.pantry.map(p => `<span>${esc(p.name)}</span>`).join('')}</div>
+      <p class="fine" style="margin-top:12px">${esc(D.allergyNote)}</p><p class="fine" style="margin-top:8px">${esc(D.priceNote)}</p></details>
   </div>`;
   scrollAt = 50; setBar('Market'); playTw();
   wireWeekSwitch();
-  $$('[data-filter] button', view).forEach(b => b.onclick = () => { mkFilter = b.dataset.f; rerender(); });
   $$('.item', view).forEach(r => r.onclick = () => {
     const k = pre + r.dataset.g, on = !Store.flag('grocery', k); Store.flag('grocery', k, on);
     r.classList.toggle('done', on); haptic(); if (on) burst($('.tick', r));
-    if (mkFilter !== 'all'){ r.style.maxHeight = r.offsetHeight + 'px'; requestAnimationFrame(() => r.classList.add('leaving')); }
-    setTimeout(rerender, mkFilter === 'all' ? 260 : 560);
+    r.style.maxHeight = r.offsetHeight + 'px'; requestAnimationFrame(() => r.classList.add('leaving'));
+    setTimeout(rerender, 520);
   });
   wireSwipe('.item.sw', r => r.click());
-  const c = $('#clr'); if (c) c.onclick = () => { Store.clearPrefix('grocery', pre); mkFilter = 'all'; rerender(); };
+  const c = $('#clr'); if (c) c.onclick = () => { Store.clearPrefix('grocery', pre); haptic(); rerender(); };
 }
 
 /* ---------------- Kitchen ---------------- */
@@ -1230,7 +1216,7 @@ function vKitchen(){
   const menu = D.menu[kitchenDay], tmenu = ahead ? null : D.menu[td];
   const byCuisine = {};
   Object.entries(D.recipes).filter(([, r]) => !r.component).forEach(([id, r]) => (byCuisine[r.cuisine] = byCuisine[r.cuisine] || []).push([id, r]));
-  view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)} menu · ${Object.keys(D.recipes).length} recipes</span><h1 class="lt">Kitchen</h1></header>
+  view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)}${ahead ? ' · next week' : ''}</span><h1 class="lt">Kitchen</h1></header>
   <div class="page stagger" style="margin-top:20px">
     ${weekSwitch(wk)}
     ${ahead ? '' : `<section class="sect"><div class="sect-h"><span class="over">${tmenu ? 'Today' : 'This weekend'}</span></div>
@@ -1250,8 +1236,8 @@ function vKitchen(){
           return `<a class="row tap" href="${t.go}"><span class="tile ctile c-${r.cuisine}">${ic(r.cuisine)}</span><span class="tx"><b>${esc(r.name)}</b><small>${SLOT[s]}${t.swapped ? ' · swapped in' : menu.shared === s ? ' · for two' : ''} · ${r.minutes} min · ${r.protein}g protein</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}
         <div class="row full"><span class="tile ctile c-Snack">${ic('Snack')}</span><span class="tx"><b>Snacks</b><small style="white-space:normal">${D.snacks.map(esc).join(' · ')}</small></span></div></div>`
         : `<p class="fine">${esc(D.weekendNote)}</p>`}</section>
-    <section class="sect"><div class="sect-h"><span class="over">Recipe library</span></div>
-      ${Object.entries(byCuisine).map(([c, list]) => `<div class="group">${list.map(([id, r]) => `<a class="row tap" href="#recipe/${id}/${wk}"><span class="tile ctile c-${c}">${ic(c)}</span><span class="tx"><b>${esc(r.name)}</b><small>${c} · ${r.minutes} min${r.isNew ? ' · new this week' : ''}</small></span>${ic('chev', 'i chev')}</a>`).join('')}</div>`).join('')}</section>
+    <details class="sect pantry"><summary class="sect-h"><span class="over">All recipes this week</span><span class="cap">${Object.values(byCuisine).flat().length} ›</span></summary>
+      <div class="group">${Object.entries(byCuisine).map(([c, list]) => list.map(([id, r]) => `<a class="row tap" href="#recipe/${id}/${wk}"><span class="tile ctile c-${c}">${ic(c)}</span><span class="tx"><b>${esc(r.name)}</b><small>${c} · ${r.minutes} min${r.isNew ? ' · new this week' : ''}</small></span>${ic('chev', 'i chev')}</a>`).join('')).join('')}</div></details>
   </div>`;
   scrollAt = 50; setBar('Kitchen');
   wireWeekSwitch();
@@ -1286,7 +1272,7 @@ function vRecipe(id, wn){
     <section class="sect"><div class="sect-h"><span class="over">Ingredients</span><span class="cap">${esc(r.equip)}</span></div><div class="group">${r.ingredients.map((i, k) => {
       const on = Store.flag('ing', `${n}:${id}:${k}`);
       return `<div class="row ing${on ? ' done' : ''}" data-k="${k}" role="button" aria-pressed="${on}"><span class="tx"><b>${ingName(D, i, n)}</b></span><span class="q">${esc(i.qty)}</span></div>`; }).join('')}</div>
-      <p class="fine">Tap an ingredient once it is out on the counter.</p></section>
+</section>
     <section class="sect"><div class="sect-h"><span class="over">Method</span><span class="cap">${plural(r.steps.length, 'step')}</span></div><ol class="steps">${r.steps.map((s, k) => `<li><span>${k + 1}</span><div>${stepText(s, `${r.name} · step ${k + 1}`)}</div></li>`).join('')}</ol></section>
   </div>`;
   scrollAt = 180; setBar(r.name, true); wireBack();
