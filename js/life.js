@@ -308,6 +308,37 @@ function boatIn(svg){
   b.animate([{transform:'translate(90px,40px)', opacity:0}, {opacity:1, offset:.15}, {transform:'translate(0,0)', opacity:1}], {duration:3200, easing:'cubic-bezier(.2,.6,.3,1)', fill:'both'});
 }
 
+/* The tug brings in what you earned: it sails in from open water loaded with a crate per resource,
+   ties up at the dock and swings the crates ashore (higher once the harbor crane is built). */
+function crateSvg(x, y, c){
+  return `<path d="M${f1(x - 2.4)} ${f1(y - 1.2)}l2.4 -1.2 2.4 1.2 -2.4 1.2z" fill="${c}"/><path d="M${f1(x - 2.4)} ${f1(y - 1.2)}v2.6l2.4 1.2v-2.6z" fill="#8a6a42"/><path d="M${f1(x + 2.4)} ${f1(y - 1.2)}v2.6l-2.4 1.2v-2.6z" fill="#6f5233"/>`;
+}
+function delivery(svg, scene, resList){
+  const b = svg.querySelector('.o[data-k="boat"]'), fl = b && b.querySelector('.float');
+  if (!fl || !scene || !scene.tug || reduce()) return;
+  const kinds = [...new Set(resList)].slice(0, 3), [tx, ty] = scene.tug;
+  const spots = kinds.map((r, i) => [tx + 6 + i * 2.6, ty - 4.6 - (i === 1 ? 1.2 : 0)]);
+  const cargo = document.createElementNS(NS, 'g');
+  cargo.innerHTML = kinds.map((r, i) => crateSvg(spots[i][0], spots[i][1], RESC[r] || '#c9a35a')).join('');
+  fl.appendChild(cargo);
+  b.animate([{transform:'translate(130px,-34px)', opacity:0}, {opacity:1, offset:.18}, {transform:'translate(0,0)', opacity:1}], {duration:3200, easing:'cubic-bezier(.2,.6,.3,1)', fill:'both'});
+  setTimeout(() => {
+    if (!svg.isConnected) return;
+    sparkle(svg, tx - 9.3, ty - 18, '#cdd6e4', 5, 5);
+    cargo.remove();
+    const [dx, dy] = scene.dock.at, lift = scene.dock.tier >= 2 ? 30 : 16;
+    kinds.forEach((r, i) => {
+      const [sx, sy] = spots[i], ex = dx - 4 + i * 4, ey = dy - 1 - (i === 1 ? 1 : 0), g = document.createElementNS(NS, 'g');
+      g.innerHTML = crateSvg(sx, sy, RESC[r] || '#c9a35a'); svg.appendChild(g);
+      const mx = (ex - sx) / 2, my = (ey - sy) / 2 - lift;
+      g.animate([{transform:'translate(0,0)'}, {transform:`translate(${f1(mx)}px,${f1(my)}px)`, offset:.5}, {transform:`translate(${f1(ex - sx)}px,${f1(ey - sy)}px)`}], {duration:800, delay:i * 280, easing:'ease-in-out', fill:'forwards'});
+      setTimeout(() => { if (svg.isConnected) sparkle(svg, ex, ey - 1, "#e6d6b0", 4, 7); }, 800 + i * 280);
+      g.animate([{opacity:1}, {opacity:0}], {duration:600, delay:3400 + i * 200, fill:'forwards'}).onfinish = () => g.remove();
+    });
+    floatText(svg, dx, dy - 14, kinds.length > 1 ? 'Cargo in' : `${RESN[kinds[0]] || 'Cargo'} delivered`, '#ffd994');
+  }, 3300);
+}
+
 /* ---------------- sky ---------------- */
 function phase(h){ return h >= 5 && h < 8 ? 'dawn' : h >= 8 && h < 17 ? 'day' : h >= 17 && h < 20 ? 'dusk' : 'night'; }
 const SKY = {
@@ -367,5 +398,5 @@ function lanterns(world){
   setTimeout(() => box.remove(), 11000);
 }
 
-window.Life = {start, stop, hit, locate, construct, fx, fireworks, bunting, boatIn, dust, sky, lanterns, get settlers(){ return state ? state.people.map(p => ({i:p.i, st:p.doing})) : []; }};
+window.Life = {start, stop, hit, locate, construct, fx, fireworks, bunting, boatIn, delivery, dust, sky, lanterns, get settlers(){ return state ? state.people.map(p => ({i:p.i, st:p.doing})) : []; }};
 })();

@@ -343,6 +343,10 @@ details.pantry summary::-webkit-details-marker{display:none}
 @keyframes smoke{from{opacity:.55;transform:translate(0,0) scale(.6)}to{opacity:0;transform:translate(4px,-16px) scale(1.6)}}
 .float{animation:float 3.5s ease-in-out infinite alternate}
 @keyframes float{to{transform:translateY(-1.6px) rotate(-1.5deg)}}
+.beam{animation:beam 7s ease-in-out infinite;opacity:.9}
+@keyframes beam{0%{transform:rotate(-14deg) scaleX(1);opacity:.25}50%{transform:rotate(16deg) scaleX(1.1);opacity:.95}100%{transform:rotate(-14deg) scaleX(1);opacity:.25}}
+.hook{animation:hook 4s ease-in-out infinite alternate}
+@keyframes hook{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
 .glint{animation:glint 3s ease-in-out infinite}
 @keyframes glint{0%,100%{opacity:0}50%{opacity:.85}}
 .fly{animation:fly 6s ease-in-out infinite alternate}

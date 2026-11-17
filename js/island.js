@@ -277,6 +277,60 @@ function isoTug(x,y,p,id){
   if(p.night){s=glow(x+12.5,y-12,16,id,.9)+s;light(x+12.5,y+2,26,.85);}
   return `<g class="float">${s}</g>`;
 }
+/* The dock: plank deck on posts just above the water, from the east cliff out to sea. Each port tier the
+   player chooses adds to it: 1 cargo pier (longer, crates, a lamp), 2 harbor (a shed and a cargo crane),
+   3 lighthouse at the end of the pier with a sweeping beam. */
+function isoDock(x0,x1,tier,p,id){
+  const f=n=>n.toFixed(1),y0=.18,y1=.82,zt=-8,plank='#7d5c3f',plankL='#5e432d',plankR='#4a3523',post='#3e2c1e';
+  const crate=(x,y,z,c='#9a7448')=>box(x-.13,y-.13,x+.13,y+.13,z,4.2,c,'#6f5233','#5a4229')+`<path d="M${pts([P(x-.13,y+.13,z+2.1),P(x+.13,y+.13,z+2.1),P(x+.13,y-.13,z+2.1)]).replace(/ /g,' L')}" fill="none" stroke="#4d3822" stroke-width=".5"/>`;
+  let s='';
+  // posts behind the deck, then the deck, then posts in front
+  const step=(x1-x0)/Math.max(1,Math.round((x1-x0)/.6));
+  for(let x=x0+step;x<=x1+1e-6;x+=step)s+=box(x-.07,y0,x+.03,y0+.08,-D-1,D-3,null,post,'#2e2116');
+  s+=box(x0,y0,x1,y1,zt-1.4,1.4,plank,plankL,plankR);
+  for(let x=x0+.22;x<x1-.05;x+=.22){const a=P(x,y0,zt),b=P(x,y1,zt);s+=`<path d="M${f(a[0])} ${f(a[1])}L${f(b[0])} ${f(b[1])}" stroke="#5e432d" stroke-width=".45" opacity=".8"/>`;}
+  for(let x=x0+step;x<=x1+1e-6;x+=step)s+=box(x-.07,y1-.08,x+.03,y1,-D-1,D-3-1.4,null,post,'#2e2116');
+  // bollards at the end, a coil of rope
+  [[x1-.12,y0+.1],[x1-.12,y1-.1]].forEach(([x,y])=>{const [bx,by]=P(x,y,zt);s+=`<rect x="${f(bx-1)}" y="${f(by-2.6)}" width="2" height="2.6" rx=".6" fill="#2f3542"/><ellipse cx="${f(bx)}" cy="${f(by-2.6)}" rx="1.1" ry=".55" fill="#4b5563"/>`;});
+  {const [rx,ry]=P(x0+.35,y1-.2,zt);s+=`<ellipse cx="${f(rx)}" cy="${f(ry)}" rx="2.2" ry="1.1" fill="none" stroke="#c9b48a" stroke-width=".8"/><ellipse cx="${f(rx)}" cy="${f(ry)}" rx="1.2" ry=".6" fill="none" stroke="#c9b48a" stroke-width=".6"/>`;}
+  if(tier>=1){
+    // stacked cargo and a lamp post
+    s+=crate(x0+.62,.34,zt)+crate(x0+.62,.62,zt,'#8a6a42')+crate(x0+.62,.34,zt+4.2,'#a57f50');
+    const [lx,ly]=P(x1-.35,y0+.1,zt);
+    s+=`<path d="M${f(lx)} ${f(ly)}v-12" stroke="#2f3542" stroke-width="1"/><rect x="${f(lx-1.3)}" y="${f(ly-14.6)}" width="2.6" height="2.8" rx=".7" fill="#ffd77e"${p.night?` filter="url(#gw${id})"`:''}/>`;
+    if(p.night){s+=glow(lx,ly-13,12,id,.8);light(lx,ly,22,.7);}
+  }
+  if(tier>=2){
+    // harbor shed by the cliff
+    const a=x0+.04,b=x0+.42,c0=y0+.04,c1=y1-.04,h=8;
+    s+=box(a,c0,b,c1,zt,h,null,'#6b5a48','#56483a');
+    s+=poly([P(a,c1,zt+h),P(b,c1,zt+h),P(b,(c0+c1)/2,zt+h+5),P(a,(c0+c1)/2,zt+h+5)],'#7a3b32');
+    s+=poly([P(b,c0,zt+h),P(b,c1,zt+h),P(b,(c0+c1)/2,zt+h+5)],'#5f2d27');
+    {const [dx,dy]=P((a+b)/2,c1,zt);s+=`<rect x="${f(dx-1.8)}" y="${f(dy-5.2)}" width="3.6" height="5" fill="#3a2b24"/>`;}
+    {const [wx,wy]=P(b,(c0+c1)/2,zt+4.5);s+=`<rect x="${f(wx+1)}" y="${f(wy-2.4)}" width="2.4" height="2.2" rx=".3" fill="${p.win}"${p.night?` filter="url(#gw${id})"`:''}/>`;if(p.night)light(wx,wy+6,18,.6);}
+    // cargo crane leaning over the water, hook swaying
+    const [cx,cy]=P(x1-.85,y1-.12,zt),[tx,ty]=[cx+9,cy-22];
+    s+=`<path d="M${f(cx-2)} ${f(cy)}L${f(cx)} ${f(cy-20)}L${f(cx+2)} ${f(cy)}M${f(cx-1.2)} ${f(cy-7)}h2.4M${f(cx-.6)} ${f(cy-14)}h1.2" stroke="#c0882f" stroke-width="1" fill="none" stroke-linejoin="round"/>`;
+    s+=`<path d="M${f(cx-3)} ${f(cy-19)}L${f(tx)} ${f(ty)}" stroke="#c0882f" stroke-width="1.2" stroke-linecap="round"/><rect x="${f(cx-5)}" y="${f(cy-20)}" width="3" height="2.4" fill="#3b4252"/>`;
+    s+=`<g class="hook" style="transform-origin:${f(tx)}px ${f(ty)}px"><path d="M${f(tx)} ${f(ty)}v9" stroke="#9aa3ad" stroke-width=".5"/><path d="M${f(tx)} ${f(ty+9)}a1.2 1.2 0 1 0 1.2 1.2" stroke="#9aa3ad" stroke-width=".7" fill="none"/></g>`;
+  }
+  if(tier>=3){
+    // lighthouse at the end of the pier, with a beam that sweeps the sea at night
+    const [hx,hy]=P(x1-.3,.5,zt),H2=30;
+    s+=`<ellipse cx="${f(hx)}" cy="${f(hy)}" rx="5.4" ry="2.7" fill="#6f6a60"/>`;
+    s+=`<path d="M${f(hx-4)} ${f(hy)}L${f(hx-2.6)} ${f(hy-H2)}H${f(hx+2.6)}L${f(hx+4)} ${f(hy)}Z" fill="#e8e2d4"/>`;
+    s+=`<path d="M${f(hx)} ${f(hy)}L${f(hx)} ${f(hy-H2)}H${f(hx+2.6)}L${f(hx+4)} ${f(hy)}Z" fill="#c9c1b0"/>`;
+    [.18,.48,.78].forEach(t=>{const yA=hy-H2*t,yB=yA-H2*.13,wa=4-1.4*t,wb=4-1.4*(t+.13);s+=`<path d="M${f(hx-wa)} ${f(yA)}L${f(hx-wb)} ${f(yB)}H${f(hx+wb)}L${f(hx+wa)} ${f(yA)}Z" fill="#b8453a"/>`;});
+    s+=`<rect x="${f(hx-3.6)}" y="${f(hy-H2-.8)}" width="7.2" height="1.4" rx=".4" fill="#2f3542"/>`;
+    s+=`<rect x="${f(hx-2.2)}" y="${f(hy-H2-5)}" width="4.4" height="4.2" rx=".6" fill="#ffe08a"${p.night?` filter="url(#gw${id})"`:''}/>`;
+    s+=`<path d="M${f(hx-3)} ${f(hy-H2-5)}L${f(hx)} ${f(hy-H2-8.4)}L${f(hx+3)} ${f(hy-H2-5)}Z" fill="#b8453a"/>`;
+    if(p.night){
+      s+=`<g class="beam" style="transform-origin:${f(hx)}px ${f(hy-H2-3)}px"><path d="M${f(hx)} ${f(hy-H2-3)}L${f(hx+70)} ${f(hy-H2-12)}L${f(hx+70)} ${f(hy-H2+6)}Z" fill="url(#bm${id})"/></g>`;
+      s+=glow(hx,hy-H2-3,18,id,1);light(hx,hy,30,.8);
+    }
+  }
+  return s;
+}
 function isoScene(prog,p,id,opt={}){
   const f=Math.max(0,Math.min(4,prog*4)),stage=Math.floor(f+1e-9);let gst=f<.6?0:f<1.5?1:f<2.5?2:f<3.6?3:4;
   WINTER=!!opt.winter; CROPSEL=opt.crops||{};
@@ -299,6 +353,7 @@ function isoScene(prog,p,id,opt={}){
     <linearGradient id="cl${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.eL}"/><stop offset="1" stop-color="#241b14"/></linearGradient>
     <linearGradient id="cr${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.eR}"/><stop offset="1" stop-color="#1b140f"/></linearGradient>
     <radialGradient id="lt${id}"><stop offset="0" stop-color="#ffcf80" stop-opacity=".26"/><stop offset=".4" stop-color="#ffb860" stop-opacity=".09"/><stop offset="1" stop-color="#ff9a40" stop-opacity="0"/></radialGradient>
+    <linearGradient id="bm${id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffe7a8" stop-opacity=".55"/><stop offset="1" stop-color="#ffe7a8" stop-opacity="0"/></linearGradient>
     <radialGradient id="gl${id}"><stop offset="0" stop-color="#ffc86b" stop-opacity=".55"/><stop offset="1" stop-color="#ffc86b" stop-opacity="0"/></radialGradient>
     <filter id="gw${id}" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
   // night sky dressing: moon reflection
@@ -328,9 +383,13 @@ function isoScene(prog,p,id,opt={}){
   if(!opt.live)WALK.filter(w=>w.th<=f).forEach((w,i)=>{const a=P(w.f[0],w.f[1]),b=P(w.t[0],w.t[1]);
     items.push({z:w.f[0]+w.f[1]+.3,k:'w'+i,svg:()=>{const moving=w.d?` class="walk" style="--dx:${(b[0]-a[0]).toFixed(1)}px;--dy:${(b[1]-a[1]).toFixed(1)}px;animation-duration:${w.d}s;animation-delay:-${i*1.3}s"`:'';
       return `<g${moving}>${person(a[0],a[1],w.c,p)}</g>`;}});});
-  // boat moored off the east shore
-  let bx=0;for(let x=0;x<=10;x++)if(L(x,0)||L(x,1))bx=x;
-  const [bsx,bsy]=P(bx+2.2,.6,-D+2);
+  // the dock on the east shore, grown into a port tier by tier, with the tug moored beside it
+  let bx=0,bx0=0;for(let x=0;x<=10;x++){if(L(x,0)||L(x,1))bx=x;if(L(x,0))bx0=x;}
+  const tier=B?(B.has('port3')?3:B.has('port2')?2:B.has('port1')?1:0):0,dk=tier?'port'+tier:'dock';
+  const dx0=bx0+1,dx1=bx+1+[.8,1.3,1.6,1.9][tier];
+  items.push({z:dx0+.4,k:dk,svg:()=>isoDock(dx0,dx1,tier,p,id)});
+  const dock={k:dk,t:dk,x:dx0,y:.18,w:dx1-dx0,h:.64},ta=dx1+.95;
+  const [bsx,bsy]=P(ta,.4,-D+2);
   items.push({z:99,k:'boat',svg:()=>isoTug(bsx,bsy,p,id)});
   items.sort((a,b)=>a.z-b.z);
   items.forEach(it=>{s+=`<g class="o" data-k="${it.k}" data-z="${it.z}">${it.svg()}</g>`;});
@@ -339,7 +398,10 @@ function isoScene(prog,p,id,opt={}){
   // fireflies at night
   if(p.night&&stage>=2){[[-60,-10],[-20,-40],[30,20],[70,-20],[-80,30],[10,-60],[90,30],[-40,40]].slice(0,stage*2).forEach(([x,y],i)=>{s+=`<circle class="fly" style="animation-delay:-${i*.9}s" cx="${x}" cy="${y}" r="1.3" fill="#ffe28a"/>`;});}
   const W=72+(148-72)*f/4;
-  return {svg:s,W,f,gst,tiles,vis,boat:[bx,0]};
+  vis.push(dock,{k:'boat',t:'tug',x:ta-.5,y:-.1,w:1,h:1});
+  // left and right edges of everything drawn, so the camera can frame the island with its port
+  let e0=0,e1=0;tiles.forEach(([x,y])=>{e0=Math.min(e0,(x-y-1)*TW);e1=Math.max(e1,(x+1-y)*TW);});e1=Math.max(e1,bsx+18);
+  return {svg:s,W,f,gst,tiles,vis,ext:[e0,e1],boat:[bx,0],tug:[bsx,bsy],dock:{x0:dx0,x1:dx1,tier,at:P((dx0+dx1)/2,.5,-8)}};
 }
 
 
@@ -349,5 +411,7 @@ function unlocks(){
   [[.6,'gfound'],[1.5,'g1'],[2.5,'g2'],[3.6,'g3']].forEach(([th,t])=>list.push({k:t,t,th}));
   return list.sort((x,y)=>x.th-y.th);
 }
-window.Isle={STAGES,isoScene,PAL_B,unlocks,P,WALK,OBJ};
+/* The port: optional tiers, built only when chosen as the goal, one after another. */
+const PORT=[{k:'port1',t:'port1'},{k:'port2',t:'port2'},{k:'port3',t:'port3'}];
+window.Isle={STAGES,isoScene,PAL_B,unlocks,P,WALK,OBJ,PORT};
 })();

@@ -17,9 +17,11 @@ const RESN = {stone:'Stone',land:'Land',harvest:'Harvest',spirit:'Spirit'};
 const MEAL_WEEKS = [1, 2, 3, 4, 5, 6, 7];
 const SETTLERS = ['Juno','Mira','Tobi','Pell','Wren','Ansel','Ivy','Corin','Bea','Otto','Lark','Fen','Rhea','Sol','Nell','Arlo','Hale','Tess'];
 const BUILD = {house:'a cottage',farm:'a farm plot',tree:'an orchard tree',pine:'a pine grove',well:'the village well',stall:'a market stall',windmill:'the windmill',tower:'the watchtower',
-  lantern:'a lantern',flowers:'a flower bed',rock:'a standing stone',gfound:'the Gardens foundation',g1:'the first Gardens tier',g2:'the second Gardens tier',g3:'the Hanging Gardens'};
+  lantern:'a lantern',flowers:'a flower bed',rock:'a standing stone',gfound:'the Gardens foundation',g1:'the first Gardens tier',g2:'the second Gardens tier',g3:'the Hanging Gardens',
+  dock:'the dock',port1:'the cargo pier',port2:'the harbor',port3:'the lighthouse'};
 const BUILD_T = {house:'Cottage',farm:'Farm plot',tree:'Orchard tree',pine:'Pine grove',well:'Village well',stall:'Market stall',windmill:'Windmill',tower:'Watchtower',
-  lantern:'Lantern',flowers:'Flower bed',rock:'Standing stone',gfound:'Gardens foundation',g1:'Gardens · tier one',g2:'Gardens · tier two',g3:'Hanging Gardens'};
+  lantern:'Lantern',flowers:'Flower bed',rock:'Standing stone',gfound:'Gardens foundation',g1:'Gardens · tier one',g2:'Gardens · tier two',g3:'Hanging Gardens',
+  dock:'The dock',port1:'Cargo pier',port2:'Harbor',port3:'Lighthouse'};
 
 /* ---------------- icons ---------------- */
 const P = {
@@ -38,6 +40,7 @@ const P = {
   harvest:'<path d="M5 19C5 10 10 5 19 5c0 9-5 14-14 14z"/><path d="M5 19l8-8"/>',
   spirit:'<path d="M12 3c1.3 3.2 5 5 5 9.5a5 5 0 0 1-10 0c0-2.4 1.2-3.8 2-4.8.4 1.6 1.3 2.6 2.4 2.8C10.9 7.8 11.3 5.3 12 3z"/>',
   house:'<path d="M4 11 12 4l8 7M6 9.5V20h12V9.5M10 20v-5h4v5"/>',
+  anchor:'<circle cx="12" cy="5" r="2"/><path d="M12 7v14M8 11h8M4.5 13.5a7.5 7.5 0 0 0 15 0"/>',
   isle:'<path d="M3 18c2 1.3 4 1.3 6 0s4-1.3 6 0 4 1.3 6 0"/><path d="M5 14.5c2-3 12-3 14 0"/><path d="M12 13V6m0 0c-1.5-2-4-2.2-5.5-1M12 6c1.5-2 4-2.2 5.5-1M12 6c-.5-1.8.3-3 1.5-3.6"/>',
   train:'<path d="M6.5 7v10M3.5 9.5v5M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
   market:'<path d="M4 9h16l-1.6 9.2a2 2 0 0 1-2 1.8H7.6a2 2 0 0 1-2-1.8z"/><path d="M8.5 9 11 4M15.5 9 13 4"/>',
@@ -150,6 +153,12 @@ const COSTS = (() => {
   const out = {}; raw.forEach(x => { const c = {}; Store.RES.forEach(r => { if (x.m[r]) c[r] = Math.max(1, Math.round(x.inc * x.m[r] * scale[r])); }); out[x.k] = c; });
   return out;
 })();
+/* The port is optional: its tiers are never in the usual order, only built when you pick one as the goal.
+   Each costs about what a cottage or windmill does at that point in the season. */
+Object.assign(COSTS, {port1:{land:20, harvest:25}, port2:{stone:25, land:15, harvest:25}, port3:{stone:35, spirit:30}});
+const PORTK = new Set(Isle.PORT.map(u => u.k));
+const allBuilds = () => Isle.unlocks().concat(Isle.PORT);
+const portNext = (b = builtSet()) => Isle.PORT.find(u => !b.has(u.k)) || null;
 const costSum = c => Object.values(c).reduce((a, b) => a + b, 0);
 function balances(){
   const t = Store.totals(), b = {stone:t.stone, land:t.land, harvest:t.harvest, spirit:t.spirit};
@@ -177,8 +186,8 @@ function buildChoices(b = builtSet(), max = 4){
 }
 /* The building the settlers are saving for: the one you picked, or the next in the usual order. */
 function nextUp(b = builtSet()){
-  const t = Store.state.target, list = Isle.unlocks();
-  if (t && !b.has(t)){ const u = list.find(x => x.k === t); if (u && buildChoices(b, 99).some(x => x.k === t)) return u; }
+  const t = Store.state.target;
+  if (t && !b.has(t)){ const u = allBuilds().find(x => x.k === t), pn = portNext(b); if (u && (buildChoices(b, 99).some(x => x.k === t) || (pn && pn.k === t))) return u; }
   return buildChoices(b, 1)[0] || null;
 }
 /* Build everything that can now be paid for. Returns the new entries. */
@@ -206,7 +215,7 @@ function migrateBuilt(){
 }
 const builtSet = () => new Set((Store.state.built || []).map(e => e.k));
 function unlockState(){
-  const list = Isle.unlocks(), built = (Store.state.built || []).length, next = nextUp(), bal = balances();
+  const list = Isle.unlocks(), built = (Store.state.built || []).filter(e => !PORTK.has(e.k)).length, next = nextUp(), bal = balances();
   if (!next) return {list, next:null, nextI:-1, built, need:0, pct:100, parts:[], bal};
   const c = COSTS[next.k]; let have = 0;
   const parts = Store.RES.filter(r => c[r]).map(r => { const h = Math.max(0, Math.min(c[r], bal[r])); have += h; return {r, have:Math.max(0, Math.floor(bal[r])), cost:c[r]}; });
@@ -302,7 +311,7 @@ function toast(txt){ const t = document.createElement('div'); t.className = 'toa
 function celebrate(before){
   const added = settle(), s0 = 3 + Math.floor(before / 45), s1 = Store.settlers();
   if (added.length){
-    const list = Isle.unlocks(), n = (Store.state.built || []).length, u = list.find(x => x.k === added[added.length - 1].k), who = SETTLERS[(n - 1) % SETTLERS.length];
+    const list = allBuilds(), n = (Store.state.built || []).length, u = list.find(x => x.k === added[added.length - 1].k), who = SETTLERS[(n - 1) % SETTLERS.length];
     buildFocus = true;
     if (/^g[123]$/.test(u.t)) gardensFest = true;
     announce(BUILD_T[u.t], u.t.startsWith('g') ? 'The settlers finished' : `${who} built`, u.t.startsWith('g') ? 'harvest' : 'house');
@@ -419,11 +428,13 @@ function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id 
   if (live){ zoom = ISLE_ZOOM; anchor = ISLE_ANCHOR; }
   const ss = season(), r = Isle.isoScene(prog, Isle.PAL_B, id, {live, winter:ss.winter, holiday:ss.holiday, built:live ? builtSet() : null, crops:Store.state.crops});
   const box = svg.getBoundingClientRect();
-  const w = 2 * r.W * zoom, h = w * (box.height / Math.max(1, box.width));
-  svg.setAttribute('viewBox', `${(-w / 2).toFixed(1)} ${(8 - anchor * h).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
+  // the home island is framed from edge to edge with the dock and tug, centered on all of it
+  // (the island stays big: the far west tip crops a little before the tug on the east side ever does)
+  const w = live ? Math.max(2 * r.W * zoom, Math.min(r.ext[1] - r.ext[0] - 20, 2.12 * r.W * zoom)) : 2 * r.W * zoom, cx = live ? Math.max((r.ext[0] + r.ext[1]) / 2, r.ext[1] + 4 - w / 2) : 0, h = w * (box.height / Math.max(1, box.width));
+  svg.setAttribute('viewBox', `${(cx - w / 2).toFixed(1)} ${(8 - anchor * h).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
   svg.innerHTML = r.svg;
   if (!live) return;
-  baseVB = [-w / 2, 8 - anchor * h, w, h]; clampCam(); applyCam(svg);
+  baseVB = [cx - w / 2, 8 - anchor * h, w, h]; clampCam(); applyCam(svg);
   scene = r;
   const now = new Set(), delay = buildFocus ? .55 : 0;
   $$('.o', svg).forEach(g => {
@@ -475,6 +486,10 @@ function settlerStory(i, st, role){
 }
 function buildingStory(k, t){
   if (t === 'gardens'){ const g = Store.gardens(); return {title:'Hanging Gardens', sub:`${g.label} · ${g.pct}%`, line:'The first Wonder. Every point you earn adds stone, soil and vines.'}; }
+  if (t === 'tug') return {title:'The lantern tug', sub:'Moored at the dock', line:'Every time you finish something it sails out and comes back with cargo for the settlers.'};
+  if (t === 'dock'){ const pn = portNext(); return {title:'The dock', sub:'Since day one', line:`Where the tug ties up. ${pn ? `Pick ${BUILD_T[pn.t]} as a goal and it grows into a port.` : ''}`}; }
+  if (PORTK.has(k)){ const e = (Store.state.built || []).find(x => x.k === k), pn = portNext(), paid = e ? Store.RES.filter(r => e.s[r]).map(r => `${Math.round(e.s[r])} ${RESN[r]}`).join(', ') : '';
+    return {title:BUILD_T[t], sub:`Port · tier ${Isle.PORT.findIndex(u => u.k === k) + 1} of 3`, line:`${paid ? `Cost ${paid}. ` : ''}${pn ? `${BUILD_T[pn.t]} is the next tier, whenever you choose it.` : 'The port is finished.'}`}; }
   const base = {xmas:['The holiday tree', 'The settlers dragged it in from the pine grove and every one of them hung an ornament.'], fire:['The first campfire', 'Lit the night the settlers landed.'], tent:['The first tent', 'Where the first three settlers slept.'], tree:['Old tree', 'It was here before anyone arrived.']};
   const list = Isle.unlocks(), i = list.findIndex(u => u.k === k);
   if (i < 0){ const b = base[t] || ['Island', 'Part of the island.']; return {title:b[0], sub:'Since day one', line:b[1]}; }
@@ -724,10 +739,11 @@ function vIsle(){
 const CROPN = {greens:'Greens', wheat:'Wheat', pumpkins:'Pumpkins', berries:'Berries'};
 /* Choose what the settlers build next, and what each farm plot grows. */
 function buildSheet(){
-  const b = builtSet(), choices = buildChoices(b), cur = nextUp(b), tgt = Store.state.target;
+  const b = builtSet(), choices = buildChoices(b), cur = nextUp(b), tgt = Store.state.target, pn = portNext(b);
   const farms = (Store.state.built || []).filter(e => Isle.unlocks().find(u => u.k === e.k && u.t === 'farm'));
   const sh = sheet(`<div class="grab"></div><div><div class="over gold">The settlers are ready</div><h2 class="t2" style="margin-top:8px">What should they build next?</h2></div>
     <div class="group">${choices.map(u => `<button type="button" class="row tap choice${cur && cur.k === u.k ? ' on' : ''}" data-k="${u.k}"><span class="tile r-gold">${ic(u.t.startsWith('g') ? 'harvest' : 'house')}</span><span class="tx"><b>${BUILD_T[u.t]}${cur && cur.k === u.k ? ' <span class="cap">· saving for this</span>' : ''}</b>${priceChips(costParts(u.k), true)}</span></button>`).join('')}</div>
+    ${pn ? `<div class="sect"><div class="sect-h"><span class="over">Grow the port</span></div><div class="group"><button type="button" class="row tap choice${cur && cur.k === pn.k ? ' on' : ''}" data-k="${pn.k}"><span class="tile r-land">${ic('anchor')}</span><span class="tx"><b>${BUILD_T[pn.t]}${cur && cur.k === pn.k ? ' <span class="cap">· saving for this</span>' : ` <span class="cap">· tier ${Isle.PORT.indexOf(pn) + 1} of 3</span>`}</b>${priceChips(costParts(pn.k), true)}</span></button></div></div>` : ''}
     <p class="fine">Whatever you pick, resources go toward it first. ${tgt ? 'After it is built the settlers go back to the usual order.' : 'Right now they are following the usual order.'}</p>
     ${farms.length ? `<div class="sect"><div class="sect-h"><span class="over">What your fields grow</span></div><div class="group">${farms.map((e, i) => { const now = (Store.state.crops || {})[e.k] || ['greens', 'wheat', 'pumpkins'][i % 3];
       return `<div class="row fieldrow"><span class="tx"><b>Field ${i + 1}</b></span><span class="cropchips">${Object.keys(CROPN).map(c => `<button type="button" class="cropbtn c-${c}${now === c ? ' on' : ''}" data-f="${e.k}" data-c="${c}">${CROPN[c]}</button>`).join('')}</span></div>`; }).join('')}</div></div>` : ''}`);
@@ -735,7 +751,7 @@ function buildSheet(){
     const k = x.dataset.k, def = buildChoices(b, 1)[0];
     Store.setTarget(def && def.k === k ? null : k); haptic();
     const before = Store.totals().all; celebrate(before);
-    closeLayer(); toast(`The settlers are saving for ${BUILD[Isle.unlocks().find(u => u.k === k).t]}.`); setTimeout(rerender, 300);
+    closeLayer(); toast(`The settlers are saving for ${BUILD[allBuilds().find(u => u.k === k).t]}.`); setTimeout(rerender, 300);
   });
   $$('.cropbtn', sh).forEach(x => x.onclick = () => { Store.setCrop(x.dataset.f, x.dataset.c); haptic(); $$(`.cropbtn[data-f="${x.dataset.f}"]`, sh).forEach(y => y.classList.toggle('on', y === x)); const svg = $('#isl'); if (svg){ const keep = seen; drawIsland(svg); seen = keep; } });
 }
@@ -757,7 +773,8 @@ function playIslandFx(world){
     if (!entries.some(e => e.isIntersecting)) return;
     io.disconnect();
     const list = islandFx.splice(0), svg = $('#isl');
-    const nextT = (() => { const u = unlockState(); if (!u.next) return null; const o = Isle.OBJ.find(x => x.k === u.next.k) || Isle.OBJ.find(x => x.k === 'g'); return o ? Isle.P(o.x + (o.w || 1) / 2, o.y + (o.h || 1) / 2) : null; })();
+    const nextT = (() => { const u = unlockState(); if (!u.next) return null; if (PORTK.has(u.next.k) && scene) return scene.dock.at; const o = Isle.OBJ.find(x => x.k === u.next.k) || Isle.OBJ.find(x => x.k === 'g'); return o ? Isle.P(o.x + (o.w || 1) / 2, o.y + (o.h || 1) / 2) : null; })();
+    if (svg && svg.isConnected) Life.delivery(svg, scene, list.map(f => f.res));
     list.forEach((f, i) => setTimeout(() => { if (svg && svg.isConnected) Life.fx(svg, scene, f.res, f.pts, nextT); }, 500 + i * 1100));
   }, {threshold:.45});
   io.observe(world);
@@ -1523,7 +1540,7 @@ function weekSummary(mon){
   const res = {stone:0, land:0, harvest:0, spirit:0}; inWk.forEach(e => { res[e.res] = (res[e.res] || 0) + e.pts; });
   const count = k => inWk.filter(e => e.key === k).length;
   const isMeal = e => ['breakfast', 'lunch', 'dinner'].includes(e.key), meals = inWk.filter(e => isMeal(e) && e.pts > 0 && !/^Ate out/.test(e.label)).length;
-  const list = Isle.unlocks(), built = (Store.state.built || []).filter(e => !e.carried && e.d >= start && e.d <= end).map(e => list.find(u => u.k === e.k)).filter(Boolean);
+  const list = allBuilds(), built = (Store.state.built || []).filter(e => !e.carried && e.d >= start && e.d <= end).map(e => list.find(u => u.k === e.k)).filter(Boolean);
   const s0 = 3 + Math.floor(before / 45), s1 = 3 + Math.floor(after / 45), arrived = [];
   for (let i = s0; i < s1; i++) arrived.push(SETTLERS[i % SETTLERS.length]);
   const sets = Store.state.sets || {};
@@ -1541,8 +1558,9 @@ function weekSummary(mon){
     after, settlers:s1, entries:inWk.length, done:end < todayS};
 }
 const TITLE = {gfound:'The Gardens begin', g1:'The first tier', g2:'The second tier', g3:'The Hanging Gardens', windmill:'The windmill turns', tower:'The watchtower',
-  well:'The village well', stall:'Market day', house:'A new cottage', farm:'New fields', tree:'The orchard', pine:'The pine grove', lantern:'Lanterns at dusk', flowers:'Flower beds', rock:'The standing stone'};
-const RANK = ['g3','g2','g1','gfound','windmill','tower','well','stall','house','lantern','farm','tree','pine','flowers','rock'];
+  well:'The village well', stall:'Market day', house:'A new cottage', farm:'New fields', tree:'The orchard', pine:'The pine grove', lantern:'Lanterns at dusk', flowers:'Flower beds', rock:'The standing stone',
+  port1:'The cargo pier', port2:'The harbor opens', port3:'The lighthouse'};
+const RANK = ['g3','port3','g2','g1','port2','gfound','windmill','port1','tower','well','stall','house','lantern','farm','tree','pine','flowers','rock'];
 const PLURAL = {house:'cottages', farm:'farm plots', tree:'orchard trees', pine:'pine groves', lantern:'lanterns', flowers:'flower beds'};
 /* "a farm plot, a farm plot" -> "two farm plots" */
 function builtPhrases(built){
@@ -1567,7 +1585,7 @@ function chapterText(s){
   const out = [];
   out.push(deeds.length ? `${pick(['This was the week of', `Week ${s.wk} brought`, 'You gave the island'])} ${listify(deeds)}.` : `It was a lighter week, but ${numw(s.entries)} small things still moved the island forward.`);
   if (s.built.length){
-    const who = SETTLERS[(Isle.unlocks().findIndex(u => u.k === s.built[0].k)) % SETTLERS.length];
+    const who = SETTLERS[Math.max(0, allBuilds().findIndex(u => u.k === s.built[0].k)) % SETTLERS.length];
     const phr = builtPhrases(s.built);
     out.push(phr.length === 1 && s.built.length === 1 ? `${who} finished ${BUILD[s.built[0].t]}${pick([', and the whole village came out to see it.', ' by lantern light on the last night.', ', and the island feels bigger for it.'], 1)}`
       : `The settlers raised ${listify(phr)}${pick([', working late by lantern light.', '. The village had never been busier.', ', and still asked what was next.'], 1)}`);
