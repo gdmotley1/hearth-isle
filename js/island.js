@@ -39,7 +39,7 @@ const WALK=[
 ];
 /* unlock thresholds: each stage's objects appear one by one across the previous stage interval */
 (function(){for(let s=0;s<=4;s++){const g=OBJ.filter(o=>o.s===s&&o.t!=='gardens');g.forEach((o,i)=>o.th=s===0?0:s-1+(i+.35)/g.length);const w=WALK.filter(o=>o.s===s);w.forEach((o,i)=>o.th=s===0?0:s-1+(i+.5)/w.length);}OBJ.find(o=>o.t==='gardens').th=.6;})();
-const PAL_B={night:true,shallow:'#1f3f5f',foam:'#2e5779',g1:'#2f5d55',g2:'#2c5951',sand:'#7a7564',path:'#5d5747',gSideL:'#24493f',gSideR:'#1c3b34',sSideL:'#625c4c',sSideR:'#524c3f',eL:'#433429',eR:'#33281f',
+const PAL_B={night:true,shallow:'#1f3f5f',foam:'#2e5779',g1:'#2f5d55',g2:'#2c5951',g3:'#33635a',tuft:'#4a8a70',tuftD:'#24493f',pebble:'#8d8775',sand:'#7a7564',path:'#5d5747',gSideL:'#24493f',gSideR:'#1c3b34',sSideL:'#625c4c',sSideR:'#524c3f',eL:'#433429',eR:'#33281f',
  wallL:'#76839a',wallR:'#56627a',door:'#3a2b24',win:'#ffcf73',roofs:['#8c4f45','#3f5e82','#8a7240'],roofsD:['#6c3a33','#2f4865','#6b5731'],trunk:'#4a3628',can:'#24493f',canL:'#2f5d50',canD:'#1b3a32',pineL:'#26503f',pineD:'#1a3a2e',
  soil:'#4d3c2e',crops:['#3a6b4a','#8a7a3e','#8f5a35'],stoneT:'#8c8270',stoneL:'#776e5e',stoneR:'#5f574a',vine:'#2f6247',water:'#3d6f9a',waterL:'#9cc6e6',canvas:'#a69a83',canvasD:'#7e7462',wood:'#5f4532',woodD:'#47331f',rock:'#566068',rockD:'#424a51',
  skin:'#d8a985',shirts:['#c05f3a','#4f7fae','#c79a3a','#7a63ab','#3b8a6a','#b0527a'],shadow:'rgba(0,0,0,.28)',smoke:'#9fb0c8',flower:['#e07a8c','#e8c35a','#d8dde8','#a98ad6']};
@@ -51,38 +51,60 @@ function box(x0,y0,x1,y1,z0,h,cT,cL,cR){
    +(cT?poly([P(x0,y0,z0+h),P(x1,y0,z0+h),P(x1,y1,z0+h),P(x0,y1,z0+h)],cT):'');
 }
 function shadowAt(sx,sy,rx,p){return `<ellipse cx="${sx}" cy="${sy}" rx="${rx}" ry="${rx/2}" fill="${p.shadow}"/>`;}
+let LIGHTS=[];
+const light=(x,y,r,o=1)=>LIGHTS.push([x,y,r,o]);
+const H=(x,y)=>{let h=(x*374761393+y*668265263)|0;h=(h^(h>>>13))*1274126177|0;return (h^(h>>>16))>>>0;};
+const lerp=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
 function glow(sx,sy,r,id,o=1){return `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${r}" fill="url(#gl${id})" opacity="${o}"/>`;}
 
 function isoHouse(o,p,id){
-  const x0=o.x+.18,x1=o.x+.82,y0=o.y+.2,y1=o.y+.8,h=13,r=9,ym=(y0+y1)/2,ov=.07,xm=(x0+x1)/2;
-  const roof=p.roofs[o.roof||0],roofD=p.roofsD[o.roof||0];
-  let s=box(x0,y0,x1,y1,0,h,null,p.wallL,p.wallR);
-  s+=poly([P(xm-.1,y1,0),P(xm+.06,y1,0),P(xm+.06,y1,7.5),P(xm-.1,y1,7.5)],p.door);
+  const x0=o.x+.18,x1=o.x+.82,y0=o.y+.2,y1=o.y+.8,h=13,r=9,ym=(y0+y1)/2,ov=.07,xm=(x0+x1)/2,ri=o.roof||0;
+  const roofD=p.roofsD[ri];
+  let s=shadowAt(...P(o.x+.58,o.y+.6),11,p);
+  s+=box(x0,y0,x1,y1,0,h,null,`url(#wl${id})`,`url(#wr${id})`);
+  s+=poly([P(x0,y1,0),P(x1,y1,0),P(x1,y1,1.8),P(x0,y1,1.8)],p.stoneL)+poly([P(x1,y0,0),P(x1,y1,0),P(x1,y1,1.8),P(x1,y0,1.8)],p.stoneR);
+  // door: frame, door, step
+  s+=poly([P(xm-.13,y1,0),P(xm+.09,y1,0),P(xm+.09,y1,8.4),P(xm-.13,y1,8.4)],p.woodD);
+  s+=poly([P(xm-.1,y1,0),P(xm+.06,y1,0),P(xm+.06,y1,7.6),P(xm-.1,y1,7.6)],p.door);
+  s+=poly([P(xm-.16,y1+.1,0),P(xm+.12,y1+.1,0),P(xm+.12,y1,0),P(xm-.16,y1,0)],p.stoneT);
   const wf=p.night?` filter="url(#gw${id})"`:'';
+  // front window with frame and cross
+  s+=poly([P(x1-.22,y1,5),P(x1-.06,y1,5),P(x1-.06,y1,10),P(x1-.22,y1,10)],p.woodD);
   s+=poly([P(x1-.2,y1,5.5),P(x1-.08,y1,5.5),P(x1-.08,y1,9.5),P(x1-.2,y1,9.5)],p.win,wf);
+  s+=`<path d="M${pts([P(x1-.14,y1,5.5)])}L${pts([P(x1-.14,y1,9.5)])}M${pts([P(x1-.2,y1,7.5)])}L${pts([P(x1-.08,y1,7.5)])}" stroke="${p.woodD}" stroke-width=".55"/>`;
+  // side window
+  s+=poly([P(x1,ym-.14,5),P(x1,ym+.1,5),P(x1,ym+.1,10.3),P(x1,ym-.14,10.3)],p.woodD);
   s+=poly([P(x1,ym-.12,5.5),P(x1,ym+.08,5.5),P(x1,ym+.08,9.8),P(x1,ym-.12,9.8)],p.win,wf);
-  s+=poly([P(x1,y0,h),P(x1,y1,h),P(x1,ym,h+r)],p.wallR);
-  // chimney behind ridge
+  s+=`<path d="M${pts([P(x1,ym-.02,5.5)])}L${pts([P(x1,ym-.02,9.8)])}M${pts([P(x1,ym-.12,7.6)])}L${pts([P(x1,ym+.08,7.6)])}" stroke="${p.woodD}" stroke-width=".55"/>`;
+  s+=poly([P(x1,y0,h),P(x1,y1,h),P(x1,ym,h+r)],`url(#wr${id})`);
   s+=box(x0+.12,ym-.16,x0+.26,ym-.02,h+3,9,roofD,p.wallR,p.wallR);
-  s+=poly([P(x0-ov,y1+ov,h-1),P(x1+ov,y1+ov,h-1),P(x1+ov,ym,h+r),P(x0-ov,ym,h+r)],roof);
-  s+=`<polyline points="${pts([P(x1+ov,y1+ov,h-1),P(x1+ov,ym,h+r),P(x0-ov,ym,h+r)])}" fill="none" stroke="${roofD}" stroke-width="1.4" stroke-linejoin="round"/>`;
+  const A=P(x0-ov,y1+ov,h-1),B=P(x1+ov,y1+ov,h-1),C=P(x1+ov,ym,h+r),Dd=P(x0-ov,ym,h+r);
+  s+=poly([A,B,C,Dd],`url(#rf${ri}${id})`);
+  // shingle rows
+  let sh='';[.3,.55,.78].forEach(t=>{const a=lerp(A,Dd,t),b=lerp(B,C,t);sh+=`M${a[0].toFixed(1)} ${a[1].toFixed(1)}L${b[0].toFixed(1)} ${b[1].toFixed(1)}`;});
+  s+=`<path d="${sh}" stroke="${roofD}" stroke-width=".7" opacity=".55"/>`;
+  s+=`<polyline points="${pts([B,C,Dd])}" fill="none" stroke="${roofD}" stroke-width="1.4" stroke-linejoin="round"/>`;
+  s+=`<path d="M${pts([Dd])}L${pts([C])}" stroke="rgba(255,235,200,.28)" stroke-width=".9"/>`;
   const [cx,cy]=P(x0+.19,ym-.09,h+13);
-  s+=`<circle class="smoke" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="2.4" fill="${p.smoke}" style="animation-delay:-${(o.x*7+o.y*3+20)%4}s"/>`;
-  if(p.night){const [gx,gy]=P(x1,y1,4);s=glow(gx,gy,16,id,.55)+s;}
+  const dl=(o.x*7+o.y*3+20)%4;
+  s+=`<circle class="smoke" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="2.4" fill="${p.smoke}" style="animation-delay:-${dl}s"/><circle class="smoke" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="2" fill="${p.smoke}" style="animation-delay:-${(dl+2)%4}s"/>`;
+  if(p.night){const [gx,gy]=P(x1,y1,4);s=glow(gx,gy,16,id,.55)+s;light(...P(x1-.14,y1+.45),20,.75);light(...P(x1+.45,ym),16,.55);}
   return s;
 }
 function isoTree(o,p,id){
   const [sx,sy]=P(o.x+.5,o.y+.5);
   let s=shadowAt(sx+2,sy,7,p)+`<rect x="${sx-1.3}" y="${sy-8}" width="2.6" height="8" rx="1" fill="${p.trunk}"/>`;
-  s+=`<circle cx="${sx}" cy="${sy-14}" r="7.5" fill="${p.can}"/><circle cx="${sx+2.5}" cy="${sy-11.5}" r="5" fill="${p.canD}"/><circle cx="${sx-2.2}" cy="${sy-16.5}" r="4" fill="${p.canL}"/>`;
-  if(o.fruit) s+=`<circle cx="${sx-3}" cy="${sy-11}" r="1.3" fill="#e2573f"/><circle cx="${sx+3.5}" cy="${sy-15}" r="1.3" fill="#e2573f"/><circle cx="${sx+.5}" cy="${sy-18.5}" r="1.3" fill="#e2573f"/>`;
+  let c=`<circle cx="${sx}" cy="${sy-14}" r="7.5" fill="${p.can}"/><circle cx="${sx+2.6}" cy="${sy-11.2}" r="5" fill="${p.canD}"/><circle cx="${sx-2.2}" cy="${sy-16.5}" r="4.2" fill="${p.canL}"/><circle cx="${sx-3.4}" cy="${sy-18}" r="1.8" fill="#3d7464" opacity=".9"/><path d="M${sx-6.5} ${sy-12}a7.5 7.5 0 0 0 13 0" fill="none" stroke="${p.canD}" stroke-width="1.6" opacity=".7"/>`;
+  if(o.fruit) c+=`<circle cx="${sx-3}" cy="${sy-11}" r="1.3" fill="#e2573f"/><circle cx="${sx+3.5}" cy="${sy-15}" r="1.3" fill="#e2573f"/><circle cx="${sx+.5}" cy="${sy-18.5}" r="1.3" fill="#e2573f"/>`;
+  s+=`<g class="sway" style="transform-origin:${sx}px ${sy}px;animation-delay:-${(H(o.x,o.y)%50)/10}s">${c}</g>`;
   return s;
 }
 function isoPine(o,p){
   const [sx,sy]=P(o.x+.5,o.y+.5);
   let s=shadowAt(sx+2,sy,6,p)+`<rect x="${sx-1.1}" y="${sy-5}" width="2.2" height="5" fill="${p.trunk}"/>`;
-  [[0,11],[6,9],[12,7]].forEach(([dy,w],i)=>{const b=sy-4-dy,t=b-12;
-    s+=poly([[sx-w/2*1.0,b],[sx,b+2.5],[sx,t]],p.pineL)+poly([[sx,b+2.5],[sx+w/2,b],[sx,t]],p.pineD);});
+  let c='';[[0,11],[6,9],[12,7]].forEach(([dy,w],i)=>{const b=sy-4-dy,t=b-12;
+    c+=poly([[sx-w/2*1.0,b],[sx,b+2.5],[sx,t]],p.pineL)+poly([[sx,b+2.5],[sx+w/2,b],[sx,t]],p.pineD);});
+  s+=`<g class="sway" style="transform-origin:${sx}px ${sy}px;animation-delay:-${(H(o.x,o.y)%50)/10}s">${c}</g>`;
   return s;
 }
 function isoFire(o,p,id){
@@ -93,6 +115,8 @@ function isoFire(o,p,id){
   s+=`<path d="M${sx-5} ${sy+1}l10 -3M${sx-5} ${sy-2}l10 3" stroke="${p.wood}" stroke-width="2" stroke-linecap="round"/>`;
   s+=`<path class="flick" d="M${sx} ${sy-12}c3 4 4.5 6 3.5 8.5-.8 2-6.2 2-7 0-1-2.5.8-4.2 3.5-8.5z" fill="#f08a2c"/>`;
   s+=`<path class="flick" style="animation-delay:-.2s" d="M${sx} ${sy-8}c1.7 2.3 2.5 3.4 2 5-.5 1.1-3.5 1.1-4 0-.5-1.6.4-2.7 2-5z" fill="#ffd45a"/>`;
+  for(let k=0;k<7;k++)s+=`<circle class="ember" cx="${sx+(k-3)*.9}" cy="${sy-9}" r="${k%3?.6:.8}" fill="${k%2?'#ffb347':'#ffe08a'}" style="--ex:${((k*37)%9-4)}px;animation-delay:-${(k*.43).toFixed(2)}s;animation-duration:${(1.6+(k%3)*.4).toFixed(1)}s"/>`;
+  if(p.night)light(sx,sy,46,1);
   return s;
 }
 function isoTent(o,p){
@@ -146,6 +170,7 @@ function isoTower(o,p,id){
 }
 function isoLantern(o,p,id){
   const [sx,sy]=P(o.x+.5,o.y+.5);
+  if(p.night)light(sx,sy-4,24,.8);
   let s=(p.night?glow(sx,sy-11,20,id,1):'')+`<path d="M${sx} ${sy}v-10" stroke="${p.woodD}" stroke-width="1.3"/><rect x="${sx-2}" y="${sy-14}" width="4" height="4.5" rx="1" fill="${p.night?'#ffd77e':'#f2c14e'}"${p.night?` filter="url(#gw${id})"`:''}/>`;
   return s;
 }
@@ -209,7 +234,14 @@ function isoScene(prog,p,id,opt={}){
   const tiles=[];for(let x=-10;x<=10;x++)for(let y=-10;y<=10;y++)if(L(x,y))tiles.push([x,y]);
   tiles.sort((a,b)=>(a[0]+a[1])-(b[0]+b[1]));
   const pathSet=new Set(PATHS.filter(q=>q[2]-.5<=f).map(q=>q[0]+','+q[1]));
-  let s=`<defs><radialGradient id="gl${id}"><stop offset="0" stop-color="#ffc86b" stop-opacity=".55"/><stop offset="1" stop-color="#ffc86b" stop-opacity="0"/></radialGradient>
+  LIGHTS=[];
+  let s=`<defs><linearGradient id="wl${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8592a8"/><stop offset="1" stop-color="#5f6b82"/></linearGradient>
+    <linearGradient id="wr${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5e6a82"/><stop offset="1" stop-color="#434d63"/></linearGradient>
+    ${p.roofs.map((c,i)=>`<linearGradient id="rf${i}${id}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${p.roofsD[i]}"/><stop offset=".55" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity="1"/></linearGradient>`).join('')}
+    <linearGradient id="cl${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.eL}"/><stop offset="1" stop-color="#241b14"/></linearGradient>
+    <linearGradient id="cr${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.eR}"/><stop offset="1" stop-color="#1b140f"/></linearGradient>
+    <radialGradient id="lt${id}"><stop offset="0" stop-color="#ffcf80" stop-opacity=".26"/><stop offset=".4" stop-color="#ffb860" stop-opacity=".09"/><stop offset="1" stop-color="#ff9a40" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gl${id}"><stop offset="0" stop-color="#ffc86b" stop-opacity=".55"/><stop offset="1" stop-color="#ffc86b" stop-opacity="0"/></radialGradient>
     <filter id="gw${id}" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
   // night sky dressing: moon reflection
   if(p.night){s+=`<g opacity=".5">${[0,1,2,3,4].map(i=>`<rect class="glint" style="animation-delay:-${i*.6}s" x="${118-i*3}" y="${-70+i*9}" width="${14+i*4}" height="1.5" rx=".75" fill="#c9d8f0"/>`).join('')}</g>`;}
@@ -217,14 +249,20 @@ function isoScene(prog,p,id,opt={}){
   [[-130,-40],[110,60],[-100,80],[140,-10],[-40,110],[60,-90]].forEach(([x,y],i)=>{s+=`<path class="glint" style="animation-delay:-${i*.7}s" d="M${x} ${y}h8" stroke="${p.night?'#4d7aa5':'#ffffff'}" stroke-width="1.3" stroke-linecap="round"/>`;});
   // shoreline halos
   tiles.forEach(([x,y])=>{const e=.75;s+=poly([P(x-e,y-e,-D),P(x+1+e,y-e,-D),P(x+1+e,y+1+e,-D),P(x-e,y+1+e,-D)],p.shallow);});
-  tiles.forEach(([x,y])=>{const e=.25;s+=poly([P(x-e,y-e,-D),P(x+1+e,y-e,-D),P(x+1+e,y+1+e,-D),P(x-e,y+1+e,-D)],p.foam);});
+  s+='<g class="foam">';tiles.forEach(([x,y])=>{const e=.25;s+=poly([P(x-e,y-e,-D),P(x+1+e,y-e,-D),P(x+1+e,y+1+e,-D),P(x-e,y+1+e,-D)],p.foam);});s+='</g>';
+  // slow waves drifting on the water around the island
+  const R=rAt(f)+2.6;for(let k=0;k<14;k++){const a=k/14*Math.PI*2+.3,rr=R+(k%3)*.9,[wx,wy]=P(Math.cos(a)*rr,Math.sin(a)*rr,-D);
+    s+=`<path class="wave" style="animation-delay:-${(k*.9).toFixed(1)}s" d="M${(wx-5).toFixed(1)} ${wy.toFixed(1)}q2.5 -1.6 5 0t5 0" fill="none" stroke="#4f7fae" stroke-width="1" stroke-linecap="round"/>`;}
   tiles.forEach(([x,y])=>{
     const sand=!L(x+1,y)||!L(x-1,y)||!L(x,y+1)||!L(x,y-1);
     const path=pathSet.has(x+','+y);
-    const c=path?p.path:sand?p.sand:(((x*7+y*13)&1)?p.g1:p.g2);
+    const hh=H(x,y),c=path?p.path:sand?p.sand:[p.g1,p.g2,p.g3,p.g1][hh%4];
     s+=isoTile(x,y,c);
-    if(!L(x+1,y)){s+=poly([P(x+1,y),P(x+1,y+1),P(x+1,y+1,-D),P(x+1,y,-D)],p.eR)+poly([P(x+1,y),P(x+1,y+1),P(x+1,y+1,-3),P(x+1,y,-3)],sand?p.sSideR:p.gSideR);}
-    if(!L(x,y+1)){s+=poly([P(x,y+1),P(x+1,y+1),P(x+1,y+1,-D),P(x,y+1,-D)],p.eL)+poly([P(x,y+1),P(x+1,y+1),P(x+1,y+1,-3),P(x,y+1,-3)],sand?p.sSideL:p.gSideL);}
+    if(!sand&&!path&&hh%3===0){const [tx,ty]=P(x+.25+(hh>>4)%50/100,y+.25+(hh>>8)%50/100);s+=`<path d="M${tx.toFixed(1)} ${ty.toFixed(1)}l-1.1 -2.6M${tx.toFixed(1)} ${ty.toFixed(1)}l.1 -3.2M${tx.toFixed(1)} ${ty.toFixed(1)}l1.2 -2.4" stroke="${hh%2?p.tuft:p.tuftD}" stroke-width=".8" stroke-linecap="round"/>`;}
+    if(sand&&hh%4===0){const [tx,ty]=P(x+.3+(hh>>4)%40/100,y+.3+(hh>>8)%40/100);s+=`<ellipse cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" rx="1.4" ry=".8" fill="${p.pebble}"/>`;}
+    if(path&&hh%2===0){const [tx,ty]=P(x+.5,y+.5);s+=`<ellipse cx="${(tx-3).toFixed(1)}" cy="${(ty+.5).toFixed(1)}" rx="2.2" ry="1.1" fill="#6d6655"/><ellipse cx="${(tx+3).toFixed(1)}" cy="${(ty-1).toFixed(1)}" rx="1.8" ry=".9" fill="#6d6655"/>`;}
+    if(!L(x+1,y)){s+=poly([P(x+1,y),P(x+1,y+1),P(x+1,y+1,-D),P(x+1,y,-D)],`url(#cr${id})`)+poly([P(x+1,y),P(x+1,y+1),P(x+1,y+1,-3),P(x+1,y,-3)],sand?p.sSideR:p.gSideR);}
+    if(!L(x,y+1)){s+=poly([P(x,y+1),P(x+1,y+1),P(x+1,y+1,-D),P(x,y+1,-D)],`url(#cl${id})`)+poly([P(x,y+1),P(x+1,y+1),P(x+1,y+1,-3),P(x,y+1,-3)],sand?p.sSideL:p.gSideL);}
   });
   // objects + walkers in depth order
   const items=[];
@@ -238,6 +276,8 @@ function isoScene(prog,p,id,opt={}){
   items.push({z:99,k:'boat',svg:()=>`<g class="float"><path d="M${bsx-11} ${bsy-3}h22l-4 5h-14z" fill="${p.wood}"/><path d="M${bsx-11} ${bsy-3}h22" stroke="${p.woodD}" stroke-width="1.2"/><path d="M${bsx} ${bsy-3}v-15" stroke="${p.woodD}" stroke-width="1.1"/><path d="M${bsx+.8} ${bsy-17}l8 11h-8z" fill="${p.canvas}"/></g>`});
   items.sort((a,b)=>a.z-b.z);
   items.forEach(it=>{s+=`<g class="o" data-k="${it.k}" data-z="${it.z}">${it.svg()}</g>`;});
+  // warm light pooling from fires, windows and lanterns, painted over everything
+  if(p.night&&LIGHTS.length)s+=`<g class="lights" style="mix-blend-mode:screen" pointer-events="none">${LIGHTS.map(([x,y,r,o])=>`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${r}" ry="${(r*.62).toFixed(1)}" fill="url(#lt${id})" opacity="${o}"/>`).join('')}</g>`;
   // fireflies at night
   if(p.night&&stage>=2){[[-60,-10],[-20,-40],[30,20],[70,-20],[-80,30],[10,-60],[90,30],[-40,40]].slice(0,stage*2).forEach(([x,y],i)=>{s+=`<circle class="fly" style="animation-delay:-${i*.9}s" cx="${x}" cy="${y}" r="1.3" fill="#ffe28a"/>`;});}
   const W=72+(148-72)*f/4;
@@ -251,5 +291,5 @@ function unlocks(){
   [[.6,'gfound'],[1.5,'g1'],[2.5,'g2'],[3.6,'g3']].forEach(([th,t])=>list.push({k:t,t,th}));
   return list.sort((x,y)=>x.th-y.th);
 }
-window.Isle={STAGES,isoScene,PAL_B,unlocks,P,WALK};
+window.Isle={STAGES,isoScene,PAL_B,unlocks,P,WALK,OBJ};
 })();

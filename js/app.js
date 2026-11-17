@@ -200,7 +200,9 @@ function burst(el){
   }
 }
 let rewardQ = Promise.resolve();
+let islandFx = [];
 function reward(res, pts, sub){
+  islandFx.push({res, pts}); if (islandFx.length > 4) islandFx.shift();
   rewardQ = rewardQ.then(() => new Promise(done => {
     const r = document.createElement('div'); r.className = 'reward';
     r.innerHTML = `<span class="tile r-${res}">${ic(res)}</span><span><b>+${pts} ${RESN[res]}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span>`;
@@ -214,6 +216,7 @@ function celebrate(before){
   if (u1.built > u0.built){
     const u = u1.list[u1.built - 1], who = SETTLERS[(u1.built - 1) % SETTLERS.length];
     buildFocus = true;
+    if (/^g[123]$/.test(u.t)) gardensFest = true;
     announce(BUILD_T[u.t], u.t.startsWith('g') ? 'The settlers finished' : `${who} built`, u.t.startsWith('g') ? 'harvest' : 'house');
   }
   if (s1 > s0){
@@ -221,7 +224,7 @@ function celebrate(before){
     announce(`${SETTLERS[(s1 - 1) % SETTLERS.length]} arrived by boat`, `${s1} settlers now`, 'people');
   }
 }
-let buildFocus = false, newcomer = false, festival = false;
+let buildFocus = false, newcomer = false, festival = false, gardensFest = false, lastGst = null;
 function countUp(el, from, to){
   if (!el || from === to || from == null) return;
   const t0 = performance.now(), d = 900;
@@ -328,16 +331,19 @@ function drawIsland(svg, prog = Store.progress(), anchor = .55, zoom = 1.12, id 
   svg.setAttribute('viewBox', `${(-w / 2).toFixed(1)} ${(8 - anchor * h).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
   svg.innerHTML = r.svg;
   if (!live) return;
+  baseVB = [-w / 2, 8 - anchor * h, w, h]; clampCam(); applyCam(svg);
   scene = r;
   const now = new Set(), delay = buildFocus ? .55 : 0;
   $$('.o', svg).forEach(g => {
     const k = g.dataset.k; now.add(k);
     if (seen && !seen.has(k) && k !== 'boat'){
-      g.classList.add('rise'); g.style.animationDelay = delay + 's';
-      const o = r.vis.find(v => v.k === k); if (o) Life.dust(svg, o, delay + .25);
+      const o = r.vis.find(v => v.k === k); if (o) Life.construct(svg, g, o, delay);
+    } else if (k === 'g' && lastGst !== null && r.gst > lastGst){
+      const o = r.vis.find(v => v.k === 'g'); if (o) Life.construct(svg, g, o, delay);
     }
   });
-  seen = now;
+  seen = now; lastGst = r.gst;
+  if (newcomer) Life.boatIn(svg);
   const count = Math.min(16, Store.settlers());
   Life.start(svg, r, {count, newcomer:newcomer && Store.settlers() <= 16});
   newcomer = false;
@@ -374,29 +380,110 @@ function buildingStory(k, t){
 /* Tap on the island: meet a settler or a building in a pop-up that sits above everything,
    above the one you tapped if there is room under the title, otherwise below them. */
 function closeBubble(){ $$('.bubble, .tapring').forEach(b => b.remove()); clearTimeout(worldTap.t); }
-function worldTap(e){
-  const h = Life.hit(e.clientX, e.clientY, scene ? scene.vis : []);
-  closeBubble();
-  if (!h){ islandSheet(); return; }
-  haptic();
+/* ---------------- island camera: pinch, pan, double-tap, glide ---------------- */
+const cam = {s:1, cx:0, cy:0};
+let baseVB = null, glideRAF = 0;
+function applyCam(svg = $('#isl')){
+  if (!svg || !baseVB) return;
+  const [x, y, w, h] = baseVB, W = w / cam.s, Hh = h / cam.s, cx = x + w / 2 + cam.cx, cy = y + h / 2 + cam.cy;
+  svg.setAttribute('viewBox', `${(cx - W / 2).toFixed(2)} ${(cy - Hh / 2).toFixed(2)} ${W.toFixed(2)} ${Hh.toFixed(2)}`);
+  const world = svg.closest('.world');
+  if (world){ world.classList.toggle('zoomed', cam.s > 1.02); world.style.touchAction = cam.s > 1.02 ? 'none' : 'pan-y'; }
+}
+function clampCam(){
+  if (!baseVB) return;
+  cam.s = Math.max(1, Math.min(3.4, cam.s));
+  const [, , w, h] = baseVB, mx = w / 2 * (1 - 1 / cam.s) + w * .08 * (cam.s - 1), my = h / 2 * (1 - 1 / cam.s) + h * .08 * (cam.s - 1);
+  cam.cx = Math.max(-mx, Math.min(mx, cam.cx)); cam.cy = Math.max(-my, Math.min(my, cam.cy));
+}
+/* svg point under a screen point, at the current camera */
+function svgAt(svg, x, y){ const pt = svg.createSVGPoint(); pt.x = x; pt.y = y; const r = pt.matrixTransform(svg.getScreenCTM().inverse()); return [r.x, r.y]; }
+function glideTo(target, ms = 480){
+  cancelAnimationFrame(glideRAF);
+  const from = {...cam}, t0 = performance.now();
+  const to = {s:target.s, cx:target.cx, cy:target.cy};
+  { const keep = {...cam}; Object.assign(cam, to); clampCam(); Object.assign(to, cam); Object.assign(cam, keep); }
+  return new Promise(done => {
+    const step = t => {
+      const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+      cam.s = from.s + (to.s - from.s) * e; cam.cx = from.cx + (to.cx - from.cx) * e; cam.cy = from.cy + (to.cy - from.cy) * e;
+      applyCam();
+      if (k < 1) glideRAF = requestAnimationFrame(step); else done();
+    };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches){ Object.assign(cam, to); applyCam(); done(); } else glideRAF = requestAnimationFrame(step);
+  });
+}
+/* Center the camera on an svg point at a zoom level, a little below the middle so a pop-up fits above it. */
+function focusOn([x, y], s){ const [bx, by, w, h] = baseVB; return glideTo({s, cx:x - (bx + w / 2), cy:y - (by + h / 2) - h / s * .16}); }
+function resetCam(){ return glideTo({s:1, cx:0, cy:0}); }
+function wireCamera(world, svg){
+  const pts = new Map(); let g = null, moved = false, lastTap = 0, tapTimer = 0;
+  const upp = () => baseVB[2] / (cam.s * svg.getBoundingClientRect().width);
+  const start = () => {
+    const a = [...pts.values()];
+    if (a.length === 2){ const mid = [(a[0].x + a[1].x) / 2, (a[0].y + a[1].y) / 2]; g = {pinch:true, d0:Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y), s0:cam.s, p:svgAt(svg, ...mid)}; }
+    else if (a.length === 1){ g = {pinch:false, x0:a[0].x, y0:a[0].y, cx0:cam.cx, cy0:cam.cy}; }
+  };
+  world.addEventListener('pointerdown', e => { pts.set(e.pointerId, {x:e.clientX, y:e.clientY}); moved = false; cancelAnimationFrame(glideRAF); start(); });
+  world.addEventListener('pointermove', e => {
+    if (!pts.has(e.pointerId) || !g) return;
+    pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+    const a = [...pts.values()];
+    if (g.pinch && a.length === 2){
+      const d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y), mid = [(a[0].x + a[1].x) / 2, (a[0].y + a[1].y) / 2];
+      cam.s = Math.max(1, Math.min(3.4, g.s0 * d / Math.max(1, g.d0)));
+      // keep the point under the fingers where it was
+      const r = svg.getBoundingClientRect(), u = baseVB[2] / (cam.s * r.width), [bx, by, w, h] = baseVB;
+      cam.cx = g.p[0] - (mid[0] - (r.left + r.width / 2)) * u - (bx + w / 2);
+      cam.cy = g.p[1] - (mid[1] - (r.top + r.height / 2)) * u - (by + h / 2);
+      clampCam(); applyCam(svg); moved = true; closeBubble();
+    } else if (!g.pinch && cam.s > 1.02){
+      const dx = e.clientX - g.x0, dy = e.clientY - g.y0;
+      if (!moved && Math.hypot(dx, dy) < 6) return;
+      moved = true; closeBubble();
+      const u = upp(); cam.cx = g.cx0 - dx * u; cam.cy = g.cy0 - dy * u; clampCam(); applyCam(svg);
+    }
+  });
+  const end = e => { pts.delete(e.pointerId); if (moved) swallowClick(); if (pts.size) start(); else g = null; };
+  world.addEventListener('pointerup', end); world.addEventListener('pointercancel', end);
+  // single tap: meet whoever is there; double tap: zoom in there, or back out if already zoomed
+  world.addEventListener('click', e => {
+    const now = Date.now(), dbl = now - lastTap < 300; lastTap = now;
+    clearTimeout(tapTimer);
+    if (dbl){ closeBubble(); haptic(); if (cam.s > 1.3) resetCam(); else focusOn(svgAt(svg, e.clientX, e.clientY), 2.2); lastTap = 0; return; }
+    const h = Life.hit(e.clientX, e.clientY, scene ? scene.vis : []);
+    if (h){ worldTap(h); return; }
+    closeBubble();
+    if (cam.s <= 1.02) tapTimer = setTimeout(islandSheet, 300);
+  });
+}
+
+/* Tap on the island: glide to the settler or building, then open a pop-up about them that sits
+   above everything, above them if there is room under the title, otherwise below them. */
+function closeBubble(){ $$('.bubble, .tapring').forEach(b => b.remove()); clearTimeout(worldTap.t); }
+function worldTap(h){
+  closeBubble(); haptic();
   const s = h.kind === 'settler' ? settlerStory(h.i, h.st, h.role) : buildingStory(h.k, h.t);
-  const ar = app.getBoundingClientRect();
-  // a gold ring at their feet so it is clear who you tapped
-  const ring = document.createElement('i'); ring.className = 'tapring';
-  ring.style.left = (h.feet[0] - ar.left) + 'px'; ring.style.top = (h.feet[1] - ar.top) + 'px';
-  app.appendChild(ring);
-  const b = document.createElement('div');
-  b.className = 'bubble'; b.setAttribute('role', 'status');
-  b.innerHTML = `<b>${esc(s.title)}</b><span class="over gold">${esc(s.sub)}</span><p>${esc(s.line)}</p>`;
-  app.appendChild(b);
-  const bw = b.offsetWidth, bh = b.offsetHeight, ttl = $('.ttl', view), safeTop = ttl ? ttl.getBoundingClientRect().bottom + 8 : 80;
-  const x = Math.max(12, Math.min(ar.width - bw - 12, h.x - ar.left - bw / 2));
-  const above = h.y - bh - 10 >= safeTop;
-  b.classList.toggle('below', !above);
-  b.style.left = x + 'px';
-  b.style.top = ((above ? h.y - bh - 10 : h.bottom + 12) - ar.top) + 'px';
-  b.style.setProperty('--ax', Math.max(16, Math.min(bw - 16, h.x - ar.left - x)) + 'px');
-  worldTap.t = setTimeout(() => { b.classList.add('out'); ring.remove(); setTimeout(() => b.remove(), 300); }, 5000);
+  focusOn(h.svg, Math.max(cam.s, h.kind === 'settler' ? 2.6 : 2)).then(() => {
+    const at = Life.locate(h); if (!at) return;
+    const ar = app.getBoundingClientRect();
+    const ring = document.createElement('i'); ring.className = 'tapring';
+    ring.style.left = (at.feet[0] - ar.left) + 'px'; ring.style.top = (at.feet[1] - ar.top) + 'px';
+    if (h.kind === 'settler') ring.classList.add('big');
+    app.appendChild(ring);
+    const b = document.createElement('div');
+    b.className = 'bubble'; b.setAttribute('role', 'status');
+    b.innerHTML = `<b>${esc(s.title)}</b><span class="over gold">${esc(s.sub)}</span><p>${esc(s.line)}</p>`;
+    app.appendChild(b);
+    const bw = b.offsetWidth, bh = b.offsetHeight, ttl = $('.ttl', view), safeTop = ttl ? ttl.getBoundingClientRect().bottom + 8 : 80;
+    const x = Math.max(12, Math.min(ar.width - bw - 12, at.x - ar.left - bw / 2));
+    const above = at.y - bh - 10 >= safeTop;
+    b.classList.toggle('below', !above);
+    b.style.left = x + 'px';
+    b.style.top = ((above ? at.y - bh - 10 : at.bottom + 12) - ar.top) + 'px';
+    b.style.setProperty('--ax', Math.max(16, Math.min(bw - 16, at.x - ar.left - x)) + 'px');
+    worldTap.t = setTimeout(() => { b.classList.add('out'); ring.remove(); setTimeout(() => b.remove(), 300); }, 5500);
+  });
 }
 function islandSheet(){
   const t = Store.totals(), u = unlockState(t.all), g = Store.gardens();
@@ -496,7 +583,9 @@ function vIsle(){
   const world = $('#world');
   Life.sky(world);
   drawIsland($('#isl'));
-  world.onclick = worldTap;
+  wireCamera(world, $('#isl'));
+  world.insertAdjacentHTML('beforeend', `<button class="camreset" type="button" aria-label="Show the whole island">${ic('isle')}Whole island</button>`);
+  $('.camreset', world).addEventListener('click', e => { e.stopPropagation(); haptic(); closeBubble(); resetCam(); });
   const nu = $('#nextup'); if (nu) nu.onclick = islandSheet;
   wireTicks();
   const c = $('[data-cta]'); if (c) c.onclick = () => toggleTask(c.dataset.cta, $(`.tick[data-task="${c.dataset.cta}"]`));
@@ -505,10 +594,27 @@ function vIsle(){
   countUp($('#tot'), lastAll, t.all); lastAll = t.all;
   const rb = $('.ring b[data-count]', view); countUp(rb, lastDone, dp.done); lastDone = dp.done;
   playTw();
-  if (buildFocus || festival){
-    const fest = festival; buildFocus = false; festival = false;
-    setTimeout(() => { view.scrollTo({top:0, behavior:'smooth'}); if (fest) setTimeout(() => Life.lanterns(world), 350); }, 40);
+  if (buildFocus || festival || gardensFest){
+    const fest = festival, gf = gardensFest; buildFocus = false; festival = false; gardensFest = false;
+    setTimeout(() => {
+      view.scrollTo({top:0, behavior:'smooth'});
+      if (fest) setTimeout(() => { Life.lanterns(world); Life.fireworks(world, 6); }, 350);
+      if (gf) setTimeout(() => { Life.bunting($('#isl'), scene); Life.fireworks(world, 8); }, 2600);
+    }, 40);
   }
+  playIslandFx(world);
+}
+/* Play queued task effects once the island is actually on screen. */
+function playIslandFx(world){
+  if (!islandFx.length) return;
+  const io = new IntersectionObserver(entries => {
+    if (!entries.some(e => e.isIntersecting)) return;
+    io.disconnect();
+    const list = islandFx.splice(0), svg = $('#isl');
+    const nextT = (() => { const u = unlockState(); if (!u.next) return null; const o = Isle.OBJ.find(x => x.k === u.next.k) || Isle.OBJ.find(x => x.k === 'g'); return o ? Isle.P(o.x + (o.w || 1) / 2, o.y + (o.h || 1) / 2) : null; })();
+    list.forEach((f, i) => setTimeout(() => { if (svg && svg.isConnected) Life.fx(svg, scene, f.res, f.pts, nextT); }, 500 + i * 1100));
+  }, {threshold:.45});
+  io.observe(world);
 }
 let lastDone = null;
 
@@ -1132,6 +1238,7 @@ function route(keep){
   if (name !== 'play' && name !== 'cook') app.classList.remove('immersive');
   app.classList.toggle('detail', DETAIL.has(name));
   Life.stop(); closeBubble();
+  if (name !== 'isle'){ cam.s = 1; cam.cx = 0; cam.cy = 0; }
   dock.innerHTML = ''; layer.innerHTML = '';
   view.style.transform = '';
   ({isle:vIsle, train:vTrain, session:() => vSession(arg), play:() => vPlay(arg), market:vMarket, kitchen:vKitchen, recipe:() => vRecipe(arg, arg2), cook:() => vCook(arg, arg2), prep:() => vPrep(arg, arg2), settings:vSettings}[name] || vIsle)();
