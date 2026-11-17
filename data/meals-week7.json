@@ -1,0 +1,124 @@
+{
+  "week": 7,
+  "title": "Week 7",
+  "budget": 200,
+  "style": "batch",
+  "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax. New Year's week: a lighter Greek-style week after the holidays, with black-eyed peas and greens for luck on New Year's Day.",
+  "allergyNote": "Nothing on this plan contains tree nuts or fish. Smoked sausage and cornbread mix are normally nut-free, but check the labels for a 'may contain tree nuts' line if your allergy is strict.",
+  "weekendNote": "First weekend of the new year. Nothing is required. A bowl of Hoppin' John and a wedge of cornbread are waiting for Saturday's lunch.",
+  "snacks": ["Cottage cheese with berries", "String cheese and a banana", "A couple of clementines"],
+  "have": [
+    {"id": "oats", "name": "Rolled oats", "note": "still plenty"},
+    {"id": "honey", "name": "Honey"},
+    {"id": "rice", "name": "Jasmine rice", "note": "about 2 cups"},
+    {"id": "parm", "name": "Grated parmesan", "note": "a little left"},
+    {"id": "raisins", "name": "Golden raisins", "note": "a few spoonfuls"},
+    {"id": "onion", "name": "Yellow onion", "note": "1 left"},
+    {"id": "tortillas", "name": "Corn tortillas", "note": "about 2 dozen"},
+    {"id": "cheddar", "name": "Shredded sharp cheddar", "note": "about a cup"},
+    {"id": "pickled", "name": "Quick pickled red onions", "note": "about half the jar"},
+    {"id": "chipotle", "name": "Chipotle peppers in adobo", "note": "the rest of the can, in the freezer"}
+  ],
+  "menu": {
+    "mon": {"breakfast": "egg-muffins", "lunch": "greek-bowl", "dinner": "avgolemono", "heads": "Everything today comes from Sunday's prep. Tonight's soup covers Wednesday and Thursday lunches."},
+    "tue": {"breakfast": "oat-cups", "lunch": "greek-bowl", "dinner": "chipotle-quesadillas", "heads": "Dinner is 10 minutes in the cast iron after pickleball."},
+    "wed": {"breakfast": "egg-muffins", "lunch": "avgolemono", "dinner": "chicken-gyros", "shared": "dinner", "heads": "Tonight, move the 2 frozen chicken portions to the fridge for Thursday and Friday."},
+    "thu": {"breakfast": "oat-cups", "lunch": "avgolemono", "dinner": "greek-flatbread", "heads": "New Year's Eve. Dinner is a 15-minute flatbread after pickleball."},
+    "fri": {"breakfast": "egg-muffins", "lunch": "greek-bowl", "dinner": "hoppin-john", "shared": "dinner", "heads": "Happy New Year. Black-eyed peas and greens for luck, dinner for two. It makes Saturday's lunch."}
+  },
+  "prep": [
+    {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 95, "makes": "About 9 portions of lemon chicken, a tray of roasted vegetables, lemon rice, whipped feta, 9 egg muffins and 6 baked oatmeal cups", "steps": [
+      "Marinate the chicken while the oven heats to 425°F.",
+      "Roast the chicken on one sheet pan and the zucchini, peppers and red onion on another, 25 minutes, swapping the pans halfway.",
+      "Cook the lemon rice.",
+      "Whip the feta, yogurt, lemon and garlic smooth.",
+      "Turn the oven down to 350°F. Bake the egg muffins and the oatmeal cups together for 20 to 25 minutes.",
+      "Slice the chicken and portion it: 2 for bowls, 2 for soup, 1 for quesadillas, 2 for gyros in the fridge.",
+      "Freeze the other 2 (Thursday's flatbread and Friday's bowl). Cooked chicken keeps 3 to 4 days, so the end of the week waits in the freezer.",
+      "Pack 2 Greek bowls. Keep the whipped feta in a jar."
+    ]},
+    {"id": "wed", "day": "wed", "title": "Wednesday night", "minutes": 20, "makes": "Gyros for two, with the end of the week ready", "steps": [
+      "Move the 2 frozen chicken portions to the fridge.",
+      "Warm the pitas and chicken and build the gyros."
+    ]}
+  ],
+  "groceries": [
+    {"id": "thighs", "name": "Boneless skinless chicken thighs", "qty": "about 4 lb", "section": "Meat", "store": "Aldi", "price": 11.96},
+    {"id": "sausage", "name": "Smoked turkey sausage", "qty": "13 oz rope", "section": "Meat", "store": "Aldi", "price": 2.99},
+    {"id": "eggs", "name": "Large eggs", "qty": "18 count", "section": "Dairy and eggs", "store": "Aldi", "price": 4.29},
+    {"id": "yogurt", "name": "Plain nonfat Greek yogurt", "qty": "32 oz tub", "section": "Dairy and eggs", "store": "Aldi", "price": 4.29},
+    {"id": "milk", "name": "2% milk", "qty": "half gallon", "section": "Dairy and eggs", "store": "Aldi", "price": 1.89},
+    {"id": "feta", "name": "Feta crumbles", "qty": "two 4 oz tubs", "section": "Dairy and eggs", "store": "Aldi", "price": 4.98},
+    {"id": "cottage", "name": "Low-fat cottage cheese", "qty": "24 oz", "section": "Dairy and eggs", "store": "Aldi", "price": 3.29},
+    {"id": "string", "name": "Mozzarella string cheese", "qty": "12 count", "section": "Dairy and eggs", "store": "Aldi", "price": 3.79},
+    {"id": "lemons", "name": "Lemons", "qty": "2 lb bag", "section": "Produce", "store": "Aldi", "price": 2.99},
+    {"id": "zucchini", "name": "Zucchini", "qty": "3", "section": "Produce", "store": "Aldi", "price": 2.49},
+    {"id": "peppers", "name": "Bell peppers", "qty": "3-pack", "section": "Produce", "store": "Aldi", "price": 2.99},
+    {"id": "redonion", "name": "Red onion", "qty": "1", "section": "Produce", "store": "Aldi", "price": 0.89},
+    {"id": "onions", "name": "Yellow onions", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 2.79},
+    {"id": "garlic", "name": "Garlic", "qty": "3 bulbs", "section": "Produce", "store": "Aldi", "price": 1.79},
+    {"id": "spinach", "name": "Baby spinach", "qty": "6 oz bag", "section": "Produce", "store": "Aldi", "price": 1.99},
+    {"id": "collards", "name": "Chopped collard greens", "qty": "1 lb bag", "section": "Produce", "store": "Publix", "price": 2.49},
+    {"id": "cucumber", "name": "Cucumber", "qty": "1", "section": "Produce", "store": "Aldi", "price": 0.69},
+    {"id": "tomatoes", "name": "Cherry tomatoes", "qty": "1 pint", "section": "Produce", "store": "Aldi", "price": 1.99},
+    {"id": "parsley", "name": "Flat-leaf parsley", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.99},
+    {"id": "bananas", "name": "Bananas", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 1.49},
+    {"id": "clementines", "name": "Clementines", "qty": "3 lb bag", "section": "Produce", "store": "Aldi", "price": 3.49},
+    {"id": "berries", "name": "Frozen mixed berries", "qty": "16 oz bag", "section": "Frozen", "store": "Aldi", "price": 3.29},
+    {"id": "peas", "name": "Black-eyed peas", "qty": "2 cans", "section": "Shelf", "store": "Aldi", "price": 1.78},
+    {"id": "broth", "name": "Low-sodium chicken broth", "qty": "two 32 oz cartons", "section": "Shelf", "store": "Aldi", "price": 3.58},
+    {"id": "pita", "name": "Whole wheat pita", "qty": "6 count", "section": "Shelf", "store": "Aldi", "price": 1.99},
+    {"id": "cornbread", "name": "Corn muffin mix", "qty": "8.5 oz box", "section": "Shelf", "store": "Aldi", "price": 0.65}
+  ],
+  "pantry": [
+    {"id": "oil", "name": "Olive oil"},
+    {"id": "spray", "name": "Cooking spray"},
+    {"id": "salt", "name": "Salt"},
+    {"id": "pepper", "name": "Black pepper"},
+    {"id": "garlicpowder", "name": "Garlic powder"},
+    {"id": "oregano", "name": "Dried oregano"},
+    {"id": "paprika", "name": "Smoked paprika"},
+    {"id": "dill", "name": "Dried dill"},
+    {"id": "cinnamon", "name": "Ground cinnamon"},
+    {"id": "flakes", "name": "Red pepper flakes"},
+    {"id": "vinegar", "name": "Apple cider vinegar"}
+  ],
+  "recipes": {
+    "lemon-chicken": {"name": "Sheet-pan Greek lemon chicken", "cuisine": "Prep", "component": true, "minutes": 35, "serves": "about 9 portions", "protein": 36, "equip": "sheet pan", "ingredients": [
+      {"g": "thighs", "qty": "4 lb"}, {"g": "lemons", "qty": "zest and juice of 2"}, {"g": "garlic", "qty": "6 cloves, grated"}, {"p": "oregano", "qty": "1 tbsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "oil", "qty": "3 tbsp"}, {"p": "salt", "qty": "2 tsp"}, {"p": "pepper", "qty": "1 tsp"}],
+      "steps": ["Stir the lemon, garlic, oregano, paprika, oil, salt and pepper together and toss the thighs in it. Let them sit while the oven heats to 425°F.", "Spread the thighs on a sheet pan and roast 22 to 25 minutes, until they reach 175°F and the edges brown.", "Rest 5 minutes, then slice.", "Portion into 9 containers. Fridge 7, freeze 2."], "tip": "Thighs stay juicy all week where breasts dry out, and the lemon and oregano go Greek, Mexican or Southern later on."},
+    "roast-med": {"name": "Roasted zucchini, peppers and red onion", "cuisine": "Prep", "component": true, "minutes": 30, "serves": "about 6 cups", "protein": 3, "equip": "sheet pan", "ingredients": [
+      {"g": "zucchini", "qty": "3, in half-moons"}, {"g": "peppers", "qty": "2, in strips"}, {"g": "redonion", "qty": "1, in wedges"}, {"p": "oil", "qty": "2 tbsp"}, {"p": "oregano", "qty": "1 tsp"}, {"p": "salt", "qty": "1 tsp"}],
+      "steps": ["Toss everything with the oil, oregano and salt.", "Roast at 425°F for 25 minutes alongside the chicken, stirring halfway.", "Cool and store in one container."]},
+    "lemon-rice": {"name": "Lemon herb rice", "cuisine": "Prep", "component": true, "minutes": 20, "serves": "about 4 cups", "protein": 4, "equip": "pot", "ingredients": [
+      {"h": "rice", "qty": "1¼ cups dry"}, {"g": "lemons", "qty": "zest and juice of 1"}, {"g": "parsley", "qty": "a handful, chopped"}, {"p": "salt", "qty": "1 tsp"}, {"p": "oil", "qty": "1 tbsp"}],
+      "steps": ["Cook the rice with the salt and oil.", "Fold in the lemon zest, juice and parsley.", "Cool and store. It keeps 5 days."]},
+    "whipped-feta": {"name": "Whipped lemon feta", "cuisine": "Prep", "component": true, "minutes": 5, "serves": "about 1½ cups", "protein": 9, "equip": "fork or blender", "ingredients": [
+      {"g": "feta", "qty": "1 tub (4 oz)"}, {"g": "yogurt", "qty": "1 cup"}, {"g": "lemons", "qty": "juice of ½"}, {"g": "garlic", "qty": "1 small clove, grated"}, {"p": "dill", "qty": "½ tsp"}, {"p": "pepper", "qty": "to taste"}],
+      "steps": ["Mash the feta with a fork until it is almost smooth, or blend it.", "Stir in the yogurt, lemon, garlic and dill until creamy.", "Keeps 5 days in a jar."], "tip": "Salty, tangy and thick enough to spread. It does the job of tzatziki and a cheese sauce at once."},
+    "egg-muffins": {"name": "Spinach feta egg muffins", "cuisine": "Breakfast", "minutes": 30, "serves": "9 muffins (3 per breakfast)", "protein": 24, "equip": "muffin tin", "ingredients": [
+      {"g": "eggs", "qty": "12"}, {"g": "milk", "qty": "¼ cup"}, {"g": "spinach", "qty": "2 big handfuls, chopped"}, {"g": "feta", "qty": "the second tub (4 oz)"}, {"h": "cheddar", "qty": "½ cup"}, {"g": "peppers", "qty": "½ of the third pepper, diced"}, {"p": "salt", "qty": "½ tsp"}, {"p": "pepper", "qty": "¼ tsp"}, {"p": "spray", "qty": "for the tin"}],
+      "steps": ["Heat the oven to 350°F and spray 9 muffin cups well.", "Whisk the eggs, milk, salt and pepper.", "Divide the spinach, pepper, feta and cheddar between the cups and pour the eggs over.", "Bake 20 to 22 minutes, until puffed and set.", "Cool and refrigerate. Reheat 3 for 45 seconds."]},
+    "oat-cups": {"name": "Berry banana baked oatmeal cups", "cuisine": "Breakfast", "minutes": 30, "serves": "6 cups (3 per breakfast)", "protein": 18, "equip": "muffin tin", "ingredients": [
+      {"h": "oats", "qty": "2 cups"}, {"g": "milk", "qty": "1 cup"}, {"g": "eggs", "qty": "2"}, {"g": "bananas", "qty": "2 ripe, mashed"}, {"g": "berries", "qty": "1 cup"}, {"h": "honey", "qty": "2 tbsp"}, {"h": "raisins", "qty": "what is left"}, {"p": "cinnamon", "qty": "1 tsp"}, {"p": "salt", "qty": "a pinch"}, {"p": "spray", "qty": "for the tin"}],
+      "steps": ["Mash the bananas, then whisk in the eggs, milk, honey, cinnamon and salt.", "Stir in the oats, raisins and berries.", "Divide between 6 sprayed muffin cups.", "Bake at 350°F for 22 to 25 minutes, until golden and set.", "Eat 3 with a spoon of Greek yogurt or cottage cheese for more protein."]},
+    "greek-bowl": {"name": "Greek lemon chicken bowl", "cuisine": "Mediterranean", "minutes": 5, "serves": "3 lunches (Mon, Tue, Fri)", "protein": 42, "equip": "microwave", "ingredients": [
+      {"r": "lemon-chicken", "qty": "1 portion each"}, {"r": "lemon-rice", "qty": "¾ cup each"}, {"r": "roast-med", "qty": "1 cup each"}, {"r": "whipped-feta", "qty": "3 tbsp each"}, {"g": "cucumber", "qty": "a few slices each"}, {"g": "tomatoes", "qty": "a handful each"}],
+      "steps": ["Pack rice, roasted vegetables and chicken in each container, with the cucumber and tomatoes on the side.", "Reheat the warm part 2 minutes.", "Add the cold vegetables and a big spoon of whipped feta."], "tip": "Friday's comes from the frozen portion you moved to the fridge Wednesday."},
+    "avgolemono": {"name": "Avgolemono: Greek lemon chicken rice soup", "cuisine": "Mediterranean", "minutes": 30, "serves": "3 (dinner + Wednesday and Thursday lunch)", "protein": 36, "equip": "pot", "isNew": true, "ingredients": [
+      {"g": "broth", "qty": "6 cups"}, {"r": "lemon-chicken", "qty": "2 portions, shredded"}, {"r": "lemon-rice", "qty": "1 cup"}, {"h": "onion", "qty": "1, diced"}, {"g": "garlic", "qty": "2 cloves"}, {"g": "eggs", "qty": "2"}, {"g": "lemons", "qty": "juice of 2"}, {"p": "dill", "qty": "1 tsp"}, {"p": "oil", "qty": "1 tbsp"}, {"p": "salt", "qty": "to taste"}, {"p": "pepper", "qty": "to taste"}],
+      "steps": ["Soften the onion in the oil for 5 minutes, add the garlic for 30 seconds, then the broth. Bring it to a simmer.", "Stir in the rice and chicken and simmer 5 minutes.", "Whisk the eggs and lemon juice in a bowl. Slowly whisk in 2 ladles of hot broth so the eggs warm up without scrambling.", "Turn the heat to low and stir the egg mixture back into the pot. Stir 2 to 3 minutes until the soup turns silky and slightly thick. Do not let it boil.", "Finish with dill and pepper. Pack 2 bowls for Wednesday and Thursday, and reheat them gently."], "tip": "This week's new one. The lemon and egg turn the broth creamy with no cream at all."},
+    "chipotle-quesadillas": {"name": "Chipotle chicken quesadillas", "cuisine": "Mexican", "minutes": 10, "serves": "1", "protein": 42, "equip": "cast iron", "ingredients": [
+      {"h": "tortillas", "qty": "4"}, {"r": "lemon-chicken", "qty": "1 portion, chopped"}, {"h": "cheddar", "qty": "½ cup"}, {"h": "chipotle", "qty": "1 pepper, minced, plus a spoon of sauce"}, {"g": "spinach", "qty": "a handful"}, {"h": "pickled", "qty": "a spoonful"}, {"g": "yogurt", "qty": "a spoonful, for dipping"}, {"p": "spray", "qty": "for the pan"}],
+      "steps": ["Toss the chicken with the chipotle and adobo sauce.", "Build 2 quesadillas: tortilla, cheese, chicken, spinach, pickled onions, cheese, tortilla.", "Crisp in a sprayed cast iron over medium, 2 to 3 minutes a side, pressing down.", "Cut in quarters and dip in yogurt."], "tip": "Uses up last week's tortillas, cheddar, chipotle and pickled onions."},
+    "chicken-gyros": {"name": "Chicken gyros with whipped feta", "cuisine": "Mediterranean", "minutes": 15, "serves": "2", "protein": 44, "equip": "skillet", "ingredients": [
+      {"g": "pita", "qty": "4"}, {"r": "lemon-chicken", "qty": "2 portions"}, {"r": "whipped-feta", "qty": "½ cup"}, {"g": "cucumber", "qty": "half, in thin slices"}, {"g": "tomatoes", "qty": "a big handful, halved"}, {"h": "pickled", "qty": "a few rings each"}, {"r": "roast-med", "qty": "2 cups, for the side"}, {"p": "oregano", "qty": "a pinch"}],
+      "steps": ["Crisp the chicken in a hot skillet for 3 minutes with a pinch of oregano.", "Warm the pitas in the same pan, 30 seconds a side.", "Spread with whipped feta, then fill with chicken, cucumber, tomatoes and pickled onions.", "Serve with the roasted vegetables, warmed."], "tip": "Dinner for two that feels like takeout and takes 15 minutes."},
+    "greek-flatbread": {"name": "New Year's Eve Greek chicken flatbreads", "cuisine": "Mediterranean", "minutes": 15, "serves": "1", "protein": 40, "equip": "air fryer or oven", "ingredients": [
+      {"g": "pita", "qty": "2"}, {"r": "whipped-feta", "qty": "¼ cup"}, {"r": "lemon-chicken", "qty": "1 portion, from the freezer"}, {"r": "roast-med", "qty": "1 cup"}, {"g": "tomatoes", "qty": "a handful, halved"}, {"h": "parm", "qty": "2 tbsp"}, {"p": "flakes", "qty": "a pinch"}],
+      "steps": ["Spread the pitas with whipped feta.", "Top with chicken, roasted vegetables, tomatoes and parmesan.", "Air-fry at 380°F for 5 to 6 minutes (or bake at 425°F for 8) until crisp at the edges.", "Finish with pepper flakes."], "tip": "A 15-minute New Year's Eve dinner after pickleball."},
+    "hoppin-john": {"name": "Hoppin' John with collards and skillet cornbread", "cuisine": "American", "minutes": 40, "serves": "3 (New Year's dinner for two + Saturday lunch)", "protein": 34, "equip": "large pot, cast iron", "ingredients": [
+      {"g": "sausage", "qty": "the rope, in coins"}, {"g": "peas", "qty": "2 cans, rinsed"}, {"g": "collards", "qty": "the bag"}, {"g": "onions", "qty": "1, diced"}, {"g": "peppers", "qty": "the other half pepper, diced"}, {"g": "garlic", "qty": "3 cloves"}, {"g": "broth", "qty": "1½ cups"}, {"h": "rice", "qty": "¾ cup dry"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "flakes", "qty": "a pinch"}, {"p": "vinegar", "qty": "1 tbsp"}, {"p": "oil", "qty": "1 tbsp"}, {"g": "cornbread", "qty": "the box"}, {"g": "eggs", "qty": "1, for the cornbread"}, {"g": "milk", "qty": "⅓ cup, for the cornbread"}],
+      "steps": ["Heat the oven to 400°F. Stir the corn muffin mix, egg and milk together, pour into a sprayed cast iron and bake 15 to 18 minutes.", "Meanwhile, cook the rice.", "Brown the sausage in the oil in a large pot for 4 minutes. Add the onion and pepper for 4 minutes, then the garlic, paprika and pepper flakes for 30 seconds.", "Add the collards and broth, cover and simmer 10 minutes until tender.", "Stir in the black-eyed peas and simmer 5 minutes. Finish with the vinegar.", "Serve over rice with a wedge of cornbread. Pack one bowl for Saturday."], "tip": "A Southern New Year's tradition: the peas are for luck and the greens are for money."}
+  }
+}
