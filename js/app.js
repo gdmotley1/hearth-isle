@@ -826,16 +826,56 @@ function vToday(){
 /* Switching back to Isle reuses the island already drawn (and its camera, sky and listeners) unless something
    on it changed: points, buildings, settlers, crops, the goal, the date, late night, or the screen size. */
 let isleCache = null;
+/* The Isle tab draws the island in 3D (isle3d.js, three.js) when the phone supports WebGL and the 3D switch in
+   Settings is on; otherwise, or if the 3D module fails to load, it falls back to the flat SVG island. */
+let isle3d = null, isle3dFailed = false;
+const webglOK = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch(e) { return false; } })();
+const want3d = () => webglOK && !prefs.flat && !isle3dFailed;
+addEventListener('isle3d-ready', () => { if (location.hash === '#isle' || location.hash === ''){ isleCache = null; rerender(); } });
+setTimeout(() => { if (want3d() && !window.Isle3D){ isle3dFailed = true; isleCache = null; if (location.hash === '#isle' || location.hash === '') rerender(); } }, 8000);
+function isleState(){
+  const B = builtSet();
+  return {f:Math.max(0, Math.min(4, Store.progress() * 4)), built:B, gst:B.has('g3') ? 4 : B.has('g2') ? 3 : B.has('g1') ? 2 : B.has('gfound') ? 1 : 0,
+    crops:Store.state.crops || {}, winter:season().winter, holiday:season().holiday,
+    dockTier:B.has('port3') ? 3 : B.has('port2') ? 2 : B.has('port1') ? 1 : 0, settlers:Store.settlers(), newcomer, focus:buildFocus};
+}
+/* A pop-up over the 3D island at a screen point, like the flat island's. */
+function bubbleAt(s, x, y){
+  closeBubble();
+  const ar = app.getBoundingClientRect(), b = document.createElement('div');
+  b.className = 'bubble'; b.setAttribute('role', 'status');
+  b.innerHTML = `<b>${esc(s.title)}</b><span class="over gold">${esc(s.sub)}</span><p>${esc(s.line)}</p>`;
+  app.appendChild(b);
+  const bw = b.offsetWidth, bh = b.offsetHeight, ttl = $('.ttl', view), safeTop = ttl ? ttl.getBoundingClientRect().bottom + 8 : 80;
+  const above = y - bh - 10 >= safeTop, left = Math.max(12, Math.min(ar.width - bw - 12, x - ar.left - bw / 2));
+  b.classList.toggle('below', !above); b.style.left = left + 'px';
+  b.style.top = ((above ? y - bh - 10 : y + 40) - ar.top) + 'px';
+  b.style.setProperty('--ax', Math.max(16, Math.min(bw - 16, x - ar.left - left)) + 'px');
+  worldTap.t = setTimeout(() => { b.classList.add('out'); setTimeout(() => b.remove(), 300); }, 5500);
+}
+function mountIsle3d(world){
+  if (!isle3d){
+    isle3d = Isle3D.create(world, {
+      onTap(h){ haptic(); bubbleAt(h.kind === 'settler' ? settlerStory(h.i, h.doing, h.role) : buildingStory(h.k, h.t), h.x, h.y); },
+      onEmpty(){ closeBubble(); islandSheet(); }
+    });
+  } else { isle3d.attach(world); isle3d.resume(); }
+  window.__isle3d = isle3d;   // handle for testing in the browser
+  isle3d.setState(isleState()).catch(e => console.error(e));
+  newcomer = false;
+}
 function isleKey(){ const h = new Date().getHours(); return [Store.totals().all, (Store.state.built || []).length, Store.settlers(), JSON.stringify(Store.state.crops || {}), Store.state.target || '', Store.ymd(today()), h >= 23 || h < 5, innerWidth, innerHeight].join('|'); }
 const daylight = () => { const h = new Date().getHours(); return h >= 8 && h < 17; };
 function vIsle(){
-  if (isleCache && isleCache.key === isleKey() && !buildFocus && !festival && !gardensFest && !newcomer && !islandFx.length){
+  const three = want3d() && !!window.Isle3D;
+  if (isleCache && isleCache.key === isleKey() && isleCache.three === three && !buildFocus && !festival && !gardensFest && !newcomer && !islandFx.length){
     const el = isleCache.el; el.className = 'isleful';
     view.innerHTML = ''; view.appendChild(el);
     scrollAt = 99999; setBar('Motley Island');
     const world = $('#world'), svg = $('#isl');
     world.classList.toggle('daylight', daylight());
     Life.sky(world, {winter:season().winter});
+    if (isleCache.three && isle3d){ mountIsle3d(world); return; }
     svg.querySelectorAll('.st').forEach(n => n.remove());
     commitCam(svg);
     Life.start(svg, scene, {count:Math.min(16, Store.settlers()), winter:season().winter});
@@ -857,10 +897,12 @@ function vIsle(){
   scrollAt = 99999; setBar('Motley Island');
   const world = $('#world');
   Life.sky(world, {winter:season().winter});
-  drawIsland($('#isl'));
-  wireCamera(world, $('#isl'));
+  const loading3d = want3d() && !window.Isle3D;
+  if (three){ $('#isl').remove(); world.classList.add('three'); mountIsle3d(world); }
+  else if (loading3d){ $('#isl').remove(); world.classList.add('three', 'loading'); }
+  else { drawIsland($('#isl')); wireCamera(world, $('#isl')); }
   world.insertAdjacentHTML('beforeend', `<button class="camreset" type="button" aria-label="Show the whole island">${ic('isle')}Whole island</button>`);
-  $('.camreset', world).addEventListener('click', e => { e.stopPropagation(); haptic(); closeBubble(); resetCam(); });
+  $('.camreset', world).addEventListener('click', e => { e.stopPropagation(); haptic(); closeBubble(); if (three && isle3d) isle3d.resetView(); else resetCam(); });
   const nu = $('#nextup'); if (nu && nu.tagName === 'BUTTON') nu.onclick = () => { haptic(); buildSheet(); };
   $('#resbar').onclick = () => { haptic(); islandSheet(); };
   playTw();
@@ -868,13 +910,13 @@ function vIsle(){
     const fest = festival, gf = gardensFest; buildFocus = false; festival = false; gardensFest = false;
     setTimeout(() => {
       if (fest) setTimeout(() => { Life.lanterns(world); Life.fireworks(world, 6); }, 350);
-      if (gf) setTimeout(() => { Life.bunting($('#isl'), scene); Life.fireworks(world, 8); }, 2600);
+      if (gf) setTimeout(() => { if ($('#isl')) Life.bunting($('#isl'), scene); Life.fireworks(world, 8); }, 2600);
     }, 40);
   }
   playIslandFx(world);
   seasonalMoment(world);
   world.classList.toggle('daylight', daylight());
-  isleCache = {el:view.firstElementChild, key:isleKey()};
+  isleCache = loading3d ? null : {el:view.firstElementChild, key:isleKey(), three};
 }
 const CROPN = {greens:'Greens', wheat:'Wheat', pumpkins:'Pumpkins', berries:'Berries'};
 /* Choose what the settlers build next, and what each farm plot grows. */
@@ -902,7 +944,7 @@ function seasonalMoment(world){
     setPref('festSeen', ds);
     setTimeout(() => {
       announce(ss.nye ? 'Happy New Year' : 'The winter festival', ss.nye ? 'Fireworks over the island' : 'Lights, lanterns and a tree in the square', 'flame');
-      Life.fireworks(world, ss.nye ? 10 : 7); Life.lanterns(world); if (ss.festival) Life.bunting($('#isl'), scene);
+      Life.fireworks(world, ss.nye ? 10 : 7); Life.lanterns(world); if (ss.festival && $('#isl')) Life.bunting($('#isl'), scene);
     }, 1200);
   }
 }
@@ -913,6 +955,8 @@ function playIslandFx(world){
     if (!entries.some(e => e.isIntersecting)) return;
     io.disconnect();
     const list = islandFx.splice(0), svg = $('#isl');
+    if (!svg && isle3d){ const u = unlockState(), k = u.next ? (Isle.OBJ.find(x => x.k === u.next.k) ? u.next.k : 'g') : null;
+      isle3d.delivery(list.map(f => f.res)); list.forEach((f, i) => setTimeout(() => isle3d.fx(f.res, f.pts, k), 2900 + i * 700)); return; }
     const nextT = (() => { const u = unlockState(); if (!u.next) return null; if (PORTK.has(u.next.k) && scene) return scene.dock.at; const o = Isle.OBJ.find(x => x.k === u.next.k) || Isle.OBJ.find(x => x.k === 'g'); return o ? Isle.P(o.x + (o.w || 1) / 2, o.y + (o.h || 1) / 2) : null; })();
     if (svg && svg.isConnected) Life.delivery(svg, scene, list.map(f => f.res));
     list.forEach((f, i) => setTimeout(() => { if (svg && svg.isConnected) Life.fx(svg, scene, f.res, f.pts, nextT); }, 500 + i * 1100));
@@ -1885,6 +1929,8 @@ function vSettings(){
     <section class="sect"><div class="sect-h"><span class="over">Program</span></div><div class="group">
       <label class="row" for="start"><span class="tile r-gold">${ic('calendar')}</span><span class="tx"><b>Week 1 started</b><small>Now in week ${Store.weekNo()}</small></span>
         <input id="start" type="date" value="${Store.state.start}" style="all:unset;font:500 14px var(--f-b);color:var(--gold2);max-width:130px;text-align:right"></label></div></section>
+    <section class="sect"><div class="sect-h"><span class="over">Island</span></div><div class="group">
+      <div class="row"><span class="tile r-gold">${ic('isle')}</span><span class="tx"><b>3D island</b><small>${webglOK ? 'Turn it off for the classic flat island, which uses less battery' : 'This phone cannot show the 3D island'}</small></span><button class="swt${want3d() ? ' on' : ''}" type="button" role="switch" aria-checked="${want3d()}" id="sw3d"${webglOK ? '' : ' disabled'}><i></i></button></div></div></section>
     <section class="sect" id="remsec"></section>
     <section class="sect"><div class="sect-h"><span class="over">Cloud backup</span><span class="cap" id="cstat"></span></div><div class="group">
       <div class="row"><span class="tile r-land">${ic('upload')}</span><span class="tx"><b>Automatic backup</b><small id="cline">Every change is saved online a few seconds later</small></span><button class="btn quiet small" type="button" id="cnow">Back up now</button></div>
@@ -1900,6 +1946,7 @@ function vSettings(){
   </div>`;
   scrollAt = 90; setBar('Settings', true); wireBack();
   paintReminders();
+  $('#sw3d').onclick = e => { const on = !e.currentTarget.classList.contains('on'); setPref('flat', !on); isle3dFailed = false; isleCache = null; e.currentTarget.classList.toggle('on', on); e.currentTarget.setAttribute('aria-checked', on); haptic(); toast(on ? 'The island is 3D.' : 'The island is flat.'); };
   $('#start').onchange = e => { if (e.target.value){ Store.setStart(e.target.value); toast('Start date saved.'); rerender(); } };
   $('#exp').onclick = () => {
     const blob = new Blob([Store.exportJSON()], {type:'application/json'});
@@ -2037,7 +2084,7 @@ function route(keep){
   if (name !== 'cook' && cook) endCook();
   if (name !== 'play' && name !== 'cook') app.classList.remove('immersive');
   app.classList.toggle('detail', DETAIL.has(name));
-  Life.stop(); closeBubble();
+  Life.stop(); closeBubble(); if (name !== 'isle' && isle3d) isle3d.pause();
   if (name !== 'isle'){ cam.s = 1; cam.cx = 0; cam.cy = 0; }
   dock.innerHTML = ''; layer.innerHTML = '';
   view.style.transform = '';

@@ -781,3 +781,15 @@ button.resbar{border:0;background:none;padding:0;margin:0 auto;font:inherit;colo
 /* ---------- island: daylight and smooth camera ---------- */
 .world #isl{transform-origin:0 0;backface-visibility:hidden}
 .world.daylight #isl circle[fill^="url(#gl"]{opacity:.28}     /* lanterns barely glow in daylight */
+
+/* ---------- the 3D island ---------- */
+.world.three .isle3d{position:absolute;inset:0;display:block;touch-action:none;z-index:1}
+.world.three .sky{z-index:0}
+.world.three .camreset{z-index:2}
+.world.loading::after{content:"Raising the island…";position:absolute;left:0;right:0;top:45%;text-align:center;font:500 14px var(--f-b);color:var(--sub)}
+.isle3d-label{position:fixed;z-index:30;transform:translate(-50%,-50%);padding:6px 11px;border-radius:999px;background:rgba(14,22,38,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  font:600 12.5px var(--f-b);color:var(--gold2);pointer-events:none;transition:transform 1.8s cubic-bezier(.2,.8,.2,1),opacity 1.8s ease-in;white-space:nowrap}
+.isle3d-label.go{transform:translate(-50%,calc(-50% - 34px));opacity:0}
+.isle3d-chip{position:fixed;z-index:30;transform:translate(-50%,-50%);padding:5px 10px;border-radius:999px;font:700 13px var(--f-b);color:#11161f;background:var(--c,#f4bd63);
+  box-shadow:0 4px 14px rgba(0,0,0,.35);pointer-events:none;transition:transform 1.2s cubic-bezier(.5,0,.3,1),opacity 1.2s ease-in}
+.isle3d-chip.r-stone{--c:#b7c6d8}.isle3d-chip.r-land{--c:#7fd3b8}.isle3d-chip.r-harvest{--c:#a9dc7d}.isle3d-chip.r-spirit{--c:#f3c27a}
