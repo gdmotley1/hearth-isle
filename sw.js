@@ -1,6 +1,6 @@
 ﻿/* Motley Island service worker: the app works offline after the first visit.
    Bump VERSION whenever a file below changes so phones pick up the update. */
-const VERSION = 'hearth-v46';
+const VERSION = 'hearth-v47';
 const SHELL = [
   './index.html',
   './manifest.webmanifest',
@@ -30,7 +30,8 @@ const SHELL = [
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  // {cache: 'reload'} skips the browser's HTTP cache, so an update never stores a stale copy of a file
+  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL.map(u => new Request(u, {cache: 'reload'})))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
