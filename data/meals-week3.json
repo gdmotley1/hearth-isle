@@ -11,17 +11,17 @@
     {"id": "oats", "name": "Rolled oats", "note": "plenty left"},
     {"id": "honey", "name": "Honey"},
     {"id": "pb", "name": "Peanut butter"},
-    {"id": "tortillas", "name": "Corn tortillas", "note": "about 12 left"},
+    {"id": "tortillas", "name": "Corn tortillas", "note": "about 12 in the old pack, plus most of the new one"},
     {"id": "sweetpot", "name": "Sweet potatoes", "note": "about 4 left in the bag"},
     {"id": "carnitas", "name": "Frozen carnitas", "note": "the last 2 portions"},
-    {"id": "chili", "name": "Frozen turkey chili", "note": "2 bowls from week 2"}
+    {"id": "soup", "name": "Frozen tortilla soup", "note": "2 bowls from week 2"}
   ],
   "menu": {
     "mon": {"breakfast": "sweet-potato-hash", "lunch": "peruvian-bowl", "dinner": "carnitas-street-tacos", "heads": "Lunch and the taco topping both come from Sunday's prep."},
-    "tue": {"breakfast": "yogurt-bowl", "lunch": "peruvian-bowl", "dinner": "peruvian-fried-rice", "heads": "Tonight, move one chili bowl from the freezer to the fridge for tomorrow."},
-    "wed": {"breakfast": "sweet-potato-hash", "lunch": "freezer-chili", "dinner": "smash-bowl", "shared": "dinner", "heads": "Tonight, move the last carnitas portion and the second chili bowl to the fridge."},
+    "tue": {"breakfast": "yogurt-bowl", "lunch": "peruvian-bowl", "dinner": "peruvian-fried-rice", "heads": "Tonight, move one soup bowl from the freezer to the fridge for tomorrow."},
+    "wed": {"breakfast": "sweet-potato-hash", "lunch": "freezer-soup", "dinner": "smash-bowl", "shared": "dinner", "heads": "Tonight, move the last carnitas portion and the second soup bowl to the fridge."},
     "thu": {"breakfast": "yogurt-bowl", "lunch": "peruvian-bowl", "dinner": "carnitas-bowl"},
-    "fri": {"breakfast": "sweet-potato-hash", "lunch": "freezer-chili", "dinner": "chicken-fajitas", "shared": "dinner"}
+    "fri": {"breakfast": "sweet-potato-hash", "lunch": "freezer-soup", "dinner": "chicken-fajitas", "shared": "dinner"}
   },
   "prep": [
     {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 90, "makes": "4 portions of Peruvian chicken, a double batch of green sauce, a tray of roasted sweet potatoes and peppers, rice, 3 hash breakfasts, oat clusters, 6 eggs", "steps": [
@@ -35,9 +35,9 @@
       "Pack 3 Peruvian bowls and 3 hash containers. Keep 1 chicken portion for Tuesday's fried rice.",
       "Move one carnitas portion from the freezer to the fridge for Monday."
     ]},
-    {"id": "tue", "day": "tue", "title": "Freezer moves", "minutes": 2, "makes": "Thawed chili and carnitas for Wednesday through Friday", "steps": [
-      "Tuesday night: move one chili bowl to the fridge for Wednesday's lunch.",
-      "Wednesday night: move the last carnitas portion and the second chili bowl to the fridge."
+    {"id": "tue", "day": "tue", "title": "Freezer moves", "minutes": 2, "makes": "Thawed soup and carnitas for Wednesday through Friday", "steps": [
+      "Tuesday night: move one soup bowl to the fridge for Wednesday's lunch.",
+      "Wednesday night: move the last carnitas portion and the second soup bowl to the fridge."
     ]}
   ],
   "groceries": [
@@ -118,8 +118,8 @@
     "carnitas-bowl": {"name": "Carnitas rice bowl", "cuisine": "Mexican", "minutes": 10, "serves": "1", "protein": 44, "equip": "cast iron", "ingredients": [
       {"h": "carnitas", "qty": "1 portion, thawed"}, {"g": "rice", "qty": "1 cup cooked"}, {"r": "roast-tray", "qty": "1 cup"}, {"r": "green-sauce", "qty": "3 tbsp"}, {"g": "cheddar", "qty": "2 tbsp"}, {"g": "limes", "qty": "½"}],
       "steps": ["Crisp the carnitas in the cast iron for 4 minutes.", "Warm the rice and the roasted vegetables.", "Build the bowl and top with cheese, green sauce and lime."], "tip": "Ten minutes after Thursday pickleball, mostly from Sunday's prep."},
-    "freezer-chili": {"name": "Turkey chili from the freezer", "cuisine": "American", "minutes": 5, "serves": "1", "protein": 38, "equip": "microwave", "ingredients": [
-      {"h": "chili", "qty": "1 bowl, thawed"}, {"g": "cheddar", "qty": "2 tbsp"}, {"g": "greenonion", "qty": "for topping"}, {"g": "yogurt", "qty": "a spoonful"}],
+    "freezer-soup": {"name": "Tortilla soup from the freezer", "cuisine": "Mexican", "minutes": 5, "serves": "1", "protein": 34, "equip": "microwave", "ingredients": [
+      {"h": "soup", "qty": "1 bowl, thawed"}, {"g": "cheddar", "qty": "2 tbsp"}, {"g": "greenonion", "qty": "for topping"}, {"g": "yogurt", "qty": "a spoonful"}],
       "steps": ["Thaw the bowl in the fridge the night before.", "Microwave 3 to 4 minutes, stirring halfway.", "Top with cheese, green onion and a spoon of yogurt."]},
     "smash-bowl": {"name": "Smash burger bowl with special sauce", "cuisine": "American", "minutes": 20, "serves": "2", "protein": 42, "equip": "cast iron", "ingredients": [
       {"g": "beef", "qty": "1 lb, in 4 balls"}, {"g": "romaine", "qty": "2 hearts, chopped"}, {"g": "tomatoes", "qty": "1 pint, halved"}, {"g": "pickles", "qty": "a handful, plus 1 tbsp brine"}, {"g": "onion", "qty": "½, thinly sliced"}, {"g": "cheddar", "qty": "½ cup"}, {"g": "yogurt", "qty": "¼ cup"}, {"p": "ketchup", "qty": "2 tbsp"}, {"p": "mustard", "qty": "1 tbsp"}, {"p": "salt", "qty": "to taste"}, {"p": "pepper", "qty": "to taste"}],

@@ -5,7 +5,7 @@
   "style": "batch",
   "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax. This week is lighter because it uses up what is left from week 1.",
   "allergyNote": "Nothing on this plan contains tree nuts or fish. Peanut butter and hummus are often made in plants that also handle tree nuts. If your allergy is strict, check the labels for a 'may contain tree nuts' line.",
-  "weekendNote": "Festival days. Leftovers waiting for you: a portion of tikka masala and one bowl of chili. Two chili bowls and two carnitas portions stay frozen for week 3.",
+  "weekendNote": "Festival days. Leftovers waiting for you: a portion of tikka masala and one bowl of tortilla soup. Two soup bowls and two carnitas portions stay frozen for week 3.",
   "snacks": ["Hummus with cucumber and pepper strips", "Cottage cheese with berries", "Apple with peanut butter", "2 hard-boiled eggs", "String cheese and a banana"],
   "have": [
     {"id": "rice", "name": "Jasmine rice", "note": "about half the bag"},
@@ -21,20 +21,20 @@
   "menu": {
     "mon": {"breakfast": "pb-oats", "lunch": "shawarma-bowl", "dinner": "carnitas-quesadillas", "heads": "Lunch comes straight from Sunday's prep. Dinner uses the carnitas you moved to the fridge Sunday night."},
     "tue": {"breakfast": "breakfast-tacos", "lunch": "shawarma-bowl", "dinner": "shawarma-wraps"},
-    "wed": {"breakfast": "pb-oats", "lunch": "chili-lunch", "dinner": "chili-night", "shared": "dinner", "heads": "Tonight, move Friday's chili bowl from the freezer to the fridge."},
-    "thu": {"breakfast": "breakfast-tacos", "lunch": "shawarma-bowl", "dinner": "chili-mac", "heads": "Tonight, marinate the tikka chicken for tomorrow. Five minutes."},
-    "fri": {"breakfast": "pb-oats", "lunch": "chili-lunch", "dinner": "tikka-masala", "shared": "dinner"}
+    "wed": {"breakfast": "pb-oats", "lunch": "soup-lunch", "dinner": "soup-night", "shared": "dinner", "heads": "Tonight, move Friday's soup bowl from the freezer to the fridge."},
+    "thu": {"breakfast": "breakfast-tacos", "lunch": "shawarma-bowl", "dinner": "soup-enchiladas", "heads": "Tonight, marinate the tikka chicken for tomorrow. Five minutes."},
+    "fri": {"breakfast": "pb-oats", "lunch": "soup-lunch", "dinner": "tikka-masala", "shared": "dinner"}
   },
   "prep": [
-    {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 90, "makes": "8 bowls of turkey chili, 4 portions of shawarma chicken, a tray of roasted vegetables, garlic yogurt sauce, rice, 3 jars of oats, 6 eggs", "steps": [
-      "Brown the turkey for 6 minutes and start the chili in the crock pot (low 7 to 8 hours or high 4).",
+    {"id": "sun", "day": "sun", "title": "Sunday batch prep", "minutes": 90, "makes": "8 bowls of spicy chicken tortilla soup, 4 portions of shawarma chicken, a tray of roasted vegetables, garlic yogurt sauce, rice, 3 jars of oats, 6 eggs", "steps": [
+      "Start the tortilla soup in the crock pot: chicken, sweet potato, onion, garlic, jalapeños, chipotles, beans, tomatoes, broth and spices (low 7 to 8 hours or high 4).",
       "Heat the oven to 425°F. Coat the chicken thighs in the shawarma marinade.",
       "Roast the chicken on one sheet pan and the vegetables on another for 22 to 25 minutes.",
       "Cook 2 cups of rice.",
       "Make the garlic yogurt sauce. Quick-pickle half a red onion in lemon and salt, and chop the cucumber and tomatoes.",
       "Mix 3 jars of overnight oats. Air-fry 6 eggs at 270°F for 15 minutes.",
       "Slice the chicken. Pack 3 shawarma bowls and keep 1 portion of chicken and a cup of vegetables for Tuesday's wraps.",
-      "When the chili is done, keep 4 bowls in the fridge and freeze 3: one for Friday and two for week 3.",
+      "When the soup is done, shred the chicken in the pot and stir in the corn and lime. Keep 4 bowls in the fridge and freeze 3: one for Friday and two for week 3.",
       "Move one carnitas portion from the freezer to the fridge for Monday."
     ]},
     {"id": "thu", "day": "thu", "title": "Thursday night", "minutes": 5, "makes": "Marinated chicken for Friday's tikka masala", "steps": [
@@ -44,7 +44,7 @@
   ],
   "groceries": [
     {"id": "thighs", "name": "Boneless skinless chicken thighs", "qty": "about 4 lb (family pack)", "section": "Meat", "store": "Aldi", "price": 11.99},
-    {"id": "turkey", "name": "Lean ground turkey 93/7", "qty": "2 lb (two 1 lb packs)", "section": "Meat", "store": "Aldi", "price": 8.98},
+    {"id": "breasts", "name": "Boneless skinless chicken breasts", "qty": "about 2 lb", "section": "Meat", "store": "Aldi", "price": 6.49},
     {"id": "eggs", "name": "Large eggs", "qty": "1 dozen", "section": "Dairy and eggs", "store": "Aldi", "price": 3.09},
     {"id": "yogurt", "name": "Plain nonfat Greek yogurt", "qty": "two 32 oz tubs", "section": "Dairy and eggs", "store": "Aldi", "price": 8.58},
     {"id": "milk", "name": "2% milk", "qty": "half gallon", "section": "Dairy and eggs", "store": "Aldi", "price": 1.89},
@@ -63,16 +63,20 @@
     {"id": "spinach", "name": "Baby spinach", "qty": "6 oz bag", "section": "Produce", "store": "Aldi", "price": 1.99},
     {"id": "greenonion", "name": "Green onions", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.89},
     {"id": "cilantro", "name": "Cilantro", "qty": "1 bunch", "section": "Produce", "store": "Aldi", "price": 0.79},
+    {"id": "jalapeno", "name": "Jalapeños", "qty": "5", "section": "Produce", "store": "Aldi", "price": 0.99},
+    {"id": "limes", "name": "Limes", "qty": "1 bag (about 6)", "section": "Produce", "store": "Aldi", "price": 2.49},
+    {"id": "avocado", "name": "Avocados", "qty": "2", "section": "Produce", "store": "Aldi", "price": 1.78},
+    {"id": "corn", "name": "Frozen sweet corn", "qty": "12 oz bag", "section": "Frozen", "store": "Aldi", "price": 1.15},
+    {"id": "cornpack", "name": "Corn tortillas", "qty": "30 count", "section": "Shelf", "store": "Aldi", "price": 1.99},
     {"id": "hummus", "name": "Classic hummus", "qty": "10 oz tub", "section": "Shelf", "store": "Aldi", "price": 2.79},
     {"id": "salsa", "name": "Chunky salsa", "qty": "16 oz jar", "section": "Shelf", "store": "Aldi", "price": 1.99},
     {"id": "beans", "name": "Black beans", "qty": "2 cans", "section": "Shelf", "store": "Aldi", "price": 1.70},
-    {"id": "kidney", "name": "Kidney beans", "qty": "1 can", "section": "Shelf", "store": "Aldi", "price": 0.85},
+    {"id": "chipotle", "name": "Chipotle peppers in adobo sauce", "qty": "7 oz can", "section": "Shelf", "store": "Publix", "price": 2.29},
     {"id": "diced", "name": "Diced tomatoes", "qty": "28 oz can", "section": "Shelf", "store": "Aldi", "price": 1.49},
     {"id": "tomsauce", "name": "Tomato sauce", "qty": "15 oz can", "section": "Shelf", "store": "Aldi", "price": 0.69},
     {"id": "coconut", "name": "Light coconut milk", "qty": "13.5 oz can", "section": "Shelf", "store": "Aldi", "price": 1.29},
-    {"id": "broth", "name": "Low-sodium chicken broth", "qty": "32 oz carton", "section": "Shelf", "store": "Aldi", "price": 1.79},
+    {"id": "broth", "name": "Low-sodium chicken broth", "qty": "two 32 oz cartons", "section": "Shelf", "store": "Aldi", "price": 3.58},
     {"id": "naan", "name": "Garlic naan", "qty": "two 2-packs", "section": "Shelf", "store": "Aldi", "price": 5.98},
-    {"id": "macaroni", "name": "Elbow macaroni", "qty": "16 oz box", "section": "Shelf", "store": "Aldi", "price": 0.99},
     {"id": "garam", "name": "Garam masala", "qty": "1 jar", "section": "Shelf", "store": "Publix", "price": 3.99}
   ],
   "pantry": [
@@ -91,9 +95,9 @@
     {"id": "ginger", "name": "Ground ginger"}
   ],
   "recipes": {
-    "turkey-chili": {"name": "Big-batch turkey and sweet potato chili", "cuisine": "Prep", "component": true, "minutes": 15, "serves": "8 bowls", "protein": 38, "equip": "crock pot, skillet", "ingredients": [
-      {"g": "turkey", "qty": "2 lb"}, {"g": "sweetpot", "qty": "2 medium, ½-inch cubes"}, {"h": "onion", "qty": "1, diced"}, {"h": "garlic", "qty": "3 cloves, minced"}, {"g": "beans", "qty": "1 can, rinsed"}, {"g": "kidney", "qty": "1 can, rinsed"}, {"g": "diced", "qty": "28 oz can"}, {"g": "broth", "qty": "1½ cups"}, {"p": "chili", "qty": "2 tbsp"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "oregano", "qty": "1 tsp"}, {"p": "salt", "qty": "1½ tsp"}],
-      "steps": ["Brown the turkey in a skillet for 6 minutes, breaking it up.", "Put everything in the crock pot and stir.", "Cook on low 7 to 8 hours or high 4 hours.", "Keep 4 bowls in the fridge. Freeze 3: one for Friday and two for week 3."], "tip": "One pot that becomes Wednesday's lunch, chili night for two, Thursday's chili mac, Friday's lunch and two lunches in week 3."},
+    "tortilla-soup": {"name": "Spicy chicken tortilla soup", "cuisine": "Prep", "component": true, "minutes": 20, "serves": "8 bowls", "protein": 34, "equip": "crock pot", "ingredients": [
+      {"g": "breasts", "qty": "about 2 lb, whole"}, {"g": "sweetpot", "qty": "2 medium, ½-inch cubes"}, {"h": "onion", "qty": "1, diced"}, {"h": "garlic", "qty": "4 cloves, minced"}, {"g": "jalapeno", "qty": "3, diced (seeds in for heat)"}, {"g": "chipotle", "qty": "2 peppers, minced, plus 1 tbsp of the sauce"}, {"g": "beans", "qty": "1 can, rinsed"}, {"g": "diced", "qty": "28 oz can"}, {"g": "broth", "qty": "5 cups"}, {"g": "corn", "qty": "1½ cups"}, {"g": "limes", "qty": "juice of 2"}, {"p": "chili", "qty": "1 tbsp"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "oregano", "qty": "1 tsp"}, {"p": "salt", "qty": "1½ tsp"}],
+      "steps": ["Lay the chicken breasts in the crock pot and pile the sweet potato, onion, garlic, jalapeños, chipotles and sauce, beans and tomatoes on top.", "Add the broth and spices and stir around the chicken.", "Cook on low 7 to 8 hours or high 4 hours.", "Lift out the chicken, shred it with two forks and stir it back in with the corn and lime juice. Give it 15 more minutes.", "Taste: for more heat, stir in another spoon of the adobo sauce. Keep 4 bowls in the fridge. Freeze 3: one for Friday and two for week 3."], "tip": "One pot that becomes Wednesday's lunch, soup night for two, Thursday's enchiladas, Friday's lunch and two lunches in week 3. Freeze the leftover chipotles flat in a bag for later."},
     "shawarma-chicken": {"name": "Sheet-pan chicken shawarma", "cuisine": "Prep", "component": true, "minutes": 35, "serves": "4 portions", "protein": 45, "equip": "sheet pan", "ingredients": [
       {"g": "thighs", "qty": "2.5 lb"}, {"g": "yogurt", "qty": "½ cup"}, {"g": "lemons", "qty": "juice of 1"}, {"h": "garlic", "qty": "4 cloves, grated"}, {"p": "cumin", "qty": "2 tsp"}, {"p": "paprika", "qty": "2 tsp"}, {"p": "cinnamon", "qty": "¼ tsp"}, {"p": "salt", "qty": "1½ tsp"}, {"p": "pepper", "qty": "½ tsp"}, {"p": "oil", "qty": "1 tbsp"}],
       "steps": ["Heat the oven to 425°F and line a sheet pan.", "Stir the yogurt, lemon juice, garlic, spices, salt and oil together and coat the chicken.", "Spread the thighs flat on the pan.", "Roast 22 to 25 minutes, until the edges char.", "Rest 5 minutes, then slice into 4 portions."]},
@@ -121,15 +125,15 @@
     "carnitas-quesadillas": {"name": "Carnitas and pepper quesadillas", "cuisine": "Mexican", "minutes": 20, "serves": "1 (2 quesadillas)", "protein": 45, "equip": "cast iron", "ingredients": [
       {"h": "carnitas", "qty": "1 portion, thawed"}, {"h": "tortillas", "qty": "4"}, {"g": "mexcheese", "qty": "½ cup"}, {"g": "peppers", "qty": "1, sliced"}, {"h": "onion", "qty": "½, sliced"}, {"g": "salsa", "qty": "for dipping"}, {"g": "yogurt", "qty": "2 tbsp"}, {"g": "cilantro", "qty": "a little"}],
       "steps": ["Sear the pepper and onion in the dry cast iron for 5 minutes, then crisp the carnitas alongside for 3 minutes.", "Lay 2 tortillas in the pan, add cheese, the filling, more cheese and the top tortillas.", "Press with a spatula and cook 2 to 3 minutes a side until crisp and melted.", "Cut into quarters and serve with salsa, yogurt and cilantro."], "tip": "Free dinner from last week's freezer. Two carnitas portions stay frozen for week 3."},
-    "chili-lunch": {"name": "Turkey chili lunch bowl", "cuisine": "American", "minutes": 5, "serves": "1", "protein": 38, "equip": "microwave", "ingredients": [
-      {"r": "turkey-chili", "qty": "1 bowl"}, {"g": "mexcheese", "qty": "2 tbsp"}, {"g": "greenonion", "qty": "for topping"}, {"g": "yogurt", "qty": "a spoonful"}],
-      "steps": ["Microwave the chili 3 minutes, stirring halfway.", "Top with cheese, green onion and a spoon of yogurt."]},
-    "chili-night": {"name": "Chili night with a toppings bar", "cuisine": "American", "minutes": 15, "serves": "2", "protein": 40, "equip": "pot, air fryer", "ingredients": [
-      {"r": "turkey-chili", "qty": "2 bowls"}, {"h": "tortillas", "qty": "3, cut in strips"}, {"g": "mexcheese", "qty": "for topping"}, {"g": "yogurt", "qty": "for topping"}, {"g": "greenonion", "qty": "sliced"}, {"g": "cilantro", "qty": "chopped"}, {"p": "spray", "qty": "for the strips"}],
-      "steps": ["Warm the chili in a pot.", "Spray the tortilla strips and air-fry at 380°F for 5 to 6 minutes until crunchy.", "Set out the cheese, yogurt, green onion, cilantro and strips so everyone tops their own."], "tip": "Dinner for two from Sunday's pot."},
-    "chili-mac": {"name": "Turkey chili mac", "cuisine": "American", "minutes": 15, "serves": "1", "protein": 44, "equip": "pot", "ingredients": [
-      {"r": "turkey-chili", "qty": "1 bowl"}, {"g": "macaroni", "qty": "3 oz"}, {"g": "mexcheese", "qty": "¼ cup"}, {"g": "greenonion", "qty": "for topping"}],
-      "steps": ["Boil the macaroni in salted water and drain.", "Stir in the chili and warm through.", "Fold in the cheese until melty and top with green onion."], "tip": "Comfort food after Thursday pickleball, from Sunday's pot."},
+    "soup-lunch": {"name": "Tortilla soup lunch bowl", "cuisine": "Mexican", "minutes": 8, "serves": "1", "protein": 36, "equip": "microwave, air fryer", "ingredients": [
+      {"r": "tortilla-soup", "qty": "1 bowl"}, {"g": "cornpack", "qty": "1, cut in strips"}, {"g": "mexcheese", "qty": "2 tbsp"}, {"g": "jalapeno", "qty": "a few slices"}, {"g": "yogurt", "qty": "a spoonful"}, {"g": "limes", "qty": "a wedge"}, {"p": "spray", "qty": "for the strips"}],
+      "steps": ["Spray the tortilla strips and air-fry at 380°F for 5 minutes while the soup heats.", "Microwave the soup 3 minutes, stirring halfway.", "Top with cheese, jalapeño, a spoon of yogurt, a squeeze of lime and the crunchy strips."]},
+    "soup-night": {"name": "Tortilla soup night with a toppings bar", "cuisine": "Mexican", "minutes": 15, "serves": "2", "protein": 38, "equip": "pot, air fryer", "ingredients": [
+      {"r": "tortilla-soup", "qty": "2 bowls"}, {"h": "tortillas", "qty": "3, cut in strips"}, {"g": "avocado", "qty": "1, diced"}, {"g": "mexcheese", "qty": "for topping"}, {"g": "yogurt", "qty": "for topping"}, {"g": "jalapeno", "qty": "1, sliced"}, {"g": "cilantro", "qty": "chopped"}, {"g": "limes", "qty": "wedges"}, {"p": "spray", "qty": "for the strips"}],
+      "steps": ["Warm the soup in a pot.", "Spray the tortilla strips and air-fry at 380°F for 5 to 6 minutes until crunchy.", "Set out the avocado, cheese, yogurt, sliced jalapeño, cilantro, lime and strips so everyone tops their own."], "tip": "Dinner for two from Sunday's pot. Fresh jalapeño on the side lets each person pick their heat."},
+    "soup-enchiladas": {"name": "Tortilla soup chicken enchiladas", "cuisine": "Mexican", "minutes": 20, "serves": "1 (4 enchiladas)", "protein": 42, "equip": "small baking dish, air fryer or oven", "ingredients": [
+      {"r": "tortilla-soup", "qty": "1 bowl"}, {"g": "cornpack", "qty": "4"}, {"g": "salsa", "qty": "⅓ cup"}, {"g": "mexcheese", "qty": "⅓ cup"}, {"g": "avocado", "qty": "1, sliced"}, {"g": "greenonion", "qty": "for topping"}, {"p": "spray", "qty": "for the dish"}],
+      "steps": ["Spoon the chicken, beans and sweet potato out of the soup with a slotted spoon. Keep the broth in a cup.", "Microwave the tortillas under a damp towel for 30 seconds so they roll without cracking.", "Fill each tortilla, roll it and set it seam down in a sprayed small baking dish.", "Stir the broth into the salsa, pour it over and top with the cheese.", "Air-fry at 375°F for 8 minutes (or bake at 400°F for 15) until bubbly. Top with avocado and green onion."], "tip": "Thursday's remix after pickleball: the same soup turned into a cheesy bake."},
     "tikka-masala": {"name": "Chicken tikka masala", "cuisine": "Indian", "minutes": 35, "serves": "3", "protein": 40, "equip": "cast iron or deep skillet", "isNew": true, "ingredients": [
       {"g": "thighs", "qty": "1.5 lb, bite-size pieces"}, {"g": "yogurt", "qty": "½ cup"}, {"g": "garam", "qty": "4 tsp, divided"}, {"p": "cumin", "qty": "1 tsp"}, {"p": "paprika", "qty": "1 tsp"}, {"p": "salt", "qty": "1¼ tsp"}, {"h": "onion", "qty": "1, diced"}, {"h": "garlic", "qty": "4 cloves, minced"}, {"p": "ginger", "qty": "1 tsp"}, {"g": "tomsauce", "qty": "15 oz can"}, {"g": "coconut", "qty": "1 can"}, {"h": "rice", "qty": "1 cup cooked each"}, {"g": "naan", "qty": "2"}, {"g": "cilantro", "qty": "to finish"}, {"p": "oil", "qty": "1 tbsp"}],
       "steps": ["The chicken marinated last night in the yogurt, 2 tsp garam masala, the paprika and ½ tsp salt.", "Start the rice. Sear the chicken in the oil over high heat for 5 minutes and set it aside.", "Cook the onion in the same pan for 5 minutes, then add the garlic, ginger, cumin and the rest of the garam masala for 1 minute.", "Add the tomato sauce and simmer 5 minutes, then stir in the coconut milk.", "Return the chicken and simmer 10 minutes until thick. Salt to taste.", "Warm the naan and serve over rice with cilantro."], "tip": "This week's new one, and a dinner for two. Coconut milk stands in for cream, so it stays lighter."}
