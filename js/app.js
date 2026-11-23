@@ -1561,11 +1561,28 @@ function vMarket(){
   if (!P.ready) loadAllWeeks().then(() => { if (location.hash === '#market') rerender(); });
   const inCart = g => Store.flag('grocery', pre + g.uid);
   const total = G.reduce((a, g) => a + g.price, 0), got = G.filter(inCart), left = G.filter(g => !inCart(g));
-  // Aldi walk order: produce at the door, shelf aisles, dairy and meat along the back, frozen by the registers.
+  // Fallback order for items with no aisle: produce, shelf, dairy and meat, frozen.
   const order = ['Produce','Shelf','Dairy and eggs','Meat','Frozen'];
   const ahead = wk !== mealWeek(), over = total - D.budget;
   const item = g => `<div class="row item sw${inCart(g) ? ' done' : ''}" data-g="${g.uid}" role="button" aria-pressed="${inCart(g)}"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b>${esc(g.name)}</b><small>${esc(g.qty)}${g.was ? ` · <em>was ${esc(g.was)}</em>` : ''}${g.forRecipe ? ` · for ${esc(g.forRecipe)}` : ''}</small></span><span class="trail">${money(g.price)}</span></div>`;
-  const aisles = [...order.map(sec => [sec, left.filter(g => g.section === sec && g.store !== 'Publix')]), ['Publix', left.filter(g => g.store === 'Publix')]];
+  // Publix items carry their spot in the Lakeside Commons store (from publix.com): walk produce at the door,
+  // the numbered aisles in order, then the meat and dairy walls at the back. Anything without a spot falls
+  // back to the old section groups.
+  const spot = g => {
+    const a = g.aisle || '', m = a.match(/^Aisle (\d+)\s*-?\s*(.*)$/);
+    if (m) return {k:`Aisle ${m[1]}`, o:100 + +m[1], sub:m[2].replace(/^International Foods\s*-\s*/, '').replace(/\s*-\s*/g, ' · ')};
+    if (!a) return {k:g.section || 'Other', o:500 + Math.max(0, order.indexOf(g.section)), sub:''};
+    const d = a.toLowerCase(), [head, ...rest] = a.split(' - ');
+    if (d.includes('produce')) return {k:'Produce', o:0, sub:''};
+    if (d.includes('bakery')) return {k:'Bakery', o:10, sub:''};
+    if (d.includes('deli')) return {k:'Deli', o:20, sub:''};
+    if (d.includes('meat')) return {k:'Meat', o:300, sub:''};
+    const back = head.match(/^Rear (Left|Center|Right)$/i);
+    return {k:back ? `Back wall, ${back[1].toLowerCase()}` : head, o:back ? 310 + ['left', 'center', 'right'].indexOf(back[1].toLowerCase()) : d.includes('dairy') ? 320 : d.includes('frozen') ? 330 : 400, sub:rest.join(' · ')};
+  };
+  const groups = new Map();
+  left.forEach(g => { const s = spot(g); if (!groups.has(s.k)) groups.set(s.k, {o:s.o, subs:new Set(), items:[]}); const x = groups.get(s.k); x.items.push(g); if (s.sub) x.subs.add(s.sub); });
+  const aisles = [...groups.entries()].sort((a, b) => a[1].o - b[1].o || a[0].localeCompare(b[0])).map(([k, x]) => [k, x.items, [...x.subs].join(', ')]);
   view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)}${ahead ? ' · next week' : ''}</span><h1 class="lt">Market</h1></header>
   <div class="page stagger" style="margin-top:20px">
     ${weekSwitch(wk)}
@@ -1573,7 +1590,7 @@ function vMarket(){
     <section class="card budget"><div class="big"><b class="num">${money(total)}</b><span class="cap">${over > 0 ? `<span style="color:var(--danger)">${money(over)} over budget</span>` : `${got.length} of ${G.length} in the cart`}</span></div>
       <div class="bar2">${twBar('cart' + wk, got.length / Math.max(1, G.length) * 100)}</div></section>
     ${!left.length ? `<div class="callout">${ic('check')}<span>Everything is in the cart.</span></div>` : ''}
-    ${aisles.map(([sec, items]) => items.length ? `<section class="sect"><div class="sect-h"><span class="over">${sec}</span></div><div class="group">${items.map(item).join('')}</div></section>` : '').join('')}
+    ${aisles.map(([sec, items, sub]) => items.length ? `<section class="sect"><div class="sect-h"><span class="over">${esc(sec)}</span>${sub ? `<span class="cap">${esc(sub)}</span>` : ''}</div><div class="group">${items.map(item).join('')}</div></section>` : '').join('')}
     ${got.length ? `<details class="sect cartbox"${left.length ? '' : ' open'}><summary class="sect-h"><span class="over">In the cart · ${got.length}</span><span class="cap">${money(got.reduce((a, g) => a + g.price, 0))} ›</span></summary>
       <div class="group">${got.map(item).join('')}</div><button class="linkbtn" type="button" id="clr">Clear the cart and start over</button></details>` : ''}
     ${D.have && D.have.length ? `<p class="fine"><b style="color:var(--sub)">Already home:</b> ${D.have.map(h => esc(h.name.toLowerCase())).join(', ')}.</p>` : ''}
