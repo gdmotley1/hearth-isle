@@ -15,6 +15,10 @@ const DAYN = {mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Fri
 const SLOT = {breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner'};
 const RESN = {stone:'Stone',land:'Land',harvest:'Harvest',spirit:'Spirit'};
 const MEAL_WEEKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// The recipe library (data/library.json) loads into MW[LIB] with the same shape as a meal week, so swaps,
+// favorites, ratings, cook mode and the grocery planner treat its recipes like any other week's.
+const LIB = 100;
+const wkLabel = n => +n === LIB ? 'Library' : `Week ${n}`;
 const SETTLERS = ['Juno','Mira','Tobi','Pell','Wren','Ansel','Ivy','Corin','Bea','Otto','Lark','Fen','Rhea','Sol','Nell','Arlo','Hale','Tess'];
 const BUILD = {house:'a cottage',farm:'a farm plot',tree:'an orchard tree',pine:'a pine grove',well:'the village well',stall:'a market stall',windmill:'the windmill',tower:'the watchtower',
   lantern:'a lantern',flowers:'a flower bed',rock:'a standing stone',gfound:'the Gardens foundation',g1:'the first Gardens tier',g2:'the second Gardens tier',g3:'the Hanging Gardens',
@@ -922,8 +926,8 @@ function playIslandFx(world){
 let lastDone = null;
 
 /* ---------------- swapping meals ---------------- */
-const loadWeek = n => MW[n] ? Promise.resolve(MW[n]) : fetch(`data/meals-week${n}.json`).then(r => r.json()).then(j => (MW[n] = j)).catch(() => null);
-const loadAllWeeks = () => Promise.all(MEAL_WEEKS.map(loadWeek));
+const loadWeek = n => MW[n] ? Promise.resolve(MW[n]) : fetch(n === LIB ? 'data/library.json' : `data/meals-week${n}.json`).then(r => r.json()).then(j => (MW[n] = j)).catch(() => null);
+const loadAllWeeks = () => Promise.all([...MEAL_WEEKS, LIB].map(loadWeek));
 let DISHES = null;
 const loadDishes = () => DISHES ? Promise.resolve(DISHES) : fetch('data/dishes.json').then(r => r.json()).then(j => (DISHES = j));
 function dateOf(dk, near){ const mon = Store.parse(Store.mondayOf(near)); const d = new Date(mon); d.setDate(mon.getDate() + DAYS.indexOf(dk)); return d; }
@@ -972,23 +976,26 @@ async function mealSheet(date, slot){
     closeLayer(); haptic(); toast(`Swapped in ${r.name}.`); setTimeout(rerender, 300);
   }});
 }
-/* A searchable list of every recipe from every week: fits-the-meal first, then favorites, this week, earlier weeks.
-   Recipes from other weeks list the groceries you would still need. */
+/* A searchable list of every recipe from every week and the library: fits-the-meal first, then favorites,
+   this week, the library, earlier weeks. Recipes from elsewhere list the groceries you would still need.
+   Library meals built on a batch pot only come in through "Swap this batch", so they are left out here. */
 function mountRecipePicker(sh, {slot, wn, plannedId, D, onPick}){
   const have = new Set([...D.groceries.map(g => g.name.toLowerCase()), ...(D.have || []).map(h => h.name.toLowerCase())]);
   const all = [];
-  MEAL_WEEKS.forEach(n => { const W2 = MW[n]; if (!W2) return; Object.entries(W2.recipes).forEach(([id, r]) => { if (r.component || r.cuisine === 'Snack' || (n === wn && id === plannedId)) return;
+  [...MEAL_WEEKS, LIB].forEach(n => { const W2 = MW[n]; if (!W2) return; Object.entries(W2.recipes).forEach(([id, r]) => { if (r.component || r.cuisine === 'Snack' || (n === wn && id === plannedId)) return;
+    if (n === LIB && r.ingredients.some(i => i.r)) return;
     const need = n === wn ? [] : (r.ingredients || []).filter(i => i.g).map(i => (W2.groceries.find(g => g.id === i.g) || {}).name).filter(x => x && !have.has(x.toLowerCase()));
     const rt = Store.getRate(`${n}:${id}`); all.push({id, n, r, need, rt, fav:Store.isFav(`${n}:${id}`) || rt === 1}); }); });
   const fits = x => (x.r.cuisine === 'Breakfast') === (slot === 'breakfast');
   const seenName = new Set(), uniq = all.sort((a, b) => (fits(b) - fits(a)) || ((a.rt === -1) - (b.rt === -1)) || (b.fav - a.fav) || ((b.n === wn) - (a.n === wn)) || (b.n - a.n)).filter(x => { const k = x.r.name.toLowerCase(); if (seenName.has(k)) return false; seenName.add(k); return true; });
-  const rowH = x => `<button class="row tap" type="button" data-pick="${x.n}:${x.id}" style="all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative;width:100%"><span class="tile ctile c-${x.r.cuisine}">${ic(x.r.cuisine)}</span><span class="tx"><b>${x.fav ? '<span class="favdot">♥</span> ' : ''}${esc(x.r.name)}</b><small>${x.rt === -1 ? 'You said skip it · ' : ''}${x.n === wn ? 'This week' : `Week ${x.n}`} · ${x.r.minutes} min · ${x.r.protein}g protein${x.need.length ? ` · need ${esc(x.need.slice(0, 3).join(', ').toLowerCase())}${x.need.length > 3 ? '…' : ''}` : ''}</small></span></button>`;
+  const rowH = x => `<button class="row tap" type="button" data-pick="${x.n}:${x.id}" style="all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 14px;min-height:64px;position:relative;width:100%"><span class="tile ctile c-${x.r.cuisine}">${ic(x.r.cuisine)}</span><span class="tx"><b>${x.fav ? '<span class="favdot">♥</span> ' : ''}${esc(x.r.name)}</b><small>${x.rt === -1 ? 'You said skip it · ' : ''}${x.n === wn ? 'This week' : wkLabel(x.n)} · ${x.r.minutes} min · ${x.r.protein}g protein${x.need.length ? ` · need ${esc(x.need.slice(0, 3).join(', ').toLowerCase())}${x.need.length > 3 ? '…' : ''}` : ''}</small></span></button>`;
   const paint = () => {
     const q = $('#rq', sh).value.trim().toLowerCase();
-    const list = uniq.filter(x => !q || x.r.name.toLowerCase().includes(q) || x.r.cuisine.toLowerCase().includes(q));
-    const fav = list.filter(x => x.fav), wk = list.filter(x => !x.fav && x.n === wn && (q || fits(x))), rest = list.filter(x => !x.fav && x.n !== wn && (q || fits(x))), other = q ? [] : list.filter(x => !x.fav && !fits(x));
+    const list = uniq.filter(x => !q || [x.r.name, x.r.cuisine, x.r.equip].join(' ').toLowerCase().includes(q));
+    const fav = list.filter(x => x.fav), wk = list.filter(x => !x.fav && x.n === wn && (q || fits(x))), lib = list.filter(x => !x.fav && x.n === LIB && (q || fits(x))),
+      rest = list.filter(x => !x.fav && x.n !== wn && x.n !== LIB && (q || fits(x))), other = q ? [] : list.filter(x => !x.fav && !fits(x));
     const grp = (t, a) => a.length ? `<div class="sect-h" style="margin-top:6px"><span class="over">${t}</span></div><div class="group">${a.slice(0, q ? 40 : 30).map(rowH).join('')}</div>` : '';
-    $('#rlist', sh).innerHTML = (grp('Favorites', fav) + grp('This week', wk) + grp('Earlier weeks', rest) + grp(slot === 'breakfast' ? 'Lunch and dinner recipes' : 'Breakfast recipes', other)) || '<p class="fine">No recipes match.</p>';
+    $('#rlist', sh).innerHTML = (grp('Favorites', fav) + grp('This week', wk) + grp('Recipe library', lib) + grp('Earlier weeks', rest) + grp(slot === 'breakfast' ? 'Lunch and dinner recipes' : 'Breakfast recipes', other)) || '<p class="fine">No recipes match.</p>';
     $$('[data-pick]', sh).forEach(b => b.onclick = () => { const [n, id] = b.dataset.pick.split(':'); onPick(+n, id, MW[+n].recipes[id]); });
   };
   $('#rq', sh).addEventListener('input', paint); paint();
@@ -1046,7 +1053,7 @@ function weekRefs(mon){
     const menu = D.menu[dk]; if (!menu) return;
     const d = new Date(mon); d.setDate(mon.getDate() + i); const ds = Store.ymd(d);
     Object.keys(SLOT).forEach(slot => { const sw = Store.getSwap(ds, slot);
-      if (sw && sw.type === 'recipe') refs.push({wk:sw.wk, id:sw.id, swapped:true});
+      if (sw && sw.type === 'recipe') refs.push({wk:sw.wk, id:sw.id, swapped:true, frozen:!!sw.frozen});
       else refs.push({wk:wn, id:menu[slot]}); });
   });
   return {wn, D, refs};
@@ -1061,14 +1068,19 @@ function plannedGroceries(mon){
   const KIND = [['roast', 'vegetable', 'roots', 'tray'], ['rice'], ['yogurt', 'feta', 'ranch', 'tzatziki', 'crema'], ['marinara'], ['pickled']];
   const kindOf = name => KIND.findIndex(ws => ws.some(w => name.toLowerCase().includes(w)));
   const local = {}; Object.entries(D.recipes).forEach(([id, r]) => { if (r.component){ const k = kindOf(r.name); if (k >= 0 && !(k in local)) local[k] = id; } });
-  const visit = (wk, id) => { const k = wk + ':' + id; if (seen.has(k)) return; seen.add(k); const r = MW[wk] && MW[wk].recipes[id]; if (!r) return; need.push({wk, id, r});
-    (r.ingredients || []).forEach(i => { if (!i.r) return; const sub = MW[wk].recipes[i.r]; const kd = wk !== wn && sub && sub.component ? kindOf(sub.name) : -1; if (kd >= 0 && local[kd]) visit(wn, local[kd]); else visit(wk, i.r); }); };
-  refs.forEach(x => visit(x.wk, x.id));
+  // A frozen swap (a bowl from last week's batch, from the freezer) buys nothing: last week's list bought the
+  // pot and the toppings for every meal of that batch.
+  const visit = (wk, id, frozen) => { const k = wk + ':' + id + (frozen ? ':f' : ''); if (seen.has(k)) return; seen.add(k); const r = MW[wk] && MW[wk].recipes[id]; if (!r) return; if (!frozen) need.push({wk, id, r});
+    (r.ingredients || []).forEach(i => { if (!i.r) return; const sub = MW[wk].recipes[i.r]; if (frozen && sub && sub.component) return; const kd = wk !== wn && sub && sub.component ? kindOf(sub.name) : -1; if (kd >= 0 && local[kd]) visit(wn, local[kd]); else visit(wk, i.r); }); };
+  refs.forEach(x => visit(x.wk, x.id, x.frozen));
   const inRecipes = new Set(); Object.values(D.recipes).forEach(r => (r.ingredients || []).forEach(i => i.g && inRecipes.add(i.g)));
   const used = new Set(); need.filter(x => x.wk === wn).forEach(x => x.r.ingredients.forEach(i => i.g && used.add(i.g)));
   const haveN = new Set((D.have || []).map(h => h.name.toLowerCase())), byName = new Map();
-  // keep this week's items still needed, plus snack items no recipe uses
-  D.groceries.forEach(g => { if (used.has(g.id) || !inRecipes.has(g.id)) byName.set(g.name.toLowerCase(), Object.assign({uid:g.id, from:wn}, g)); });
+  // keep this week's items still needed, snack items no recipe uses, and anything next week plans to finish
+  const nmon = new Date(mon); nmon.setDate(nmon.getDate() + 7);
+  const ND = MW[mealWeekOf(nmon)], nextHave = new Set(ND && ND !== D ? (ND.have || []).map(h => h.name.toLowerCase()) : []);
+  D.groceries.forEach(g => { const keepNext = !used.has(g.id) && inRecipes.has(g.id) && nextHave.has(g.name.toLowerCase());
+    if (used.has(g.id) || !inRecipes.has(g.id) || keepNext) byName.set(g.name.toLowerCase(), Object.assign({uid:g.id, from:wn}, g, keepNext ? {forRecipe:'next week'} : {})); });
   // add what swapped-in recipes from other weeks need
   need.filter(x => x.wk !== wn).forEach(x => x.r.ingredients.forEach(i => { if (!i.g) return; const g = MW[x.wk].groceries.find(y => y.id === i.g); if (!g) return;
     const k = g.name.toLowerCase(); if (byName.has(k) || haveN.has(k)) return; byName.set(k, Object.assign({}, g, {uid:`${x.wk}~${g.id}`, from:x.wk, forRecipe:x.r.name})); }));
@@ -1112,6 +1124,7 @@ async function vPlan(){
         ${G.swaps ? `<span class="cap">${plural(G.swaps, 'swap')} · ${G.added.length ? `+${G.added.length} added` : 'nothing added'} · ${G.dropped.length ? `${G.dropped.length} dropped` : 'nothing dropped'}</span>` : `<span class="cap">The suggested plan, as written</span>`}
         <span class="over gold">Open the grocery list ${ic('chev')}</span></a>
       ${unused.length ? `<div class="callout">${ic('info')}<span>Nothing uses ${listify(unused.map(x => x.toLowerCase()))} anymore, so skip ${unused.length === 1 ? 'that' : 'those'} on Sunday. Its groceries are off the list.</span></div>` : ''}
+      ${blocksHTML(D, wn)}
       ${days}
       ${G.swaps ? `<button class="btn quiet wide" type="button" id="preset">Reset to the suggested plan</button>` : ''}
       <div style="height:84px"></div>
@@ -1120,6 +1133,7 @@ async function vPlan(){
   dock.innerHTML = done ? `<div class="btn wide planned">${ic('check')}Planned · +${done.pts} Harvest earned. Changes still update the list.</div>` : `<button class="btn wide" type="button" id="plock">${ic('check')}Lock in my plan · +${Store.PTS.plan.pts} Harvest</button>`;
   const lk = $('#plock'); if (lk) lk.onclick = () => { lockPlan(); setTimeout(() => location.hash = '#today', 500); };
   $('#pmkt').onclick = () => { shopWeek = wn; };
+  wireBlocks(wn);
   const rs = $('#preset'); if (rs) rs.onclick = () => { DAYS.slice(0, 5).forEach((dk, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); Object.keys(SLOT).forEach(slot => { const sw = Store.getSwap(Store.ymd(d), slot); if (sw && sw.type === 'recipe') Store.setSwap(Store.ymd(d), slot, null); }); }); haptic(); toast('Back to the suggested plan.'); rerender(); };
   $$('[data-plan]', view).forEach(b => b.onclick = () => {
     const [ds, slot, dk] = b.dataset.plan.split('|'), menu = D.menu[dk], plannedId = menu[slot], sw = Store.getSwap(ds, slot);
@@ -1133,6 +1147,76 @@ async function vPlan(){
       Store.setSwap(ds, slot, n === wn && id === plannedId ? null : {type:'recipe', id, wk:n, name:r.name, minutes:r.minutes});
       closeLayer(); haptic(); toast(`${r.name} on ${DAYN[dk]}.`); setTimeout(rerender, 280);
     }});
+  });
+}
+
+/* ---------------- batch swaps ----------------
+   Swapping a Sunday building block for a library kit (a pot plus its lunch, dinner-for-two and remix meals)
+   writes ordinary recipe swaps on every planned meal that used the block: lunches get the kit's lunch, a dinner
+   for two its night, other dinners its remix. Next week's freezer meals made from the block (have items with
+   "from": "<week>:<block>") get the kit's lunch, marked frozen so the pot is not bought twice. Each swap carries
+   batch {wk, from, kit} so the whole batch is found, shown and undone together. Groceries follow plannedGroceries. */
+const weekDates = mon => DAYS.slice(0, 5).map((dk, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); return [dk, Store.ymd(d)]; });
+function mealUses(D, mid, bid){
+  const seen = new Set(), st = [mid];
+  while (st.length){ const k = st.pop(); if (seen.has(k)) continue; seen.add(k); ((D.recipes[k] || {}).ingredients || []).forEach(i => i.r && st.push(i.r)); }
+  return mid !== bid && seen.has(bid);
+}
+// Big protein pots can be swapped; sauces, rice and vegetable trays stay.
+const swappableBlock = r => r && r.component && r.protein >= 20;
+function batchSlots(wn, bid){
+  const D = MW[wn], mon = monOfShown(wn), out = [];
+  weekDates(mon).forEach(([dk, ds]) => { const menu = D.menu[dk]; if (!menu) return;
+    Object.keys(SLOT).forEach(slot => { if (mealUses(D, menu[slot], bid)) out.push({ds, slot, dk, role:slot !== 'dinner' ? 'lunch' : menu.shared === slot ? 'share' : 'dinner'}); }); });
+  const nmon = new Date(mon); nmon.setDate(mon.getDate() + 7);
+  const nwn = mealWeekOf(nmon), ND = MW[nwn];
+  if (ND && nwn !== wn){
+    const ids = new Set((ND.have || []).filter(h => h.from === `${wn}:${bid}`).map(h => h.id));
+    if (ids.size) weekDates(nmon).forEach(([dk, ds]) => { const menu = ND.menu[dk]; if (!menu) return;
+      Object.keys(SLOT).forEach(slot => { const r = ND.recipes[menu[slot]]; if (r && r.ingredients.some(i => ids.has(i.h))) out.push({ds, slot, dk, role:'lunch', frozen:true}); }); });
+  }
+  return out;
+}
+/* Blocks of week wn swapped for a kit: {blockId: kit}. */
+function batchOf(wn){
+  const out = {}, L = MW[LIB]; if (!L) return out;
+  weekDates(monOfShown(wn)).forEach(([, ds]) => Object.keys(SLOT).forEach(slot => { const sw = Store.getSwap(ds, slot);
+    if (sw && sw.batch && sw.batch.wk === wn){ const k = L.kits.find(x => x.id === sw.batch.kit); if (k) out[sw.batch.from] = k; } }));
+  return out;
+}
+function applyBatch(wn, bid, kitId){
+  const L = MW[LIB], slots = batchSlots(wn, bid), now = Store.ymd(today());
+  slots.forEach(x => { const sw = Store.getSwap(x.ds, x.slot); if (sw && sw.batch && sw.batch.from === bid && sw.batch.wk === wn) Store.setSwap(x.ds, x.slot, null); });
+  const kit = kitId && L.kits.find(k => k.id === kitId); if (!kit) return 0;
+  let n = 0;
+  slots.forEach(x => {
+    if (x.ds < now || Store.getSwap(x.ds, x.slot) || Store.isDone(x.ds, x.slot)) return;   // never rewrite a meal already eaten or swapped by hand
+    const rid = kit[x.role], r = L.recipes[rid];
+    const sw = {type:'recipe', id:rid, wk:LIB, name:x.frozen ? `${r.name} (from the freezer)` : r.name, minutes:r.minutes, batch:{wk:wn, from:bid, kit:kit.id}};
+    if (x.frozen) sw.frozen = true;
+    Store.setSwap(x.ds, x.slot, sw); n++;
+  });
+  return n;
+}
+async function batchSheet(wn, bid){
+  await loadAllWeeks();
+  const D = MW[wn], b = D.recipes[bid], L = MW[LIB]; if (!b || !L) return;
+  const cur = batchOf(wn)[bid], slots = batchSlots(wn, bid), mine = slots.filter(x => !x.frozen), frozen = slots.filter(x => x.frozen);
+  const onList = new Set([...plannedGroceries(monOfShown(wn)).list.map(g => g.name.toLowerCase()), ...(D.have || []).map(h => h.name.toLowerCase())]);
+  const newCost = kit => { const m = new Map(); [kit.block, kit.lunch, kit.share, kit.dinner].forEach(rid => L.recipes[rid].ingredients.forEach(i => { const g = i.g && L.groceries.find(x => x.id === i.g); if (g && !onList.has(g.name.toLowerCase())) m.set(g.name, g.price); })); return [...m.values()].reduce((a, p) => a + p, 0); };
+  const when = listify(mine.map(x => `${DAYN[x.dk].slice(0, 3)} ${SLOT[x.slot].toLowerCase()}`));
+  const kits = L.kits.filter(k => L.recipes[k.block].name.toLowerCase() !== b.name.toLowerCase());
+  const sh = sheet(`<div class="grab"></div><div><div class="over gold">Sunday batch · ${esc(D.title)}</div><h2 class="t2" style="margin-top:8px">Swap ${esc((cur ? L.recipes[cur.block] : b).name.toLowerCase())}</h2></div>
+    <p class="cap" style="margin:0">Pick another pot and every meal made from it changes with it${mine.length ? `: ${esc(when)}` : ''}${frozen.length ? `, plus ${frozen.length} freezer ${frozen.length === 1 ? 'lunch' : 'lunches'} next week` : ''}. The grocery list follows.</p>
+    ${cur ? `<button class="btn quiet wide" type="button" id="bback">Back to the planned ${esc(b.name.toLowerCase())}</button>` : ''}
+    <div class="group">${kits.map(k => { const r = L.recipes[k.block], on = cur && cur.id === k.id, c = newCost(k);
+      return `<button class="row tap kitrow${on ? ' on' : ''}" type="button" data-kit="${k.id}"><span class="tile ctile c-Prep">${ic(on ? 'check' : 'Prep')}</span><span class="tx"><b>${esc(k.name)}</b><small class="wrap">${esc(k.blurb)}</small><small>${esc(r.serves)} · ${r.protein}g protein a bowl · ${c ? `about ${money(c)} of new groceries` : 'nothing new to buy'}</small></span></button>`; }).join('')}</div>`);
+  sh.classList.add('swapsheet');
+  const done = (msg) => { closeLayer(); haptic(); toast(msg); setTimeout(rerender, 300); };
+  const bb = $('#bback', sh); if (bb) bb.onclick = () => { applyBatch(wn, bid, null); done(`Back to the ${b.name.toLowerCase()}.`); };
+  $$('[data-kit]', sh).forEach(btn => btn.onclick = () => {
+    const k = L.kits.find(x => x.id === btn.dataset.kit), n = applyBatch(wn, bid, k.id);
+    done(n ? `${k.name}: ${plural(n, 'meal')} and the grocery list updated.` : 'Those meals are already eaten or swapped, so nothing changed.');
   });
 }
 
@@ -1533,6 +1617,8 @@ function vKitchen(){
   scrollAt = 50; setBar('Kitchen');
   wireWeekSwitch();
   $$('.days button', view).forEach(b => b.onclick = () => { kitchenDay = b.dataset.d; rerender(); });
+  wireBlocks(wk);
+  if (!MW[LIB]) loadWeek(LIB).then(() => { if (location.hash === '#kitchen') rerender(); });
   wireRate(view, '', (v, seg) => { if (v !== null) setTimeout(() => { const row = seg.closest('.ratecard'); if (row) row.classList.add('gone'); }, 500); });
 }
 /* Lunches and dinners eaten in the last 7 days with no verdict yet (up to 3), so meals checked off on Today get rated too. */
@@ -1557,10 +1643,15 @@ function blocksHTML(D, wk){
   if (!blocks.length) return '';
   const meals = Object.values(D.menu).flatMap(m => Object.keys(SLOT).map(s => m[s]));
   const uses = id => meals.filter(mid => (D.recipes[mid].ingredients || []).some(i => i.r === id)).length;
+  const swapped = batchOf(wk), L = MW[LIB], canSwap = !!L && (wk === mealWeek() || wk === nextW());
   return `<section class="sect"><div class="sect-h"><span class="over">Sunday building blocks</span><span class="cap">cook once, eat all week</span></div><div class="group">${blocks.map(([id, r]) => {
-    const n = uses(id);
-    return `<a class="row tap" href="#recipe/${id}/${wk}"><span class="tile ctile c-Prep">${ic('Prep')}</span><span class="tx"><b>${esc(r.name)}</b><small>${esc(r.serves)}${n ? ` · feeds ${plural(n, 'meal')}` : ''}</small></span>${ic('chev', 'i chev')}</a>`; }).join('')}</div></section>`;
+    const kit = swapped[id], n = uses(id);
+    const link = kit ? `#recipe/${kit.block}/${LIB}` : `#recipe/${id}/${wk}`, nm = kit ? L.recipes[kit.block].name : r.name;
+    const sub = kit ? `Swapped in for ${r.name.toLowerCase()}` : `${r.serves}${n ? ` · feeds ${plural(n, 'meal')}` : ''}`;
+    const btn = canSwap && swappableBlock(r) ? `<button class="btn quiet small" type="button" data-bswap="${id}">${kit ? 'Change' : 'Swap'}</button>` : ic('chev', 'i chev');
+    return `<div class="row blockrow"><a class="main tap" href="${link}"><span class="tile ctile c-Prep">${ic('Prep')}</span><span class="tx"><b>${esc(nm)}</b><small>${esc(sub)}</small></span></a>${btn}</div>`; }).join('')}</div></section>`;
 }
+function wireBlocks(wk){ $$('[data-bswap]', view).forEach(b => b.onclick = () => { haptic(); batchSheet(wk, b.dataset.bswap); }); }
 function ingName(D, i, n){
   if (i.g){ const g = D.groceries.find(x => x.id === i.g); return esc(g ? g.name : i.g); }
   if (i.p){ const p = D.pantry.find(x => x.id === i.p); return esc(p ? p.name : i.p); }
@@ -1616,15 +1707,26 @@ function vRecipe(id, wn){
 function vCook(id, wn){
   const [D, n] = findRecipe(id, wn); if (!D) return vKitchen();
   const r = D.recipes[id];
+  // Screen 0 sets out every ingredient (spices included); screens 1..n are the steps, each listing what it uses.
   if (!cook || cook.id !== id) cook = {id, i:0};
   app.classList.add('immersive'); keepAwake(true);
-  const i = cook.i, last = i === r.steps.length - 1, dir = cook.dir || 0; cook.dir = 0;
+  const i = cook.i, si = i - 1, total = r.steps.length, last = i === total, dir = cook.dir || 0; cook.dir = 0;
+  const uses = Ingr.perStep(D, r), name = x => esc(Ingr.nameOf(D, x));
+  const ingRow = (x, k) => { const on = Store.flag('ing', `${n}:${id}:${k}`);
+    return `<div class="row ing${on ? ' done' : ''}" data-k="${k}" role="button" aria-pressed="${on}"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b>${name(x)}</b>${x.h ? '<small>From last week</small>' : x.r ? '<small>From Sunday prep</small>' : ''}</span><span class="q">${esc(x.qty)}</span></div>`; };
+  const body = i === 0
+    ? `<span class="over gold">Before you start · ${esc(r.name.split(':')[0])}</span><h2 class="t2" style="margin:0">Get everything out</h2>
+       <div class="cap">${esc(cap1(r.equip))}${r.serves ? ` · makes ${esc(r.serves)}` : ''}. Tap each one as it hits the counter.</div>
+       <div class="group gather">${r.ingredients.map(ingRow).join('')}</div>`
+    : `<span class="over gold">Step ${i} of ${total} · ${esc(r.name.split(':')[0])}</span><p>${stepText(r.steps[si], `${r.name} · step ${i}`)}</p>
+       ${uses[si].length ? `<div class="instep"><span class="over">In this step</span>${uses[si].map(k => `<div><b>${name(r.ingredients[k])}</b><span>${esc(r.ingredients[k].qty)}</span></div>`).join('')}</div>` : ''}`;
   view.innerHTML = `<div class="cook"><div class="ptop"><button class="backbtn" type="button" id="cclose" aria-label="Close cook mode">${ic('close')}</button>
-      <div class="segs">${r.steps.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div><button class="backbtn" type="button" id="cing" aria-label="Ingredients">${ic('list')}</button></div>
-    <div class="stepbig${dir > 0 ? ' from-r' : dir < 0 ? ' from-l' : ''}"><span class="over gold">Step ${i + 1} of ${r.steps.length} · ${esc(r.name.split(':')[0])}</span><p>${stepText(r.steps[i], `${r.name} · step ${i + 1}`)}</p></div>
-    <div class="btns">${i ? `<button class="btn quiet" type="button" id="cprev" style="flex:.6">Back</button>` : ''}<button class="btn" type="button" id="cnext">${last ? 'Done cooking' : 'Next step'}</button></div></div>`;
+      <div class="segs">${[0, ...r.steps].map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div><button class="backbtn" type="button" id="cing" aria-label="Ingredients">${ic('list')}</button></div>
+    <div class="stepbig${i === 0 ? ' gatherstep' : ''}${dir > 0 ? ' from-r' : dir < 0 ? ' from-l' : ''}">${body}</div>
+    <div class="btns">${i ? `<button class="btn quiet" type="button" id="cprev" style="flex:.6">Back</button>` : ''}<button class="btn" type="button" id="cnext">${i === 0 ? 'Start cooking' : last ? 'Done cooking' : 'Next step'}</button></div></div>`;
   $('#cclose').onclick = () => { endCook(); goBack(); };
   $('#cing').onclick = () => sheet(`<div class="grab"></div><h2 class="t2">Ingredients</h2><div class="group">${r.ingredients.map(x => `<div class="row" style="min-height:48px"><span class="tx"><b>${ingName(D, x)}</b></span><span class="q cap">${esc(x.qty)}</span></div>`).join('')}</div>`);
+  $$('.gather .ing', view).forEach(el => el.onclick = () => { const k = `${n}:${id}:${el.dataset.k}`, on = !Store.flag('ing', k); Store.flag('ing', k, on); el.classList.toggle('done', on); el.setAttribute('aria-pressed', on); if (on){ haptic(); burst($('.tick', el)); } });
   wireTchips();
   const prev = $('#cprev'); if (prev) prev.onclick = () => { cook.i--; cook.dir = -1; haptic(); vCook(id, n); };
   const ck = $('.cook', view); let sx = null, sy = 0;
@@ -1637,7 +1739,10 @@ function vCook(id, wn){
   });
   $('#cnext').onclick = () => {
     if (!last){ cook.i++; cook.dir = 1; haptic(); vCook(id, n); return; }
-    const d = dayKey(today()), menu = n === mealWeek() && M.menu[d], slot = menu && Object.keys(SLOT).find(s => menu[s] === id);
+    const d = dayKey(today()), menu = n === mealWeek() && M.menu[d], tds = Store.ymd(today());
+    // the slot this recipe fills today: a swap that put it there, or the plan
+    const slot = Object.keys(SLOT).find(s => { const sw = Store.getSwap(tds, s); return sw && sw.type === 'recipe' && sw.id === id && +sw.wk === n; })
+      || (menu && Object.keys(SLOT).find(s => menu[s] === id && !Store.getSwap(tds, s)));
     endCook();
     const finish = () => { if (slot && !Store.isDone(Store.ymd(today()), slot)){
       const before = Store.totals().all; Store.complete(Store.ymd(today()), slot, r.name, slot);
@@ -1653,6 +1758,7 @@ function vPrep(id, wn){
   const pre = `w${n}:${id}:`, done = p.steps.filter((_, i) => Store.flag('prep', pre + i)).length;
   view.innerHTML = `${floatBack()}<header class="lhead" style="padding-top:calc(var(--top) + 66px)"><span class="over gold">${esc(D.title)} · ${p.minutes} min · ${DAYN[p.day]}</span><h1 class="lt">${esc(p.title)}</h1><span class="cap" style="font-size:14px;margin-top:4px">Makes ${esc(p.makes.charAt(0).toLowerCase() + p.makes.slice(1))}.</span></header>
   <div class="page stagger" style="margin-top:22px">
+    ${(n === mealWeek() || n === nextW()) ? Object.entries(batchOf(n)).map(([bid, k]) => `<a class="callout tap" href="#recipe/${k.block}/${LIB}">${ic('swap')}<span>You swapped ${esc((D.recipes[bid] || {name:'the batch'}).name.toLowerCase())} for ${esc(MW[LIB].recipes[k.block].name.toLowerCase())}. Make that instead (tap for its recipe) and skip the steps below that are for the ${esc((D.recipes[bid] || {name:'old batch'}).name.toLowerCase())}.</span></a>`).join('') : ''}
     <div class="meter2"><p>${done} of ${p.steps.length} steps<b></b></p><div class="bar2" style="--c:var(--harvest)"><i style="width:${(done / p.steps.length * 100).toFixed(1)}%"></i></div></div>
     <div class="group">${p.steps.map((s, i) => { const on = Store.flag('prep', pre + i);
       return `<div class="row item${on ? ' done' : ''}" data-i="${i}" role="button" aria-pressed="${on}" style="align-items:flex-start;padding-top:16px;padding-bottom:16px"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b style="-webkit-line-clamp:unset;font-weight:400;font-size:15px;line-height:1.5">${stepText(s, `${p.title} · step ${i + 1}`)}</b></span></div>`; }).join('')}</div>
@@ -2023,7 +2129,7 @@ const stack = [];
 function route(keep){
   const hash = location.hash || '#isle';
   const [name, arg, arg2] = (hash.slice(1) || 'isle').split('/');
-  if ((name === 'recipe' || name === 'cook') && arg2 && !MW[+arg2] && MEAL_WEEKS.includes(+arg2)){ loadWeek(+arg2).then(() => route(keep)); return; }
+  if ((name === 'recipe' || name === 'cook') && arg2 && !MW[+arg2] && (MEAL_WEEKS.includes(+arg2) || +arg2 === LIB)){ loadWeek(+arg2).then(() => route(keep)); return; }
   const tab = TAB_OF[name] || name;
   let dir = 'enter';
   if (!keep){

@@ -277,6 +277,14 @@ details.pantry summary::-webkit-details-marker{display:none}
 .cook{min-height:100%;display:flex;flex-direction:column;padding:calc(var(--top) + 10px) 20px calc(20px + var(--bot));gap:20px}
 .cook .stepbig{flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px}
 .cook .stepbig p{margin:0;font:400 27px/1.38 var(--f-d);letter-spacing:-.01em}
+.cook .stepbig.gatherstep{justify-content:flex-start;gap:12px}
+.cook .btns{position:sticky;bottom:calc(12px + var(--bot));z-index:2}
+.cook .gather .row{min-height:52px}
+.cook .gather .row .q{font:500 13px var(--f-b);color:var(--sub);text-align:right;max-width:46%}
+.cook .instep{display:flex;flex-direction:column;gap:2px;padding-top:14px;border-top:1px solid var(--hair)}
+.cook .instep .over{margin-bottom:6px}
+.cook .instep div{display:flex;justify-content:space-between;gap:16px;padding:7px 0;font:500 15px/1.35 var(--f-b)}
+.cook .instep div span{color:var(--gold2);text-align:right;flex-shrink:0;max-width:52%}
 
 /* ---------- nav ---------- */
 .nav{position:fixed;left:50%;bottom:calc(14px + var(--bot));transform:translateX(-50%);z-index:20;display:flex;gap:2px;padding:6px;border-radius:999px;
@@ -625,6 +633,11 @@ details.pantry summary::-webkit-details-marker{display:none}
 .swapacts small{font:500 11.5px var(--f-b);color:var(--sub)}
 .swapsheet{max-height:92vh}
 .swapsheet .group .row + .row::before{left:68px}
+.kitrow{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px;min-height:64px;position:relative;width:100%}
+.kitrow .tx small.wrap{white-space:normal;overflow:visible;display:block;-webkit-line-clamp:unset;max-height:none;color:var(--text);opacity:.78}
+.kitrow.on b{color:var(--gold2)}
+.blockrow .main{text-decoration:none;color:inherit}
+.blockrow .btn.small{flex-shrink:0}
 .tierkey,.tierpick{display:flex;gap:6px;flex-wrap:wrap}
 .tier{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;font:600 12px var(--f-b);white-space:nowrap}
 .tier.L{background:var(--harvest-a);color:var(--harvest)}

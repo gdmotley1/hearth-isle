@@ -1,0 +1,2930 @@
+{
+ "title": "Recipe library",
+ "library": true,
+ "allergyNote": "Nothing in the library contains tree nuts or fish. Peanut butter, tortillas, biscuits and bread are normally nut-free, but check labels for a \"may contain tree nuts\" line if your allergy is strict.",
+ "priceNote": "Prices are estimates from typical Aldi and Publix shelf prices and do not include tax.",
+ "groceries": [
+  {
+   "id": "eggs",
+   "name": "Large eggs",
+   "qty": "1 dozen",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 3.09
+  },
+  {
+   "id": "yogurt",
+   "name": "Plain nonfat Greek yogurt",
+   "qty": "32 oz tub",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 4.29
+  },
+  {
+   "id": "milk",
+   "name": "2% milk",
+   "qty": "half gallon",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 1.89
+  },
+  {
+   "id": "mexcheese",
+   "name": "Shredded Mexican-blend cheese",
+   "qty": "8 oz",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "cheddar",
+   "name": "Shredded sharp cheddar",
+   "qty": "8 oz",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "slcheddar",
+   "name": "Sliced sharp cheddar",
+   "qty": "8 oz pack",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "mozz",
+   "name": "Shredded part-skim mozzarella",
+   "qty": "8 oz",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 2.29
+  },
+  {
+   "id": "ricotta",
+   "name": "Part-skim ricotta",
+   "qty": "15 oz tub",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "parm",
+   "name": "Grated parmesan",
+   "qty": "8 oz",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "feta",
+   "name": "Feta crumbles",
+   "qty": "4 oz",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "biscuits",
+   "name": "Refrigerated buttermilk biscuits",
+   "qty": "8 count can",
+   "section": "Dairy and eggs",
+   "store": "Aldi",
+   "price": 1.29
+  },
+  {
+   "id": "breasts",
+   "name": "Boneless skinless chicken breasts",
+   "qty": "about 2 lb",
+   "section": "Meat",
+   "store": "Aldi",
+   "price": 6.49
+  },
+  {
+   "id": "thighs",
+   "name": "Boneless skinless chicken thighs",
+   "qty": "about 2 lb",
+   "section": "Meat",
+   "store": "Aldi",
+   "price": 5.99
+  },
+  {
+   "id": "turkey",
+   "name": "Lean ground turkey 93/7",
+   "qty": "2 lb (two 1 lb packs)",
+   "section": "Meat",
+   "store": "Aldi",
+   "price": 8.98
+  },
+  {
+   "id": "beef",
+   "name": "Lean ground beef 93/7",
+   "qty": "1 lb",
+   "section": "Meat",
+   "store": "Aldi",
+   "price": 6.49
+  },
+  {
+   "id": "steak",
+   "name": "Top sirloin steak",
+   "qty": "about 1 lb",
+   "section": "Meat",
+   "store": "Aldi",
+   "price": 6.99
+  },
+  {
+   "id": "sausage",
+   "name": "Smoked turkey sausage",
+   "qty": "13 oz rope",
+   "section": "Meat",
+   "store": "Aldi",
+   "price": 2.99
+  },
+  {
+   "id": "bkfsausage",
+   "name": "Turkey breakfast sausage patties",
+   "qty": "8 count, frozen",
+   "section": "Meat",
+   "store": "Aldi",
+   "price": 3.49
+  },
+  {
+   "id": "onions",
+   "name": "Yellow onions",
+   "qty": "3 lb bag",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "redonion",
+   "name": "Red onion",
+   "qty": "1",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 0.89
+  },
+  {
+   "id": "garlic",
+   "name": "Garlic",
+   "qty": "1 bulb",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 0.5
+  },
+  {
+   "id": "ginger",
+   "name": "Fresh ginger",
+   "qty": "one 3-inch knob",
+   "section": "Produce",
+   "store": "Publix",
+   "price": 0.89
+  },
+  {
+   "id": "peppers",
+   "name": "Bell peppers",
+   "qty": "3-pack",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 2.99
+  },
+  {
+   "id": "jalapeno",
+   "name": "Jalapeños",
+   "qty": "5",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 0.99
+  },
+  {
+   "id": "limes",
+   "name": "Limes",
+   "qty": "1 bag (about 6)",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "lemons",
+   "name": "Lemons",
+   "qty": "1 bag",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 2.99
+  },
+  {
+   "id": "avocado",
+   "name": "Avocados",
+   "qty": "2",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 1.78
+  },
+  {
+   "id": "cilantro",
+   "name": "Cilantro",
+   "qty": "1 bunch",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 0.79
+  },
+  {
+   "id": "greenonion",
+   "name": "Green onions",
+   "qty": "1 bunch",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 0.89
+  },
+  {
+   "id": "spinach",
+   "name": "Baby spinach",
+   "qty": "6 oz bag",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 1.99
+  },
+  {
+   "id": "kale",
+   "name": "Chopped kale",
+   "qty": "10 oz bag",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 2.29
+  },
+  {
+   "id": "romaine",
+   "name": "Romaine hearts",
+   "qty": "3-pack",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 2.99
+  },
+  {
+   "id": "lettuce",
+   "name": "Living butter lettuce",
+   "qty": "1 head",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 1.99
+  },
+  {
+   "id": "cherrytom",
+   "name": "Cherry tomatoes",
+   "qty": "1 pint",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 1.99
+  },
+  {
+   "id": "cucumber",
+   "name": "Cucumber",
+   "qty": "1",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 0.69
+  },
+  {
+   "id": "celery",
+   "name": "Celery",
+   "qty": "1 bunch",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 1.49
+  },
+  {
+   "id": "carrots",
+   "name": "Carrots",
+   "qty": "2 lb bag",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 1.29
+  },
+  {
+   "id": "potatoes",
+   "name": "Baby gold potatoes",
+   "qty": "1½ lb bag",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "sweetpot",
+   "name": "Sweet potatoes",
+   "qty": "3 lb bag",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 2.99
+  },
+  {
+   "id": "broccoli",
+   "name": "Broccoli crowns",
+   "qty": "about 2 lb",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 3.98
+  },
+  {
+   "id": "greenbeans",
+   "name": "Fresh green beans",
+   "qty": "12 oz bag",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 1.99
+  },
+  {
+   "id": "slaw",
+   "name": "Coleslaw mix",
+   "qty": "14 oz bag",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 1.69
+  },
+  {
+   "id": "bananas",
+   "name": "Bananas",
+   "qty": "1 bunch",
+   "section": "Produce",
+   "store": "Aldi",
+   "price": 1.49
+  },
+  {
+   "id": "berries",
+   "name": "Frozen mixed berries",
+   "qty": "16 oz bag",
+   "section": "Frozen",
+   "store": "Aldi",
+   "price": 3.29
+  },
+  {
+   "id": "peascarrots",
+   "name": "Frozen peas and carrots",
+   "qty": "16 oz bag",
+   "section": "Frozen",
+   "store": "Aldi",
+   "price": 1.15
+  },
+  {
+   "id": "corn",
+   "name": "Frozen sweet corn",
+   "qty": "16 oz bag",
+   "section": "Frozen",
+   "store": "Aldi",
+   "price": 1.15
+  },
+  {
+   "id": "rice",
+   "name": "Jasmine rice",
+   "qty": "3 lb bag",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 3.29
+  },
+  {
+   "id": "oats",
+   "name": "Old-fashioned rolled oats",
+   "qty": "18 oz",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 2.19
+  },
+  {
+   "id": "pb",
+   "name": "Creamy peanut butter",
+   "qty": "16 oz jar",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 2.29
+  },
+  {
+   "id": "honey",
+   "name": "Honey",
+   "qty": "12 oz",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 3.49
+  },
+  {
+   "id": "broth",
+   "name": "Low-sodium chicken broth",
+   "qty": "two 32 oz cartons",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 3.58
+  },
+  {
+   "id": "beans",
+   "name": "Black beans",
+   "qty": "2 cans",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.7
+  },
+  {
+   "id": "kidney",
+   "name": "Dark red kidney beans",
+   "qty": "1 can",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 0.89
+  },
+  {
+   "id": "cannellini",
+   "name": "Cannellini beans",
+   "qty": "2 cans",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.78
+  },
+  {
+   "id": "diced",
+   "name": "Diced tomatoes",
+   "qty": "28 oz can",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.49
+  },
+  {
+   "id": "fireroasted",
+   "name": "Fire-roasted diced tomatoes",
+   "qty": "14.5 oz can",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.09
+  },
+  {
+   "id": "crushed",
+   "name": "Crushed tomatoes",
+   "qty": "28 oz can",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.29
+  },
+  {
+   "id": "marinara",
+   "name": "Marinara sauce",
+   "qty": "24 oz jar",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.99
+  },
+  {
+   "id": "salsa",
+   "name": "Chunky salsa",
+   "qty": "16 oz jar",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.99
+  },
+  {
+   "id": "chipotle",
+   "name": "Chipotle peppers in adobo sauce",
+   "qty": "7 oz can",
+   "section": "Shelf",
+   "store": "Publix",
+   "price": 2.29
+  },
+  {
+   "id": "soy",
+   "name": "Low-sodium soy sauce",
+   "qty": "15 oz bottle",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.49
+  },
+  {
+   "id": "hotsauce",
+   "name": "Cayenne pepper hot sauce",
+   "qty": "12 oz bottle",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.29
+  },
+  {
+   "id": "dijon",
+   "name": "Dijon mustard",
+   "qty": "12 oz jar",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.29
+  },
+  {
+   "id": "pickles",
+   "name": "Dill pickle chips",
+   "qty": "16 oz jar",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.99
+  },
+  {
+   "id": "panko",
+   "name": "Panko breadcrumbs",
+   "qty": "8 oz canister",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.79
+  },
+  {
+   "id": "penne",
+   "name": "Whole wheat penne",
+   "qty": "16 oz box",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.29
+  },
+  {
+   "id": "spaghetti",
+   "name": "Whole wheat spaghetti",
+   "qty": "16 oz box",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.29
+  },
+  {
+   "id": "macaroni",
+   "name": "Elbow macaroni",
+   "qty": "16 oz box",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 0.95
+  },
+  {
+   "id": "flourtort",
+   "name": "Burrito-size flour tortillas",
+   "qty": "8 count",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 2.29
+  },
+  {
+   "id": "corntort",
+   "name": "Corn tortillas",
+   "qty": "30 count",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.99
+  },
+  {
+   "id": "pita",
+   "name": "Whole wheat pita",
+   "qty": "6 count",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.99
+  },
+  {
+   "id": "hoagie",
+   "name": "Crusty hoagie rolls",
+   "qty": "6 count",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 2.49
+  },
+  {
+   "id": "buns",
+   "name": "Whole wheat hamburger buns",
+   "qty": "8 count",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.49
+  },
+  {
+   "id": "muffins",
+   "name": "Whole wheat English muffins",
+   "qty": "6 count",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.29
+  },
+  {
+   "id": "bread",
+   "name": "French bread loaf",
+   "qty": "1",
+   "section": "Shelf",
+   "store": "Aldi",
+   "price": 1.69
+  }
+ ],
+ "pantry": [
+  {
+   "id": "oil",
+   "name": "Olive oil"
+  },
+  {
+   "id": "spray",
+   "name": "Cooking spray"
+  },
+  {
+   "id": "salt",
+   "name": "Salt"
+  },
+  {
+   "id": "pepper",
+   "name": "Black pepper"
+  },
+  {
+   "id": "garlicpowder",
+   "name": "Garlic powder"
+  },
+  {
+   "id": "onionpowder",
+   "name": "Onion powder"
+  },
+  {
+   "id": "cumin",
+   "name": "Ground cumin"
+  },
+  {
+   "id": "chili",
+   "name": "Chili powder"
+  },
+  {
+   "id": "paprika",
+   "name": "Smoked paprika"
+  },
+  {
+   "id": "oregano",
+   "name": "Dried oregano"
+  },
+  {
+   "id": "italian",
+   "name": "Italian seasoning"
+  },
+  {
+   "id": "thyme",
+   "name": "Dried thyme"
+  },
+  {
+   "id": "dill",
+   "name": "Dried dill"
+  },
+  {
+   "id": "cinnamon",
+   "name": "Ground cinnamon"
+  },
+  {
+   "id": "flakes",
+   "name": "Red pepper flakes"
+  },
+  {
+   "id": "cornstarch",
+   "name": "Cornstarch"
+  },
+  {
+   "id": "sesame",
+   "name": "Toasted sesame oil"
+  },
+  {
+   "id": "ketchup",
+   "name": "Ketchup"
+  },
+  {
+   "id": "mustard",
+   "name": "Yellow mustard"
+  },
+  {
+   "id": "brownsugar",
+   "name": "Brown sugar"
+  },
+  {
+   "id": "vinegar",
+   "name": "Apple cider vinegar"
+  },
+  {
+   "id": "bay",
+   "name": "Bay leaves"
+  }
+ ],
+ "kits": [
+  {
+   "id": "tortilla-soup",
+   "name": "Spicy chicken tortilla soup",
+   "blurb": "Crock pot chicken soup with jalapeños and smoky chipotle. Becomes lunch bowls, a toppings-bar night and enchiladas.",
+   "block": "k-tsoup",
+   "lunch": "k-tsoup-lunch",
+   "share": "k-tsoup-night",
+   "dinner": "k-tsoup-enchiladas"
+  },
+  {
+   "id": "turkey-chili",
+   "name": "Turkey and sweet potato chili",
+   "blurb": "A classic crock pot chili. Becomes lunch bowls, chili night for two and chili mac.",
+   "block": "k-chili",
+   "lunch": "k-chili-lunch",
+   "share": "k-chili-night",
+   "dinner": "k-chili-mac"
+  },
+  {
+   "id": "lasagna-soup",
+   "name": "Crock pot lasagna soup",
+   "blurb": "All the lasagna flavor with no layering. Becomes lunch bowls, a garlic bread night and a cheesy skillet bake.",
+   "block": "k-lasagna",
+   "lunch": "k-lasagna-lunch",
+   "share": "k-lasagna-night",
+   "dinner": "k-lasagna-bake"
+  },
+  {
+   "id": "pot-pie-soup",
+   "name": "Creamy chicken pot pie soup",
+   "blurb": "Cozy crock pot chicken, potatoes and vegetables. Becomes biscuit lunches, a soup night and a biscuit-top pot pie.",
+   "block": "k-potpie",
+   "lunch": "k-potpie-lunch",
+   "share": "k-potpie-night",
+   "dinner": "k-potpie-skillet"
+  },
+  {
+   "id": "tuscan-soup",
+   "name": "Tuscan sausage, potato and kale soup",
+   "blurb": "Hearty and creamy with smoked turkey sausage and white beans. Becomes bread-dunking lunches, a cheesy toast night and a crispy hash.",
+   "block": "k-tuscan",
+   "lunch": "k-tuscan-lunch",
+   "share": "k-tuscan-night",
+   "dinner": "k-tuscan-hash"
+  },
+  {
+   "id": "bbq-chicken",
+   "name": "Crock pot BBQ pulled chicken",
+   "blurb": "Sweet, smoky pulled chicken in a homemade sauce. Becomes slaw bowls, sandwich night for two and quesadillas.",
+   "block": "k-bbq",
+   "lunch": "k-bbq-lunch",
+   "share": "k-bbq-night",
+   "dinner": "k-bbq-quesadilla"
+  }
+ ],
+ "recipes": {
+  "k-tsoup": {
+   "name": "Spicy chicken tortilla soup",
+   "cuisine": "Prep",
+   "minutes": 20,
+   "serves": "8 bowls",
+   "protein": 34,
+   "equip": "crock pot",
+   "ingredients": [
+    {
+     "g": "breasts",
+     "qty": "about 2 lb, whole"
+    },
+    {
+     "g": "sweetpot",
+     "qty": "2 medium, ½-inch cubes"
+    },
+    {
+     "g": "onions",
+     "qty": "1, diced"
+    },
+    {
+     "g": "garlic",
+     "qty": "4 cloves, minced"
+    },
+    {
+     "g": "jalapeno",
+     "qty": "3, diced (seeds in for heat)"
+    },
+    {
+     "g": "chipotle",
+     "qty": "2 peppers, minced, plus 1 tbsp of the sauce"
+    },
+    {
+     "g": "beans",
+     "qty": "1 can, rinsed"
+    },
+    {
+     "g": "diced",
+     "qty": "28 oz can"
+    },
+    {
+     "g": "broth",
+     "qty": "5 cups"
+    },
+    {
+     "g": "corn",
+     "qty": "1½ cups"
+    },
+    {
+     "g": "limes",
+     "qty": "juice of 2"
+    },
+    {
+     "p": "chili",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "cumin",
+     "qty": "2 tsp"
+    },
+    {
+     "p": "paprika",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "oregano",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1½ tsp"
+    }
+   ],
+   "steps": [
+    "Lay the chicken breasts in the crock pot.",
+    "Pile on the sweet potato, diced onion, minced garlic, diced jalapeños, the 2 minced chipotles with 1 tbsp of their adobo sauce, the rinsed black beans and the diced tomatoes.",
+    "Pour in 5 cups of broth. Sprinkle over 1 tbsp chili powder, 2 tsp ground cumin, 1 tsp smoked paprika, 1 tsp dried oregano and 1½ tsp salt, and stir around the chicken.",
+    "Cover and cook on low 7 to 8 hours or high 4 hours.",
+    "Lift out the chicken, shred it with two forks and stir it back in with 1½ cups of corn and the juice of 2 limes. Cook 15 minutes more.",
+    "Taste. For more heat, stir in another spoon of the adobo sauce. Keep 4 bowls in the fridge and freeze the rest in single bowls."
+   ],
+   "tip": "Freeze the leftover chipotles flat in a bag for later.",
+   "component": true
+  },
+  "k-tsoup-lunch": {
+   "name": "Tortilla soup lunch bowl",
+   "cuisine": "Mexican",
+   "minutes": 8,
+   "serves": "1",
+   "protein": 36,
+   "equip": "microwave, air fryer",
+   "ingredients": [
+    {
+     "r": "k-tsoup",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "corntort",
+     "qty": "1, cut in strips"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "2 tbsp"
+    },
+    {
+     "g": "jalapeno",
+     "qty": "a few slices"
+    },
+    {
+     "g": "yogurt",
+     "qty": "a spoonful"
+    },
+    {
+     "g": "limes",
+     "qty": "a wedge"
+    },
+    {
+     "p": "spray",
+     "qty": "for the strips"
+    }
+   ],
+   "steps": [
+    "Spray the tortilla strips with cooking spray and air-fry at 380°F for 5 minutes until crunchy.",
+    "Microwave the bowl of tortilla soup for 3 minutes, stirring halfway. From frozen, thaw it in the fridge the night before.",
+    "Top with 2 tbsp cheese, a few jalapeño slices, a spoonful of yogurt, a squeeze of lime and the tortilla strips."
+   ]
+  },
+  "k-tsoup-night": {
+   "name": "Tortilla soup night with a toppings bar",
+   "cuisine": "Mexican",
+   "minutes": 15,
+   "serves": "2",
+   "protein": 38,
+   "equip": "pot, air fryer",
+   "ingredients": [
+    {
+     "r": "k-tsoup",
+     "qty": "2 bowls"
+    },
+    {
+     "g": "corntort",
+     "qty": "3, cut in strips"
+    },
+    {
+     "g": "avocado",
+     "qty": "1, diced"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "for topping"
+    },
+    {
+     "g": "yogurt",
+     "qty": "for topping"
+    },
+    {
+     "g": "jalapeno",
+     "qty": "1, sliced"
+    },
+    {
+     "g": "cilantro",
+     "qty": "chopped"
+    },
+    {
+     "g": "limes",
+     "qty": "wedges"
+    },
+    {
+     "p": "spray",
+     "qty": "for the strips"
+    }
+   ],
+   "steps": [
+    "Warm 2 bowls of tortilla soup in a pot over medium heat.",
+    "Spray the tortilla strips with cooking spray and air-fry at 380°F for 5 to 6 minutes until crunchy.",
+    "Set out the diced avocado, cheese, yogurt, sliced jalapeño, chopped cilantro, lime wedges and tortilla strips so everyone tops their own."
+   ],
+   "tip": "Fresh jalapeño on the side lets each person pick their heat."
+  },
+  "k-tsoup-enchiladas": {
+   "name": "Tortilla soup chicken enchiladas",
+   "cuisine": "Mexican",
+   "minutes": 20,
+   "serves": "1 (4 enchiladas)",
+   "protein": 42,
+   "equip": "small baking dish, air fryer or oven",
+   "ingredients": [
+    {
+     "r": "k-tsoup",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "corntort",
+     "qty": "4"
+    },
+    {
+     "g": "salsa",
+     "qty": "⅓ cup"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "⅓ cup"
+    },
+    {
+     "g": "avocado",
+     "qty": "½, sliced"
+    },
+    {
+     "g": "greenonion",
+     "qty": "for topping"
+    },
+    {
+     "p": "spray",
+     "qty": "for the dish"
+    }
+   ],
+   "steps": [
+    "Spoon the chicken, beans and sweet potato out of the bowl of tortilla soup with a slotted spoon. Keep the broth in a cup.",
+    "Microwave the 4 tortillas under a damp towel for 30 seconds so they roll without cracking.",
+    "Fill each tortilla, roll it and set it seam down in a small baking dish coated with cooking spray.",
+    "Stir the soup broth into ⅓ cup salsa, pour it over and top with ⅓ cup cheese.",
+    "Air-fry at 375°F for 8 minutes (or bake at 400°F for 15) until bubbly. Top with the sliced avocado and green onion."
+   ]
+  },
+  "k-chili": {
+   "name": "Turkey and sweet potato chili",
+   "cuisine": "Prep",
+   "minutes": 20,
+   "serves": "8 bowls",
+   "protein": 36,
+   "equip": "crock pot, skillet",
+   "ingredients": [
+    {
+     "g": "turkey",
+     "qty": "2 lb"
+    },
+    {
+     "g": "onions",
+     "qty": "1, diced"
+    },
+    {
+     "g": "garlic",
+     "qty": "3 cloves, minced"
+    },
+    {
+     "g": "sweetpot",
+     "qty": "2 medium, ½-inch cubes"
+    },
+    {
+     "g": "beans",
+     "qty": "1 can, rinsed"
+    },
+    {
+     "g": "kidney",
+     "qty": "1 can, rinsed"
+    },
+    {
+     "g": "diced",
+     "qty": "28 oz can"
+    },
+    {
+     "g": "broth",
+     "qty": "1½ cups"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "chili",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "cumin",
+     "qty": "2 tsp"
+    },
+    {
+     "p": "paprika",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "oregano",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1½ tsp"
+    }
+   ],
+   "steps": [
+    "Heat 1 tsp olive oil in a skillet over medium-high. Brown the ground turkey with the diced onion for 6 minutes, breaking it up.",
+    "Scrape the turkey and onion into the crock pot. Add the minced garlic, sweet potato cubes, rinsed black beans and kidney beans, the diced tomatoes and 1½ cups of broth.",
+    "Stir in 2 tbsp chili powder, 2 tsp ground cumin, 1 tsp smoked paprika, 1 tsp dried oregano and 1½ tsp salt.",
+    "Cover and cook on low 7 to 8 hours or high 4 hours, until the sweet potato is tender.",
+    "Keep 4 bowls in the fridge and freeze the rest in single bowls."
+   ],
+   "component": true
+  },
+  "k-chili-lunch": {
+   "name": "Turkey chili lunch bowl",
+   "cuisine": "American",
+   "minutes": 5,
+   "serves": "1",
+   "protein": 38,
+   "equip": "microwave",
+   "ingredients": [
+    {
+     "r": "k-chili",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "2 tbsp"
+    },
+    {
+     "g": "greenonion",
+     "qty": "for topping"
+    },
+    {
+     "g": "yogurt",
+     "qty": "a spoonful"
+    }
+   ],
+   "steps": [
+    "Microwave the bowl of turkey chili for 3 minutes, stirring halfway. From frozen, thaw it in the fridge the night before.",
+    "Top with 2 tbsp cheese, sliced green onion and a spoonful of yogurt."
+   ]
+  },
+  "k-chili-night": {
+   "name": "Chili night with a toppings bar",
+   "cuisine": "American",
+   "minutes": 15,
+   "serves": "2",
+   "protein": 40,
+   "equip": "pot, air fryer",
+   "ingredients": [
+    {
+     "r": "k-chili",
+     "qty": "2 bowls"
+    },
+    {
+     "g": "corntort",
+     "qty": "3, cut in strips"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "for topping"
+    },
+    {
+     "g": "yogurt",
+     "qty": "for topping"
+    },
+    {
+     "g": "greenonion",
+     "qty": "sliced"
+    },
+    {
+     "g": "cilantro",
+     "qty": "chopped"
+    },
+    {
+     "p": "spray",
+     "qty": "for the strips"
+    }
+   ],
+   "steps": [
+    "Warm 2 bowls of turkey chili in a pot over medium heat.",
+    "Spray the tortilla strips with cooking spray and air-fry at 380°F for 5 to 6 minutes until crunchy.",
+    "Set out the cheese, yogurt, sliced green onion, chopped cilantro and tortilla strips so everyone tops their own."
+   ]
+  },
+  "k-chili-mac": {
+   "name": "Turkey chili mac",
+   "cuisine": "American",
+   "minutes": 15,
+   "serves": "1",
+   "protein": 44,
+   "equip": "pot",
+   "ingredients": [
+    {
+     "r": "k-chili",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "macaroni",
+     "qty": "3 oz"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "¼ cup"
+    },
+    {
+     "g": "greenonion",
+     "qty": "for topping"
+    },
+    {
+     "p": "salt",
+     "qty": "for the water"
+    }
+   ],
+   "steps": [
+    "Boil 3 oz macaroni in well-salted water for 7 minutes and drain.",
+    "Stir the bowl of turkey chili into the macaroni and warm through over medium heat.",
+    "Fold in ¼ cup cheese until melty and top with sliced green onion."
+   ]
+  },
+  "k-lasagna": {
+   "name": "Crock pot lasagna soup",
+   "cuisine": "Prep",
+   "minutes": 20,
+   "serves": "8 bowls",
+   "protein": 30,
+   "equip": "crock pot, skillet",
+   "ingredients": [
+    {
+     "g": "turkey",
+     "qty": "2 lb"
+    },
+    {
+     "g": "onions",
+     "qty": "1, diced"
+    },
+    {
+     "g": "garlic",
+     "qty": "4 cloves, minced"
+    },
+    {
+     "g": "crushed",
+     "qty": "28 oz can"
+    },
+    {
+     "g": "diced",
+     "qty": "28 oz can"
+    },
+    {
+     "g": "broth",
+     "qty": "4 cups"
+    },
+    {
+     "g": "spinach",
+     "qty": "4 big handfuls"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "italian",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "flakes",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1½ tsp"
+    },
+    {
+     "p": "pepper",
+     "qty": "½ tsp"
+    }
+   ],
+   "steps": [
+    "Heat 1 tsp olive oil in a skillet over medium-high. Brown the ground turkey with the diced onion for 6 minutes, breaking it up.",
+    "Scrape it into the crock pot with the minced garlic, crushed tomatoes, diced tomatoes and 4 cups of broth.",
+    "Stir in 1 tbsp Italian seasoning, ½ tsp red pepper flakes, 1½ tsp salt and ½ tsp black pepper.",
+    "Cover and cook on low 6 to 7 hours or high 3 to 4 hours.",
+    "Stir in the spinach until it wilts. Keep 4 bowls in the fridge and freeze the rest in single bowls. Cook the pasta fresh with each meal so it never goes soggy."
+   ],
+   "component": true
+  },
+  "k-lasagna-lunch": {
+   "name": "Lasagna soup bowl",
+   "cuisine": "Italian",
+   "minutes": 12,
+   "serves": "1",
+   "protein": 38,
+   "equip": "pot, microwave",
+   "ingredients": [
+    {
+     "r": "k-lasagna",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "penne",
+     "qty": "2 oz"
+    },
+    {
+     "g": "ricotta",
+     "qty": "2 tbsp"
+    },
+    {
+     "g": "mozz",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "salt",
+     "qty": "for the water"
+    }
+   ],
+   "steps": [
+    "Boil 2 oz penne in well-salted water for 10 minutes and drain.",
+    "Microwave the bowl of lasagna soup for 3 minutes, stirring halfway. From frozen, thaw it in the fridge the night before.",
+    "Stir in the penne and top with 2 tbsp ricotta and 2 tbsp mozzarella."
+   ]
+  },
+  "k-lasagna-night": {
+   "name": "Lasagna soup night with garlic bread",
+   "cuisine": "Italian",
+   "minutes": 20,
+   "serves": "2",
+   "protein": 40,
+   "equip": "pot, oven or air fryer",
+   "ingredients": [
+    {
+     "r": "k-lasagna",
+     "qty": "2 bowls"
+    },
+    {
+     "g": "penne",
+     "qty": "4 oz"
+    },
+    {
+     "g": "ricotta",
+     "qty": "¼ cup"
+    },
+    {
+     "g": "mozz",
+     "qty": "¼ cup"
+    },
+    {
+     "g": "parm",
+     "qty": "2 tbsp"
+    },
+    {
+     "g": "bread",
+     "qty": "4 slices"
+    },
+    {
+     "g": "garlic",
+     "qty": "1 clove, halved"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "salt",
+     "qty": "for the water"
+    }
+   ],
+   "steps": [
+    "Boil 4 oz penne in well-salted water for 10 minutes and drain.",
+    "Warm 2 bowls of lasagna soup in a pot over medium heat and stir in the penne.",
+    "Brush the bread slices with 1 tbsp olive oil and toast at 400°F for 5 minutes. Rub each slice with the cut garlic clove.",
+    "Ladle the soup into bowls and top each with 2 tbsp ricotta, 2 tbsp mozzarella and 1 tbsp parmesan. Serve with the garlic bread."
+   ]
+  },
+  "k-lasagna-bake": {
+   "name": "Skillet lasagna bake",
+   "cuisine": "Italian",
+   "minutes": 25,
+   "serves": "1",
+   "protein": 46,
+   "equip": "oven-safe skillet or small baking dish",
+   "ingredients": [
+    {
+     "r": "k-lasagna",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "penne",
+     "qty": "3 oz"
+    },
+    {
+     "g": "ricotta",
+     "qty": "¼ cup"
+    },
+    {
+     "g": "mozz",
+     "qty": "⅓ cup"
+    },
+    {
+     "g": "parm",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "salt",
+     "qty": "for the water"
+    }
+   ],
+   "steps": [
+    "Heat the oven or air fryer to 400°F. Boil 3 oz penne in well-salted water for 8 minutes, a little firm, and drain.",
+    "Simmer the bowl of lasagna soup in a small oven-safe skillet for 5 minutes to thicken, then stir in the penne.",
+    "Dot with ¼ cup ricotta and scatter over ⅓ cup mozzarella and 1 tbsp parmesan.",
+    "Bake 10 minutes until the cheese bubbles and browns."
+   ]
+  },
+  "k-potpie": {
+   "name": "Creamy chicken pot pie soup",
+   "cuisine": "Prep",
+   "minutes": 25,
+   "serves": "8 bowls",
+   "protein": 32,
+   "equip": "crock pot",
+   "ingredients": [
+    {
+     "g": "breasts",
+     "qty": "about 2 lb, whole"
+    },
+    {
+     "g": "potatoes",
+     "qty": "1½ lb, halved"
+    },
+    {
+     "g": "carrots",
+     "qty": "3, sliced"
+    },
+    {
+     "g": "celery",
+     "qty": "3 ribs, sliced"
+    },
+    {
+     "g": "onions",
+     "qty": "1, diced"
+    },
+    {
+     "g": "garlic",
+     "qty": "3 cloves, minced"
+    },
+    {
+     "g": "broth",
+     "qty": "4 cups"
+    },
+    {
+     "g": "milk",
+     "qty": "1 cup"
+    },
+    {
+     "g": "peascarrots",
+     "qty": "1½ cups"
+    },
+    {
+     "p": "cornstarch",
+     "qty": "3 tbsp"
+    },
+    {
+     "p": "thyme",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1½ tsp"
+    },
+    {
+     "p": "pepper",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "bay",
+     "qty": "1 leaf"
+    }
+   ],
+   "steps": [
+    "Lay the chicken breasts in the crock pot and add the halved potatoes, sliced carrots, sliced celery, diced onion and minced garlic.",
+    "Pour in 4 cups of broth and add 1 tsp dried thyme, 1½ tsp salt, ½ tsp black pepper and 1 bay leaf.",
+    "Cover and cook on low 7 hours or high 4 hours.",
+    "Lift out the chicken and shred it. Remove and discard the bay leaf.",
+    "Whisk 3 tbsp cornstarch into 1 cup of milk until smooth. Stir it into the crock pot with the shredded chicken and 1½ cups of frozen peas and carrots.",
+    "Cover and cook on high 20 minutes more, until thick and creamy. Keep 4 bowls in the fridge and freeze the rest in single bowls."
+   ],
+   "component": true
+  },
+  "k-potpie-lunch": {
+   "name": "Pot pie soup with a warm biscuit",
+   "cuisine": "American",
+   "minutes": 12,
+   "serves": "1",
+   "protein": 36,
+   "equip": "microwave, air fryer",
+   "ingredients": [
+    {
+     "r": "k-potpie",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "biscuits",
+     "qty": "1"
+    },
+    {
+     "p": "pepper",
+     "qty": "a crack"
+    }
+   ],
+   "steps": [
+    "Air-fry 1 biscuit at 330°F for 9 to 10 minutes until golden.",
+    "Microwave the bowl of pot pie soup for 3 minutes, stirring halfway. From frozen, thaw it in the fridge the night before.",
+    "Finish with a crack of black pepper and dunk the biscuit."
+   ]
+  },
+  "k-potpie-night": {
+   "name": "Pot pie soup night with biscuits and green beans",
+   "cuisine": "American",
+   "minutes": 20,
+   "serves": "2",
+   "protein": 40,
+   "equip": "pot, air fryer, skillet",
+   "ingredients": [
+    {
+     "r": "k-potpie",
+     "qty": "2 bowls"
+    },
+    {
+     "g": "biscuits",
+     "qty": "4"
+    },
+    {
+     "g": "greenbeans",
+     "qty": "8 oz, trimmed"
+    },
+    {
+     "g": "lemons",
+     "qty": "a squeeze"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "a pinch"
+    }
+   ],
+   "steps": [
+    "Air-fry the 4 biscuits at 330°F for 9 to 10 minutes until golden.",
+    "Warm 2 bowls of pot pie soup in a pot over medium heat.",
+    "Sear the green beans in 1 tsp olive oil in a skillet over high heat for 5 minutes. Finish with a pinch of salt and a squeeze of lemon.",
+    "Serve the soup with the biscuits and green beans on the side."
+   ]
+  },
+  "k-potpie-skillet": {
+   "name": "Biscuit-top chicken pot pie",
+   "cuisine": "American",
+   "minutes": 25,
+   "serves": "1",
+   "protein": 42,
+   "equip": "small baking dish, air fryer or oven",
+   "ingredients": [
+    {
+     "r": "k-potpie",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "biscuits",
+     "qty": "2"
+    },
+    {
+     "p": "cornstarch",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "spray",
+     "qty": "for the dish"
+    }
+   ],
+   "steps": [
+    "Heat the oven or air fryer to 350°F.",
+    "Simmer the bowl of pot pie soup in a small pot for 5 minutes. Whisk 1 tsp cornstarch with 1 tbsp water, stir it in and cook 1 minute until it thickens like pie filling.",
+    "Pour it into a small baking dish coated with cooking spray and set the 2 biscuits on top.",
+    "Bake 14 to 16 minutes until the biscuits are golden and cooked through."
+   ]
+  },
+  "k-tuscan": {
+   "name": "Tuscan sausage, potato and kale soup",
+   "cuisine": "Prep",
+   "minutes": 20,
+   "serves": "8 bowls",
+   "protein": 26,
+   "equip": "crock pot, skillet",
+   "ingredients": [
+    {
+     "g": "sausage",
+     "qty": "13 oz rope, sliced"
+    },
+    {
+     "g": "potatoes",
+     "qty": "1½ lb, quartered"
+    },
+    {
+     "g": "cannellini",
+     "qty": "2 cans, rinsed"
+    },
+    {
+     "g": "onions",
+     "qty": "1, diced"
+    },
+    {
+     "g": "garlic",
+     "qty": "4 cloves, minced"
+    },
+    {
+     "g": "broth",
+     "qty": "6 cups"
+    },
+    {
+     "g": "kale",
+     "qty": "5 oz (half the bag)"
+    },
+    {
+     "g": "milk",
+     "qty": "1 cup"
+    },
+    {
+     "g": "parm",
+     "qty": "¼ cup"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "italian",
+     "qty": "2 tsp"
+    },
+    {
+     "p": "flakes",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "pepper",
+     "qty": "½ tsp"
+    }
+   ],
+   "steps": [
+    "Heat 1 tsp olive oil in a skillet over medium-high. Brown the sliced sausage with the diced onion for 5 minutes.",
+    "Scrape it into the crock pot with the quartered potatoes, rinsed cannellini beans, minced garlic and 6 cups of broth.",
+    "Stir in 2 tsp Italian seasoning, ½ tsp red pepper flakes, 1 tsp salt and ½ tsp black pepper.",
+    "Cover and cook on low 6 to 7 hours or high 3 to 4 hours, until the potatoes are tender.",
+    "Stir in the kale, 1 cup of milk and ¼ cup parmesan. Cover and cook 15 minutes more on high until the kale is soft.",
+    "Keep 4 bowls in the fridge and freeze the rest in single bowls."
+   ],
+   "component": true
+  },
+  "k-tuscan-lunch": {
+   "name": "Tuscan soup with crusty bread",
+   "cuisine": "Italian",
+   "minutes": 6,
+   "serves": "1",
+   "protein": 30,
+   "equip": "microwave",
+   "ingredients": [
+    {
+     "r": "k-tuscan",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "parm",
+     "qty": "1 tbsp"
+    },
+    {
+     "g": "bread",
+     "qty": "1 thick slice"
+    },
+    {
+     "p": "flakes",
+     "qty": "a pinch"
+    }
+   ],
+   "steps": [
+    "Microwave the bowl of Tuscan soup for 3 minutes, stirring halfway. From frozen, thaw it in the fridge the night before.",
+    "Top with 1 tbsp parmesan and a pinch of red pepper flakes, and serve with the slice of bread for dunking."
+   ]
+  },
+  "k-tuscan-night": {
+   "name": "Tuscan soup night with cheesy toast",
+   "cuisine": "Italian",
+   "minutes": 15,
+   "serves": "2",
+   "protein": 34,
+   "equip": "pot, oven or air fryer",
+   "ingredients": [
+    {
+     "r": "k-tuscan",
+     "qty": "2 bowls"
+    },
+    {
+     "g": "bread",
+     "qty": "4 slices"
+    },
+    {
+     "g": "mozz",
+     "qty": "⅓ cup"
+    },
+    {
+     "g": "parm",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "garlicpowder",
+     "qty": "¼ tsp"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tbsp"
+    }
+   ],
+   "steps": [
+    "Warm 2 bowls of Tuscan soup in a pot over medium heat.",
+    "Brush the bread slices with 1 tbsp olive oil, sprinkle with ¼ tsp garlic powder and top with ⅓ cup mozzarella.",
+    "Toast at 400°F for 5 to 6 minutes until the cheese melts.",
+    "Ladle the soup into bowls, scatter 1 tbsp parmesan over each and serve with the cheesy toast."
+   ]
+  },
+  "k-tuscan-hash": {
+   "name": "Sausage, potato and kale hash with eggs",
+   "cuisine": "American",
+   "minutes": 15,
+   "serves": "1",
+   "protein": 34,
+   "equip": "skillet",
+   "ingredients": [
+    {
+     "r": "k-tuscan",
+     "qty": "1 bowl"
+    },
+    {
+     "g": "eggs",
+     "qty": "2"
+    },
+    {
+     "g": "kale",
+     "qty": "a handful"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "a pinch"
+    },
+    {
+     "p": "pepper",
+     "qty": "a pinch"
+    }
+   ],
+   "steps": [
+    "Spoon the sausage, potatoes and beans out of the bowl of Tuscan soup with a slotted spoon. Save the broth for another day.",
+    "Heat 1 tsp olive oil in a skillet over medium-high and crisp the sausage, potatoes and beans for 6 minutes, pressing them flat.",
+    "Toss in a handful of kale for 1 minute, then make two wells and crack in the 2 eggs.",
+    "Cover and cook 3 to 4 minutes until the whites set. Season with a pinch of salt and black pepper."
+   ]
+  },
+  "k-bbq": {
+   "name": "Crock pot BBQ pulled chicken",
+   "cuisine": "Prep",
+   "minutes": 15,
+   "serves": "8 portions",
+   "protein": 38,
+   "equip": "crock pot",
+   "ingredients": [
+    {
+     "g": "breasts",
+     "qty": "about 2 lb, whole"
+    },
+    {
+     "g": "onions",
+     "qty": "1, sliced"
+    },
+    {
+     "p": "ketchup",
+     "qty": "1 cup"
+    },
+    {
+     "p": "brownsugar",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "vinegar",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "mustard",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "paprika",
+     "qty": "2 tsp"
+    },
+    {
+     "p": "garlicpowder",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "onionpowder",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "pepper",
+     "qty": "½ tsp"
+    }
+   ],
+   "steps": [
+    "Whisk 1 cup ketchup, 2 tbsp brown sugar, 2 tbsp apple cider vinegar, 1 tbsp yellow mustard, 2 tsp smoked paprika, 1 tsp garlic powder, 1 tsp onion powder, 1 tsp salt and ½ tsp black pepper in the crock pot. This is the BBQ sauce.",
+    "Scatter in the sliced onion, lay the chicken breasts on top and turn them to coat.",
+    "Cover and cook on low 6 hours or high 3 hours.",
+    "Shred the chicken with two forks right in the sauce. Keep 4 portions in the fridge and freeze the rest in single portions."
+   ],
+   "tip": "Homemade sauce, so you know exactly what is in it. Many bottled BBQ sauces hide ingredients you avoid.",
+   "component": true
+  },
+  "k-bbq-lunch": {
+   "name": "BBQ chicken bowl with crunchy slaw",
+   "cuisine": "American",
+   "minutes": 10,
+   "serves": "1",
+   "protein": 42,
+   "equip": "microwave, bowl",
+   "ingredients": [
+    {
+     "r": "k-bbq",
+     "qty": "1 portion"
+    },
+    {
+     "g": "rice",
+     "qty": "¾ cup cooked"
+    },
+    {
+     "g": "slaw",
+     "qty": "1½ cups"
+    },
+    {
+     "g": "yogurt",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "vinegar",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "a pinch"
+    },
+    {
+     "g": "corn",
+     "qty": "¼ cup"
+    }
+   ],
+   "steps": [
+    "Stir 2 tbsp yogurt, 1 tsp apple cider vinegar and a pinch of salt into the coleslaw mix.",
+    "Microwave the BBQ chicken portion with the rice and ¼ cup corn for 2 minutes. From frozen, thaw the chicken in the fridge the night before.",
+    "Pile the slaw on top."
+   ],
+   "tip": "Cook a pot of jasmine rice on Sunday for the week."
+  },
+  "k-bbq-night": {
+   "name": "Pulled chicken sandwiches with slaw",
+   "cuisine": "American",
+   "minutes": 15,
+   "serves": "2",
+   "protein": 44,
+   "equip": "skillet",
+   "ingredients": [
+    {
+     "r": "k-bbq",
+     "qty": "2 portions"
+    },
+    {
+     "g": "buns",
+     "qty": "2"
+    },
+    {
+     "g": "slaw",
+     "qty": "2 cups"
+    },
+    {
+     "g": "yogurt",
+     "qty": "¼ cup"
+    },
+    {
+     "g": "pickles",
+     "qty": "a handful"
+    },
+    {
+     "p": "vinegar",
+     "qty": "2 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "a pinch"
+    },
+    {
+     "p": "pepper",
+     "qty": "a pinch"
+    }
+   ],
+   "steps": [
+    "Warm 2 portions of BBQ chicken in a skillet over medium heat for 5 minutes.",
+    "Stir ¼ cup yogurt, 2 tsp apple cider vinegar, a pinch of salt and a pinch of black pepper into the coleslaw mix.",
+    "Toast the buns cut side down in a dry pan for 1 minute.",
+    "Pile the chicken on the buns and top with slaw and pickles."
+   ]
+  },
+  "k-bbq-quesadilla": {
+   "name": "BBQ chicken quesadillas",
+   "cuisine": "American",
+   "minutes": 15,
+   "serves": "1 (2 quesadillas)",
+   "protein": 46,
+   "equip": "skillet",
+   "ingredients": [
+    {
+     "r": "k-bbq",
+     "qty": "1 portion"
+    },
+    {
+     "g": "flourtort",
+     "qty": "2"
+    },
+    {
+     "g": "cheddar",
+     "qty": "½ cup"
+    },
+    {
+     "g": "redonion",
+     "qty": "¼, thinly sliced"
+    },
+    {
+     "g": "cilantro",
+     "qty": "a little"
+    },
+    {
+     "p": "spray",
+     "qty": "for the pan"
+    }
+   ],
+   "steps": [
+    "Lay the 2 tortillas flat. Cover half of each with ¼ cup cheddar, the BBQ chicken and the sliced red onion, then fold.",
+    "Coat a skillet with cooking spray and cook the quesadillas over medium heat for 3 minutes a side until crisp and melted.",
+    "Cut in wedges and scatter over the cilantro."
+   ]
+  },
+  "spinach-feta-wrap": {
+   "name": "Spinach and feta egg wrap",
+   "cuisine": "Breakfast",
+   "minutes": 10,
+   "serves": "1",
+   "protein": 28,
+   "equip": "skillet",
+   "ingredients": [
+    {
+     "g": "eggs",
+     "qty": "3"
+    },
+    {
+     "g": "flourtort",
+     "qty": "1"
+    },
+    {
+     "g": "spinach",
+     "qty": "a big handful"
+    },
+    {
+     "g": "feta",
+     "qty": "2 tbsp"
+    },
+    {
+     "g": "salsa",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "spray",
+     "qty": "for the pan"
+    },
+    {
+     "p": "salt",
+     "qty": "a pinch"
+    },
+    {
+     "p": "pepper",
+     "qty": "a pinch"
+    }
+   ],
+   "steps": [
+    "Coat a skillet with cooking spray and wilt the spinach over medium heat for 1 minute.",
+    "Whisk the 3 eggs with a pinch of salt and black pepper, pour them over the spinach and scramble gently until just set.",
+    "Warm the tortilla in the empty pan for 20 seconds, fill it with the eggs, 2 tbsp feta and 2 tbsp salsa, and roll it up."
+   ]
+  },
+  "pb-yogurt-bowl": {
+   "name": "Peanut butter banana yogurt bowl",
+   "cuisine": "Breakfast",
+   "minutes": 5,
+   "serves": "1",
+   "protein": 30,
+   "equip": "bowl",
+   "ingredients": [
+    {
+     "g": "yogurt",
+     "qty": "1 cup"
+    },
+    {
+     "g": "bananas",
+     "qty": "1, sliced"
+    },
+    {
+     "g": "pb",
+     "qty": "1 tbsp"
+    },
+    {
+     "g": "honey",
+     "qty": "1 tsp"
+    },
+    {
+     "g": "oats",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "cinnamon",
+     "qty": "a pinch"
+    }
+   ],
+   "steps": [
+    "Spoon 1 cup yogurt into a bowl and top with the sliced banana.",
+    "Warm 1 tbsp peanut butter in the microwave for 10 seconds and drizzle it over with 1 tsp honey.",
+    "Finish with 2 tbsp oats and a pinch of cinnamon for crunch."
+   ],
+   "tip": "No granola, since most of it is made with tree nuts."
+  },
+  "banana-pancakes": {
+   "name": "Banana oat blender pancakes",
+   "cuisine": "Breakfast",
+   "minutes": 15,
+   "serves": "1 (6 small pancakes)",
+   "protein": 22,
+   "equip": "blender, skillet",
+   "ingredients": [
+    {
+     "g": "oats",
+     "qty": "½ cup"
+    },
+    {
+     "g": "bananas",
+     "qty": "1"
+    },
+    {
+     "g": "eggs",
+     "qty": "2"
+    },
+    {
+     "g": "yogurt",
+     "qty": "¼ cup"
+    },
+    {
+     "g": "berries",
+     "qty": "½ cup, thawed"
+    },
+    {
+     "p": "cinnamon",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "spray",
+     "qty": "for the pan"
+    }
+   ],
+   "steps": [
+    "Blend ½ cup oats, the banana, 2 eggs, ¼ cup yogurt and ½ tsp cinnamon until smooth. Rest 3 minutes.",
+    "Coat a skillet with cooking spray over medium heat and pour in small pancakes, about 3 tbsp each.",
+    "Cook 2 minutes until bubbles form, flip and cook 1 minute more.",
+    "Top with the thawed berries."
+   ]
+  },
+  "sausage-egg-muffin": {
+   "name": "Turkey sausage egg muffin sandwiches",
+   "cuisine": "Breakfast",
+   "minutes": 10,
+   "serves": "1 (2 sandwiches)",
+   "protein": 34,
+   "equip": "skillet",
+   "ingredients": [
+    {
+     "g": "muffins",
+     "qty": "2"
+    },
+    {
+     "g": "bkfsausage",
+     "qty": "2 patties"
+    },
+    {
+     "g": "eggs",
+     "qty": "2"
+    },
+    {
+     "g": "slcheddar",
+     "qty": "2 slices"
+    },
+    {
+     "p": "spray",
+     "qty": "for the pan"
+    },
+    {
+     "p": "pepper",
+     "qty": "a pinch"
+    }
+   ],
+   "steps": [
+    "Toast the English muffins.",
+    "Coat a skillet with cooking spray and cook the 2 sausage patties over medium heat for 3 minutes a side.",
+    "Fry the 2 eggs in the same pan, breaking the yolks, for 2 minutes. Season with black pepper.",
+    "Stack each muffin with a sausage patty, an egg and a slice of cheddar."
+   ]
+  },
+  "turkey-lettuce-tacos": {
+   "name": "Turkey taco lettuce wraps",
+   "cuisine": "Mexican",
+   "minutes": 15,
+   "serves": "2",
+   "protein": 38,
+   "equip": "skillet",
+   "ingredients": [
+    {
+     "g": "turkey",
+     "qty": "1 lb"
+    },
+    {
+     "g": "lettuce",
+     "qty": "1 head, leaves separated"
+    },
+    {
+     "g": "salsa",
+     "qty": "½ cup"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "½ cup"
+    },
+    {
+     "g": "avocado",
+     "qty": "1, diced"
+    },
+    {
+     "g": "limes",
+     "qty": "1, in wedges"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "chili",
+     "qty": "2 tsp"
+    },
+    {
+     "p": "cumin",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "garlicpowder",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "¾ tsp"
+    }
+   ],
+   "steps": [
+    "Heat 1 tsp olive oil in a skillet over medium-high and brown the ground turkey for 6 minutes, breaking it up.",
+    "Stir in 2 tsp chili powder, 1 tsp ground cumin, ½ tsp garlic powder, ¾ tsp salt and 3 tbsp water. Simmer 2 minutes.",
+    "Spoon the turkey into the lettuce leaves and top with salsa, cheese, diced avocado and a squeeze of lime."
+   ],
+   "tip": "Good as a dinner for two."
+  },
+  "lemon-chicken-pasta": {
+   "name": "Lemon garlic chicken pasta with spinach",
+   "cuisine": "Italian",
+   "minutes": 25,
+   "serves": "3",
+   "protein": 42,
+   "equip": "pot, skillet",
+   "ingredients": [
+    {
+     "g": "breasts",
+     "qty": "about 1½ lb, in bite-size pieces"
+    },
+    {
+     "g": "spaghetti",
+     "qty": "8 oz"
+    },
+    {
+     "g": "spinach",
+     "qty": "1 bag"
+    },
+    {
+     "g": "lemons",
+     "qty": "zest and juice of 1"
+    },
+    {
+     "g": "garlic",
+     "qty": "4 cloves, sliced"
+    },
+    {
+     "g": "parm",
+     "qty": "⅓ cup"
+    },
+    {
+     "p": "oil",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "flakes",
+     "qty": "¼ tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1 tsp plus more for the water"
+    },
+    {
+     "p": "pepper",
+     "qty": "½ tsp"
+    }
+   ],
+   "steps": [
+    "Boil 8 oz spaghetti in well-salted water. Save 1 cup of the pasta water, then drain.",
+    "Season the chicken with 1 tsp salt and ½ tsp black pepper. Sear it in 1 tbsp olive oil in a skillet over medium-high for 6 to 7 minutes until cooked through.",
+    "Add the remaining 1 tbsp olive oil, the sliced garlic and ¼ tsp red pepper flakes for 1 minute.",
+    "Toss in the spinach until it wilts, then the spaghetti, the lemon zest and juice, ⅓ cup parmesan and splashes of pasta water until glossy."
+   ]
+  },
+  "beef-broccoli": {
+   "name": "Beef and broccoli with rice",
+   "cuisine": "Asian",
+   "minutes": 25,
+   "serves": "2",
+   "protein": 40,
+   "equip": "skillet, pot",
+   "ingredients": [
+    {
+     "g": "steak",
+     "qty": "about 1 lb, thinly sliced"
+    },
+    {
+     "g": "broccoli",
+     "qty": "about 1 lb, in florets"
+    },
+    {
+     "g": "rice",
+     "qty": "1 cup dry"
+    },
+    {
+     "g": "garlic",
+     "qty": "3 cloves, minced"
+    },
+    {
+     "g": "ginger",
+     "qty": "1 tbsp, grated"
+    },
+    {
+     "g": "soy",
+     "qty": "¼ cup"
+    },
+    {
+     "g": "honey",
+     "qty": "1 tbsp"
+    },
+    {
+     "g": "greenonion",
+     "qty": "2, sliced"
+    },
+    {
+     "p": "cornstarch",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "sesame",
+     "qty": "1 tsp"
+    }
+   ],
+   "steps": [
+    "Cook 1 cup rice with 1½ cups water, covered, for 15 minutes.",
+    "Whisk ¼ cup soy sauce, 1 tbsp honey, 1 tbsp cornstarch, the minced garlic, grated ginger and ¼ cup water. Toss the sliced steak in 2 tbsp of it.",
+    "Heat 1 tbsp olive oil in a skillet over high and sear the steak in one layer for 2 minutes. Move it to a plate.",
+    "Add the broccoli and 3 tbsp water, cover and steam 3 minutes.",
+    "Return the steak, pour in the rest of the sauce and toss for 1 minute until glossy. Finish with 1 tsp sesame oil and the green onion and serve over the rice."
+   ]
+  },
+  "turkey-burger-bowl": {
+   "name": "Turkey burger bowls with crispy potatoes",
+   "cuisine": "American",
+   "minutes": 30,
+   "serves": "2",
+   "protein": 40,
+   "equip": "air fryer, skillet",
+   "ingredients": [
+    {
+     "g": "turkey",
+     "qty": "1 lb"
+    },
+    {
+     "g": "potatoes",
+     "qty": "1 lb, quartered"
+    },
+    {
+     "g": "romaine",
+     "qty": "2 hearts, chopped"
+    },
+    {
+     "g": "cherrytom",
+     "qty": "1 cup, halved"
+    },
+    {
+     "g": "pickles",
+     "qty": "a handful, chopped"
+    },
+    {
+     "g": "redonion",
+     "qty": "½, diced"
+    },
+    {
+     "g": "cheddar",
+     "qty": "½ cup"
+    },
+    {
+     "g": "yogurt",
+     "qty": "¼ cup"
+    },
+    {
+     "p": "ketchup",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "mustard",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "garlicpowder",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "onionpowder",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "pepper",
+     "qty": "½ tsp"
+    }
+   ],
+   "steps": [
+    "Toss the potatoes with 1 tbsp olive oil and ½ tsp salt. Air-fry at 400°F for 18 to 20 minutes, shaking halfway.",
+    "Brown the ground turkey in a skillet over medium-high for 6 minutes with ½ tsp garlic powder, ½ tsp onion powder, ½ tsp salt and ½ tsp black pepper.",
+    "Stir ¼ cup yogurt, 1 tbsp ketchup, 1 tsp yellow mustard and 1 tbsp of the chopped pickles together for burger sauce.",
+    "Build bowls of romaine, turkey, potatoes, cherry tomatoes, diced red onion, the rest of the pickles and cheddar, and spoon over the sauce."
+   ]
+  },
+  "sausage-sheet-pan": {
+   "name": "Sheet-pan sausage, potatoes and green beans",
+   "cuisine": "American",
+   "minutes": 35,
+   "serves": "3",
+   "protein": 26,
+   "equip": "sheet pan",
+   "ingredients": [
+    {
+     "g": "sausage",
+     "qty": "13 oz rope, in coins"
+    },
+    {
+     "g": "potatoes",
+     "qty": "1½ lb, halved"
+    },
+    {
+     "g": "greenbeans",
+     "qty": "12 oz, trimmed"
+    },
+    {
+     "g": "dijon",
+     "qty": "for dipping"
+    },
+    {
+     "p": "oil",
+     "qty": "2 tbsp"
+    },
+    {
+     "p": "garlicpowder",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "paprika",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "pepper",
+     "qty": "½ tsp"
+    }
+   ],
+   "steps": [
+    "Heat the oven to 425°F. Toss the halved potatoes with 1 tbsp olive oil, ½ tsp salt and ½ tsp smoked paprika and roast 15 minutes.",
+    "Toss the sausage coins and green beans with 1 tbsp olive oil, 1 tsp garlic powder, ½ tsp smoked paprika, ½ tsp salt and ½ tsp black pepper.",
+    "Add them to the pan and roast 15 minutes more, until the potatoes are crisp.",
+    "Serve with Dijon mustard for dipping."
+   ]
+  },
+  "chicken-fried-rice": {
+   "name": "Chicken fried rice",
+   "cuisine": "Asian",
+   "minutes": 20,
+   "serves": "2",
+   "protein": 40,
+   "equip": "large skillet",
+   "ingredients": [
+    {
+     "g": "breasts",
+     "qty": "about 1 lb, diced"
+    },
+    {
+     "g": "rice",
+     "qty": "3 cups cooked and cold"
+    },
+    {
+     "g": "peascarrots",
+     "qty": "1 cup"
+    },
+    {
+     "g": "eggs",
+     "qty": "2"
+    },
+    {
+     "g": "soy",
+     "qty": "3 tbsp"
+    },
+    {
+     "g": "garlic",
+     "qty": "2 cloves, minced"
+    },
+    {
+     "g": "greenonion",
+     "qty": "3, sliced"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "sesame",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "a pinch"
+    }
+   ],
+   "steps": [
+    "Heat 1 tbsp olive oil in a large skillet over high. Season the chicken with a pinch of salt and cook 5 minutes until browned.",
+    "Add the minced garlic, the frozen peas and carrots and the white parts of the green onion for 2 minutes.",
+    "Push everything aside, scramble the 2 eggs in the space, then add the cold rice and press it flat to crisp for 2 minutes.",
+    "Toss with 3 tbsp soy sauce and 1 tsp sesame oil and top with the green onion tops."
+   ],
+   "tip": "Day-old rice fries best."
+  },
+  "buffalo-wraps": {
+   "name": "Buffalo chicken wraps",
+   "cuisine": "American",
+   "minutes": 20,
+   "serves": "2",
+   "protein": 42,
+   "equip": "skillet",
+   "ingredients": [
+    {
+     "g": "breasts",
+     "qty": "about 1 lb, in strips"
+    },
+    {
+     "g": "hotsauce",
+     "qty": "¼ cup"
+    },
+    {
+     "g": "flourtort",
+     "qty": "2"
+    },
+    {
+     "g": "romaine",
+     "qty": "1 heart, shredded"
+    },
+    {
+     "g": "celery",
+     "qty": "2 ribs, thinly sliced"
+    },
+    {
+     "g": "cheddar",
+     "qty": "¼ cup"
+    },
+    {
+     "g": "yogurt",
+     "qty": "⅓ cup"
+    },
+    {
+     "p": "dill",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "garlicpowder",
+     "qty": "¾ tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tsp"
+    }
+   ],
+   "steps": [
+    "Season the chicken strips with ½ tsp garlic powder and ½ tsp salt. Cook in 1 tsp olive oil in a skillet over medium-high for 6 minutes.",
+    "Turn off the heat and toss the chicken in ¼ cup hot sauce.",
+    "Stir ⅓ cup yogurt, ½ tsp dried dill and ¼ tsp garlic powder for a cool dip.",
+    "Fill each tortilla with romaine, sliced celery, the chicken, 2 tbsp cheddar and a spoon of the dip, then roll up tight."
+   ],
+   "tip": "Plain cayenne hot sauce is just peppers, vinegar, salt and garlic. Check the label all the same."
+  },
+  "honey-garlic-thighs": {
+   "name": "Honey garlic chicken thighs with green beans",
+   "cuisine": "Asian",
+   "minutes": 30,
+   "serves": "3",
+   "protein": 40,
+   "equip": "skillet, pot",
+   "ingredients": [
+    {
+     "g": "thighs",
+     "qty": "about 2 lb"
+    },
+    {
+     "g": "honey",
+     "qty": "3 tbsp"
+    },
+    {
+     "g": "soy",
+     "qty": "3 tbsp"
+    },
+    {
+     "g": "garlic",
+     "qty": "5 cloves, minced"
+    },
+    {
+     "g": "greenbeans",
+     "qty": "12 oz, trimmed"
+    },
+    {
+     "g": "rice",
+     "qty": "1 cup dry"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "salt",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "pepper",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "flakes",
+     "qty": "a pinch"
+    }
+   ],
+   "steps": [
+    "Cook 1 cup rice with 1½ cups water, covered, for 15 minutes.",
+    "Season the chicken thighs with ½ tsp salt and ½ tsp black pepper. Sear in 1 tbsp olive oil in a skillet over medium-high, 5 minutes a side.",
+    "Stir together 3 tbsp honey, 3 tbsp soy sauce, the minced garlic and a pinch of red pepper flakes. Pour it over the chicken and simmer 3 minutes, turning, until sticky.",
+    "Move the chicken to plates. Toss the green beans in the pan sauce with 2 tbsp water, cover and steam 4 minutes. Serve everything over the rice."
+   ]
+  },
+  "turkey-meatball-subs": {
+   "name": "Turkey meatball subs",
+   "cuisine": "Italian",
+   "minutes": 30,
+   "serves": "2 (4 subs)",
+   "protein": 44,
+   "equip": "air fryer, small pot",
+   "ingredients": [
+    {
+     "g": "turkey",
+     "qty": "1 lb"
+    },
+    {
+     "g": "panko",
+     "qty": "⅓ cup"
+    },
+    {
+     "g": "eggs",
+     "qty": "1"
+    },
+    {
+     "g": "parm",
+     "qty": "2 tbsp"
+    },
+    {
+     "g": "marinara",
+     "qty": "1½ cups"
+    },
+    {
+     "g": "hoagie",
+     "qty": "4"
+    },
+    {
+     "g": "mozz",
+     "qty": "½ cup"
+    },
+    {
+     "p": "italian",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "garlicpowder",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "spray",
+     "qty": "for the basket"
+    }
+   ],
+   "steps": [
+    "Mix the ground turkey, ⅓ cup panko, the egg, 2 tbsp parmesan, 1 tsp Italian seasoning, ½ tsp garlic powder and ½ tsp salt. Roll into 16 meatballs.",
+    "Coat the air fryer basket with cooking spray and air-fry the meatballs at 380°F for 10 to 12 minutes.",
+    "Warm 1½ cups marinara in a small pot and roll the meatballs in it.",
+    "Fill the 4 hoagie rolls with meatballs, top with ½ cup mozzarella and air-fry 2 minutes to melt."
+   ]
+  },
+  "sweet-potato-tacos": {
+   "name": "Black bean and sweet potato tacos",
+   "cuisine": "Mexican",
+   "minutes": 30,
+   "serves": "2",
+   "protein": 20,
+   "equip": "air fryer, small pot",
+   "ingredients": [
+    {
+     "g": "sweetpot",
+     "qty": "2 medium, ½-inch cubes"
+    },
+    {
+     "g": "beans",
+     "qty": "1 can, rinsed"
+    },
+    {
+     "g": "corntort",
+     "qty": "6"
+    },
+    {
+     "g": "avocado",
+     "qty": "1, sliced"
+    },
+    {
+     "g": "limes",
+     "qty": "1"
+    },
+    {
+     "g": "cilantro",
+     "qty": "a handful"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "⅓ cup"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "chili",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "cumin",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "¾ tsp"
+    }
+   ],
+   "steps": [
+    "Toss the sweet potato cubes with 1 tbsp olive oil, 1 tsp chili powder, ½ tsp ground cumin and ½ tsp salt. Air-fry at 400°F for 15 minutes, shaking once.",
+    "Warm the rinsed black beans in a small pot with ½ tsp ground cumin, ¼ tsp salt and 2 tbsp water, mashing a few.",
+    "Warm the 6 tortillas in a dry pan.",
+    "Fill with beans and sweet potato, then top with the sliced avocado, cheese, cilantro and a squeeze of lime."
+   ]
+  },
+  "greek-chicken-pitas": {
+   "name": "Greek chicken pitas",
+   "cuisine": "Mediterranean",
+   "minutes": 25,
+   "serves": "3",
+   "protein": 42,
+   "equip": "skillet",
+   "ingredients": [
+    {
+     "g": "breasts",
+     "qty": "about 1½ lb, in strips"
+    },
+    {
+     "g": "pita",
+     "qty": "3"
+    },
+    {
+     "g": "cucumber",
+     "qty": "1, diced"
+    },
+    {
+     "g": "cherrytom",
+     "qty": "1 cup, halved"
+    },
+    {
+     "g": "redonion",
+     "qty": "½, thinly sliced"
+    },
+    {
+     "g": "yogurt",
+     "qty": "¾ cup"
+    },
+    {
+     "g": "lemons",
+     "qty": "juice of 1"
+    },
+    {
+     "g": "garlic",
+     "qty": "2 cloves, grated"
+    },
+    {
+     "g": "feta",
+     "qty": "¼ cup"
+    },
+    {
+     "p": "oregano",
+     "qty": "2 tsp"
+    },
+    {
+     "p": "dill",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tbsp"
+    }
+   ],
+   "steps": [
+    "Toss the chicken strips with 1 tbsp olive oil, half the lemon juice, 1 grated garlic clove, 2 tsp dried oregano and ¾ tsp salt.",
+    "Sear in a skillet over medium-high for 6 to 7 minutes until cooked through.",
+    "Stir ¾ cup yogurt with the other grated garlic clove, 1 tsp dried dill, the rest of the lemon juice, ¼ tsp salt and 2 tbsp of the diced cucumber.",
+    "Warm the pitas, then fill them with chicken, the rest of the cucumber, cherry tomatoes, red onion, feta and the yogurt sauce."
+   ]
+  },
+  "peanut-chicken-noodles": {
+   "name": "Peanut chicken noodles with crunchy slaw",
+   "cuisine": "Asian",
+   "minutes": 25,
+   "serves": "2",
+   "protein": 44,
+   "equip": "pot, skillet",
+   "ingredients": [
+    {
+     "g": "breasts",
+     "qty": "about 1 lb, in thin strips"
+    },
+    {
+     "g": "spaghetti",
+     "qty": "6 oz"
+    },
+    {
+     "g": "pb",
+     "qty": "3 tbsp"
+    },
+    {
+     "g": "soy",
+     "qty": "3 tbsp"
+    },
+    {
+     "g": "honey",
+     "qty": "1 tbsp"
+    },
+    {
+     "g": "limes",
+     "qty": "juice of 1"
+    },
+    {
+     "g": "garlic",
+     "qty": "1 clove, grated"
+    },
+    {
+     "g": "slaw",
+     "qty": "2 cups"
+    },
+    {
+     "g": "greenonion",
+     "qty": "2, sliced"
+    },
+    {
+     "p": "oil",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "sesame",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "flakes",
+     "qty": "¼ tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "for the water"
+    }
+   ],
+   "steps": [
+    "Boil 6 oz spaghetti in salted water, then drain and rinse under cold water.",
+    "Whisk 3 tbsp peanut butter, 3 tbsp soy sauce, 1 tbsp honey, the lime juice, the grated garlic, 1 tsp sesame oil, ¼ tsp red pepper flakes and 3 tbsp warm water until smooth.",
+    "Cook the chicken strips in 1 tsp olive oil in a skillet over medium-high for 5 to 6 minutes.",
+    "Toss the spaghetti, chicken and coleslaw mix with the peanut sauce and top with the green onion. Good warm or cold."
+   ],
+   "tip": "Peanuts are fine for you. Check the peanut butter label for a \"may contain tree nuts\" line."
+  },
+  "turkey-stuffed-peppers": {
+   "name": "Turkey stuffed peppers",
+   "cuisine": "Mexican",
+   "minutes": 40,
+   "serves": "2 (4 halves)",
+   "protein": 40,
+   "equip": "oven, skillet",
+   "ingredients": [
+    {
+     "g": "turkey",
+     "qty": "1 lb"
+    },
+    {
+     "g": "peppers",
+     "qty": "2, halved and seeded"
+    },
+    {
+     "g": "rice",
+     "qty": "1 cup cooked"
+    },
+    {
+     "g": "fireroasted",
+     "qty": "14.5 oz can"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "½ cup"
+    },
+    {
+     "p": "cumin",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "chili",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "onionpowder",
+     "qty": "½ tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "¾ tsp"
+    },
+    {
+     "p": "spray",
+     "qty": "for the dish"
+    }
+   ],
+   "steps": [
+    "Heat the oven to 400°F. Set the pepper halves cut side up in a baking dish coated with cooking spray.",
+    "Brown the ground turkey in a skillet for 6 minutes with 1 tsp ground cumin, 1 tsp chili powder, ½ tsp onion powder and ¾ tsp salt.",
+    "Stir in the rice and the fire-roasted tomatoes and simmer 3 minutes.",
+    "Pack the filling into the peppers, cover with foil and bake 20 minutes. Uncover, top with ½ cup cheese and bake 5 minutes more."
+   ]
+  },
+  "beef-taco-skillet": {
+   "name": "Beef taco rice skillet",
+   "cuisine": "Mexican",
+   "minutes": 30,
+   "serves": "3",
+   "protein": 36,
+   "equip": "deep skillet with a lid",
+   "ingredients": [
+    {
+     "g": "beef",
+     "qty": "1 lb"
+    },
+    {
+     "g": "rice",
+     "qty": "¾ cup dry"
+    },
+    {
+     "g": "beans",
+     "qty": "1 can, rinsed"
+    },
+    {
+     "g": "salsa",
+     "qty": "1 cup"
+    },
+    {
+     "g": "broth",
+     "qty": "1½ cups"
+    },
+    {
+     "g": "corn",
+     "qty": "¾ cup"
+    },
+    {
+     "g": "mexcheese",
+     "qty": "½ cup"
+    },
+    {
+     "g": "greenonion",
+     "qty": "2, sliced"
+    },
+    {
+     "p": "chili",
+     "qty": "1 tbsp"
+    },
+    {
+     "p": "cumin",
+     "qty": "1 tsp"
+    },
+    {
+     "p": "salt",
+     "qty": "½ tsp"
+    }
+   ],
+   "steps": [
+    "Brown the ground beef in a deep skillet over medium-high for 5 minutes and pour off any fat.",
+    "Stir in 1 tbsp chili powder, 1 tsp ground cumin and ½ tsp salt for 30 seconds.",
+    "Add ¾ cup rice, 1½ cups broth, 1 cup salsa, the rinsed black beans and ¾ cup corn. Bring to a boil, cover and simmer on low 18 minutes.",
+    "Scatter ½ cup cheese over the top, cover 2 minutes to melt and finish with the green onion."
+   ]
+  }
+ }
+}
