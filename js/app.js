@@ -1053,39 +1053,54 @@ function weekRefs(mon){
     const menu = D.menu[dk]; if (!menu) return;
     const d = new Date(mon); d.setDate(mon.getDate() + i); const ds = Store.ymd(d);
     Object.keys(SLOT).forEach(slot => { const sw = Store.getSwap(ds, slot);
-      if (sw && sw.type === 'recipe') refs.push({wk:sw.wk, id:sw.id, swapped:true, frozen:!!sw.frozen});
-      else refs.push({wk:wn, id:menu[slot]}); });
+      if (sw && sw.type === 'recipe') refs.push({wk:sw.wk, id:sw.id, swapped:true, frozen:!!sw.frozen, planned:menu[slot]});
+      else refs.push({wk:wn, id:menu[slot], planned:menu[slot]}); });
   });
   return {wn, D, refs};
 }
+/* The grocery list for the week starting mon, after any swaps. Amounts come from static/js/amounts.js: what the
+   written menu needs versus what the swapped menu needs, per grocery. An item the swaps need more of gets more
+   packs (only past what the written list already over-buys); one they need less of drops whole packs; items
+   nothing needs fall off unless next week plans to finish them; items new to the week come in as whole packs
+   of the source file's pack. Frozen swaps (last week's batch) buy nothing. */
+// "2 lb", "3 avocados", "16 oz box", "2 × 32 oz carton"
+const packText = (p, m) => p.size === 1 && /^[a-zñ]+$/.test(p.label) ? `${+m.toFixed(2)} ${p.label}${m !== 1 && p.label !== 'lb' ? (/[sxz]$|ch$/.test(p.label) ? 'es' : 's') : ''}`
+  : m === 1 ? p.label : `${+m.toFixed(2)} × ${p.label}`;
 function plannedGroceries(mon){
   const {wn, D, refs} = weekRefs(mon);
   const ready = refs.every(x => MW[x.wk]);
-  if (!ready || !refs.some(x => x.swapped)) return {wn, D, list:D.groceries.map(g => Object.assign({uid:g.id, from:wn}, g)), added:[], dropped:[], swaps:0, ready};
-  const seen = new Set(), need = [];
-  // A swapped-in recipe that leans on its own week's building block uses this week's equivalent when there is one
-  // (roasted vegetables, rice, a yogurt sauce), so the list does not grow a second tray of vegetables.
-  const KIND = [['roast', 'vegetable', 'roots', 'tray'], ['rice'], ['yogurt', 'feta', 'ranch', 'tzatziki', 'crema'], ['marinara'], ['pickled']];
-  const kindOf = name => KIND.findIndex(ws => ws.some(w => name.toLowerCase().includes(w)));
-  const local = {}; Object.entries(D.recipes).forEach(([id, r]) => { if (r.component){ const k = kindOf(r.name); if (k >= 0 && !(k in local)) local[k] = id; } });
-  // A frozen swap (a bowl from last week's batch, from the freezer) buys nothing: last week's list bought the
-  // pot and the toppings for every meal of that batch.
-  const visit = (wk, id, frozen) => { const k = wk + ':' + id + (frozen ? ':f' : ''); if (seen.has(k)) return; seen.add(k); const r = MW[wk] && MW[wk].recipes[id]; if (!r) return; if (!frozen) need.push({wk, id, r});
-    (r.ingredients || []).forEach(i => { if (!i.r) return; const sub = MW[wk].recipes[i.r]; if (frozen && sub && sub.component) return; const kd = wk !== wn && sub && sub.component ? kindOf(sub.name) : -1; if (kd >= 0 && local[kd]) visit(wn, local[kd]); else visit(wk, i.r); }); };
-  refs.forEach(x => visit(x.wk, x.id, x.frozen));
+  const asWritten = () => D.groceries.map(g => Object.assign({uid:g.id, from:wn}, g));
+  if (!ready || !refs.some(x => x.swapped)) return {wn, D, list:asWritten(), added:[], dropped:[], changed:[], swaps:0, ready};
+  const before = Amt.tally(MW, Amt.cooked(MW, wn, refs.map(x => ({wk:wn, id:x.planned})))), after = Amt.tally(MW, Amt.cooked(MW, wn, refs));
+  const K = Amt.key, haveN = new Set((D.have || []).map(h => K(h.name)));
   const inRecipes = new Set(); Object.values(D.recipes).forEach(r => (r.ingredients || []).forEach(i => i.g && inRecipes.add(i.g)));
-  const used = new Set(); need.filter(x => x.wk === wn).forEach(x => x.r.ingredients.forEach(i => i.g && used.add(i.g)));
-  const haveN = new Set((D.have || []).map(h => h.name.toLowerCase())), byName = new Map();
-  // keep this week's items still needed, snack items no recipe uses, and anything next week plans to finish
   const nmon = new Date(mon); nmon.setDate(nmon.getDate() + 7);
-  const ND = MW[mealWeekOf(nmon)], nextHave = new Set(ND && ND !== D ? (ND.have || []).map(h => h.name.toLowerCase()) : []);
-  D.groceries.forEach(g => { const keepNext = !used.has(g.id) && inRecipes.has(g.id) && nextHave.has(g.name.toLowerCase());
-    if (used.has(g.id) || !inRecipes.has(g.id) || keepNext) byName.set(g.name.toLowerCase(), Object.assign({uid:g.id, from:wn}, g, keepNext ? {forRecipe:'next week'} : {})); });
-  // add what swapped-in recipes from other weeks need
-  need.filter(x => x.wk !== wn).forEach(x => x.r.ingredients.forEach(i => { if (!i.g) return; const g = MW[x.wk].groceries.find(y => y.id === i.g); if (!g) return;
-    const k = g.name.toLowerCase(); if (byName.has(k) || haveN.has(k)) return; byName.set(k, Object.assign({}, g, {uid:`${x.wk}~${g.id}`, from:x.wk, forRecipe:x.r.name})); }));
-  const list = [...byName.values()];
-  return {wn, D, list, added:list.filter(g => g.from !== wn), dropped:D.groceries.filter(g => !byName.has(g.name.toLowerCase())), swaps:refs.filter(x => x.swapped).length, ready};
+  const ND = MW[mealWeekOf(nmon)], nextHave = new Set(ND && ND !== D ? (ND.have || []).map(h => K(h.name)) : []);
+  const list = [], mine = new Set();
+  D.groceries.forEach(g => {
+    const k = K(g.name), base = Object.assign({uid:g.id, from:wn}, g); mine.add(k);
+    if (!inRecipes.has(g.id)){ list.push(base); return; }                       // snacks
+    const a = after.get(k), b = before.get(k), keepNext = nextHave.has(k);
+    if (!a){ if (keepNext) list.push(Object.assign(base, {forRecipe:'next week'})); return; }
+    const p = g.pack;
+    if (!p || a.unknown || (b && b.unknown)){ list.push(base); return; }
+    // packs that cover the need: whole packs, or the nearest half pound for meat sold by weight
+    const need = a.amt, had = b ? b.amt : 0, byWeight = p.unit === 'lb' && p.size === 1;
+    const fit = Math.max(byWeight ? Math.ceil(need * 2 - 1e-9) / 2 : Math.ceil(need / p.size - 1e-9), byWeight ? .5 : 1);
+    let m = p.n;
+    if (need > p.n * p.size + 1e-9) m = fit;                       // more than the written list buys
+    else if (need < had - 1e-9 && !keepNext) m = Math.min(p.n, fit); // less than the written menu needed
+    list.push(m === p.n ? base : Object.assign(base, {qty:packText(p, m), price:Math.round(m * p.each * 100) / 100, was:g.qty}));
+  });
+  // what swapped-in recipes from other weeks or the library need that this week does not buy
+  after.forEach((t, k) => {
+    if (mine.has(k) || haveN.has(k)) return;
+    const g = t.g, p = g.pack, m = p && !t.unknown ? Math.max(1, Math.ceil(t.amt / p.size - 1e-9)) : null;
+    list.push(Object.assign({}, g, {uid:`${t.wk}~${g.id}`, from:t.wk, forRecipe:t.recipe}, m ? {qty:packText(p, m), price:Math.round(m * p.each * 100) / 100} : {}));
+  });
+  const kept = new Set(list.map(g => K(g.name)));
+  return {wn, D, list, added:list.filter(g => g.from !== wn), dropped:D.groceries.filter(g => !kept.has(K(g.name))),
+    changed:list.filter(g => g.was), swaps:refs.filter(x => x.swapped).length, ready};
 }
 function planDoneThisWeek(){
   const mon = Store.ymd(Store.parse(Store.mondayOf(today()))), sunD = Store.parse(mon); sunD.setDate(sunD.getDate() + 6); const sun = Store.ymd(sunD);
@@ -1121,7 +1136,7 @@ async function vPlan(){
     <span class="cap" style="font-size:14px;margin-top:4px">${fromDate} to ${fri.toLocaleDateString(undefined, {month:'short', day:'numeric'})}. Swap anything, and the grocery list follows.</span></header>
     <div class="page stagger" style="margin-top:22px">
       <a class="card planbudget tap" href="#market" id="pmkt"><div class="big"><b class="num">${money(total)}</b><span class="cap">${G.list.length} items · ${money(D.budget - total)} under budget</span></div>
-        ${G.swaps ? `<span class="cap">${plural(G.swaps, 'swap')} · ${G.added.length ? `+${G.added.length} added` : 'nothing added'} · ${G.dropped.length ? `${G.dropped.length} dropped` : 'nothing dropped'}</span>` : `<span class="cap">The suggested plan, as written</span>`}
+        ${G.swaps ? `<span class="cap">${plural(G.swaps, 'swap')} · ${G.added.length ? `+${G.added.length} added` : 'nothing added'} · ${G.dropped.length ? `${G.dropped.length} dropped` : 'nothing dropped'}${G.changed.length ? ` · ${plural(G.changed.length, 'amount')} changed` : ''}</span>` : `<span class="cap">The suggested plan, as written</span>`}
         <span class="over gold">Open the grocery list ${ic('chev')}</span></a>
       ${unused.length ? `<div class="callout">${ic('info')}<span>Nothing uses ${listify(unused.map(x => x.toLowerCase()))} anymore, so skip ${unused.length === 1 ? 'that' : 'those'} on Sunday. Its groceries are off the list.</span></div>` : ''}
       ${blocksHTML(D, wn)}
@@ -1549,12 +1564,12 @@ function vMarket(){
   // Aldi walk order: produce at the door, shelf aisles, dairy and meat along the back, frozen by the registers.
   const order = ['Produce','Shelf','Dairy and eggs','Meat','Frozen'];
   const ahead = wk !== mealWeek(), over = total - D.budget;
-  const item = g => `<div class="row item sw${inCart(g) ? ' done' : ''}" data-g="${g.uid}" role="button" aria-pressed="${inCart(g)}"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b>${esc(g.name)}</b><small>${esc(g.qty)}${g.forRecipe ? ` · for ${esc(g.forRecipe)}` : ''}</small></span><span class="trail">${money(g.price)}</span></div>`;
+  const item = g => `<div class="row item sw${inCart(g) ? ' done' : ''}" data-g="${g.uid}" role="button" aria-pressed="${inCart(g)}"><button class="tick" type="button" tabindex="-1" aria-hidden="true">${ic('check', '')}</button><span class="tx"><b>${esc(g.name)}</b><small>${esc(g.qty)}${g.was ? ` · <em>was ${esc(g.was)}</em>` : ''}${g.forRecipe ? ` · for ${esc(g.forRecipe)}` : ''}</small></span><span class="trail">${money(g.price)}</span></div>`;
   const aisles = [...order.map(sec => [sec, left.filter(g => g.section === sec && g.store !== 'Publix')]), ['Publix', left.filter(g => g.store === 'Publix')]];
   view.innerHTML = `<header class="lhead"><span class="over gold">${esc(D.title)}${ahead ? ' · next week' : ''}</span><h1 class="lt">Market</h1></header>
   <div class="page stagger" style="margin-top:20px">
     ${weekSwitch(wk)}
-    ${P.swaps ? `<a class="callout tap" href="#plan">${ic('swap')}<span>Follows your plan: ${P.added.length} added, ${P.dropped.length} dropped.</span></a>` : ahead ? `<a class="callout tap" href="#plan">${ic('calendar')}<span>Want different meals next week? Plan it and this list follows.</span></a>` : ''}
+    ${P.swaps ? `<a class="callout tap" href="#plan">${ic('swap')}<span>Follows your plan: ${P.added.length} added, ${P.dropped.length} dropped, ${plural(P.changed.length, 'amount')} changed.</span></a>` : ahead ? `<a class="callout tap" href="#plan">${ic('calendar')}<span>Want different meals next week? Plan it and this list follows.</span></a>` : ''}
     <section class="card budget"><div class="big"><b class="num">${money(total)}</b><span class="cap">${over > 0 ? `<span style="color:var(--danger)">${money(over)} over budget</span>` : `${got.length} of ${G.length} in the cart`}</span></div>
       <div class="bar2">${twBar('cart' + wk, got.length / Math.max(1, G.length) * 100)}</div></section>
     ${!left.length ? `<div class="callout">${ic('check')}<span>Everything is in the cart.</span></div>` : ''}

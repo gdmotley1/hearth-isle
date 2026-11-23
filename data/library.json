@@ -10,7 +10,14 @@
    "qty": "1 dozen",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 3.09
+   "price": 3.09,
+   "pack": {
+    "unit": "egg",
+    "size": 6,
+    "label": "half dozen",
+    "n": 2,
+    "each": 1.54
+   }
   },
   {
    "id": "yogurt",
@@ -18,7 +25,14 @@
    "qty": "32 oz tub",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 4.29
+   "price": 4.29,
+   "pack": {
+    "unit": "cup",
+    "size": 4,
+    "label": "32 oz tub",
+    "n": 1,
+    "each": 4.29
+   }
   },
   {
    "id": "milk",
@@ -26,7 +40,14 @@
    "qty": "half gallon",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 1.89
+   "price": 1.89,
+   "pack": {
+    "unit": "cup",
+    "size": 8,
+    "label": "half gallon",
+    "n": 1,
+    "each": 1.89
+   }
   },
   {
    "id": "mexcheese",
@@ -34,7 +55,14 @@
    "qty": "8 oz",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "cup",
+    "size": 2,
+    "label": "8 oz bag",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "cheddar",
@@ -42,7 +70,14 @@
    "qty": "8 oz",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "cup",
+    "size": 2,
+    "label": "8 oz bag",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "slcheddar",
@@ -50,7 +85,14 @@
    "qty": "8 oz pack",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "slice",
+    "size": 10,
+    "label": "8 oz pack",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "mozz",
@@ -58,7 +100,14 @@
    "qty": "8 oz",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 2.29
+   "price": 2.29,
+   "pack": {
+    "unit": "cup",
+    "size": 2,
+    "label": "8 oz bag",
+    "n": 1,
+    "each": 2.29
+   }
   },
   {
    "id": "ricotta",
@@ -66,7 +115,14 @@
    "qty": "15 oz tub",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "cup",
+    "size": 1.75,
+    "label": "15 oz tub",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "parm",
@@ -74,7 +130,14 @@
    "qty": "8 oz",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "tbsp",
+    "size": 45,
+    "label": "8 oz container",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "feta",
@@ -82,7 +145,14 @@
    "qty": "4 oz",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "oz",
+    "size": 4,
+    "label": "4 oz tub",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "biscuits",
@@ -90,7 +160,14 @@
    "qty": "8 count can",
    "section": "Dairy and eggs",
    "store": "Aldi",
-   "price": 1.29
+   "price": 1.29,
+   "pack": {
+    "unit": "biscuit",
+    "size": 8,
+    "label": "8-count can",
+    "n": 1,
+    "each": 1.29
+   }
   },
   {
    "id": "breasts",
@@ -98,7 +175,14 @@
    "qty": "about 2 lb",
    "section": "Meat",
    "store": "Aldi",
-   "price": 6.49
+   "price": 6.49,
+   "pack": {
+    "unit": "lb",
+    "size": 1,
+    "label": "lb",
+    "n": 2,
+    "each": 3.25
+   }
   },
   {
    "id": "thighs",
@@ -106,7 +190,14 @@
    "qty": "about 2 lb",
    "section": "Meat",
    "store": "Aldi",
-   "price": 5.99
+   "price": 5.99,
+   "pack": {
+    "unit": "lb",
+    "size": 1,
+    "label": "lb",
+    "n": 2,
+    "each": 3.0
+   }
   },
   {
    "id": "turkey",
@@ -114,7 +205,14 @@
    "qty": "2 lb (two 1 lb packs)",
    "section": "Meat",
    "store": "Aldi",
-   "price": 8.98
+   "price": 8.98,
+   "pack": {
+    "unit": "lb",
+    "size": 1,
+    "label": "1 lb pack",
+    "n": 2,
+    "each": 4.49
+   }
   },
   {
    "id": "beef",
@@ -122,7 +220,14 @@
    "qty": "1 lb",
    "section": "Meat",
    "store": "Aldi",
-   "price": 6.49
+   "price": 6.49,
+   "pack": {
+    "unit": "lb",
+    "size": 1,
+    "label": "1 lb pack",
+    "n": 1,
+    "each": 6.49
+   }
   },
   {
    "id": "steak",
@@ -130,7 +235,14 @@
    "qty": "about 1 lb",
    "section": "Meat",
    "store": "Aldi",
-   "price": 6.99
+   "price": 6.99,
+   "pack": {
+    "unit": "lb",
+    "size": 1,
+    "label": "lb",
+    "n": 1,
+    "each": 6.99
+   }
   },
   {
    "id": "sausage",
@@ -138,7 +250,14 @@
    "qty": "13 oz rope",
    "section": "Meat",
    "store": "Aldi",
-   "price": 2.99
+   "price": 2.99,
+   "pack": {
+    "unit": "rope",
+    "size": 1,
+    "label": "13 oz rope",
+    "n": 1,
+    "each": 2.99
+   }
   },
   {
    "id": "bkfsausage",
@@ -146,7 +265,14 @@
    "qty": "8 count, frozen",
    "section": "Meat",
    "store": "Aldi",
-   "price": 3.49
+   "price": 3.49,
+   "pack": {
+    "unit": "patty",
+    "size": 8,
+    "label": "8-count box",
+    "n": 1,
+    "each": 3.49
+   }
   },
   {
    "id": "onions",
@@ -154,7 +280,14 @@
    "qty": "3 lb bag",
    "section": "Produce",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "onion",
+    "size": 6,
+    "label": "3 lb bag",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "redonion",
@@ -162,7 +295,14 @@
    "qty": "1",
    "section": "Produce",
    "store": "Aldi",
-   "price": 0.89
+   "price": 0.89,
+   "pack": {
+    "unit": "onion",
+    "size": 1,
+    "label": "onion",
+    "n": 1,
+    "each": 0.89
+   }
   },
   {
    "id": "garlic",
@@ -170,7 +310,14 @@
    "qty": "1 bulb",
    "section": "Produce",
    "store": "Aldi",
-   "price": 0.5
+   "price": 0.5,
+   "pack": {
+    "unit": "clove",
+    "size": 10,
+    "label": "bulb",
+    "n": 1,
+    "each": 0.5
+   }
   },
   {
    "id": "ginger",
@@ -178,7 +325,14 @@
    "qty": "one 3-inch knob",
    "section": "Produce",
    "store": "Publix",
-   "price": 0.89
+   "price": 0.89,
+   "pack": {
+    "unit": "tbsp",
+    "size": 4,
+    "label": "3-inch knob",
+    "n": 1,
+    "each": 0.89
+   }
   },
   {
    "id": "peppers",
@@ -186,7 +340,14 @@
    "qty": "3-pack",
    "section": "Produce",
    "store": "Aldi",
-   "price": 2.99
+   "price": 2.99,
+   "pack": {
+    "unit": "pepper",
+    "size": 3,
+    "label": "3-pack",
+    "n": 1,
+    "each": 2.99
+   }
   },
   {
    "id": "jalapeno",
@@ -194,7 +355,14 @@
    "qty": "5",
    "section": "Produce",
    "store": "Aldi",
-   "price": 0.99
+   "price": 0.99,
+   "pack": {
+    "unit": "jalapeño",
+    "size": 1,
+    "label": "jalapeño",
+    "n": 5,
+    "each": 0.2
+   }
   },
   {
    "id": "limes",
@@ -202,15 +370,29 @@
    "qty": "1 bag (about 6)",
    "section": "Produce",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "lime",
+    "size": 6,
+    "label": "bag of 6",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "lemons",
    "name": "Lemons",
-   "qty": "1 bag",
+   "qty": "6 (1 bag)",
    "section": "Produce",
    "store": "Aldi",
-   "price": 2.99
+   "price": 2.99,
+   "pack": {
+    "unit": "lemon",
+    "size": 1,
+    "label": "lemon",
+    "n": 6,
+    "each": 0.5
+   }
   },
   {
    "id": "avocado",
@@ -218,7 +400,14 @@
    "qty": "2",
    "section": "Produce",
    "store": "Aldi",
-   "price": 1.78
+   "price": 1.78,
+   "pack": {
+    "unit": "avocado",
+    "size": 1,
+    "label": "avocado",
+    "n": 2,
+    "each": 0.89
+   }
   },
   {
    "id": "cilantro",
@@ -226,7 +415,14 @@
    "qty": "1 bunch",
    "section": "Produce",
    "store": "Aldi",
-   "price": 0.79
+   "price": 0.79,
+   "pack": {
+    "unit": "bunch",
+    "size": 1,
+    "label": "bunch",
+    "n": 1,
+    "each": 0.79
+   }
   },
   {
    "id": "greenonion",
@@ -234,7 +430,14 @@
    "qty": "1 bunch",
    "section": "Produce",
    "store": "Aldi",
-   "price": 0.89
+   "price": 0.89,
+   "pack": {
+    "unit": "onion",
+    "size": 6,
+    "label": "bunch",
+    "n": 1,
+    "each": 0.89
+   }
   },
   {
    "id": "spinach",
@@ -242,7 +445,14 @@
    "qty": "6 oz bag",
    "section": "Produce",
    "store": "Aldi",
-   "price": 1.99
+   "price": 1.99,
+   "pack": {
+    "unit": "oz",
+    "size": 6,
+    "label": "6 oz bag",
+    "n": 1,
+    "each": 1.99
+   }
   },
   {
    "id": "kale",
@@ -250,7 +460,14 @@
    "qty": "10 oz bag",
    "section": "Produce",
    "store": "Aldi",
-   "price": 2.29
+   "price": 2.29,
+   "pack": {
+    "unit": "oz",
+    "size": 10,
+    "label": "10 oz bag",
+    "n": 1,
+    "each": 2.29
+   }
   },
   {
    "id": "romaine",
@@ -258,7 +475,14 @@
    "qty": "3-pack",
    "section": "Produce",
    "store": "Aldi",
-   "price": 2.99
+   "price": 2.99,
+   "pack": {
+    "unit": "heart",
+    "size": 3,
+    "label": "3-pack",
+    "n": 1,
+    "each": 2.99
+   }
   },
   {
    "id": "lettuce",
@@ -266,7 +490,14 @@
    "qty": "1 head",
    "section": "Produce",
    "store": "Aldi",
-   "price": 1.99
+   "price": 1.99,
+   "pack": {
+    "unit": "head",
+    "size": 1,
+    "label": "head",
+    "n": 1,
+    "each": 1.99
+   }
   },
   {
    "id": "cherrytom",
@@ -274,7 +505,14 @@
    "qty": "1 pint",
    "section": "Produce",
    "store": "Aldi",
-   "price": 1.99
+   "price": 1.99,
+   "pack": {
+    "unit": "cup",
+    "size": 2,
+    "label": "pint",
+    "n": 1,
+    "each": 1.99
+   }
   },
   {
    "id": "cucumber",
@@ -282,7 +520,14 @@
    "qty": "1",
    "section": "Produce",
    "store": "Aldi",
-   "price": 0.69
+   "price": 0.69,
+   "pack": {
+    "unit": "cucumber",
+    "size": 1,
+    "label": "cucumber",
+    "n": 1,
+    "each": 0.69
+   }
   },
   {
    "id": "celery",
@@ -290,7 +535,14 @@
    "qty": "1 bunch",
    "section": "Produce",
    "store": "Aldi",
-   "price": 1.49
+   "price": 1.49,
+   "pack": {
+    "unit": "rib",
+    "size": 8,
+    "label": "bunch",
+    "n": 1,
+    "each": 1.49
+   }
   },
   {
    "id": "carrots",
@@ -298,7 +550,14 @@
    "qty": "2 lb bag",
    "section": "Produce",
    "store": "Aldi",
-   "price": 1.29
+   "price": 1.29,
+   "pack": {
+    "unit": "carrot",
+    "size": 12,
+    "label": "2 lb bag",
+    "n": 1,
+    "each": 1.29
+   }
   },
   {
    "id": "potatoes",
@@ -306,7 +565,14 @@
    "qty": "1½ lb bag",
    "section": "Produce",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "lb",
+    "size": 1.5,
+    "label": "1½ lb bag",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "sweetpot",
@@ -314,7 +580,14 @@
    "qty": "3 lb bag",
    "section": "Produce",
    "store": "Aldi",
-   "price": 2.99
+   "price": 2.99,
+   "pack": {
+    "unit": "sweet potato",
+    "size": 5,
+    "label": "3 lb bag",
+    "n": 1,
+    "each": 2.99
+   }
   },
   {
    "id": "broccoli",
@@ -322,7 +595,14 @@
    "qty": "about 2 lb",
    "section": "Produce",
    "store": "Aldi",
-   "price": 3.98
+   "price": 3.98,
+   "pack": {
+    "unit": "lb",
+    "size": 1,
+    "label": "lb",
+    "n": 2,
+    "each": 1.99
+   }
   },
   {
    "id": "greenbeans",
@@ -330,7 +610,14 @@
    "qty": "12 oz bag",
    "section": "Produce",
    "store": "Aldi",
-   "price": 1.99
+   "price": 1.99,
+   "pack": {
+    "unit": "oz",
+    "size": 12,
+    "label": "12 oz bag",
+    "n": 1,
+    "each": 1.99
+   }
   },
   {
    "id": "slaw",
@@ -338,7 +625,14 @@
    "qty": "14 oz bag",
    "section": "Produce",
    "store": "Aldi",
-   "price": 1.69
+   "price": 1.69,
+   "pack": {
+    "unit": "cup",
+    "size": 6,
+    "label": "14 oz bag",
+    "n": 1,
+    "each": 1.69
+   }
   },
   {
    "id": "bananas",
@@ -346,7 +640,14 @@
    "qty": "1 bunch",
    "section": "Produce",
    "store": "Aldi",
-   "price": 1.49
+   "price": 1.49,
+   "pack": {
+    "unit": "banana",
+    "size": 6,
+    "label": "bunch",
+    "n": 1,
+    "each": 1.49
+   }
   },
   {
    "id": "berries",
@@ -354,7 +655,14 @@
    "qty": "16 oz bag",
    "section": "Frozen",
    "store": "Aldi",
-   "price": 3.29
+   "price": 3.29,
+   "pack": {
+    "unit": "cup",
+    "size": 3.5,
+    "label": "16 oz bag",
+    "n": 1,
+    "each": 3.29
+   }
   },
   {
    "id": "peascarrots",
@@ -362,15 +670,29 @@
    "qty": "16 oz bag",
    "section": "Frozen",
    "store": "Aldi",
-   "price": 1.15
+   "price": 1.15,
+   "pack": {
+    "unit": "cup",
+    "size": 3.5,
+    "label": "16 oz bag",
+    "n": 1,
+    "each": 1.15
+   }
   },
   {
    "id": "corn",
    "name": "Frozen sweet corn",
-   "qty": "16 oz bag",
+   "qty": "12 oz bag",
    "section": "Frozen",
    "store": "Aldi",
-   "price": 1.15
+   "price": 1.15,
+   "pack": {
+    "unit": "cup",
+    "size": 2.5,
+    "label": "12 oz bag",
+    "n": 1,
+    "each": 1.15
+   }
   },
   {
    "id": "rice",
@@ -378,7 +700,14 @@
    "qty": "3 lb bag",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 3.29
+   "price": 3.29,
+   "pack": {
+    "unit": "cup dry",
+    "size": 7,
+    "label": "3 lb bag",
+    "n": 1,
+    "each": 3.29
+   }
   },
   {
    "id": "oats",
@@ -386,7 +715,14 @@
    "qty": "18 oz",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 2.19
+   "price": 2.19,
+   "pack": {
+    "unit": "cup",
+    "size": 6,
+    "label": "18 oz canister",
+    "n": 1,
+    "each": 2.19
+   }
   },
   {
    "id": "pb",
@@ -394,7 +730,14 @@
    "qty": "16 oz jar",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 2.29
+   "price": 2.29,
+   "pack": {
+    "unit": "tbsp",
+    "size": 28,
+    "label": "16 oz jar",
+    "n": 1,
+    "each": 2.29
+   }
   },
   {
    "id": "honey",
@@ -402,7 +745,14 @@
    "qty": "12 oz",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 3.49
+   "price": 3.49,
+   "pack": {
+    "unit": "tbsp",
+    "size": 24,
+    "label": "12 oz bottle",
+    "n": 1,
+    "each": 3.49
+   }
   },
   {
    "id": "broth",
@@ -410,7 +760,14 @@
    "qty": "two 32 oz cartons",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 3.58
+   "price": 3.58,
+   "pack": {
+    "unit": "cup",
+    "size": 4,
+    "label": "32 oz carton",
+    "n": 2,
+    "each": 1.79
+   }
   },
   {
    "id": "beans",
@@ -418,7 +775,14 @@
    "qty": "2 cans",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.7
+   "price": 1.7,
+   "pack": {
+    "unit": "can",
+    "size": 1,
+    "label": "can",
+    "n": 2,
+    "each": 0.85
+   }
   },
   {
    "id": "kidney",
@@ -426,7 +790,14 @@
    "qty": "1 can",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 0.89
+   "price": 0.89,
+   "pack": {
+    "unit": "can",
+    "size": 1,
+    "label": "can",
+    "n": 1,
+    "each": 0.89
+   }
   },
   {
    "id": "cannellini",
@@ -434,7 +805,14 @@
    "qty": "2 cans",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.78
+   "price": 1.78,
+   "pack": {
+    "unit": "can",
+    "size": 1,
+    "label": "can",
+    "n": 2,
+    "each": 0.89
+   }
   },
   {
    "id": "diced",
@@ -442,7 +820,14 @@
    "qty": "28 oz can",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.49
+   "price": 1.49,
+   "pack": {
+    "unit": "can",
+    "size": 1,
+    "label": "14.5 oz can",
+    "n": 2,
+    "each": 0.74
+   }
   },
   {
    "id": "fireroasted",
@@ -450,7 +835,14 @@
    "qty": "14.5 oz can",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.09
+   "price": 1.09,
+   "pack": {
+    "unit": "can",
+    "size": 1,
+    "label": "14.5 oz can",
+    "n": 1,
+    "each": 1.09
+   }
   },
   {
    "id": "crushed",
@@ -458,7 +850,14 @@
    "qty": "28 oz can",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.29
+   "price": 1.29,
+   "pack": {
+    "unit": "can",
+    "size": 1,
+    "label": "28 oz can",
+    "n": 1,
+    "each": 1.29
+   }
   },
   {
    "id": "marinara",
@@ -466,7 +865,14 @@
    "qty": "24 oz jar",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.99
+   "price": 1.99,
+   "pack": {
+    "unit": "cup",
+    "size": 3,
+    "label": "24 oz jar",
+    "n": 1,
+    "each": 1.99
+   }
   },
   {
    "id": "salsa",
@@ -474,7 +880,14 @@
    "qty": "16 oz jar",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.99
+   "price": 1.99,
+   "pack": {
+    "unit": "cup",
+    "size": 2,
+    "label": "16 oz jar",
+    "n": 1,
+    "each": 1.99
+   }
   },
   {
    "id": "chipotle",
@@ -482,7 +895,14 @@
    "qty": "7 oz can",
    "section": "Shelf",
    "store": "Publix",
-   "price": 2.29
+   "price": 2.29,
+   "pack": {
+    "unit": "pepper",
+    "size": 8,
+    "label": "7 oz can",
+    "n": 1,
+    "each": 2.29
+   }
   },
   {
    "id": "soy",
@@ -490,7 +910,14 @@
    "qty": "15 oz bottle",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.49
+   "price": 1.49,
+   "pack": {
+    "unit": "tbsp",
+    "size": 30,
+    "label": "15 oz bottle",
+    "n": 1,
+    "each": 1.49
+   }
   },
   {
    "id": "hotsauce",
@@ -498,7 +925,14 @@
    "qty": "12 oz bottle",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.29
+   "price": 1.29,
+   "pack": {
+    "unit": "tbsp",
+    "size": 24,
+    "label": "12 oz bottle",
+    "n": 1,
+    "each": 1.29
+   }
   },
   {
    "id": "dijon",
@@ -506,7 +940,14 @@
    "qty": "12 oz jar",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.29
+   "price": 1.29,
+   "pack": {
+    "unit": "tbsp",
+    "size": 24,
+    "label": "12 oz jar",
+    "n": 1,
+    "each": 1.29
+   }
   },
   {
    "id": "pickles",
@@ -514,7 +955,14 @@
    "qty": "16 oz jar",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.99
+   "price": 1.99,
+   "pack": {
+    "unit": "cup",
+    "size": 2,
+    "label": "16 oz jar",
+    "n": 1,
+    "each": 1.99
+   }
   },
   {
    "id": "panko",
@@ -522,7 +970,14 @@
    "qty": "8 oz canister",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.79
+   "price": 1.79,
+   "pack": {
+    "unit": "cup",
+    "size": 3,
+    "label": "8 oz canister",
+    "n": 1,
+    "each": 1.79
+   }
   },
   {
    "id": "penne",
@@ -530,7 +985,14 @@
    "qty": "16 oz box",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.29
+   "price": 1.29,
+   "pack": {
+    "unit": "oz",
+    "size": 16,
+    "label": "16 oz box",
+    "n": 1,
+    "each": 1.29
+   }
   },
   {
    "id": "spaghetti",
@@ -538,7 +1000,14 @@
    "qty": "16 oz box",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.29
+   "price": 1.29,
+   "pack": {
+    "unit": "oz",
+    "size": 16,
+    "label": "16 oz box",
+    "n": 1,
+    "each": 1.29
+   }
   },
   {
    "id": "macaroni",
@@ -546,7 +1015,14 @@
    "qty": "16 oz box",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 0.95
+   "price": 0.95,
+   "pack": {
+    "unit": "oz",
+    "size": 16,
+    "label": "16 oz box",
+    "n": 1,
+    "each": 0.95
+   }
   },
   {
    "id": "flourtort",
@@ -554,7 +1030,14 @@
    "qty": "8 count",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 2.29
+   "price": 2.29,
+   "pack": {
+    "unit": "tortilla",
+    "size": 8,
+    "label": "8-count pack",
+    "n": 1,
+    "each": 2.29
+   }
   },
   {
    "id": "corntort",
@@ -562,7 +1045,14 @@
    "qty": "30 count",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.99
+   "price": 1.99,
+   "pack": {
+    "unit": "tortilla",
+    "size": 30,
+    "label": "30-count pack",
+    "n": 1,
+    "each": 1.99
+   }
   },
   {
    "id": "pita",
@@ -570,7 +1060,14 @@
    "qty": "6 count",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.99
+   "price": 1.99,
+   "pack": {
+    "unit": "pita",
+    "size": 6,
+    "label": "6-count bag",
+    "n": 1,
+    "each": 1.99
+   }
   },
   {
    "id": "hoagie",
@@ -578,7 +1075,14 @@
    "qty": "6 count",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 2.49
+   "price": 2.49,
+   "pack": {
+    "unit": "roll",
+    "size": 6,
+    "label": "6-count bag",
+    "n": 1,
+    "each": 2.49
+   }
   },
   {
    "id": "buns",
@@ -586,7 +1090,14 @@
    "qty": "8 count",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.49
+   "price": 1.49,
+   "pack": {
+    "unit": "bun",
+    "size": 8,
+    "label": "8-count bag",
+    "n": 1,
+    "each": 1.49
+   }
   },
   {
    "id": "muffins",
@@ -594,7 +1105,14 @@
    "qty": "6 count",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.29
+   "price": 1.29,
+   "pack": {
+    "unit": "muffin",
+    "size": 6,
+    "label": "6-count pack",
+    "n": 1,
+    "each": 1.29
+   }
   },
   {
    "id": "bread",
@@ -602,7 +1120,14 @@
    "qty": "1",
    "section": "Shelf",
    "store": "Aldi",
-   "price": 1.69
+   "price": 1.69,
+   "pack": {
+    "unit": "slice",
+    "size": 12,
+    "label": "loaf",
+    "n": 1,
+    "each": 1.69
+   }
   }
  ],
  "pantry": [
@@ -762,47 +1287,58 @@
    "ingredients": [
     {
      "g": "breasts",
-     "qty": "about 2 lb, whole"
+     "qty": "about 2 lb, whole",
+     "amt": 2
     },
     {
      "g": "sweetpot",
-     "qty": "2 medium, ½-inch cubes"
+     "qty": "2 medium, ½-inch cubes",
+     "amt": 2
     },
     {
      "g": "onions",
-     "qty": "1, diced"
+     "qty": "1, diced",
+     "amt": 1
     },
     {
      "g": "garlic",
-     "qty": "4 cloves, minced"
+     "qty": "4 cloves, minced",
+     "amt": 4
     },
     {
      "g": "jalapeno",
-     "qty": "3, diced (seeds in for heat)"
+     "qty": "3, diced (seeds in for heat)",
+     "amt": 3
     },
     {
      "g": "chipotle",
-     "qty": "2 peppers, minced, plus 1 tbsp of the sauce"
+     "qty": "2 peppers, minced, plus 1 tbsp of the sauce",
+     "amt": 2
     },
     {
      "g": "beans",
-     "qty": "1 can, rinsed"
+     "qty": "1 can, rinsed",
+     "amt": 1
     },
     {
      "g": "diced",
-     "qty": "28 oz can"
+     "qty": "28 oz can",
+     "amt": 2
     },
     {
      "g": "broth",
-     "qty": "5 cups"
+     "qty": "5 cups",
+     "amt": 5
     },
     {
      "g": "corn",
-     "qty": "1½ cups"
+     "qty": "1½ cups",
+     "amt": 1.5
     },
     {
      "g": "limes",
-     "qty": "juice of 2"
+     "qty": "juice of 2",
+     "amt": 2
     },
     {
      "p": "chili",
@@ -850,23 +1386,28 @@
     },
     {
      "g": "corntort",
-     "qty": "1, cut in strips"
+     "qty": "1, cut in strips",
+     "amt": 1
     },
     {
      "g": "mexcheese",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 0.125
     },
     {
      "g": "jalapeno",
-     "qty": "a few slices"
+     "qty": "a few slices",
+     "amt": 0.25
     },
     {
      "g": "yogurt",
-     "qty": "a spoonful"
+     "qty": "a spoonful",
+     "amt": 0.1
     },
     {
      "g": "limes",
-     "qty": "a wedge"
+     "qty": "a wedge",
+     "amt": 0.2
     },
     {
      "p": "spray",
@@ -893,31 +1434,38 @@
     },
     {
      "g": "corntort",
-     "qty": "3, cut in strips"
+     "qty": "3, cut in strips",
+     "amt": 3
     },
     {
      "g": "avocado",
-     "qty": "1, diced"
+     "qty": "1, diced",
+     "amt": 1
     },
     {
      "g": "mexcheese",
-     "qty": "for topping"
+     "qty": "for topping",
+     "amt": 0.25
     },
     {
      "g": "yogurt",
-     "qty": "for topping"
+     "qty": "for topping",
+     "amt": 0.2
     },
     {
      "g": "jalapeno",
-     "qty": "1, sliced"
+     "qty": "1, sliced",
+     "amt": 1
     },
     {
      "g": "cilantro",
-     "qty": "chopped"
+     "qty": "chopped",
+     "amt": 0.5
     },
     {
      "g": "limes",
-     "qty": "wedges"
+     "qty": "wedges",
+     "amt": 0.5
     },
     {
      "p": "spray",
@@ -945,23 +1493,28 @@
     },
     {
      "g": "corntort",
-     "qty": "4"
+     "qty": "4",
+     "amt": 4
     },
     {
      "g": "salsa",
-     "qty": "⅓ cup"
+     "qty": "⅓ cup",
+     "amt": 0.333
     },
     {
      "g": "mexcheese",
-     "qty": "⅓ cup"
+     "qty": "⅓ cup",
+     "amt": 0.333
     },
     {
      "g": "avocado",
-     "qty": "½, sliced"
+     "qty": "½, sliced",
+     "amt": 0.5
     },
     {
      "g": "greenonion",
-     "qty": "for topping"
+     "qty": "for topping",
+     "amt": 1
     },
     {
      "p": "spray",
@@ -986,35 +1539,43 @@
    "ingredients": [
     {
      "g": "turkey",
-     "qty": "2 lb"
+     "qty": "2 lb",
+     "amt": 2
     },
     {
      "g": "onions",
-     "qty": "1, diced"
+     "qty": "1, diced",
+     "amt": 1
     },
     {
      "g": "garlic",
-     "qty": "3 cloves, minced"
+     "qty": "3 cloves, minced",
+     "amt": 3
     },
     {
      "g": "sweetpot",
-     "qty": "2 medium, ½-inch cubes"
+     "qty": "2 medium, ½-inch cubes",
+     "amt": 2
     },
     {
      "g": "beans",
-     "qty": "1 can, rinsed"
+     "qty": "1 can, rinsed",
+     "amt": 1
     },
     {
      "g": "kidney",
-     "qty": "1 can, rinsed"
+     "qty": "1 can, rinsed",
+     "amt": 1
     },
     {
      "g": "diced",
-     "qty": "28 oz can"
+     "qty": "28 oz can",
+     "amt": 2
     },
     {
      "g": "broth",
-     "qty": "1½ cups"
+     "qty": "1½ cups",
+     "amt": 1.5
     },
     {
      "p": "oil",
@@ -1064,15 +1625,18 @@
     },
     {
      "g": "mexcheese",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 0.125
     },
     {
      "g": "greenonion",
-     "qty": "for topping"
+     "qty": "for topping",
+     "amt": 0.5
     },
     {
      "g": "yogurt",
-     "qty": "a spoonful"
+     "qty": "a spoonful",
+     "amt": 0.1
     }
    ],
    "steps": [
@@ -1094,23 +1658,28 @@
     },
     {
      "g": "corntort",
-     "qty": "3, cut in strips"
+     "qty": "3, cut in strips",
+     "amt": 3
     },
     {
      "g": "mexcheese",
-     "qty": "for topping"
+     "qty": "for topping",
+     "amt": 0.25
     },
     {
      "g": "yogurt",
-     "qty": "for topping"
+     "qty": "for topping",
+     "amt": 0.2
     },
     {
      "g": "greenonion",
-     "qty": "sliced"
+     "qty": "sliced",
+     "amt": 1
     },
     {
      "g": "cilantro",
-     "qty": "chopped"
+     "qty": "chopped",
+     "amt": 0.5
     },
     {
      "p": "spray",
@@ -1137,15 +1706,18 @@
     },
     {
      "g": "macaroni",
-     "qty": "3 oz"
+     "qty": "3 oz",
+     "amt": 3
     },
     {
      "g": "mexcheese",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 0.25
     },
     {
      "g": "greenonion",
-     "qty": "for topping"
+     "qty": "for topping",
+     "amt": 0.5
     },
     {
      "p": "salt",
@@ -1168,31 +1740,38 @@
    "ingredients": [
     {
      "g": "turkey",
-     "qty": "2 lb"
+     "qty": "2 lb",
+     "amt": 2
     },
     {
      "g": "onions",
-     "qty": "1, diced"
+     "qty": "1, diced",
+     "amt": 1
     },
     {
      "g": "garlic",
-     "qty": "4 cloves, minced"
+     "qty": "4 cloves, minced",
+     "amt": 4
     },
     {
      "g": "crushed",
-     "qty": "28 oz can"
+     "qty": "28 oz can",
+     "amt": 1
     },
     {
      "g": "diced",
-     "qty": "28 oz can"
+     "qty": "28 oz can",
+     "amt": 2
     },
     {
      "g": "broth",
-     "qty": "4 cups"
+     "qty": "4 cups",
+     "amt": 4
     },
     {
      "g": "spinach",
-     "qty": "4 big handfuls"
+     "qty": "4 big handfuls",
+     "amt": 4
     },
     {
      "p": "oil",
@@ -1238,15 +1817,18 @@
     },
     {
      "g": "penne",
-     "qty": "2 oz"
+     "qty": "2 oz",
+     "amt": 2
     },
     {
      "g": "ricotta",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 0.125
     },
     {
      "g": "mozz",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 0.125
     },
     {
      "p": "salt",
@@ -1273,27 +1855,33 @@
     },
     {
      "g": "penne",
-     "qty": "4 oz"
+     "qty": "4 oz",
+     "amt": 4
     },
     {
      "g": "ricotta",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 0.25
     },
     {
      "g": "mozz",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 0.25
     },
     {
      "g": "parm",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 2
     },
     {
      "g": "bread",
-     "qty": "4 slices"
+     "qty": "4 slices",
+     "amt": 4
     },
     {
      "g": "garlic",
-     "qty": "1 clove, halved"
+     "qty": "1 clove, halved",
+     "amt": 1
     },
     {
      "p": "oil",
@@ -1325,19 +1913,23 @@
     },
     {
      "g": "penne",
-     "qty": "3 oz"
+     "qty": "3 oz",
+     "amt": 3
     },
     {
      "g": "ricotta",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 0.25
     },
     {
      "g": "mozz",
-     "qty": "⅓ cup"
+     "qty": "⅓ cup",
+     "amt": 0.333
     },
     {
      "g": "parm",
-     "qty": "1 tbsp"
+     "qty": "1 tbsp",
+     "amt": 1
     },
     {
      "p": "salt",
@@ -1361,39 +1953,48 @@
    "ingredients": [
     {
      "g": "breasts",
-     "qty": "about 2 lb, whole"
+     "qty": "about 2 lb, whole",
+     "amt": 2
     },
     {
      "g": "potatoes",
-     "qty": "1½ lb, halved"
+     "qty": "1½ lb, halved",
+     "amt": 1.5
     },
     {
      "g": "carrots",
-     "qty": "3, sliced"
+     "qty": "3, sliced",
+     "amt": 3
     },
     {
      "g": "celery",
-     "qty": "3 ribs, sliced"
+     "qty": "3 ribs, sliced",
+     "amt": 3
     },
     {
      "g": "onions",
-     "qty": "1, diced"
+     "qty": "1, diced",
+     "amt": 1
     },
     {
      "g": "garlic",
-     "qty": "3 cloves, minced"
+     "qty": "3 cloves, minced",
+     "amt": 3
     },
     {
      "g": "broth",
-     "qty": "4 cups"
+     "qty": "4 cups",
+     "amt": 4
     },
     {
      "g": "milk",
-     "qty": "1 cup"
+     "qty": "1 cup",
+     "amt": 1
     },
     {
      "g": "peascarrots",
-     "qty": "1½ cups"
+     "qty": "1½ cups",
+     "amt": 1.5
     },
     {
      "p": "cornstarch",
@@ -1440,7 +2041,8 @@
     },
     {
      "g": "biscuits",
-     "qty": "1"
+     "qty": "1",
+     "amt": 1
     },
     {
      "p": "pepper",
@@ -1467,15 +2069,18 @@
     },
     {
      "g": "biscuits",
-     "qty": "4"
+     "qty": "4",
+     "amt": 4
     },
     {
      "g": "greenbeans",
-     "qty": "8 oz, trimmed"
+     "qty": "8 oz, trimmed",
+     "amt": 8
     },
     {
      "g": "lemons",
-     "qty": "a squeeze"
+     "qty": "a squeeze",
+     "amt": 0.25
     },
     {
      "p": "oil",
@@ -1507,7 +2112,8 @@
     },
     {
      "g": "biscuits",
-     "qty": "2"
+     "qty": "2",
+     "amt": 2
     },
     {
      "p": "cornstarch",
@@ -1535,39 +2141,48 @@
    "ingredients": [
     {
      "g": "sausage",
-     "qty": "13 oz rope, sliced"
+     "qty": "13 oz rope, sliced",
+     "amt": 1
     },
     {
      "g": "potatoes",
-     "qty": "1½ lb, quartered"
+     "qty": "1½ lb, quartered",
+     "amt": 1.5
     },
     {
      "g": "cannellini",
-     "qty": "2 cans, rinsed"
+     "qty": "2 cans, rinsed",
+     "amt": 2
     },
     {
      "g": "onions",
-     "qty": "1, diced"
+     "qty": "1, diced",
+     "amt": 1
     },
     {
      "g": "garlic",
-     "qty": "4 cloves, minced"
+     "qty": "4 cloves, minced",
+     "amt": 4
     },
     {
      "g": "broth",
-     "qty": "6 cups"
+     "qty": "6 cups",
+     "amt": 6
     },
     {
      "g": "kale",
-     "qty": "5 oz (half the bag)"
+     "qty": "5 oz (half the bag)",
+     "amt": 5
     },
     {
      "g": "milk",
-     "qty": "1 cup"
+     "qty": "1 cup",
+     "amt": 1
     },
     {
      "g": "parm",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 4
     },
     {
      "p": "oil",
@@ -1614,11 +2229,13 @@
     },
     {
      "g": "parm",
-     "qty": "1 tbsp"
+     "qty": "1 tbsp",
+     "amt": 1
     },
     {
      "g": "bread",
-     "qty": "1 thick slice"
+     "qty": "1 thick slice",
+     "amt": 1
     },
     {
      "p": "flakes",
@@ -1644,15 +2261,18 @@
     },
     {
      "g": "bread",
-     "qty": "4 slices"
+     "qty": "4 slices",
+     "amt": 4
     },
     {
      "g": "mozz",
-     "qty": "⅓ cup"
+     "qty": "⅓ cup",
+     "amt": 0.333
     },
     {
      "g": "parm",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 2
     },
     {
      "p": "garlicpowder",
@@ -1684,11 +2304,13 @@
     },
     {
      "g": "eggs",
-     "qty": "2"
+     "qty": "2",
+     "amt": 2
     },
     {
      "g": "kale",
-     "qty": "a handful"
+     "qty": "a handful",
+     "amt": 1
     },
     {
      "p": "oil",
@@ -1720,11 +2342,13 @@
    "ingredients": [
     {
      "g": "breasts",
-     "qty": "about 2 lb, whole"
+     "qty": "about 2 lb, whole",
+     "amt": 2
     },
     {
      "g": "onions",
-     "qty": "1, sliced"
+     "qty": "1, sliced",
+     "amt": 1
     },
     {
      "p": "ketchup",
@@ -1786,15 +2410,18 @@
     },
     {
      "g": "rice",
-     "qty": "¾ cup cooked"
+     "qty": "¾ cup cooked",
+     "amt": 0.25
     },
     {
      "g": "slaw",
-     "qty": "1½ cups"
+     "qty": "1½ cups",
+     "amt": 1.5
     },
     {
      "g": "yogurt",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 0.125
     },
     {
      "p": "vinegar",
@@ -1806,7 +2433,8 @@
     },
     {
      "g": "corn",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 0.25
     }
    ],
    "steps": [
@@ -1830,19 +2458,23 @@
     },
     {
      "g": "buns",
-     "qty": "2"
+     "qty": "2",
+     "amt": 2
     },
     {
      "g": "slaw",
-     "qty": "2 cups"
+     "qty": "2 cups",
+     "amt": 2
     },
     {
      "g": "yogurt",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 0.25
     },
     {
      "g": "pickles",
-     "qty": "a handful"
+     "qty": "a handful",
+     "amt": 0.25
     },
     {
      "p": "vinegar",
@@ -1878,19 +2510,23 @@
     },
     {
      "g": "flourtort",
-     "qty": "2"
+     "qty": "2",
+     "amt": 2
     },
     {
      "g": "cheddar",
-     "qty": "½ cup"
+     "qty": "½ cup",
+     "amt": 0.5
     },
     {
      "g": "redonion",
-     "qty": "¼, thinly sliced"
+     "qty": "¼, thinly sliced",
+     "amt": 0.25
     },
     {
      "g": "cilantro",
-     "qty": "a little"
+     "qty": "a little",
+     "amt": 0.25
     },
     {
      "p": "spray",
@@ -1913,23 +2549,28 @@
    "ingredients": [
     {
      "g": "eggs",
-     "qty": "3"
+     "qty": "3",
+     "amt": 3
     },
     {
      "g": "flourtort",
-     "qty": "1"
+     "qty": "1",
+     "amt": 1
     },
     {
      "g": "spinach",
-     "qty": "a big handful"
+     "qty": "a big handful",
+     "amt": 1.5
     },
     {
      "g": "feta",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 0.5
     },
     {
      "g": "salsa",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 0.125
     },
     {
      "p": "spray",
@@ -1960,23 +2601,28 @@
    "ingredients": [
     {
      "g": "yogurt",
-     "qty": "1 cup"
+     "qty": "1 cup",
+     "amt": 1
     },
     {
      "g": "bananas",
-     "qty": "1, sliced"
+     "qty": "1, sliced",
+     "amt": 1
     },
     {
      "g": "pb",
-     "qty": "1 tbsp"
+     "qty": "1 tbsp",
+     "amt": 1
     },
     {
      "g": "honey",
-     "qty": "1 tsp"
+     "qty": "1 tsp",
+     "amt": 0.333
     },
     {
      "g": "oats",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 0.125
     },
     {
      "p": "cinnamon",
@@ -2000,23 +2646,28 @@
    "ingredients": [
     {
      "g": "oats",
-     "qty": "½ cup"
+     "qty": "½ cup",
+     "amt": 0.5
     },
     {
      "g": "bananas",
-     "qty": "1"
+     "qty": "1",
+     "amt": 1
     },
     {
      "g": "eggs",
-     "qty": "2"
+     "qty": "2",
+     "amt": 2
     },
     {
      "g": "yogurt",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 0.25
     },
     {
      "g": "berries",
-     "qty": "½ cup, thawed"
+     "qty": "½ cup, thawed",
+     "amt": 0.5
     },
     {
      "p": "cinnamon",
@@ -2044,19 +2695,23 @@
    "ingredients": [
     {
      "g": "muffins",
-     "qty": "2"
+     "qty": "2",
+     "amt": 2
     },
     {
      "g": "bkfsausage",
-     "qty": "2 patties"
+     "qty": "2 patties",
+     "amt": 2
     },
     {
      "g": "eggs",
-     "qty": "2"
+     "qty": "2",
+     "amt": 2
     },
     {
      "g": "slcheddar",
-     "qty": "2 slices"
+     "qty": "2 slices",
+     "amt": 2
     },
     {
      "p": "spray",
@@ -2084,27 +2739,33 @@
    "ingredients": [
     {
      "g": "turkey",
-     "qty": "1 lb"
+     "qty": "1 lb",
+     "amt": 1
     },
     {
      "g": "lettuce",
-     "qty": "1 head, leaves separated"
+     "qty": "1 head, leaves separated",
+     "amt": 1
     },
     {
      "g": "salsa",
-     "qty": "½ cup"
+     "qty": "½ cup",
+     "amt": 0.5
     },
     {
      "g": "mexcheese",
-     "qty": "½ cup"
+     "qty": "½ cup",
+     "amt": 0.5
     },
     {
      "g": "avocado",
-     "qty": "1, diced"
+     "qty": "1, diced",
+     "amt": 1
     },
     {
      "g": "limes",
-     "qty": "1, in wedges"
+     "qty": "1, in wedges",
+     "amt": 1
     },
     {
      "p": "oil",
@@ -2139,32 +2800,39 @@
    "cuisine": "Italian",
    "minutes": 25,
    "serves": "3",
+   "meals": 2,
    "protein": 42,
    "equip": "pot, skillet",
    "ingredients": [
     {
      "g": "breasts",
-     "qty": "about 1½ lb, in bite-size pieces"
+     "qty": "about 1½ lb, in bite-size pieces",
+     "amt": 1.5
     },
     {
      "g": "spaghetti",
-     "qty": "8 oz"
+     "qty": "8 oz",
+     "amt": 8
     },
     {
      "g": "spinach",
-     "qty": "1 bag"
+     "qty": "1 bag",
+     "amt": 6
     },
     {
      "g": "lemons",
-     "qty": "zest and juice of 1"
+     "qty": "zest and juice of 1",
+     "amt": 1
     },
     {
      "g": "garlic",
-     "qty": "4 cloves, sliced"
+     "qty": "4 cloves, sliced",
+     "amt": 4
     },
     {
      "g": "parm",
-     "qty": "⅓ cup"
+     "qty": "⅓ cup",
+     "amt": 5.333
     },
     {
      "p": "oil",
@@ -2200,35 +2868,43 @@
    "ingredients": [
     {
      "g": "steak",
-     "qty": "about 1 lb, thinly sliced"
+     "qty": "about 1 lb, thinly sliced",
+     "amt": 1
     },
     {
      "g": "broccoli",
-     "qty": "about 1 lb, in florets"
+     "qty": "about 1 lb, in florets",
+     "amt": 1
     },
     {
      "g": "rice",
-     "qty": "1 cup dry"
+     "qty": "1 cup dry",
+     "amt": 1
     },
     {
      "g": "garlic",
-     "qty": "3 cloves, minced"
+     "qty": "3 cloves, minced",
+     "amt": 3
     },
     {
      "g": "ginger",
-     "qty": "1 tbsp, grated"
+     "qty": "1 tbsp, grated",
+     "amt": 1
     },
     {
      "g": "soy",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 4
     },
     {
      "g": "honey",
-     "qty": "1 tbsp"
+     "qty": "1 tbsp",
+     "amt": 1
     },
     {
      "g": "greenonion",
-     "qty": "2, sliced"
+     "qty": "2, sliced",
+     "amt": 2
     },
     {
      "p": "cornstarch",
@@ -2261,35 +2937,43 @@
    "ingredients": [
     {
      "g": "turkey",
-     "qty": "1 lb"
+     "qty": "1 lb",
+     "amt": 1
     },
     {
      "g": "potatoes",
-     "qty": "1 lb, quartered"
+     "qty": "1 lb, quartered",
+     "amt": 1
     },
     {
      "g": "romaine",
-     "qty": "2 hearts, chopped"
+     "qty": "2 hearts, chopped",
+     "amt": 2
     },
     {
      "g": "cherrytom",
-     "qty": "1 cup, halved"
+     "qty": "1 cup, halved",
+     "amt": 1
     },
     {
      "g": "pickles",
-     "qty": "a handful, chopped"
+     "qty": "a handful, chopped",
+     "amt": 0.25
     },
     {
      "g": "redonion",
-     "qty": "½, diced"
+     "qty": "½, diced",
+     "amt": 0.5
     },
     {
      "g": "cheddar",
-     "qty": "½ cup"
+     "qty": "½ cup",
+     "amt": 0.5
     },
     {
      "g": "yogurt",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 0.25
     },
     {
      "p": "ketchup",
@@ -2332,24 +3016,29 @@
    "cuisine": "American",
    "minutes": 35,
    "serves": "3",
+   "meals": 2,
    "protein": 26,
    "equip": "sheet pan",
    "ingredients": [
     {
      "g": "sausage",
-     "qty": "13 oz rope, in coins"
+     "qty": "13 oz rope, in coins",
+     "amt": 1
     },
     {
      "g": "potatoes",
-     "qty": "1½ lb, halved"
+     "qty": "1½ lb, halved",
+     "amt": 1.5
     },
     {
      "g": "greenbeans",
-     "qty": "12 oz, trimmed"
+     "qty": "12 oz, trimmed",
+     "amt": 12
     },
     {
      "g": "dijon",
-     "qty": "for dipping"
+     "qty": "for dipping",
+     "amt": 2
     },
     {
      "p": "oil",
@@ -2389,31 +3078,38 @@
    "ingredients": [
     {
      "g": "breasts",
-     "qty": "about 1 lb, diced"
+     "qty": "about 1 lb, diced",
+     "amt": 1
     },
     {
      "g": "rice",
-     "qty": "3 cups cooked and cold"
+     "qty": "3 cups cooked and cold",
+     "amt": 1
     },
     {
      "g": "peascarrots",
-     "qty": "1 cup"
+     "qty": "1 cup",
+     "amt": 1
     },
     {
      "g": "eggs",
-     "qty": "2"
+     "qty": "2",
+     "amt": 2
     },
     {
      "g": "soy",
-     "qty": "3 tbsp"
+     "qty": "3 tbsp",
+     "amt": 3
     },
     {
      "g": "garlic",
-     "qty": "2 cloves, minced"
+     "qty": "2 cloves, minced",
+     "amt": 2
     },
     {
      "g": "greenonion",
-     "qty": "3, sliced"
+     "qty": "3, sliced",
+     "amt": 3
     },
     {
      "p": "oil",
@@ -2446,31 +3142,38 @@
    "ingredients": [
     {
      "g": "breasts",
-     "qty": "about 1 lb, in strips"
+     "qty": "about 1 lb, in strips",
+     "amt": 1
     },
     {
      "g": "hotsauce",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 4
     },
     {
      "g": "flourtort",
-     "qty": "2"
+     "qty": "2",
+     "amt": 2
     },
     {
      "g": "romaine",
-     "qty": "1 heart, shredded"
+     "qty": "1 heart, shredded",
+     "amt": 1
     },
     {
      "g": "celery",
-     "qty": "2 ribs, thinly sliced"
+     "qty": "2 ribs, thinly sliced",
+     "amt": 2
     },
     {
      "g": "cheddar",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 0.25
     },
     {
      "g": "yogurt",
-     "qty": "⅓ cup"
+     "qty": "⅓ cup",
+     "amt": 0.333
     },
     {
      "p": "dill",
@@ -2502,32 +3205,39 @@
    "cuisine": "Asian",
    "minutes": 30,
    "serves": "3",
+   "meals": 2,
    "protein": 40,
    "equip": "skillet, pot",
    "ingredients": [
     {
      "g": "thighs",
-     "qty": "about 2 lb"
+     "qty": "about 2 lb",
+     "amt": 2
     },
     {
      "g": "honey",
-     "qty": "3 tbsp"
+     "qty": "3 tbsp",
+     "amt": 3
     },
     {
      "g": "soy",
-     "qty": "3 tbsp"
+     "qty": "3 tbsp",
+     "amt": 3
     },
     {
      "g": "garlic",
-     "qty": "5 cloves, minced"
+     "qty": "5 cloves, minced",
+     "amt": 5
     },
     {
      "g": "greenbeans",
-     "qty": "12 oz, trimmed"
+     "qty": "12 oz, trimmed",
+     "amt": 12
     },
     {
      "g": "rice",
-     "qty": "1 cup dry"
+     "qty": "1 cup dry",
+     "amt": 1
     },
     {
      "p": "oil",
@@ -2563,31 +3273,38 @@
    "ingredients": [
     {
      "g": "turkey",
-     "qty": "1 lb"
+     "qty": "1 lb",
+     "amt": 1
     },
     {
      "g": "panko",
-     "qty": "⅓ cup"
+     "qty": "⅓ cup",
+     "amt": 0.333
     },
     {
      "g": "eggs",
-     "qty": "1"
+     "qty": "1",
+     "amt": 1
     },
     {
      "g": "parm",
-     "qty": "2 tbsp"
+     "qty": "2 tbsp",
+     "amt": 2
     },
     {
      "g": "marinara",
-     "qty": "1½ cups"
+     "qty": "1½ cups",
+     "amt": 1.5
     },
     {
      "g": "hoagie",
-     "qty": "4"
+     "qty": "4",
+     "amt": 4
     },
     {
      "g": "mozz",
-     "qty": "½ cup"
+     "qty": "½ cup",
+     "amt": 0.5
     },
     {
      "p": "italian",
@@ -2623,31 +3340,38 @@
    "ingredients": [
     {
      "g": "sweetpot",
-     "qty": "2 medium, ½-inch cubes"
+     "qty": "2 medium, ½-inch cubes",
+     "amt": 2
     },
     {
      "g": "beans",
-     "qty": "1 can, rinsed"
+     "qty": "1 can, rinsed",
+     "amt": 1
     },
     {
      "g": "corntort",
-     "qty": "6"
+     "qty": "6",
+     "amt": 6
     },
     {
      "g": "avocado",
-     "qty": "1, sliced"
+     "qty": "1, sliced",
+     "amt": 1
     },
     {
      "g": "limes",
-     "qty": "1"
+     "qty": "1",
+     "amt": 1
     },
     {
      "g": "cilantro",
-     "qty": "a handful"
+     "qty": "a handful",
+     "amt": 0.5
     },
     {
      "g": "mexcheese",
-     "qty": "⅓ cup"
+     "qty": "⅓ cup",
+     "amt": 0.333
     },
     {
      "p": "oil",
@@ -2678,44 +3402,54 @@
    "cuisine": "Mediterranean",
    "minutes": 25,
    "serves": "3",
+   "meals": 2,
    "protein": 42,
    "equip": "skillet",
    "ingredients": [
     {
      "g": "breasts",
-     "qty": "about 1½ lb, in strips"
+     "qty": "about 1½ lb, in strips",
+     "amt": 1.5
     },
     {
      "g": "pita",
-     "qty": "3"
+     "qty": "3",
+     "amt": 3
     },
     {
      "g": "cucumber",
-     "qty": "1, diced"
+     "qty": "1, diced",
+     "amt": 1
     },
     {
      "g": "cherrytom",
-     "qty": "1 cup, halved"
+     "qty": "1 cup, halved",
+     "amt": 1
     },
     {
      "g": "redonion",
-     "qty": "½, thinly sliced"
+     "qty": "½, thinly sliced",
+     "amt": 0.5
     },
     {
      "g": "yogurt",
-     "qty": "¾ cup"
+     "qty": "¾ cup",
+     "amt": 0.75
     },
     {
      "g": "lemons",
-     "qty": "juice of 1"
+     "qty": "juice of 1",
+     "amt": 1
     },
     {
      "g": "garlic",
-     "qty": "2 cloves, grated"
+     "qty": "2 cloves, grated",
+     "amt": 2
     },
     {
      "g": "feta",
-     "qty": "¼ cup"
+     "qty": "¼ cup",
+     "amt": 1
     },
     {
      "p": "oregano",
@@ -2751,39 +3485,48 @@
    "ingredients": [
     {
      "g": "breasts",
-     "qty": "about 1 lb, in thin strips"
+     "qty": "about 1 lb, in thin strips",
+     "amt": 1
     },
     {
      "g": "spaghetti",
-     "qty": "6 oz"
+     "qty": "6 oz",
+     "amt": 6
     },
     {
      "g": "pb",
-     "qty": "3 tbsp"
+     "qty": "3 tbsp",
+     "amt": 3
     },
     {
      "g": "soy",
-     "qty": "3 tbsp"
+     "qty": "3 tbsp",
+     "amt": 3
     },
     {
      "g": "honey",
-     "qty": "1 tbsp"
+     "qty": "1 tbsp",
+     "amt": 1
     },
     {
      "g": "limes",
-     "qty": "juice of 1"
+     "qty": "juice of 1",
+     "amt": 1
     },
     {
      "g": "garlic",
-     "qty": "1 clove, grated"
+     "qty": "1 clove, grated",
+     "amt": 1
     },
     {
      "g": "slaw",
-     "qty": "2 cups"
+     "qty": "2 cups",
+     "amt": 2
     },
     {
      "g": "greenonion",
-     "qty": "2, sliced"
+     "qty": "2, sliced",
+     "amt": 2
     },
     {
      "p": "oil",
@@ -2820,23 +3563,28 @@
    "ingredients": [
     {
      "g": "turkey",
-     "qty": "1 lb"
+     "qty": "1 lb",
+     "amt": 1
     },
     {
      "g": "peppers",
-     "qty": "2, halved and seeded"
+     "qty": "2, halved and seeded",
+     "amt": 2
     },
     {
      "g": "rice",
-     "qty": "1 cup cooked"
+     "qty": "1 cup cooked",
+     "amt": 0.333
     },
     {
      "g": "fireroasted",
-     "qty": "14.5 oz can"
+     "qty": "14.5 oz can",
+     "amt": 1
     },
     {
      "g": "mexcheese",
-     "qty": "½ cup"
+     "qty": "½ cup",
+     "amt": 0.5
     },
     {
      "p": "cumin",
@@ -2871,40 +3619,49 @@
    "cuisine": "Mexican",
    "minutes": 30,
    "serves": "3",
+   "meals": 2,
    "protein": 36,
    "equip": "deep skillet with a lid",
    "ingredients": [
     {
      "g": "beef",
-     "qty": "1 lb"
+     "qty": "1 lb",
+     "amt": 1
     },
     {
      "g": "rice",
-     "qty": "¾ cup dry"
+     "qty": "¾ cup dry",
+     "amt": 0.75
     },
     {
      "g": "beans",
-     "qty": "1 can, rinsed"
+     "qty": "1 can, rinsed",
+     "amt": 1
     },
     {
      "g": "salsa",
-     "qty": "1 cup"
+     "qty": "1 cup",
+     "amt": 1
     },
     {
      "g": "broth",
-     "qty": "1½ cups"
+     "qty": "1½ cups",
+     "amt": 1.5
     },
     {
      "g": "corn",
-     "qty": "¾ cup"
+     "qty": "¾ cup",
+     "amt": 0.75
     },
     {
      "g": "mexcheese",
-     "qty": "½ cup"
+     "qty": "½ cup",
+     "amt": 0.5
     },
     {
      "g": "greenonion",
-     "qty": "2, sliced"
+     "qty": "2, sliced",
+     "amt": 2
     },
     {
      "p": "chili",
